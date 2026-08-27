@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register iOS device</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+    <script type="module" src="/assets/register-device.js"></script>
+</head>
+<body>
+    <main class="shell registration-shell">
+        <header class="page-header">
+            <div><span class="eyebrow">Guided setup</span><h1>Register a device</h1><p>Keep the phone connected and unlocked. Every requirement is rechecked before it is saved.</p></div>
+            <a class="button secondary" href="/">Back to devices</a>
+        </header>
+
+        <section class="registration-panel" id="candidate-panel">
+            <div class="section-heading"><div><span class="eyebrow">Step 1</span><h2>Connect an unregistered device</h2></div><button class="button secondary" id="refresh-candidates" type="button">Recheck</button></div>
+            <p>Connect by USB, unlock it, and accept <strong>Trust This Computer</strong>. If Developer Mode has never been enabled, pairing with Xcode makes the setting appear.</p>
+            <div id="candidate-list" class="candidate-list" aria-live="polite">Checking connected devices…</div>
+        </section>
+
+        <section class="registration-panel" id="registration-panel" hidden>
+            <div class="section-heading"><div><span class="eyebrow">Setup checklist</span><h2 id="registration-title">Device</h2></div><span id="registration-busy" class="status checking" hidden>checking</span></div>
+            <div id="registration-error" class="run-error" hidden></div>
+
+            <form id="registration-details" class="registration-form">
+                <label>Device name<input id="registration-name" name="name" required maxlength="100"></label>
+                <label>Coordinate profile <span class="field-help">The detected model is recommended automatically; you may override it.</span><select id="registration-profile" name="coordinateProfile" required><option value="">Detecting model</option></select></label>
+                <label class="wide">TikTok accounts <span class="field-help">Optional. Add comma-separated signed-in handles now, or manage them later from the device page.</span><input id="registration-accounts" name="accounts" placeholder="@account_one, @account_two"></label>
+                <label class="wide">Unlock passcode <span class="field-help">Optional; stored only in the ignored owner-readable .env.devices file.</span><input id="registration-passcode" name="passcode" type="password" inputmode="numeric" autocomplete="off" pattern="[0-9]{4,}"></label>
+                <div class="wide inline-actions"><button class="button secondary" type="submit">Save details</button><span id="registration-ports" class="run-meta"></span></div>
+            </form>
+
+            <div id="registration-checks" class="registration-checks" aria-live="polite"></div>
+
+            <section class="registration-guidance">
+                <h3>Manual steps when requested</h3>
+                <ol>
+                    <li>Sign in at Xcode → Settings → Accounts and ensure the shared development team has an Apple Development certificate.</li>
+                    <li>Enable Settings → Privacy &amp; Security → Developer Mode, restart, then confirm Enable with the phone passcode.</li>
+                    <li>If iOS blocks WDA, trust its profile under Settings → General → VPN &amp; Device Management.</li>
+                    <li>Install TikTok from the App Store and sign in to every handle entered above.</li>
+                </ol>
+            </section>
+
+            <label class="authorization"><input id="authorize-registration" type="checkbox"> I am authorized to let Xcode register this UDID with the configured Apple Developer team.</label>
+            <div class="inline-actions registration-actions">
+                <button class="button secondary" id="action-refresh" type="button">Recheck state</button>
+                <button class="button primary" id="action-prepare" type="button">Register and prepare WDA</button>
+                <button class="button primary" id="action-verify" type="button">Verify Appium, video, touch, and accounts</button>
+                <button class="button primary" id="action-finalize" type="button" disabled>Finish registration</button>
+                <button class="button danger" id="action-cancel" type="button">Cancel</button>
+            </div>
+            <details class="registration-log"><summary>Sanitized setup log</summary><pre id="registration-logs">No setup output yet.</pre></details>
+        </section>
+    </main>
+</body>
+</html>

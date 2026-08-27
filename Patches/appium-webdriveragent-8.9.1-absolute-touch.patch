@@ -1,0 +1,180 @@
+--- .appium2/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgentLib/Commands/FBTouchActionCommands.m
++++ .appium2/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgentLib/Commands/FBTouchActionCommands.m
+@@ -14,0 +15 @@
++#import "FBXCTestDaemonsProxy.h"
+@@ -15,0 +17,3 @@
++#import "XCPointerEventPath.h"
++#import "XCSynthesizedEventRecord.h"
++@import Photos;
+@@ -16,0 +21,139 @@
++static BOOL FBWaitForPhotoLibraryAuthorization(NSError **error)
++{
++  __block PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelAddOnly];
++  if (PHAuthorizationStatusNotDetermined == status) {
++    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
++    [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelAddOnly handler:^(PHAuthorizationStatus newStatus) {
++      status = newStatus;
++      dispatch_semaphore_signal(semaphore);
++    }];
++    if (0 != dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)))) {
++      *error = [NSError errorWithDomain:@"com.facebook.WebDriverAgent" code:2
++                               userInfo:@{NSLocalizedDescriptionKey: @"Timed out waiting for Photos permission"}];
++      return NO;
++    }
++  }
++  if (PHAuthorizationStatusAuthorized != status && PHAuthorizationStatusLimited != status) {
++    *error = [NSError errorWithDomain:@"com.facebook.WebDriverAgent" code:3
++                             userInfo:@{NSLocalizedDescriptionKey: @"Photos access is denied. Allow access for WebDriverAgentRunner in iOS Settings."}];
++    return NO;
++  }
++  return YES;
++}
++
++static NSString *FBImportMedia(NSString *name, NSString *mimeType, NSString *base64Data, NSError **error)
++{
++  if (0 == name.length || 0 == base64Data.length || 0 == mimeType.length) {
++    *error = [NSError errorWithDomain:@"com.facebook.WebDriverAgent" code:4
++                             userInfo:@{NSLocalizedDescriptionKey: @"name, mimeType, and base64 data are required"}];
++    return nil;
++  }
++  NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Data options:0];
++  if (nil == data) {
++    *error = [NSError errorWithDomain:@"com.facebook.WebDriverAgent" code:5
++                             userInfo:@{NSLocalizedDescriptionKey: @"Media data is not valid base64"}];
++    return nil;
++  }
++  if (!FBWaitForPhotoLibraryAuthorization(error)) {
++    return nil;
++  }
++  NSString *safeName = [name lastPathComponent];
++  NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:
++                                           [NSString stringWithFormat:@"%@-%@", NSUUID.UUID.UUIDString, safeName]]];
++  if (![data writeToURL:fileURL options:NSDataWritingAtomic error:error]) {
++    return nil;
++  }
++  __block NSString *identifier = nil;
++  __block BOOL succeeded = NO;
++  __block NSError *changeError = nil;
++  dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
++  [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
++    PHAssetChangeRequest *request = [mimeType hasPrefix:@"video/"]
++      ? [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:fileURL]
++      : [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
++    identifier = request.placeholderForCreatedAsset.localIdentifier;
++  } completionHandler:^(BOOL success, NSError *operationError) {
++    succeeded = success;
++    changeError = operationError;
++    dispatch_semaphore_signal(semaphore);
++  }];
++  long waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(120 * NSEC_PER_SEC)));
++  [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
++  if (0 != waitResult || !succeeded) {
++    *error = changeError ?: [NSError errorWithDomain:@"com.facebook.WebDriverAgent" code:6
++                                            userInfo:@{NSLocalizedDescriptionKey: @"Timed out importing media into Photos"}];
++    return nil;
++  }
++  return identifier;
++}
++
++static BOOL FBIsAbsoluteSingleTouchAction(NSArray *actions)
++{
++  if (1 != actions.count) {
++    return NO;
++  }
++  NSDictionary *action = actions.firstObject;
++  if (![[action objectForKey:@"type"] isEqualToString:@"pointer"]
++      || ![[[action objectForKey:@"parameters"] objectForKey:@"pointerType"] isEqualToString:@"touch"]) {
++    return NO;
++  }
++  for (NSDictionary *item in [action objectForKey:@"actions"]) {
++    NSString *type = [item objectForKey:@"type"];
++    if ([type isEqualToString:@"pointerMove"]) {
++      id origin = [item objectForKey:@"origin"];
++      if (nil != origin && ![origin isEqualToString:@"viewport"]) {
++        return NO;
++      }
++      if (nil == [item objectForKey:@"x"] || nil == [item objectForKey:@"y"]) {
++        return NO;
++      }
++    } else if (![@[@"pointerDown", @"pointerUp", @"pause"] containsObject:type]) {
++      return NO;
++    }
++  }
++  return YES;
++}
++
++static BOOL FBPerformAbsoluteSingleTouchAction(NSArray *actions, NSError **error)
++{
++  NSArray *items = [actions.firstObject objectForKey:@"actions"];
++  CGPoint point = CGPointZero;
++  BOOL hasPoint = NO;
++  NSTimeInterval offset = 0;
++  XCPointerEventPath *eventPath = nil;
++
++  for (NSDictionary *item in items) {
++    NSString *type = [item objectForKey:@"type"];
++    NSTimeInterval duration = [[item objectForKey:@"duration"] doubleValue] / 1000.0;
++    if ([type isEqualToString:@"pause"]) {
++      offset += duration;
++      continue;
++    }
++    if ([type isEqualToString:@"pointerMove"]) {
++      offset += duration;
++      point = CGPointMake([[item objectForKey:@"x"] doubleValue], [[item objectForKey:@"y"] doubleValue]);
++      hasPoint = YES;
++      if (nil != eventPath) {
++        [eventPath moveToPoint:point atOffset:offset];
++      }
++      continue;
++    }
++    if ([type isEqualToString:@"pointerDown"] && hasPoint && nil == eventPath) {
++      eventPath = [[XCPointerEventPath alloc] initForTouchAtPoint:point offset:offset];
++      continue;
++    }
++    if ([type isEqualToString:@"pointerUp"] && nil != eventPath) {
++      [eventPath liftUpAtOffset:offset];
++    }
++  }
++
++  if (nil == eventPath) {
++    return NO;
++  }
++  XCSynthesizedEventRecord *record = [[XCSynthesizedEventRecord alloc]
++                                      initWithName:@"Absolute Touch Action"
++                                      interfaceOrientation:UIInterfaceOrientationPortrait];
++  [record addPointerEventPath:eventPath];
++  return [FBXCTestDaemonsProxy synthesizeEventWithRecord:record error:error];
++}
++
+@@ -24,0 +168,2 @@
++    [[FBRoute POST:@"/wda/absolute-actions"].withoutSession respondWithTarget:self action:@selector(handlePerformW3CTouchActions:)],
++    [[FBRoute POST:@"/wda/import-media"].withoutSession respondWithTarget:self action:@selector(handleImportMedia:)],
+@@ -30,0 +176,11 @@
+++ (id<FBResponsePayload>)handleImportMedia:(FBRouteRequest *)request
++{
++  NSError *error;
++  NSString *identifier = FBImportMedia(request.arguments[@"name"], request.arguments[@"mimeType"], request.arguments[@"data"], &error);
++  if (nil == identifier) {
++    return FBResponseWithUnknownError(error);
++  }
++  NSUInteger assetCount = [PHAsset fetchAssetsWithOptions:nil].count;
++  return FBResponseWithObject(@{ @"localIdentifier": identifier, @"assetCount": @(assetCount) });
++}
++
+@@ -33 +188,0 @@
+-  XCUIApplication *application = request.session.activeApplication;
+@@ -35,0 +191,9 @@
++  if (FBIsAbsoluteSingleTouchAction(actions)) {
++    if (!FBPerformAbsoluteSingleTouchAction(actions, &error)) {
++      return FBResponseWithUnknownError(error ?: [NSError errorWithDomain:@"com.facebook.WebDriverAgent"
++                                                                      code:1
++                                                                  userInfo:@{NSLocalizedDescriptionKey: @"Unable to synthesize the absolute touch action"}]);
++    }
++    return FBResponseWithOK();
++  }
++  XCUIApplication *application = request.session.activeApplication;
+--- .appium2/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgentRunner/Info.plist
++++ .appium2/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgentRunner/Info.plist
+@@ -28,0 +29,2 @@
++	<key>NSPhotoLibraryAddUsageDescription</key>
++	<string>Allow automation uploads to be added to the device photo library.</string>

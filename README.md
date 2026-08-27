@@ -1,0 +1,45 @@
+# Phone Farm iOS
+
+An open-source, standalone application for operating physical iOS devices and running scheduled TikTok workflows. It includes guided device registration, WDA/Appium supervision, live video and remote input, PostgreSQL-backed scheduling, recurring jobs, uploads, execution history, the dashboard/API server, and a built-in TikTok automation plugin.
+
+The public application runs locally without the internal repository. Authentication is optional on loopback. Organizations can add an authentication provider and deployment composition without forking the public functionality. Tasks are persisted as `pluginId`, `taskType`, `taskVersion`, and JSON payload so old schedules cannot silently execute a new contract.
+
+## Run the standalone application
+
+Requirements are Node 22+, PostgreSQL, Xcode, a signed real-device WebDriverAgent, and Appium's XCUITest driver.
+
+```sh
+npm install
+cp .env.example .env
+npm run appium:install-driver
+npm run db:up
+npm run db:migrate
+npm run wda:prepare
+```
+
+Run these long-lived processes (the private distribution installs them as LaunchAgents):
+
+```sh
+npm run appium
+npm run wda:service
+npm run worker
+npm run web
+```
+
+TikTok support is enabled by default. Set `PHONE_FARM_PLUGINS` to comma-separated ESM package names to add more task plugins. Set `PHONE_FARM_AUTH_PLUGIN` to an ESM authentication provider before binding `WEB_HOST` outside loopback; startup deliberately fails otherwise.
+
+## Plugin contract
+
+`src/plugin.ts` defines the stable interfaces. A plugin can provide versioned tasks, registration checks, device-page panels, namespaced HTTP routes, and declared WDA extensions. Task execution receives the exact device, private plugin data for that device, resolved assets, a temporary workspace, cancellation, durable logging, safe device primitives, and an observed subprocess runner.
+
+See `PLUGIN_DEVELOPMENT.md` for compatibility and trust rules.
+
+`src/example-plugin.ts` is a minimal open-app plugin. Production plugins should be separate packages and should never require changes to core routing or scheduler code.
+
+## Repository policy
+
+The public repository must use GitHub-hosted CI only. Never connect production devices, Apple signing material, production databases, self-hosted runners, or deployment credentials to workflows triggered by public pull requests. See `SECURITY.md` before publishing.
+
+```sh
+npm run check
+```

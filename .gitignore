@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+devices.json
+.wda/
+.scheduler-data/
+static/assets/
+*.log
