@@ -140,6 +140,10 @@
                 <button id="close-calibrate" class="icon-button" type="button">Close</button>
             </div>
             <p>Pick a target, then click where it belongs on the live screen. Untouched targets use the <strong id="cal-profile">…</strong> profile.</p>
+            <div class="cal-toolbar">
+                <label class="cal-switch"><input id="cal-control" type="checkbox"><span class="cal-switch-track" aria-hidden="true"></span><span>Control device</span></label>
+                <button id="cal-unlock" class="button secondary" type="button"><span aria-hidden="true">🔓</span> Unlock</button>
+            </div>
             <div class="calibrate-body">
                 <div class="calibrate-screen"><img id="cal-screen" alt="Live screen"><div id="cal-markers" class="cal-markers" aria-hidden="true"></div></div>
                 <ul id="cal-points" class="cal-points"></ul>

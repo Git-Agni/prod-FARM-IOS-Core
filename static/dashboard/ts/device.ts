@@ -148,6 +148,8 @@ const elements = {
     calibrateDialog: element<HTMLDialogElement>('#calibrate-dialog'),
     closeCalibrate: element<HTMLButtonElement>('#close-calibrate'),
     calScreen: element<HTMLImageElement>('#cal-screen'),
+    calControl: element<HTMLInputElement>('#cal-control'),
+    calUnlock: element<HTMLButtonElement>('#cal-unlock'),
     calMarkers: element<HTMLElement>('#cal-markers'),
     calPoints: element<HTMLElement>('#cal-points'),
     calStatus: element<HTMLElement>('#cal-status'),
@@ -766,6 +768,8 @@ async function openCalibrate(): Promise<void> {
         cal.overrides = {};
         for (const point of data.points) if (point.overridden) cal.overrides[point.name] = point.current;
         cal.armed = undefined;
+        elements.calControl.checked = false;
+        elements.calScreen.parentElement?.classList.remove('controlling');
         elements.calProfile.textContent = data.profile;
         elements.calScreen.src = `/api/devices/${encodeURIComponent(udid)}/remote/stream?t=${Date.now()}`;
         elements.calStatus.textContent = '';
@@ -805,16 +809,61 @@ elements.calResetAll.addEventListener('click', () => {
     if (!confirm('Reset all touch points to the profile defaults?')) return;
     cal.overrides = {}; cal.armed = undefined; renderCal();
 });
-elements.calScreen.addEventListener('click', (event) => {
-    if (!cal.armed || !cal.screen) return;
+function calPointFromEvent(event: PointerEvent | MouseEvent): Point {
     const rect = elements.calScreen.getBoundingClientRect();
-    cal.overrides[cal.armed] = {
-        x: Math.round((event.clientX - rect.left) * cal.screen.width / rect.width),
-        y: Math.round((event.clientY - rect.top) * cal.screen.height / rect.height),
+    return {
+        x: Math.round((event.clientX - rect.left) * cal.screen!.width / rect.width),
+        y: Math.round((event.clientY - rect.top) * cal.screen!.height / rect.height),
     };
+}
+
+async function calSendAction(action: RemoteAction): Promise<void> {
+    elements.calStatus.textContent = 'Sending input…';
+    try {
+        await jsonRequest(`/api/devices/${encodeURIComponent(udid)}/remote/action`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(action),
+        });
+        elements.calStatus.textContent = action.type === 'tap' ? `Tapped (${action.x}, ${action.y})` : 'Sent.';
+    } catch (error) {
+        elements.calStatus.textContent = errorMessage(error);
+    }
+}
+
+let calPointerStart: (Point & { time: number }) | undefined;
+
+elements.calControl.addEventListener('change', () => {
+    elements.calScreen.parentElement?.classList.toggle('controlling', elements.calControl.checked);
+    if (elements.calControl.checked) { cal.armed = undefined; renderCal(); }
+});
+
+elements.calUnlock.addEventListener('click', () => void calSendAction({ type: 'unlock' }));
+
+elements.calScreen.addEventListener('click', (event) => {
+    if (elements.calControl.checked || !cal.armed || !cal.screen) return;
+    cal.overrides[cal.armed] = calPointFromEvent(event);
     cal.armed = undefined;
     renderCal();
 });
+elements.calScreen.addEventListener('pointerdown', (event) => {
+    if (!elements.calControl.checked || !cal.screen) return;
+    elements.calScreen.setPointerCapture(event.pointerId);
+    calPointerStart = { ...calPointFromEvent(event), time: performance.now() };
+});
+elements.calScreen.addEventListener('pointerup', (event) => {
+    if (!calPointerStart || !cal.screen) return;
+    const start = calPointerStart;
+    const end = calPointFromEvent(event);
+    calPointerStart = undefined;
+    if (Math.hypot(end.x - start.x, end.y - start.y) < 12) {
+        void calSendAction({ type: 'tap', x: end.x, y: end.y });
+    } else {
+        const durationMs = Math.max(150, Math.min(1200, Math.round(performance.now() - start.time)));
+        void calSendAction({ type: 'swipe', startX: start.x, startY: start.y, endX: end.x, endY: end.y, durationMs });
+    }
+});
+elements.calScreen.addEventListener('pointercancel', () => { calPointerStart = undefined; });
 elements.calSave.addEventListener('click', async () => {
     elements.calSave.disabled = true;
     elements.calStatus.textContent = 'Saving…';
