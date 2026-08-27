@@ -4,6 +4,15 @@ An open-source, standalone application for operating physical iOS devices and ru
 
 The public application runs locally without the internal repository. Authentication is optional on loopback. Organizations can add an authentication provider and deployment composition without forking the public functionality. Tasks are persisted as `pluginId`, `taskType`, `taskVersion`, and JSON payload so old schedules cannot silently execute a new contract.
 
+## Documentation
+
+- [docs/getting-started.md](docs/getting-started.md) — install, configure, run, register a device
+- [docs/architecture.md](docs/architecture.md) — the four processes, data stores, task model, source map
+- [docs/plugins.md](docs/plugins.md) — write a plugin: tasks, execution context, versioning, panels, routes
+- [docs/coordinates.md](docs/coordinates.md) — tap-layout profiles and how to add one
+- [PLUGIN_DEVELOPMENT.md](PLUGIN_DEVELOPMENT.md) — plugin trust and compatibility rules
+- [SECURITY.md](SECURITY.md) — before publishing or exposing the dashboard
+
 ## Run the standalone application
 
 Requirements are Node 22+, PostgreSQL, Xcode, a signed real-device WebDriverAgent, and Appium's XCUITest driver.
