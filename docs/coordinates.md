@@ -79,8 +79,10 @@ The **15 single‑tap TikTok targets** — `profileTab`, `homeTab`,
 `accountSwitcher`, `create`, `upload`, `selectMultiple`, `useLayout`,
 `pickerNext`, `editorNext`, `caption`, `keyboardBack`, `draft`, `finish`,
 `like`, `save` — can be re‑pointed per device without a code change, from the
-device page → **Calibrate touch points**: pick a target, click where it belongs
+device page → **Touch points**: pick a target, click where it belongs
 on the live screen, Save. Reset one point or all of them back to the profile.
+Flip **Control device** to drive the phone with taps/swipes on the preview so
+you can get to the screen a target lives on, and the padlock button unlocks it.
 
 Overrides are stored on the `devices.json` entry and merge over the selected
 profile at runtime (`resolveDeviceCoordinates`):
