@@ -21,6 +21,7 @@ export const defaultDashboardTheme: DashboardTheme = {
         const configured = accounts(device);
         const options = configured.map((account) => `<option value="${escapeHtml(account)}">${escapeHtml(account)}</option>`).join('');
         return template.replaceAll('__TIKTOK_ACCOUNT_OPTIONS__', options)
-            .replaceAll('__TIKTOK_ACCOUNTS_VALUE__', escapeHtml(configured.join(', ')));
+            .replaceAll('__TIKTOK_ACCOUNTS_VALUE__', escapeHtml(configured.join(', ')))
+            .replaceAll('__DEVICE_HASPASSCODE__', device.passcode ? '· set' : '· not set');
     },
 };

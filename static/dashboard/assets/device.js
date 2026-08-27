@@ -64,6 +64,11 @@ const elements = {
     accountsResult: element('#accounts-result'),
     deviceSchedules: element('#device-schedules'),
     deviceExecutions: element('#device-executions'),
+    passcodeForm: element('#passcode-form'),
+    devicePasscode: element('#device-passcode'),
+    passcodeClear: element('#passcode-clear'),
+    passcodeState: element('#passcode-state'),
+    passcodeResult: element('#passcode-result'),
     removeDevice: element('#remove-device'),
     removeResult: element('#remove-result'),
 };
@@ -631,6 +636,41 @@ elements.accountsForm.addEventListener('submit', async (event) => {
     catch (error) {
         elements.accountsResult.textContent = errorMessage(error);
     }
+});
+async function patchPasscode(passcode, pending, done) {
+    elements.passcodeResult.textContent = pending;
+    try {
+        const response = await fetch(`/api/devices/${encodeURIComponent(udid)}`, {
+            method: 'PATCH',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ passcode }),
+        });
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.error ?? `Request failed (${response.status})`);
+        }
+        const data = await response.json();
+        elements.passcodeState.textContent = data.hasPasscode ? '· set' : '· not set';
+        elements.devicePasscode.value = '';
+        elements.passcodeResult.textContent = done;
+    }
+    catch (error) {
+        elements.passcodeResult.textContent = errorMessage(error);
+    }
+}
+elements.passcodeForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = elements.devicePasscode.value.trim();
+    if (!/^\d{4,}$/.test(value)) {
+        elements.passcodeResult.textContent = 'Enter at least four digits.';
+        return;
+    }
+    void patchPasscode(value, 'Saving…', 'Passcode saved.');
+});
+elements.passcodeClear.addEventListener('click', () => {
+    if (!confirm('Clear this device’s passcode? Automation will not be able to unlock a locked phone.'))
+        return;
+    void patchPasscode('', 'Clearing…', 'Passcode cleared.');
 });
 elements.removeDevice.addEventListener('click', async () => {
     if (!confirm("Remove this device? Its schedules will be cancelled and its configuration forgotten."))

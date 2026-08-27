@@ -78,6 +78,19 @@
                         <div class="inline-actions"><button class="button secondary" type="submit">Save accounts</button><span id="accounts-result" class="run-meta" aria-live="polite"></span></div>
                     </form>
                 </section>
+                <section class="panel">
+                    <div><span class="eyebrow">This device</span><h2>Unlock passcode</h2></div>
+                    <p>Used to wake and unlock the phone before automation. Kept in <code>devices.json</code> and never shown again.</p>
+                    <form id="passcode-form" class="inline-form" autocomplete="off">
+                        <label for="device-passcode">Passcode <span id="passcode-state" class="run-meta">__DEVICE_HASPASSCODE__</span></label>
+                        <input id="device-passcode" type="password" inputmode="numeric" autocomplete="new-password" placeholder="4+ digits">
+                        <div class="inline-actions">
+                            <button class="button secondary" type="submit">Save passcode</button>
+                            <button id="passcode-clear" class="button secondary" type="button">Clear</button>
+                            <span id="passcode-result" class="run-meta" aria-live="polite"></span>
+                        </div>
+                    </form>
+                </section>
                 <section class="panel activity-card">
                     <div><span class="eyebrow">Device activity</span><h2>Automation log</h2></div>
                     <p>Live output from the latest doomscroll or post automation on this device.</p>
