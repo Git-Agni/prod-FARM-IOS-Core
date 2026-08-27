@@ -124,7 +124,7 @@ in `src/scheduler/recurrence.ts`; the next occurrence is written to
 | `src/scheduler/` | runtime, repository, pg-boss queue, recurrence, worker, executor |
 | `src/database/` | Drizzle client, schema, migrate/setup entrypoints |
 | `src/devices/` | discovery, registry (`devices.json`), registration flow, WDA remote, wda-service, coordinate profiles, passcode lookup |
-| `src/devices/wda/` | `prepare.ts` (patch + build + sign WDA), diagnostics |
+| `src/devices/wda/` | `prepare.ts` (patch + build + sign WDA), `start.ts` (single-device WDA supervisor), `target-device.ts` (resolve which device a CLI command targets), diagnostics |
 | `src/tiktok/` | TikTok automation entrypoints (`doomscroll.ts`, `post.ts`), OCR, coordinates |
 | `src/tiktok-plugin.ts` | The built‑in plugin: task definitions, device panel, routes |
 | `src/plugin.ts` | **Stable plugin & auth interfaces** |

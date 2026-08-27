@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { resolveDeveloperDir } from './xcode-env.js';
+import { resolveBuildTargets } from './target-device.js';
 
 function required(name: string): string {
     const value = process.env[name];
@@ -69,24 +70,31 @@ if (customCommands.includes('POST:@"/wda/pressButton"].withoutSession')) {
 }
 
 const developerDir = resolveDeveloperDir();
-const args = [
-    'build-for-testing',
-    '-allowProvisioningUpdates',
-    ...(process.env.ALLOW_PROVISIONING_DEVICE_REGISTRATION === 'true'
-        ? ['-allowProvisioningDeviceRegistration']
-        : []),
-    '-project', projectPath,
-    '-scheme', 'WebDriverAgentRunner',
-    '-destination', `id=${required('IOS_UDID')}`,
-    `IPHONEOS_DEPLOYMENT_TARGET=${process.env.IOS_PLATFORM_VERSION ?? '16.7'}`,
-    `DEVELOPMENT_TEAM=${required('XCODE_ORG_ID')}`,
-    `PRODUCT_BUNDLE_IDENTIFIER=${required('WDA_BUNDLE_ID')}`,
-    `CODE_SIGN_IDENTITY=${process.env.XCODE_SIGNING_ID ?? 'Apple Development'}`,
-    'CODE_SIGN_STYLE=Automatic',
-    'GCC_TREAT_WARNINGS_AS_ERRORS=0',
-    'COMPILER_INDEX_STORE_ENABLE=NO',
-];
+const teamId = required('XCODE_ORG_ID');
+const bundleId = required('WDA_BUNDLE_ID');
 
-await run('xcodebuild', args, {
-    env: { ...process.env, DEVELOPER_DIR: developerDir },
-});
+// `--udid <udid>`, or `--all` for every registered device, or the sole
+// registered / connected device, or IOS_UDID. Xcode needs a concrete device
+// for a signed device build.
+const targets = await resolveBuildTargets();
+
+for (const udid of targets) {
+    if (targets.length > 1) console.log(`\n=== WebDriverAgent build for ${udid} ===`);
+    await run('xcodebuild', [
+        'build-for-testing',
+        '-allowProvisioningUpdates',
+        ...(process.env.ALLOW_PROVISIONING_DEVICE_REGISTRATION === 'true'
+            ? ['-allowProvisioningDeviceRegistration']
+            : []),
+        '-project', projectPath,
+        '-scheme', 'WebDriverAgentRunner',
+        '-destination', `id=${udid}`,
+        `IPHONEOS_DEPLOYMENT_TARGET=${process.env.IOS_PLATFORM_VERSION ?? '16.7'}`,
+        `DEVELOPMENT_TEAM=${teamId}`,
+        `PRODUCT_BUNDLE_IDENTIFIER=${bundleId}`,
+        `CODE_SIGN_IDENTITY=${process.env.XCODE_SIGNING_ID ?? 'Apple Development'}`,
+        'CODE_SIGN_STYLE=Automatic',
+        'GCC_TREAT_WARNINGS_AS_ERRORS=0',
+        'COMPILER_INDEX_STORE_ENABLE=NO',
+    ], { env: { ...process.env, DEVELOPER_DIR: developerDir } });
+}

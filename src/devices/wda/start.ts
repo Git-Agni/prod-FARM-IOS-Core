@@ -5,6 +5,7 @@ import path from 'node:path';
 
 import { diagnoseWdaLaunchFailure, wdaUnavailableTooLong } from './diagnostics.js';
 import { resolveDeveloperDir } from './xcode-env.js';
+import { resolveTargetUdid } from './target-device.js';
 
 function required(name: string): string {
     const value = process.env[name];
@@ -26,7 +27,8 @@ function report(state: WdaState, message: string): void {
     console.log(`[wda-state] ${value}`);
 }
 
-const udid = required('IOS_UDID');
+// `--udid <udid>`, or the sole registered / connected device, or IOS_UDID.
+const udid = await resolveTargetUdid();
 const teamId = required('XCODE_ORG_ID');
 const developerDir = resolveDeveloperDir();
 const driverPath = path.resolve(process.env.XCUITEST_DRIVER_PATH
