@@ -2,7 +2,7 @@
 
 An open-source, standalone application for operating physical iOS devices and running scheduled TikTok workflows. It includes guided device registration, WDA/Appium supervision, live video and remote input, PostgreSQL-backed scheduling, recurring jobs, uploads, execution history, the dashboard/API server, and a built-in TikTok automation plugin.
 
-The public application runs locally without the internal repository. Authentication is optional on loopback. Organizations can add an authentication provider and deployment composition without forking the public functionality. Tasks are persisted as `pluginId`, `taskType`, `taskVersion`, and JSON payload so old schedules cannot silently execute a new contract.
+It runs locally as-is; authentication is optional on a loopback bind. Harden it for a shared or exposed deployment by supplying your own `AuthProvider` (`PHONE_FARM_AUTH_PLUGIN`) and process supervision — no fork required. Tasks are persisted as `pluginId`, `taskType`, `taskVersion`, and a JSON payload, so an old schedule can never silently execute a new contract.
 
 ## Documentation
 
@@ -11,7 +11,7 @@ The public application runs locally without the internal repository. Authenticat
 - [docs/plugins.md](docs/plugins.md) — write a plugin: tasks, execution context, versioning, panels, routes
 - [docs/coordinates.md](docs/coordinates.md) — tap-layout profiles and how to add one
 - [PLUGIN_DEVELOPMENT.md](PLUGIN_DEVELOPMENT.md) — plugin trust and compatibility rules
-- [SECURITY.md](SECURITY.md) — before publishing or exposing the dashboard
+- [SECURITY.md](SECURITY.md) — before exposing the dashboard beyond loopback
 
 ## Run the standalone application
 
@@ -39,7 +39,7 @@ TikTok support is enabled by default. Set `PHONE_FARM_PLUGINS` to comma-separate
 
 ## Plugin contract
 
-`src/plugin.ts` defines the stable interfaces. A plugin can provide versioned tasks, registration checks, device-page panels, namespaced HTTP routes, and declared WDA extensions. Task execution receives the exact device, private plugin data for that device, resolved assets, a temporary workspace, cancellation, durable logging, safe device primitives, and an observed subprocess runner.
+`src/plugin.ts` defines the stable interfaces. A plugin can provide versioned tasks, registration checks, device-page panels, namespaced HTTP routes, and declared WDA extensions. Task execution receives the exact device, that plugin's own per-device data, resolved assets, a temporary workspace, cancellation, durable logging, safe device primitives, and an observed subprocess runner.
 
 See `PLUGIN_DEVELOPMENT.md` for compatibility and trust rules.
 
@@ -47,7 +47,7 @@ See `PLUGIN_DEVELOPMENT.md` for compatibility and trust rules.
 
 ## Repository policy
 
-The public repository must use GitHub-hosted CI only. Never connect production devices, Apple signing material, production databases, self-hosted runners, or deployment credentials to workflows triggered by public pull requests. See `SECURITY.md` before publishing.
+This repository uses GitHub-hosted CI only. Never connect production devices, Apple signing material, production databases, self-hosted runners, or deployment credentials to workflows triggered by pull requests. See `SECURITY.md`.
 
 ```sh
 npm run check
