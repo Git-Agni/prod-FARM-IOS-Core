@@ -28,7 +28,7 @@ p { margin-bottom: 0; color: var(--muted); line-height: 1.55; }
 .eyebrow { display: block; margin-bottom: 10px; color: #788597; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .button, .icon-button { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; border: 1px solid transparent; border-radius: 10px; padding: 0 15px; color: var(--text); font-size: 13px; font-weight: 750; text-decoration: none; cursor: pointer; }
 .button.primary { background: var(--accent); box-shadow: 0 8px 24px rgb(255 54 94 / 18%); }
-.button.danger { border-color: rgb(251 113 133 / 45%); background: rgb(112 47 57 / 55%); }
+.button.danger { border-color: transparent; background: #dc2626; color: #fff; box-shadow: 0 8px 24px rgb(220 38 38 / 22%); }
 .button.secondary, .icon-button { border-color: var(--border); background: #171d26; }
 .button:hover, .icon-button:hover { border-color: var(--border-strong); filter: brightness(1.08); }
 button:disabled { cursor: wait; opacity: .55; }
@@ -198,6 +198,8 @@ dialog#calibrate-dialog { width: min(760px, calc(100% - 28px)); }
 .weekday-options input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 .task-section { margin-bottom: 18px; }
 .task-list { display: grid; gap: 8px; }
+.tasks-modal h3 { margin: 16px 0 8px; font-size: 12px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; color: #c8d0db; }
+.tasks-modal h3:first-of-type { margin-top: 4px; }
 .task-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 16px; padding: 13px; border: 1px solid var(--border); border-radius: 10px; background: #0c1016; }
 .task-row h3 { margin: 0 0 5px; font-size: 14px; text-transform: capitalize; }
 .task-row p { font-size: 11px; }

@@ -73,6 +73,9 @@ const elements = {
     closeRemove: element('#close-remove'),
     deviceSchedules: element('#device-schedules'),
     deviceExecutions: element('#device-executions'),
+    tasksDialog: element('#tasks-dialog'),
+    openTasks: element('#open-tasks'),
+    closeTasks: element('#close-tasks'),
     passcodeForm: element('#passcode-form'),
     devicePasscode: element('#device-passcode'),
     passcodeClear: element('#passcode-clear'),
@@ -736,6 +739,11 @@ function closeCalibrate() {
 elements.openCalibrate.addEventListener('click', () => void openCalibrate());
 elements.closeCalibrate.addEventListener('click', closeCalibrate);
 elements.calCancel.addEventListener('click', closeCalibrate);
+elements.openTasks.addEventListener('click', () => {
+    void loadDeviceTasks();
+    elements.tasksDialog.showModal();
+});
+elements.closeTasks.addEventListener('click', () => elements.tasksDialog.close());
 elements.openAccounts.addEventListener('click', () => elements.accountsDialog.showModal());
 elements.closeAccounts.addEventListener('click', () => elements.accountsDialog.close());
 elements.openPasscode.addEventListener('click', () => {
@@ -842,8 +850,8 @@ elements.removeDevice.addEventListener('click', async () => {
 updateDestination();
 updateDoomscrollSchedule();
 updatePostSchedule();
-void loadDeviceTasks();
-setInterval(() => void loadDeviceTasks(), 5_000);
+setInterval(() => { if (elements.tasksDialog.open)
+    void loadDeviceTasks(); }, 5_000);
 const loadedSummary = document.querySelector('#device-summary[data-screen-width]');
 if (loadedSummary)
     useDeviceSummary(loadedSummary);

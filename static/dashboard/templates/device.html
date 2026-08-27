@@ -12,10 +12,11 @@
         <nav class="breadcrumb">
             <a href="/">Devices</a><span>/</span><a href="/tasks">Tasks</a><span>/</span><span>Device workspace</span>
             <span class="nav-actions">
+                <button id="open-tasks" class="button secondary" type="button">Tasks &amp; schedules</button>
                 <button id="open-accounts" class="button secondary" type="button">Accounts</button>
                 <button id="open-passcode" class="button secondary" type="button">Passcode</button>
                 <button id="open-calibrate" class="button secondary" type="button">Touch points</button>
-                <button id="open-remove" class="button secondary" type="button">Remove device</button>
+                <button id="open-remove" class="button danger" type="button">Remove device</button>
                 __AUTH_NAV__
             </span>
         </nav>
@@ -68,16 +69,6 @@
                     <p>Upload a video or ordered slideshow, then save it as a draft or publish it.</p>
                     <button id="open-post" class="button secondary" type="button">Prepare post</button>
                 </section>
-                <section class="panel">
-                    <div class="section-heading">
-                        <div><span class="eyebrow">This device</span><h2>Tasks and schedules</h2></div>
-                        <a href="/tasks" class="button secondary">View all tasks</a>
-                    </div>
-                    <h3>Schedules</h3>
-                    <div id="device-schedules" class="task-list loading-card"><span class="spinner" aria-hidden="true"></span>Loading schedules…</div>
-                    <h3>Recent runs</h3>
-                    <div id="device-executions" class="task-list loading-card"><span class="spinner" aria-hidden="true"></span>Loading task history…</div>
-                </section>
                 <section class="panel activity-card">
                     <div><span class="eyebrow">Device activity</span><h2>Automation log</h2></div>
                     <p>Live output from the latest doomscroll or post automation on this device.</p>
@@ -89,6 +80,18 @@
             </div>
         </div>
     </main>
+    <dialog id="tasks-dialog">
+        <div class="modal tasks-modal">
+            <div class="modal-head">
+                <div><span class="eyebrow">This device</span><h2>Tasks &amp; schedules</h2></div>
+                <div class="inline-actions"><a href="/tasks" class="button secondary">View all tasks</a><button id="close-tasks" class="icon-button" type="button">Close</button></div>
+            </div>
+            <h3>Schedules</h3>
+            <div id="device-schedules" class="task-list loading-card"><span class="spinner" aria-hidden="true"></span>Loading schedules…</div>
+            <h3>Recent runs</h3>
+            <div id="device-executions" class="task-list loading-card"><span class="spinner" aria-hidden="true"></span>Loading task history…</div>
+        </div>
+    </dialog>
     <dialog id="accounts-dialog">
         <form id="accounts-form" class="modal">
             <div class="modal-head">
