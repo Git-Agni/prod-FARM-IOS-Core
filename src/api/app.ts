@@ -10,6 +10,9 @@ import { Readable } from 'node:stream';
 
 import { discoverConnectedDevices } from '../devices/discovery.js';
 import { loadRegisteredDevices, saveRegisteredDevices, redactDevice, PASSCODE_PATTERN, type RegisteredDevice } from '../devices/registry.js';
+import {
+    CALIBRATABLE_POINTS, POINT_LABELS, coordinatesForProfile, resolveDeviceCoordinates, validateCoordinateOverrides,
+} from '../devices/coordinates.js';
 import { RegistryWdaRemoteControl } from '../devices/registry-remote.js';
 import type {
     DeviceRegistrationManager, RegistrationAction, RegistrationUpdate,
@@ -227,7 +230,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
             return reply.code(201).send(redactDevice(devices.at(-1)!));
         },
     );
-    app.patch<{ Params: { udid: string }; Body: { name?: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; pluginData?: Record<string, JsonObject> } }>(
+    app.patch<{ Params: { udid: string }; Body: { name?: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; coordinates?: unknown; pluginData?: Record<string, JsonObject> } }>(
         '/api/devices/:udid', async (request, reply) => {
             if (request.body.passcode !== undefined && request.body.passcode !== '' && !PASSCODE_PATTERN.test(request.body.passcode)) {
                 return reply.code(400).send({ error: 'Device passcode must contain at least four digits' });
@@ -235,16 +238,41 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
             const devices = await loadRegisteredDevices();
             const index = devices.findIndex(({ udid }) => udid === request.params.udid);
             if (index < 0) return reply.code(404).send({ error: 'Device not found' });
-            const { passcode, ...patch } = request.body;
+            const { passcode, coordinates, ...patch } = request.body;
             devices[index] = { ...devices[index]!, ...patch, udid: request.params.udid };
             // passcode: a value sets it, an empty string clears it, omitting it leaves it untouched
             if (passcode === '') delete devices[index]!.passcode;
             else if (passcode !== undefined) devices[index]!.passcode = passcode;
+            // coordinates: the object replaces the whole override map; {} clears it
+            if (coordinates !== undefined) {
+                try {
+                    const overrides = validateCoordinateOverrides(coordinates, devices[index]!.coordinateProfile);
+                    if (Object.keys(overrides).length === 0) delete devices[index]!.coordinates;
+                    else devices[index]!.coordinates = overrides;
+                } catch (error) {
+                    return reply.code(400).send({ error: errorMessage(error) });
+                }
+            }
             await saveRegisteredDevices(devices);
             remote.forget(request.params.udid);
             return redactDevice(devices[index]!);
         },
     );
+    app.get<{ Params: { udid: string } }>('/api/devices/:udid/coordinates', async (request, reply) => {
+        const device = (await loadRegisteredDevices()).find(({ udid }) => udid === request.params.udid);
+        if (!device) return reply.code(404).send({ error: 'Device not found' });
+        const base = coordinatesForProfile(device.coordinateProfile).tiktok;
+        const effective = resolveDeviceCoordinates(device.coordinateProfile, device.coordinates).tiktok;
+        return {
+            profile: device.coordinateProfile ?? 'iphone8',
+            screenSize: coordinatesForProfile(device.coordinateProfile).screenSize,
+            points: CALIBRATABLE_POINTS.map((name) => ({
+                name, label: POINT_LABELS[name],
+                default: base[name], current: effective[name],
+                overridden: Boolean(device.coordinates?.[name]),
+            })),
+        };
+    });
     app.delete<{ Params: { udid: string } }>('/api/devices/:udid', async (request, reply) => {
         const devices = await loadRegisteredDevices();
         const index = devices.findIndex(({ udid }) => udid === request.params.udid);

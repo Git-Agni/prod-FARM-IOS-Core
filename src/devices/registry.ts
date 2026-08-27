@@ -1,7 +1,7 @@
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { coordinatesForProfile, type DeviceProfileName } from './coordinates.js';
+import { coordinatesForProfile, validateCoordinateOverrides, type DeviceCoordinateOverrides, type DeviceProfileName } from './coordinates.js';
 import type { JsonObject } from '../types.js';
 
 export interface RegisteredDevice {
@@ -12,6 +12,8 @@ export interface RegisteredDevice {
     mjpegLocalPort?: number;
     /** Device unlock passcode. Lives here (devices.json is 0600 and git-ignored), never in an API response. */
     passcode?: string;
+    /** Per-device single-tap coordinate overrides (dashboard calibration). */
+    coordinates?: DeviceCoordinateOverrides;
     pluginData: Record<string, JsonObject>;
 }
 
@@ -52,6 +54,10 @@ export async function saveRegisteredDevices(devices: RegisteredDevice[], registr
         coordinatesForProfile(device.coordinateProfile);
         if (device.passcode !== undefined && !PASSCODE_PATTERN.test(device.passcode)) {
             throw new Error(`Device ${device.udid} passcode must contain at least four digits`);
+        }
+        if (device.coordinates !== undefined) {
+            device.coordinates = validateCoordinateOverrides(device.coordinates, device.coordinateProfile);
+            if (Object.keys(device.coordinates).length === 0) delete device.coordinates;
         }
         if (unique.has(device.udid)) throw new Error(`Device ${device.udid} is already registered`);
         unique.add(device.udid);

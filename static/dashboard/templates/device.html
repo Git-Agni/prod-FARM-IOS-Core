@@ -100,6 +100,11 @@
                     </section>
                 </section>
                 <section class="panel">
+                    <div><span class="eyebrow">This device</span><h2>Touch points</h2></div>
+                    <p>Re-point the TikTok tap targets for this device's layout by clicking on the live screen.</p>
+                    <div class="inline-actions"><button id="open-calibrate" class="button secondary" type="button">Calibrate touch points</button></div>
+                </section>
+                <section class="panel">
                     <div><span class="eyebrow">This device</span><h2>Remove device</h2></div>
                     <p>Cancels this device's schedules and forgets its configuration. WebDriverAgent stays installed on the phone.</p>
                     <div class="inline-actions"><button id="remove-device" class="button secondary" type="button">Remove device</button><span id="remove-result" class="run-meta" aria-live="polite"></span></div>
@@ -107,6 +112,26 @@
             </div>
         </div>
     </main>
+    <dialog id="calibrate-dialog">
+        <form id="calibrate-form" class="modal calibrate-modal" method="dialog">
+            <div class="modal-head">
+                <div><span class="eyebrow">This device</span><h2>Calibrate touch points</h2></div>
+                <button id="close-calibrate" class="icon-button" type="button">Close</button>
+            </div>
+            <p>Pick a target, then click where it belongs on the live screen. Untouched targets use the <strong id="cal-profile">…</strong> profile.</p>
+            <div class="calibrate-body">
+                <div class="calibrate-screen"><img id="cal-screen" alt="Live screen"><div id="cal-markers" class="cal-markers" aria-hidden="true"></div></div>
+                <ul id="cal-points" class="cal-points"></ul>
+            </div>
+            <p id="cal-status" class="run-meta" aria-live="polite"></p>
+            <div class="form-actions">
+                <button id="cal-reset-all" class="button secondary" type="button">Reset all</button>
+                <span class="spacer"></span>
+                <button id="cal-cancel" class="button secondary" type="button">Cancel</button>
+                <button id="cal-save" class="button primary" type="button">Save</button>
+            </div>
+        </form>
+    </dialog>
     <dialog id="doomscroll-dialog">
         <form id="doomscroll-form" class="modal" hx-post="/api/devices/__DEVICE_UDID__/fragments/scroll-run"
             hx-target="#device-activity" hx-swap="outerHTML" hx-disabled-elt="button">

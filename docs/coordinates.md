@@ -73,14 +73,38 @@ Open the device's live screen in the dashboard, or
 firing single taps with `POST /api/devices/:udid/remote/action`
 (`{ "type": "tap", "x": …, "y": … }`) and watching the screen.
 
-## Why it's not user‑configurable (yet)
+## Per‑device overrides (dashboard calibration)
+
+The **15 single‑tap TikTok targets** — `profileTab`, `homeTab`,
+`accountSwitcher`, `create`, `upload`, `selectMultiple`, `useLayout`,
+`pickerNext`, `editorNext`, `caption`, `keyboardBack`, `draft`, `finish`,
+`like`, `save` — can be re‑pointed per device without a code change, from the
+device page → **Calibrate touch points**: pick a target, click where it belongs
+on the live screen, Save. Reset one point or all of them back to the profile.
+
+Overrides are stored on the `devices.json` entry and merge over the selected
+profile at runtime (`resolveDeviceCoordinates`):
+
+```jsonc
+{ "name": "Phone 12", "coordinateProfile": "iphone8",
+  "coordinates": { "like": { "x": 350, "y": 320 }, "create": { "x": 190, "y": 642 } } }
+```
+
+API: `GET /api/devices/:udid/coordinates` (effective values + which are
+overridden), `PATCH /api/devices/:udid` with `{ "coordinates": { … } }` — the
+object **replaces** the whole override map; `{}` clears it. Points are validated
+against the profile's screen bounds.
+
+The `picker` grid, `swipe` vector and `passcodeKeypad` are not single points and
+stay profile‑level — add a new profile for a materially different layout.
+
+## Why adding a whole profile still needs code
 
 The profile map is a typed `const` so the compiler can guarantee every field
 exists and every `devices.json` reference resolves. A JSON/env‑loaded profile
-source (validated at startup, same shape) would be a reasonable contribution —
-it would let operators add layouts without a code change. Until then, treat new
-device geometries as a small PR against `src/devices/coordinates.ts` +
-`src/tiktok/coordinates.ts`.
+source (validated at startup, same shape) would be a reasonable contribution.
+Until then, treat new device geometries as a small PR against
+`src/devices/coordinates.ts` + `src/tiktok/coordinates.ts`.
 
 A plugin **cannot** currently register its own coordinate profiles; the
 `tiktok` block is specific to the built‑in plugin. A third‑party plugin that

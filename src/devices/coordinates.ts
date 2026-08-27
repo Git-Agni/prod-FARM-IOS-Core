@@ -129,3 +129,64 @@ export function coordinatesForProfile(profile: string = DEFAULT_COORDINATE_PROFI
     }
     return DEVICE_COORDINATES[profile as CoordinateProfile];
 }
+
+// The single-tap TikTok targets an operator can re-point from the dashboard.
+// (picker grid, swipe vector and the passcode keypad are not single points and
+// stay profile-level for now.)
+export const CALIBRATABLE_POINTS = [
+    'profileTab', 'homeTab', 'accountSwitcher', 'create', 'upload', 'selectMultiple', 'useLayout',
+    'pickerNext', 'editorNext', 'caption', 'keyboardBack', 'draft', 'finish', 'like', 'save',
+] as const;
+
+export type CalibratablePoint = typeof CALIBRATABLE_POINTS[number];
+
+export const POINT_LABELS: Record<CalibratablePoint, string> = {
+    profileTab: 'Profile tab', homeTab: 'Home tab', accountSwitcher: 'Account switcher',
+    create: 'Create (+)', upload: 'Upload', selectMultiple: 'Select multiple', useLayout: 'Use layout',
+    pickerNext: 'Media picker · Next', editorNext: 'Editor · Next', caption: 'Caption field',
+    keyboardBack: 'Keyboard · back', draft: 'Save draft', finish: 'Post / Finish',
+    like: 'Like button', save: 'Save/bookmark button',
+};
+
+/** Per-device overrides for the calibratable points, stored on the devices.json entry. */
+export type DeviceCoordinateOverrides = Partial<Record<CalibratablePoint, Point>>;
+
+/** The profile's coordinates with any per-device single-tap overrides applied. */
+export function resolveDeviceCoordinates(
+    profile: string | undefined,
+    overrides: DeviceCoordinateOverrides | undefined,
+): DeviceCoordinates {
+    const base = coordinatesForProfile(profile);
+    if (!overrides) return base;
+    const tiktok = { ...base.tiktok };
+    for (const name of CALIBRATABLE_POINTS) {
+        const point = overrides[name];
+        if (point && Number.isFinite(point.x) && Number.isFinite(point.y)) {
+            tiktok[name] = { x: Math.round(point.x), y: Math.round(point.y) };
+        }
+    }
+    return { ...base, tiktok };
+}
+
+/** Validate an override map: known keys only, integer points within the profile's screen. */
+export function validateCoordinateOverrides(
+    value: unknown,
+    profile: string | undefined,
+): DeviceCoordinateOverrides {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('coordinates must be an object');
+    const { width, height } = coordinatesForProfile(profile).screenSize;
+    const result: DeviceCoordinateOverrides = {};
+    for (const [key, point] of Object.entries(value as Record<string, unknown>)) {
+        if (!CALIBRATABLE_POINTS.includes(key as CalibratablePoint)) throw new Error(`Unknown calibratable point "${key}"`);
+        if (!point || typeof point !== 'object') throw new Error(`${key} must be a {x, y} point`);
+        const { x, y } = point as { x: unknown; y: unknown };
+        if (typeof x !== 'number' || typeof y !== 'number' || !Number.isFinite(x) || !Number.isFinite(y)) {
+            throw new Error(`${key} x and y must be numbers`);
+        }
+        if (x < 0 || y < 0 || x > width || y > height) {
+            throw new Error(`${key} (${x}, ${y}) is outside the ${width}×${height} screen`);
+        }
+        result[key as CalibratablePoint] = { x: Math.round(x), y: Math.round(y) };
+    }
+    return result;
+}

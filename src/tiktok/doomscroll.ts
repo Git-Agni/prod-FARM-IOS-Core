@@ -1,7 +1,6 @@
 import { remote, type Browser } from 'webdriverio';
 
-import { loadRegisteredDevices, WdaRemoteControl } from '@git-agni/phone-farm-core';
-import { coordinatesForProfile } from './coordinates.js';
+import { loadRegisteredDevices, resolveDeviceCoordinates, WdaRemoteControl } from '@git-agni/phone-farm-core';
 import { coordinateProfile, registeredAccounts } from './runtime-settings.js';
 import { switchTikTokAccount, tapCoordinate } from './actions.js';
 import { detectEngagementControls } from './engagement-controls.js';
@@ -58,7 +57,7 @@ const likeEnabled = booleanEnv('DOOMSCROLL_LIKE_ENABLED', true);
 const saveEnabled = booleanEnv('DOOMSCROLL_SAVE_ENABLED', true);
 const switchAccountName = process.env.TIKTOK_SWITCH_ACCOUNT?.trim() || undefined;
 const registeredDevice = (await loadRegisteredDevices()).find((device) => device.udid === udid);
-const coordinates = coordinatesForProfile(coordinateProfile(registeredDevice));
+const coordinates = resolveDeviceCoordinates(coordinateProfile(registeredDevice), registeredDevice?.coordinates);
 const tiktokCoordinates = coordinates.tiktok;
 const accountSwitchCoords = {
     profileTabX: tiktokCoordinates.profileTab.x,

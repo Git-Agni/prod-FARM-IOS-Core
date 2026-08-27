@@ -162,6 +162,24 @@ fieldset { border: 0; padding: 0; margin: 0; }
 .publish-confirm.visible { display: block; }
 .publish-confirm label { margin: 0; font-weight: 500; }
 .form-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 18px; }
+.form-actions .spacer { flex: 1; }
+
+dialog#calibrate-dialog { width: min(760px, calc(100% - 28px)); }
+.calibrate-body { display: flex; gap: 18px; margin-top: 12px; }
+.calibrate-screen { position: relative; flex: 0 0 220px; align-self: flex-start; }
+.calibrate-screen img { display: block; width: 100%; border-radius: 12px; border: 1px solid var(--border-strong); background: #05070a; cursor: crosshair; }
+.cal-markers { position: absolute; inset: 0; pointer-events: none; }
+.cal-markers .m { position: absolute; width: 11px; height: 11px; margin: -6px 0 0 -6px; border-radius: 50%; border: 2px solid #fff; background: rgb(140 155 170 / 65%); box-shadow: 0 0 0 1px rgb(0 0 0 / 45%); }
+.cal-markers .m.overridden { background: var(--accent); }
+.cal-markers .m.armed { width: 16px; height: 16px; margin: -9px 0 0 -9px; background: #ffd45e; }
+.cal-points { list-style: none; margin: 0; padding: 0; flex: 1; display: flex; flex-direction: column; gap: 4px; max-height: 62dvh; overflow-y: auto; }
+.cal-point { display: flex; align-items: center; gap: 8px; }
+.cal-point .cal-pick { flex: 1; min-height: 32px; text-align: left; font-size: 13px; font-weight: 600; color: var(--text); background: #171d26; border: 1px solid var(--border); border-radius: 7px; padding: 0 10px; cursor: pointer; }
+.cal-point.armed .cal-pick { border-color: #ffd45e; color: #ffd45e; }
+.cal-point .cal-xy { font-size: 12px; font-variant-numeric: tabular-nums; color: var(--muted); min-width: 58px; text-align: right; }
+.cal-point .cal-reset { min-height: 28px; padding: 0 8px; font-size: 13px; color: var(--muted); background: none; border: 1px solid var(--border); border-radius: 7px; cursor: pointer; }
+.cal-point:not(.overridden) .cal-reset { visibility: hidden; }
+@media (max-width: 30rem) { .calibrate-body { flex-direction: column; } .calibrate-screen { flex-basis: auto; width: 200px; } }
 #post-result { max-height: 150px; overflow: auto; color: #aeb8c5; font: 11px/1.45 ui-monospace, monospace; white-space: pre-wrap; }
 .schedule-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 8px 0 14px; }
 .schedule-fields .field label { margin: 0 0 6px; }

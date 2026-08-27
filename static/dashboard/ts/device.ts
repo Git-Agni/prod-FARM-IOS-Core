@@ -132,6 +132,17 @@ const elements = {
     passcodeClear: element<HTMLButtonElement>('#passcode-clear'),
     passcodeState: element<HTMLElement>('#passcode-state'),
     passcodeResult: element<HTMLElement>('#passcode-result'),
+    openCalibrate: element<HTMLButtonElement>('#open-calibrate'),
+    calibrateDialog: element<HTMLDialogElement>('#calibrate-dialog'),
+    closeCalibrate: element<HTMLButtonElement>('#close-calibrate'),
+    calScreen: element<HTMLImageElement>('#cal-screen'),
+    calMarkers: element<HTMLElement>('#cal-markers'),
+    calPoints: element<HTMLElement>('#cal-points'),
+    calStatus: element<HTMLElement>('#cal-status'),
+    calProfile: element<HTMLElement>('#cal-profile'),
+    calResetAll: element<HTMLButtonElement>('#cal-reset-all'),
+    calCancel: element<HTMLButtonElement>('#cal-cancel'),
+    calSave: element<HTMLButtonElement>('#cal-save'),
     removeDevice: element<HTMLButtonElement>('#remove-device'),
     removeResult: element<HTMLElement>('#remove-result'),
 };
@@ -676,6 +687,121 @@ elements.accountsForm.addEventListener('submit', async (event) => {
         elements.accountsResult.textContent = result.accounts.length ? 'Accounts saved.' : 'Account switching is optional.';
     } catch (error) {
         elements.accountsResult.textContent = errorMessage(error);
+    }
+});
+
+interface CalPoint { name: string; label: string; default: Point; current: Point; overridden: boolean }
+
+const cal = {
+    screen: undefined as { width: number; height: number } | undefined,
+    points: [] as CalPoint[],
+    overrides: {} as Record<string, { x: number; y: number }>,
+    armed: undefined as string | undefined,
+};
+
+function calValue(name: string): { x: number; y: number } {
+    const point = cal.points.find((entry) => entry.name === name)!;
+    return cal.overrides[name] ?? point.default;
+}
+
+function renderCalPoints(): void {
+    elements.calPoints.replaceChildren(...cal.points.map((point) => {
+        const value = calValue(point.name);
+        const overridden = point.name in cal.overrides;
+        const li = document.createElement('li');
+        li.className = `cal-point${overridden ? ' overridden' : ''}${cal.armed === point.name ? ' armed' : ''}`;
+        const pick = document.createElement('button');
+        pick.type = 'button'; pick.className = 'cal-pick';
+        pick.textContent = cal.armed === point.name ? `${point.label} — click the screen` : point.label;
+        pick.addEventListener('click', () => { cal.armed = cal.armed === point.name ? undefined : point.name; renderCal(); });
+        const xy = document.createElement('span');
+        xy.className = 'cal-xy'; xy.textContent = `${value.x}, ${value.y}`;
+        const reset = document.createElement('button');
+        reset.type = 'button'; reset.className = 'cal-reset'; reset.title = 'Reset to profile'; reset.textContent = '↺';
+        reset.addEventListener('click', () => { delete cal.overrides[point.name]; renderCal(); });
+        li.append(pick, xy, reset);
+        return li;
+    }));
+}
+
+function renderCalMarkers(): void {
+    if (!cal.screen) return;
+    elements.calMarkers.replaceChildren(...cal.points.map((point) => {
+        const value = calValue(point.name);
+        const marker = document.createElement('span');
+        marker.className = `m${point.name in cal.overrides ? ' overridden' : ''}${cal.armed === point.name ? ' armed' : ''}`;
+        marker.style.left = `${(value.x / cal.screen!.width) * 100}%`;
+        marker.style.top = `${(value.y / cal.screen!.height) * 100}%`;
+        marker.title = point.label;
+        return marker;
+    }));
+}
+
+function renderCal(): void {
+    renderCalPoints();
+    renderCalMarkers();
+}
+
+async function openCalibrate(): Promise<void> {
+    elements.calStatus.textContent = 'Loading…';
+    elements.calibrateDialog.showModal();
+    try {
+        const data = await jsonRequest<{ profile: string; screenSize: { width: number; height: number }; points: CalPoint[] }>(
+            `/api/devices/${encodeURIComponent(udid)}/coordinates`,
+        );
+        cal.screen = data.screenSize;
+        cal.points = data.points;
+        cal.overrides = {};
+        for (const point of data.points) if (point.overridden) cal.overrides[point.name] = point.current;
+        cal.armed = undefined;
+        elements.calProfile.textContent = data.profile;
+        elements.calScreen.src = `/api/devices/${encodeURIComponent(udid)}/remote/stream?t=${Date.now()}`;
+        elements.calStatus.textContent = '';
+        renderCal();
+    } catch (error) {
+        elements.calStatus.textContent = errorMessage(error);
+    }
+}
+
+function closeCalibrate(): void {
+    elements.calScreen.src = '';
+    elements.calibrateDialog.close();
+}
+
+elements.openCalibrate.addEventListener('click', () => void openCalibrate());
+elements.closeCalibrate.addEventListener('click', closeCalibrate);
+elements.calCancel.addEventListener('click', closeCalibrate);
+elements.calResetAll.addEventListener('click', () => {
+    if (!confirm('Reset all touch points to the profile defaults?')) return;
+    cal.overrides = {}; cal.armed = undefined; renderCal();
+});
+elements.calScreen.addEventListener('click', (event) => {
+    if (!cal.armed || !cal.screen) return;
+    const rect = elements.calScreen.getBoundingClientRect();
+    cal.overrides[cal.armed] = {
+        x: Math.round((event.clientX - rect.left) * cal.screen.width / rect.width),
+        y: Math.round((event.clientY - rect.top) * cal.screen.height / rect.height),
+    };
+    cal.armed = undefined;
+    renderCal();
+});
+elements.calSave.addEventListener('click', async () => {
+    elements.calSave.disabled = true;
+    elements.calStatus.textContent = 'Saving…';
+    try {
+        await jsonRequest(`/api/devices/${encodeURIComponent(udid)}`, {
+            method: 'PATCH',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ coordinates: cal.overrides }),
+        });
+        const count = Object.keys(cal.overrides).length;
+        elements.calStatus.textContent = count ? `Saved ${count} override${count === 1 ? '' : 's'}.` : 'Cleared all overrides.';
+        for (const point of cal.points) point.overridden = point.name in cal.overrides;
+        renderCal();
+    } catch (error) {
+        elements.calStatus.textContent = errorMessage(error);
+    } finally {
+        elements.calSave.disabled = false;
     }
 });
 

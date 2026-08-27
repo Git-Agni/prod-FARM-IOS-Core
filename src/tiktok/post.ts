@@ -2,9 +2,9 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { remote, type Browser } from 'webdriverio';
 
-import { loadRegisteredDevices, WdaRemoteControl } from '@git-agni/phone-farm-core';
+import { loadRegisteredDevices, resolveDeviceCoordinates, WdaRemoteControl } from '@git-agni/phone-farm-core';
 import type { PostManifest } from './post-manifest.js';
-import { coordinatesForProfile, type TikTokCoordinates } from './coordinates.js';
+import { type TikTokCoordinates } from './coordinates.js';
 import { coordinateProfile, registeredAccounts } from './runtime-settings.js';
 import { switchTikTokAccount, tapCoordinate } from './actions.js';
 import { recentPickerTargets } from './post-layout.js';
@@ -171,7 +171,7 @@ const manifest = JSON.parse(await readFile(path.resolve(manifestPath), 'utf8')) 
 
 const switchAccountName = manifest.account?.trim() || undefined;
 const registeredDevice = (await loadRegisteredDevices()).find((device) => device.udid === manifest.device.udid);
-const coordinates = coordinatesForProfile(coordinateProfile(registeredDevice));
+const coordinates = resolveDeviceCoordinates(coordinateProfile(registeredDevice), registeredDevice?.coordinates);
 const tiktokCoordinates = coordinates.tiktok;
 const accountSwitchCoords = {
     profileTabX: tiktokCoordinates.profileTab.x,
