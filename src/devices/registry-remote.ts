@@ -6,6 +6,11 @@ import { passcodeForDevice } from './secrets.js';
 export class RegistryWdaRemoteControl implements RemoteControl {
     private readonly controls = new Map<string, WdaRemoteControl>();
 
+    /** Forget the cached client so the next call rebuilds it from devices.json (passcode, ports, profile). */
+    forget(udid: string): void {
+        this.controls.delete(udid);
+    }
+
     async control(udid: string): Promise<WdaRemoteControl> {
         const cached = this.controls.get(udid);
         if (cached) return cached;

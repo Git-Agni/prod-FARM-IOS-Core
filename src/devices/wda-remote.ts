@@ -76,6 +76,8 @@ export interface RemoteControl {
     getMjpegStream(udid: string): Promise<Response>;
     performAction(udid: string, action: RemoteAction): Promise<void>;
     isLocked(udid: string): Promise<boolean>;
+    /** Drop any cached client for this device so its next use re-reads devices.json. */
+    forget?(udid: string): void;
 }
 
 export class RemoteDeviceError extends Error {}

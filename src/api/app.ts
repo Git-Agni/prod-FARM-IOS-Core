@@ -241,6 +241,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
             if (passcode === '') delete devices[index]!.passcode;
             else if (passcode !== undefined) devices[index]!.passcode = passcode;
             await saveRegisteredDevices(devices);
+            remote.forget(request.params.udid);
             return redactDevice(devices[index]!);
         },
     );
@@ -258,6 +259,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         }
         devices.splice(index, 1);
         await saveRegisteredDevices(devices);
+        remote.forget(request.params.udid);
         return reply.code(204).send();
     });
     app.post<{ Params: { udid: string } }>('/api/devices/:udid/checks', async (request, reply) => {
@@ -325,6 +327,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         if (await options.scheduler.activeExecution(request.params.udid)) {
             return reply.code(409).send({ error: 'Cannot reconnect while automation is running' });
         }
+        remote.forget(request.params.udid);
         return reply.code(202).send({ ok: true, message: 'The shared WDA supervisor will reconnect automatically' });
     });
 
