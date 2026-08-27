@@ -17,7 +17,7 @@ scheduler that runs versioned automation tasks (a TikTok plugin ships built‑in
 ## 1. Install
 
 ```sh
-git clone https://github.com/Git-Agni/prod-FARM-IOS-Core.git phone-farm
+git clone <this-repo> phone-farm
 cd phone-farm
 npm install
 npm run appium:install-driver     # installs the XCUITest driver into ./.appium2
@@ -33,15 +33,16 @@ Fill in at least:
 
 | Key | What it is |
 | --- | --- |
-| `IOS_UDID` | Target device UDID — `xcrun xctrace list devices` |
 | `IOS_PLATFORM_VERSION` | e.g. `17.5` — must match the device |
 | `XCODE_ORG_ID` | Apple Development **Team ID** (Xcode → Settings → Accounts) |
 | `WDA_BUNDLE_ID` | A bundle id you control, e.g. `com.yourorg.WebDriverAgentRunner` |
 | `DATABASE_URL` | `postgresql://phone_farm:PASSWORD@127.0.0.1:5432/phone_farm` |
 | `POSTGRES_PASSWORD` | Needed by `docker compose` if you use the bundled database |
 
-Device passcodes are **not** put in `.env` in plain sight for multi‑device
-setups — see [devices & secrets](#devices-and-secrets) below.
+You don't need to put a device UDID in `.env`. The CLI scripts and the
+dashboard's registration wizard resolve the target device on their own; pass
+`--udid <udid>` (or set `IOS_UDID`) only to pin a specific one. Device
+passcodes stay out of `.env` too — see [devices & secrets](#devices-and-secrets).
 
 ## 3. Database
 
@@ -53,12 +54,14 @@ npm run db:migrate   # apply scheduler + pg-boss schema
 ## 4. Build WebDriverAgent
 
 ```sh
-npm run wda:prepare
+npm run wda:prepare                 # the connected / sole registered device
+npm run wda:prepare -- --udid <udid> # a specific device
+npm run wda:prepare -- --all        # every device in devices.json
 ```
 
 This patches the Appium‑bundled `appium-webdriveragent`, then runs
-`xcodebuild build-for-testing` signed with your team. It ends with
-`** TEST BUILD SUCCEEDED **`.
+`xcodebuild build-for-testing` signed with your team, once per target device.
+It ends with `** TEST BUILD SUCCEEDED **`.
 
 > **Run this from a graphical login session** (Terminal.app, or a remote
 > desktop), not a bare SSH shell. Code signing needs the login keychain
@@ -69,8 +72,10 @@ This patches the Appium‑bundled `appium-webdriveragent`, then runs
 
 ## 5. Run the four processes
 
-Each is long‑lived. In development, four terminals; in production, four
-`launchd`/systemd units (the private distribution ships `ops/install-launchagents.sh`).
+Each is long‑lived. In development that's four terminals; for an always‑on host,
+wrap each in a `launchd` agent (macOS) or systemd unit with your own process
+manager — they need no arguments, just the repo as the working directory and
+`.env` on the path.
 
 ```sh
 npm run appium         # Appium 3 + XCUITest on :4725
@@ -93,8 +98,10 @@ From a device page you can run the built‑in TikTok tasks (`doomscroll`,
 On a loopback bind (`WEB_HOST=127.0.0.1`) auth is optional. Before binding to
 anything else, set `PHONE_FARM_AUTH_PLUGIN` to an ESM module exporting an
 `AuthProvider`; startup **deliberately fails** otherwise (`assertSafeBind`).
-The private distribution provides a Supabase provider; you can write your own
-against the `AuthProvider` interface in `src/plugin.ts`.
+Write the provider against the `AuthProvider` interface in `src/plugin.ts` —
+it hands you the Fastify instance to register login routes on, an
+`authenticate(request)` hook, and `isPublicPath()` for the unauthenticated
+allow‑list.
 
 ## Devices and secrets
 

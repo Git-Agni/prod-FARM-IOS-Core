@@ -26,7 +26,7 @@ npm run db:migrate
 npm run wda:prepare
 ```
 
-Run these long-lived processes (the private distribution installs them as LaunchAgents):
+Run these long-lived processes (wrap each in a `launchd` agent or systemd unit for an always-on host):
 
 ```sh
 npm run appium
