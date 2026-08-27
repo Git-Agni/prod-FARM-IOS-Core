@@ -9,7 +9,16 @@
 </head>
 <body>
     <main class="shell device-shell" data-device-udid="__DEVICE_UDID__">
-        <nav class="breadcrumb"><a href="/">Devices</a><span>/</span><a href="/tasks">Tasks</a><span>/</span><span>Device workspace</span>__AUTH_NAV__</nav>
+        <nav class="breadcrumb">
+            <a href="/">Devices</a><span>/</span><a href="/tasks">Tasks</a><span>/</span><span>Device workspace</span>
+            <span class="nav-actions">
+                <button id="open-accounts" class="button secondary" type="button">Accounts</button>
+                <button id="open-passcode" class="button secondary" type="button">Passcode</button>
+                <button id="open-calibrate" class="button secondary" type="button">Touch points</button>
+                <button id="open-remove" class="button secondary" type="button">Remove device</button>
+                __AUTH_NAV__
+            </span>
+        </nav>
         <section id="device-summary" class="device-summary loading-card"
             hx-get="/api/devices/__DEVICE_UDID__/fragments/summary" hx-trigger="load" hx-swap="outerHTML">
             <span class="spinner" aria-hidden="true"></span>Loading device details…
@@ -69,28 +78,6 @@
                     <h3>Recent runs</h3>
                     <div id="device-executions" class="task-list loading-card"><span class="spinner" aria-hidden="true"></span>Loading task history…</div>
                 </section>
-                <section class="panel accounts-card">
-                    <div><span class="eyebrow">TikTok</span><h2>Accounts</h2></div>
-                    <p>Add handles that are already signed in on this device. Leave empty to use only the currently active account.</p>
-                    <form id="accounts-form" class="inline-form">
-                        <label for="device-accounts">Account handles</label>
-                        <input id="device-accounts" type="text" value="__TIKTOK_ACCOUNTS_VALUE__" placeholder="@account_one, @account_two">
-                        <div class="inline-actions"><button class="button secondary" type="submit">Save accounts</button><span id="accounts-result" class="run-meta" aria-live="polite"></span></div>
-                    </form>
-                </section>
-                <section class="panel">
-                    <div><span class="eyebrow">This device</span><h2>Unlock passcode</h2></div>
-                    <p>Used to wake and unlock the phone before automation. Kept in <code>devices.json</code> and never shown again.</p>
-                    <form id="passcode-form" class="inline-form" autocomplete="off">
-                        <label for="device-passcode">Passcode <span id="passcode-state" class="run-meta">__DEVICE_HASPASSCODE__</span></label>
-                        <input id="device-passcode" type="password" inputmode="numeric" autocomplete="new-password" placeholder="4+ digits">
-                        <div class="inline-actions">
-                            <button class="button secondary" type="submit">Save passcode</button>
-                            <button id="passcode-clear" class="button secondary" type="button">Clear</button>
-                            <span id="passcode-result" class="run-meta" aria-live="polite"></span>
-                        </div>
-                    </form>
-                </section>
                 <section class="panel activity-card">
                     <div><span class="eyebrow">Device activity</span><h2>Automation log</h2></div>
                     <p>Live output from the latest doomscroll or post automation on this device.</p>
@@ -99,19 +86,50 @@
                         <span class="spinner" aria-hidden="true"></span>Loading recent activity…
                     </section>
                 </section>
-                <section class="panel">
-                    <div><span class="eyebrow">This device</span><h2>Touch points</h2></div>
-                    <p>Re-point the TikTok tap targets for this device's layout by clicking on the live screen.</p>
-                    <div class="inline-actions"><button id="open-calibrate" class="button secondary" type="button">Calibrate touch points</button></div>
-                </section>
-                <section class="panel">
-                    <div><span class="eyebrow">This device</span><h2>Remove device</h2></div>
-                    <p>Cancels this device's schedules and forgets its configuration. WebDriverAgent stays installed on the phone.</p>
-                    <div class="inline-actions"><button id="remove-device" class="button secondary" type="button">Remove device</button><span id="remove-result" class="run-meta" aria-live="polite"></span></div>
-                </section>
             </div>
         </div>
     </main>
+    <dialog id="accounts-dialog">
+        <form id="accounts-form" class="modal">
+            <div class="modal-head">
+                <div><span class="eyebrow">TikTok</span><h2>Accounts</h2></div>
+                <button id="close-accounts" class="icon-button" type="button">Close</button>
+            </div>
+            <p>Handles already signed in on this device. Leave empty to use only the currently active account.</p>
+            <label for="device-accounts">Account handles</label>
+            <input id="device-accounts" type="text" value="__TIKTOK_ACCOUNTS_VALUE__" placeholder="@account_one, @account_two">
+            <div class="form-actions"><span id="accounts-result" class="run-meta" aria-live="polite"></span><span class="spacer"></span><button class="button primary" type="submit">Save accounts</button></div>
+        </form>
+    </dialog>
+    <dialog id="passcode-dialog">
+        <form id="passcode-form" class="modal" autocomplete="off">
+            <div class="modal-head">
+                <div><span class="eyebrow">This device</span><h2>Unlock passcode</h2></div>
+                <button id="close-passcode" class="icon-button" type="button">Close</button>
+            </div>
+            <p>Used to wake and unlock the phone before automation. Kept in <code>devices.json</code> and never shown again.</p>
+            <label for="device-passcode">Passcode <span id="passcode-state" class="run-meta">__DEVICE_HASPASSCODE__</span></label>
+            <input id="device-passcode" type="password" inputmode="numeric" autocomplete="new-password" placeholder="4+ digits">
+            <div class="form-actions">
+                <span id="passcode-result" class="run-meta" aria-live="polite"></span><span class="spacer"></span>
+                <button id="passcode-clear" class="button secondary" type="button">Clear</button>
+                <button class="button primary" type="submit">Save passcode</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="remove-dialog">
+        <form class="modal" method="dialog">
+            <div class="modal-head">
+                <div><span class="eyebrow">This device</span><h2>Remove device</h2></div>
+                <button id="close-remove" class="icon-button" type="button">Close</button>
+            </div>
+            <p>This cancels every schedule for the device and forgets its configuration (passcode, accounts, touch points). WebDriverAgent stays installed on the phone.</p>
+            <div class="form-actions">
+                <span id="remove-result" class="run-meta" aria-live="polite"></span><span class="spacer"></span>
+                <button id="remove-device" class="button danger" type="button">Remove device</button>
+            </div>
+        </form>
+    </dialog>
     <dialog id="calibrate-dialog">
         <form id="calibrate-form" class="modal calibrate-modal" method="dialog">
             <div class="modal-head">

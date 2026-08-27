@@ -83,10 +83,12 @@ button:disabled { cursor: wait; opacity: .55; }
 .spinner { width: 17px; height: 17px; border: 2px solid #465164; border-top-color: var(--text); border-radius: 50%; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .device-shell { padding-top: 26px; }
-.breadcrumb { display: flex; align-items: center; gap: 9px; margin-bottom: 28px; color: #778294; font-size: 13px; }
+.breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-bottom: 28px; color: #778294; font-size: 13px; }
 .breadcrumb a { color: #c7ced8; text-decoration: none; }
 .app-logout { margin-left: auto; }
-.breadcrumb .app-logout { min-height: 32px; padding: 0 12px; font-size: 12px; }
+.nav-actions { margin-left: auto; display: flex; flex-wrap: wrap; gap: 6px; }
+.nav-actions .button { min-height: 32px; padding: 0 11px; font-size: 12px; }
+.nav-actions .app-logout { margin-left: 0; }
 .device-summary { min-height: 88px; margin-bottom: 22px; padding: 20px 22px; border: 1px solid var(--border); border-radius: 15px; background: var(--panel); }
 .device-summary h1 { margin: 0 0 5px; font-size: clamp(26px, 5vw, 38px); }
 .device-summary .eyebrow { margin-bottom: 7px; }

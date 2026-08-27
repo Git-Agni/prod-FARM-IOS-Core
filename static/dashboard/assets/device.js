@@ -62,6 +62,15 @@ const elements = {
     accountsForm: element('#accounts-form'),
     deviceAccounts: element('#device-accounts'),
     accountsResult: element('#accounts-result'),
+    accountsDialog: element('#accounts-dialog'),
+    openAccounts: element('#open-accounts'),
+    closeAccounts: element('#close-accounts'),
+    passcodeDialog: element('#passcode-dialog'),
+    openPasscode: element('#open-passcode'),
+    closePasscode: element('#close-passcode'),
+    removeDialog: element('#remove-dialog'),
+    openRemove: element('#open-remove'),
+    closeRemove: element('#close-remove'),
     deviceSchedules: element('#device-schedules'),
     deviceExecutions: element('#device-executions'),
     passcodeForm: element('#passcode-form'),
@@ -727,6 +736,18 @@ function closeCalibrate() {
 elements.openCalibrate.addEventListener('click', () => void openCalibrate());
 elements.closeCalibrate.addEventListener('click', closeCalibrate);
 elements.calCancel.addEventListener('click', closeCalibrate);
+elements.openAccounts.addEventListener('click', () => elements.accountsDialog.showModal());
+elements.closeAccounts.addEventListener('click', () => elements.accountsDialog.close());
+elements.openPasscode.addEventListener('click', () => {
+    elements.passcodeResult.textContent = '';
+    elements.passcodeDialog.showModal();
+});
+elements.closePasscode.addEventListener('click', () => elements.passcodeDialog.close());
+elements.openRemove.addEventListener('click', () => {
+    elements.removeResult.textContent = '';
+    elements.removeDialog.showModal();
+});
+elements.closeRemove.addEventListener('click', () => elements.removeDialog.close());
 elements.calResetAll.addEventListener('click', () => {
     if (!confirm('Reset all touch points to the profile defaults?'))
         return;
@@ -803,8 +824,6 @@ elements.passcodeClear.addEventListener('click', () => {
     void patchPasscode('', 'Clearing…', 'Passcode cleared.');
 });
 elements.removeDevice.addEventListener('click', async () => {
-    if (!confirm("Remove this device? Its schedules will be cancelled and its configuration forgotten."))
-        return;
     elements.removeDevice.disabled = true;
     elements.removeResult.textContent = 'Removing…';
     try {

@@ -125,6 +125,15 @@ const elements = {
     accountsForm: element<HTMLFormElement>('#accounts-form'),
     deviceAccounts: element<HTMLInputElement>('#device-accounts'),
     accountsResult: element<HTMLElement>('#accounts-result'),
+    accountsDialog: element<HTMLDialogElement>('#accounts-dialog'),
+    openAccounts: element<HTMLButtonElement>('#open-accounts'),
+    closeAccounts: element<HTMLButtonElement>('#close-accounts'),
+    passcodeDialog: element<HTMLDialogElement>('#passcode-dialog'),
+    openPasscode: element<HTMLButtonElement>('#open-passcode'),
+    closePasscode: element<HTMLButtonElement>('#close-passcode'),
+    removeDialog: element<HTMLDialogElement>('#remove-dialog'),
+    openRemove: element<HTMLButtonElement>('#open-remove'),
+    closeRemove: element<HTMLButtonElement>('#close-remove'),
     deviceSchedules: element<HTMLElement>('#device-schedules'),
     deviceExecutions: element<HTMLElement>('#device-executions'),
     passcodeForm: element<HTMLFormElement>('#passcode-form'),
@@ -771,6 +780,19 @@ function closeCalibrate(): void {
 elements.openCalibrate.addEventListener('click', () => void openCalibrate());
 elements.closeCalibrate.addEventListener('click', closeCalibrate);
 elements.calCancel.addEventListener('click', closeCalibrate);
+
+elements.openAccounts.addEventListener('click', () => elements.accountsDialog.showModal());
+elements.closeAccounts.addEventListener('click', () => elements.accountsDialog.close());
+elements.openPasscode.addEventListener('click', () => {
+    elements.passcodeResult.textContent = '';
+    elements.passcodeDialog.showModal();
+});
+elements.closePasscode.addEventListener('click', () => elements.passcodeDialog.close());
+elements.openRemove.addEventListener('click', () => {
+    elements.removeResult.textContent = '';
+    elements.removeDialog.showModal();
+});
+elements.closeRemove.addEventListener('click', () => elements.removeDialog.close());
 elements.calResetAll.addEventListener('click', () => {
     if (!confirm('Reset all touch points to the profile defaults?')) return;
     cal.overrides = {}; cal.armed = undefined; renderCal();
@@ -842,7 +864,6 @@ elements.passcodeClear.addEventListener('click', () => {
 });
 
 elements.removeDevice.addEventListener('click', async () => {
-    if (!confirm("Remove this device? Its schedules will be cancelled and its configuration forgotten.")) return;
     elements.removeDevice.disabled = true;
     elements.removeResult.textContent = 'Removing…';
     try {
