@@ -13,7 +13,7 @@ export class RegistryWdaRemoteControl implements RemoteControl {
         if (!device) return new WdaRemoteControl();
         const control = new WdaRemoteControl({
             deviceUdid: udid,
-            passcode: passcodeForDevice(udid),
+            passcode: device.passcode ?? await passcodeForDevice(udid),
             passcodeKeypadLayout: coordinatesForProfile(device.coordinateProfile).passcodeKeypad,
             wdaUrl: `http://127.0.0.1:${device.wdaLocalPort ?? Number(process.env.WDA_LOCAL_PORT ?? 8100)}`,
             mjpegUrl: `http://127.0.0.1:${device.mjpegLocalPort ?? Number(process.env.MJPEG_LOCAL_PORT ?? 9100)}`,

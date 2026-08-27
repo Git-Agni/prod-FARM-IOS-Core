@@ -115,6 +115,7 @@ Registered devices live in `devices.json` (git‑ignored):
     "wdaLocalPort": 8100,
     "mjpegLocalPort": 9100,
     "coordinateProfile": "iphone8",
+    "passcode": "123456",
     "pluginData": { "com.git-agni.tiktok": { "accounts": ["@handle"] } }
   }
 ]
@@ -123,9 +124,13 @@ Registered devices live in `devices.json` (git‑ignored):
 - `coordinateProfile` selects a compiled tap layout — see
   [coordinates.md](coordinates.md).
 - `pluginData[<pluginId>]` is per‑device plugin config (never secrets).
-- Passcodes are read from the environment: `IOS_PASSCODE_<UDID>` (UDID
-  upper‑cased, non‑alphanumerics → `_`), falling back to `IOS_PASSCODE`. Keep
-  them in `.env.devices` (git‑ignored), not `.env`.
+- `passcode` is the device unlock code, used to wake a locked phone before
+  automation. It lives here because `devices.json` is git‑ignored and written
+  `0600`. It is **never** returned by the API — `GET /api/devices` reports
+  `hasPasscode: true/false` instead. Set it in the registration wizard, with
+  `PATCH /api/devices/:udid` (`{"passcode":"…"}`, `""` clears it), or by editing
+  the file. `IOS_PASSCODE` / `IOS_PASSCODE_<UDID>` in the environment still work
+  as a deprecated fallback.
 
 ## Health & troubleshooting
 

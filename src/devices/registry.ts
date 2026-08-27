@@ -10,7 +10,17 @@ export interface RegisteredDevice {
     coordinateProfile?: DeviceProfileName;
     wdaLocalPort?: number;
     mjpegLocalPort?: number;
+    /** Device unlock passcode. Lives here (devices.json is 0600 and git-ignored), never in an API response. */
+    passcode?: string;
     pluginData: Record<string, JsonObject>;
+}
+
+export const PASSCODE_PATTERN = /^\d{4,}$/;
+
+/** A device with its passcode removed and a boolean marker in its place — safe to serialize. */
+export function redactDevice<T extends { passcode?: string }>(device: T): Omit<T, 'passcode'> & { hasPasscode: boolean } {
+    const { passcode, ...rest } = device;
+    return { ...rest, hasPasscode: Boolean(passcode) };
 }
 
 const defaultRegistryPath = path.resolve(process.env.DEVICES_CONFIG_PATH ?? 'devices.json');
@@ -40,6 +50,9 @@ export async function saveRegisteredDevices(devices: RegisteredDevice[], registr
     const unique = new Set<string>();
     for (const device of devices) {
         coordinatesForProfile(device.coordinateProfile);
+        if (device.passcode !== undefined && !PASSCODE_PATTERN.test(device.passcode)) {
+            throw new Error(`Device ${device.udid} passcode must contain at least four digits`);
+        }
         if (unique.has(device.udid)) throw new Error(`Device ${device.udid} is already registered`);
         unique.add(device.udid);
     }

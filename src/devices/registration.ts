@@ -10,7 +10,7 @@ import { switchTikTokAccount, tapCoordinate } from '../tiktok/actions.js';
 import { coordinateProfiles, coordinatesForProfile, profileForProductType, type CoordinateProfile } from './coordinates.js';
 import { discoverConnectedDevices, type Device } from './discovery.js';
 import { loadRegisteredDevices, saveRegisteredDevices, type RegisteredDevice } from './registry.js';
-import { passcodeForDevice, saveDevicePasscode } from './secrets.js';
+import { passcodeForDevice, setDevicePasscode } from './secrets.js';
 import { WdaRemoteControl } from './wda-remote.js';
 import { diagnoseWdaLaunchFailure } from './wda/diagnostics.js';
 
@@ -164,13 +164,14 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
                 };
                 if (!stored.finalized) {
                     const recommendedProfile = stored.recommendedProfile ?? profileForProductType(stored.device.productType);
+                    const hasPasscode = Boolean(await passcodeForDevice(stored.id, { allowLegacyFallback: false }));
                     const restored: RegistrationSession & { compatibleProfiles?: CoordinateProfile[] } = {
                     ...stored,
                     availableProfiles: coordinateProfiles().map(({ name, displayName, screenSize }) => ({ name, displayName, screenSize })),
                     ...(recommendedProfile ? { recommendedProfile } : {}),
                     coordinateProfile: stored.coordinateProfile ?? recommendedProfile,
                     busy: false,
-                    hasPasscode: Boolean(passcodeForDevice(stored.id, { allowLegacyFallback: false })),
+                    hasPasscode,
                     };
                     delete restored.compatibleProfiles;
                     this.sessions.set(stored.id, restored);
@@ -383,7 +384,7 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
             deviceUdid: session.device.udid,
             wdaUrl: `http://127.0.0.1:${session.wdaLocalPort}`,
             mjpegUrl: `http://127.0.0.1:${session.mjpegLocalPort}`,
-            passcode: session.passcode ?? passcodeForDevice(session.device.udid, { allowLegacyFallback: false }),
+            passcode: session.passcode ?? await passcodeForDevice(session.device.udid, { allowLegacyFallback: false }),
             passcodeKeypadLayout: coordinatesForProfile(session.coordinateProfile).passcodeKeypad,
         });
         let driver: Browser | undefined;
@@ -460,6 +461,7 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
                 coordinateProfile: session.coordinateProfile,
                 wdaLocalPort: session.wdaLocalPort,
                 mjpegLocalPort: session.mjpegLocalPort,
+                ...(session.passcode ? { passcode: session.passcode } : {}),
                 pluginData: {
                     'com.git-agni.tiktok': {
                         accounts: session.tiktokAccounts,
@@ -468,8 +470,9 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
                 },
             });
             await saveRegisteredDevices(devices);
+        } else if (session.passcode) {
+            await setDevicePasscode(session.device.udid, session.passcode);
         }
-        if (session.passcode) await saveDevicePasscode(session.device.udid, session.passcode);
         session.checks.wda = check('checking', 'Handing WDA ownership to the persistent fleet service');
         await this.stopSupervisor(session);
         if (!(await this.waitForEndpoint(`http://127.0.0.1:${session.wdaLocalPort}/status`, 30_000))) {

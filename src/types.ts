@@ -12,6 +12,7 @@ export interface DeviceIdentity {
 export interface RegisteredDevice extends DeviceIdentity {
     wdaLocalPort?: number;
     mjpegLocalPort?: number;
+    passcode?: string;
     pluginData: Record<string, JsonObject>;
 }
 

@@ -37,12 +37,12 @@ async function waitForDevice(execution: ExecutionRow, registered: RegisteredDevi
     throw new Error(`Execution window expired: ${lastProblem}`);
 }
 
-function deviceAutomation(registered: RegisteredDevice): DeviceAutomation {
+function deviceAutomation(registered: RegisteredDevice, passcode: string | undefined): DeviceAutomation {
     const udid = registered.udid;
     const remote = new WdaRemoteControl({
         deviceUdid: udid,
         wdaUrl: `http://127.0.0.1:${registered.wdaLocalPort ?? Number(process.env.WDA_LOCAL_PORT ?? 8100)}`,
-        passcode: passcodeForDevice(udid),
+        passcode,
     });
     const appRequest = async (pathname: string, bundleId: string): Promise<void> => {
         await remote.request(pathname, {
@@ -148,11 +148,12 @@ export async function executeAutomation(
     const task = { pluginId: execution.pluginId, taskType: execution.taskType, taskVersion: execution.taskVersion, payload: execution.payload };
     try {
         const definition = plugins.task(task);
+        const passcode = await passcodeForDevice(device.udid);
         const environment: NodeJS.ProcessEnv = {
             ...process.env,
             IOS_UDID: device.udid,
             WDA_URL: `http://127.0.0.1:${registered.wdaLocalPort ?? Number(process.env.WDA_LOCAL_PORT ?? 8100)}`,
-            ...(passcodeForDevice(device.udid) ? { IOS_PASSCODE: passcodeForDevice(device.udid) } : {}),
+            ...(passcode ? { IOS_PASSCODE: passcode } : {}),
         };
         const context: TaskExecutionContext = {
             executionId: execution.id,
@@ -160,7 +161,7 @@ export async function executeAutomation(
             workspaceDirectory,
             device,
             devicePluginData: registered.pluginData[execution.pluginId] ?? {},
-            automation: deviceAutomation(registered),
+            automation: deviceAutomation(registered, passcode),
             assets: await repository.executionAssets(execution),
             signal: controller.signal,
             log: (line) => repository.appendLogs(execution.id, attempt, [line]),

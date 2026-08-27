@@ -9,7 +9,7 @@ import path from 'node:path';
 import { Readable } from 'node:stream';
 
 import { discoverConnectedDevices } from '../devices/discovery.js';
-import { loadRegisteredDevices, saveRegisteredDevices, type RegisteredDevice } from '../devices/registry.js';
+import { loadRegisteredDevices, saveRegisteredDevices, redactDevice, PASSCODE_PATTERN, type RegisteredDevice } from '../devices/registry.js';
 import { RegistryWdaRemoteControl } from '../devices/registry-remote.js';
 import type {
     DeviceRegistrationManager, RegistrationAction, RegistrationUpdate,
@@ -66,7 +66,7 @@ body{font:15px system-ui,sans-serif;margin:0;background:#f6f7f9;color:#17202a}na
 async function registeredWithStatus() {
     const [registered, connected] = await Promise.all([loadRegisteredDevices(), discoverConnectedDevices()]);
     const online = new Map(connected.map((device) => [device.udid, device]));
-    return registered.map((device) => ({ ...device, connected: online.get(device.udid) ?? null }));
+    return registered.map((device) => ({ ...redactDevice(device), connected: online.get(device.udid) ?? null }));
 }
 
 export async function createApp(options: CreateAppOptions): Promise<FastifyInstance> {
@@ -170,25 +170,35 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         await options.registrations.cancel(request.params.id);
         return reply.code(204).send();
     });
-    app.post<{ Body: { name: string; udid: string; wdaLocalPort?: number; mjpegLocalPort?: number; pluginData?: Record<string, JsonObject> } }>(
+    app.post<{ Body: { name: string; udid: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; pluginData?: Record<string, JsonObject> } }>(
         '/api/devices', async (request, reply) => {
             const devices = await loadRegisteredDevices();
             if (!request.body.udid || devices.some(({ udid }) => udid === request.body.udid)) {
                 return reply.code(409).send({ error: 'A unique device UDID is required' });
             }
+            if (request.body.passcode !== undefined && !PASSCODE_PATTERN.test(request.body.passcode)) {
+                return reply.code(400).send({ error: 'Device passcode must contain at least four digits' });
+            }
             devices.push({ ...request.body, pluginData: request.body.pluginData ?? {} });
             await saveRegisteredDevices(devices);
-            return reply.code(201).send(devices.at(-1));
+            return reply.code(201).send(redactDevice(devices.at(-1)!));
         },
     );
-    app.patch<{ Params: { udid: string }; Body: { name?: string; wdaLocalPort?: number; mjpegLocalPort?: number; pluginData?: Record<string, JsonObject> } }>(
+    app.patch<{ Params: { udid: string }; Body: { name?: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; pluginData?: Record<string, JsonObject> } }>(
         '/api/devices/:udid', async (request, reply) => {
+            if (request.body.passcode !== undefined && request.body.passcode !== '' && !PASSCODE_PATTERN.test(request.body.passcode)) {
+                return reply.code(400).send({ error: 'Device passcode must contain at least four digits' });
+            }
             const devices = await loadRegisteredDevices();
             const index = devices.findIndex(({ udid }) => udid === request.params.udid);
             if (index < 0) return reply.code(404).send({ error: 'Device not found' });
-            devices[index] = { ...devices[index]!, ...request.body, udid: request.params.udid };
+            const { passcode, ...patch } = request.body;
+            devices[index] = { ...devices[index]!, ...patch, udid: request.params.udid };
+            // passcode: a value sets it, an empty string clears it, omitting it leaves it untouched
+            if (passcode === '') delete devices[index]!.passcode;
+            else if (passcode !== undefined) devices[index]!.passcode = passcode;
             await saveRegisteredDevices(devices);
-            return devices[index];
+            return redactDevice(devices[index]!);
         },
     );
     app.delete<{ Params: { udid: string } }>('/api/devices/:udid', async (request, reply) => {
