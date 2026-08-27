@@ -129,7 +129,18 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         return `<section id="device-activity" class="run-panel" hx-get="/api/devices/${encodeURIComponent(deviceUdid)}/fragments/activity" hx-trigger="every 1s" hx-swap="outerHTML"><div class="run-heading"><span class="status ${escapeHtml(execution.status)}"><span class="dot"></span>${escapeHtml(execution.status)}</span><span class="run-meta">${escapeHtml(definition.summarize(execution.payload))} · ${escapeHtml(execution.scheduledFor.toISOString())}</span></div>${message ? `<p class="run-error">${escapeHtml(message)}</p>` : ''}${stop}<pre>${detail?.logs.length ? detail.logs.map(escapeHtml).join('\n') : escapeHtml(execution.error ?? 'Waiting for worker output…')}</pre></section>`;
     };
 
-    app.get('/health', async () => ({ ok: true, plugins: options.plugins.list().map(({ id, version }) => ({ id, version })) }));
+    app.get('/health', async () => {
+        const body: Record<string, unknown> = {
+            ok: true,
+            plugins: options.plugins.list().map(({ id, version }) => ({ id, version })),
+        };
+        // Deploy tooling writes a RELEASED file (sha, subject, deployedAt) into the
+        // working directory; surface it so "what's live" is answerable over HTTP.
+        try {
+            body.release = JSON.parse(await readFile(path.resolve(process.env.PHONE_FARM_RELEASE_FILE ?? 'RELEASED'), 'utf8'));
+        } catch { /* no release marker — fine */ }
+        return body;
+    });
     app.get('/api/plugins', async () => options.plugins.list().map((plugin) => ({
         id: plugin.id, version: plugin.version, displayName: plugin.displayName,
         tasks: plugin.tasks.map(({ type, version, displayName }) => ({ type, version, displayName })),
