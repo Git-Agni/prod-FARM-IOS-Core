@@ -1,7 +1,7 @@
 import cookie from '@fastify/cookie';
 import formbody from '@fastify/formbody';
 import multipart from '@fastify/multipart';
-import Fastify, { type FastifyInstance } from 'fastify';
+import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest } from 'fastify';
 import crypto from 'node:crypto';
 import { mkdir, open, readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -74,6 +74,15 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
     await app.register(formbody);
     await app.register(cookie);
     await app.register(multipart, { limits: { fileSize: 2 * 1024 * 1024 * 1024, files: 20 } });
+
+    // Server-rendered HTML must never be cached — a stale page + fresh assets
+    // (or vice versa) breaks the dashboard after a deploy.
+    app.addHook('onSend', async (_request, reply) => {
+        const type = reply.getHeader('content-type');
+        if (typeof type === 'string' && type.includes('text/html') && !reply.hasHeader('cache-control')) {
+            reply.header('cache-control', 'no-cache');
+        }
+    });
 
     if (options.authProvider) {
         await options.authProvider.registerRoutes(app);
@@ -399,11 +408,22 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
 
     if (themed) {
         const theme = themed;
-        app.get('/assets/styles.css', async (_request, reply) => reply.type('text/css').send(theme.styles));
-        app.get('/assets/device.js', async (_request, reply) => reply.type('text/javascript').send(theme.deviceScript));
-        app.get('/assets/tasks.js', async (_request, reply) => reply.type('text/javascript').send(theme.tasksScript));
-        app.get('/assets/register-device.js', async (_request, reply) => reply.type('text/javascript').send(theme.registerDeviceScript));
-        app.get('/assets/htmx.min.js', async (_request, reply) => reply.type('text/javascript').send(theme.htmx));
+        // Serve the built assets with a content ETag and must-revalidate, so a
+        // deploy that changes device.js is picked up on the next request instead
+        // of being masked by heuristic browser caching.
+        const asset = (contentType: string, body: string) => {
+            const etag = `"${crypto.createHash('sha1').update(body).digest('base64url')}"`;
+            return async (request: FastifyRequest, reply: FastifyReply) => {
+                reply.header('cache-control', 'no-cache').header('etag', etag);
+                if (request.headers['if-none-match'] === etag) return reply.code(304).send();
+                return reply.type(contentType).send(body);
+            };
+        };
+        app.get('/assets/styles.css', asset('text/css', theme.styles));
+        app.get('/assets/device.js', asset('text/javascript', theme.deviceScript));
+        app.get('/assets/tasks.js', asset('text/javascript', theme.tasksScript));
+        app.get('/assets/register-device.js', asset('text/javascript', theme.registerDeviceScript));
+        app.get('/assets/htmx.min.js', asset('text/javascript', theme.htmx));
         app.get('/api/fragments/devices', async (_request, reply) => {
             const devices = await registeredWithStatus();
             const cards = devices.map((device) => {
