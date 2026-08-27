@@ -64,6 +64,8 @@ const elements = {
     accountsResult: element('#accounts-result'),
     deviceSchedules: element('#device-schedules'),
     deviceExecutions: element('#device-executions'),
+    removeDevice: element('#remove-device'),
+    removeResult: element('#remove-result'),
 };
 let screenSize;
 let paused = false;
@@ -628,6 +630,24 @@ elements.accountsForm.addEventListener('submit', async (event) => {
     }
     catch (error) {
         elements.accountsResult.textContent = errorMessage(error);
+    }
+});
+elements.removeDevice.addEventListener('click', async () => {
+    if (!confirm("Remove this device? Its schedules will be cancelled and its configuration forgotten."))
+        return;
+    elements.removeDevice.disabled = true;
+    elements.removeResult.textContent = 'Removing…';
+    try {
+        const response = await fetch(`/api/devices/${encodeURIComponent(udid)}`, { method: 'DELETE' });
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.error ?? `Request failed (${response.status})`);
+        }
+        location.href = '/';
+    }
+    catch (error) {
+        elements.removeDevice.disabled = false;
+        elements.removeResult.textContent = errorMessage(error);
     }
 });
 updateDestination();

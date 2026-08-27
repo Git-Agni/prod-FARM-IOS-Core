@@ -127,6 +127,8 @@ const elements = {
     accountsResult: element<HTMLElement>('#accounts-result'),
     deviceSchedules: element<HTMLElement>('#device-schedules'),
     deviceExecutions: element<HTMLElement>('#device-executions'),
+    removeDevice: element<HTMLButtonElement>('#remove-device'),
+    removeResult: element<HTMLElement>('#remove-result'),
 };
 
 let screenSize: ScreenSize | undefined;
@@ -669,6 +671,23 @@ elements.accountsForm.addEventListener('submit', async (event) => {
         elements.accountsResult.textContent = result.accounts.length ? 'Accounts saved.' : 'Account switching is optional.';
     } catch (error) {
         elements.accountsResult.textContent = errorMessage(error);
+    }
+});
+
+elements.removeDevice.addEventListener('click', async () => {
+    if (!confirm("Remove this device? Its schedules will be cancelled and its configuration forgotten.")) return;
+    elements.removeDevice.disabled = true;
+    elements.removeResult.textContent = 'Removing…';
+    try {
+        const response = await fetch(`/api/devices/${encodeURIComponent(udid)}`, { method: 'DELETE' });
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({})) as { error?: string };
+            throw new Error(data.error ?? `Request failed (${response.status})`);
+        }
+        location.href = '/';
+    } catch (error) {
+        elements.removeDevice.disabled = false;
+        elements.removeResult.textContent = errorMessage(error);
     }
 });
 
