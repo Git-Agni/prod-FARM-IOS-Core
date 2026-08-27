@@ -113,4 +113,6 @@ export interface AuthProvider {
     registerRoutes(app: FastifyInstance): Promise<void> | void;
     authenticate(request: FastifyRequest, reply: FastifyReply): Promise<AuthenticatedUser | null>;
     isPublicPath(path: string): boolean;
+    /** Path a "Log out" link points at, e.g. "/auth/logout". Omit to hide the link. */
+    logoutPath?: string;
 }

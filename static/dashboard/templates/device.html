@@ -9,7 +9,7 @@
 </head>
 <body>
     <main class="shell device-shell" data-device-udid="__DEVICE_UDID__">
-        <nav class="breadcrumb"><a href="/">Devices</a><span>/</span><a href="/tasks">Tasks</a><span>/</span><span>Device workspace</span></nav>
+        <nav class="breadcrumb"><a href="/">Devices</a><span>/</span><a href="/tasks">Tasks</a><span>/</span><span>Device workspace</span>__AUTH_NAV__</nav>
         <section id="device-summary" class="device-summary loading-card"
             hx-get="/api/devices/__DEVICE_UDID__/fragments/summary" hx-trigger="load" hx-swap="outerHTML">
             <span class="spinner" aria-hidden="true"></span>Loading device details…

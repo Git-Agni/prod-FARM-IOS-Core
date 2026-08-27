@@ -40,6 +40,29 @@ function registrations(): DeviceRegistrationManager {
     };
 }
 
+test('a configured auth provider adds a Log out link to the nav', async (context) => {
+    const app = await createApp({
+        plugins: new PluginRegistry([]),
+        scheduler: {} as SchedulerRepository,
+        registrations: registrations(),
+        dashboardTheme: defaultDashboardTheme,
+        authProvider: {
+            id: 'test', logoutPath: '/auth/logout',
+            registerRoutes() {},
+            async authenticate() { return { id: 'u', roles: [] }; },
+            isPublicPath() { return false; },
+        },
+    });
+    context.after(() => app.close());
+
+    for (const url of ['/', '/tasks', '/devices/register']) {
+        const res = await app.inject({ method: 'GET', url });
+        assert.equal(res.statusCode, 200, url);
+        assert.match(res.body, /href="\/auth\/logout"[^>]*>Log out</, url);
+        assert.doesNotMatch(res.body, /__AUTH_NAV__/, url);
+    }
+});
+
 test('serves and drives the public registration wizard', async (context) => {
     const app = await createApp({
         plugins: new PluginRegistry([]),
