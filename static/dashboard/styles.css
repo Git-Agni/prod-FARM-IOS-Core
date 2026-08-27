@@ -85,8 +85,8 @@ button:disabled { cursor: wait; opacity: .55; }
 .device-shell { padding-top: 26px; }
 .breadcrumb { display: flex; align-items: center; gap: 9px; margin-bottom: 28px; color: #778294; font-size: 13px; }
 .breadcrumb a { color: #c7ced8; text-decoration: none; }
-.app-logout { margin-left: auto; align-self: center; font-size: 13px; color: #c7ced8; text-decoration: none; border: 1px solid var(--border); padding: 4px 11px; border-radius: 6px; white-space: nowrap; }
-.app-logout:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+.app-logout { margin-left: auto; }
+.breadcrumb .app-logout { min-height: 32px; padding: 0 12px; font-size: 12px; }
 .device-summary { min-height: 88px; margin-bottom: 22px; padding: 20px 22px; border: 1px solid var(--border); border-radius: 15px; background: var(--panel); }
 .device-summary h1 { margin: 0 0 5px; font-size: clamp(26px, 5vw, 38px); }
 .device-summary .eyebrow { margin-bottom: 7px; }

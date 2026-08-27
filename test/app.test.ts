@@ -60,7 +60,13 @@ test('a configured auth provider adds a Log out link to the nav', async (context
         assert.equal(res.statusCode, 200, url);
         assert.match(res.body, /href="\/auth\/logout"[^>]*>Log out</, url);
         assert.doesNotMatch(res.body, /__AUTH_NAV__/, url);
+        assert.match(res.body, /\/assets\/styles\.css\?v=[\w-]+/, url);
     }
+
+    const css = await app.inject({ method: 'GET', url: '/assets/styles.css?v=x' });
+    assert.match(String(css.headers['cache-control']), /immutable/);
+    const cssBare = await app.inject({ method: 'GET', url: '/assets/styles.css' });
+    assert.match(String(cssBare.headers['cache-control']), /no-cache/);
 });
 
 test('serves and drives the public registration wizard', async (context) => {

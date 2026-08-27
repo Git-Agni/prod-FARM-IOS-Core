@@ -108,8 +108,10 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
 
     const remote = new RegistryWdaRemoteControl();
     const logoutPath = options.authProvider?.logoutPath;
-    const authNavHtml = logoutPath ? `<a class="app-logout" href="${escapeHtml(logoutPath)}">Log out</a>` : '';
+    const authNavHtml = logoutPath
+        ? `<a class="button secondary app-logout" href="${escapeHtml(logoutPath)}">Log out</a>` : '';
     const renderPage = (title: string, body: string) => page(title, body, logoutPath);
+    const assetHash = (body: string) => crypto.createHash('sha1').update(body).digest('base64url').slice(0, 10);
 
     let themed: LoadedDashboardTheme | null = null;
     if (options.dashboardTheme) {
@@ -126,10 +128,21 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
             readFile(path.join(root, 'assets/register-device.js'), 'utf8'),
             readFile(require.resolve('htmx.org/dist/htmx.min.js'), 'utf8'),
         ]);
-        const withNav = (html: string) => html.replaceAll('__AUTH_NAV__', authNavHtml);
+        // Content-hash every asset URL in the templates so a changed file gets a
+        // fresh URL that no browser or CDN can serve stale.
+        const versions: Record<string, string> = {
+            'styles.css': assetHash(styles), 'device.js': assetHash(deviceScript),
+            'tasks.js': assetHash(tasksScript), 'register-device.js': assetHash(registerDeviceScript),
+            'htmx.min.js': assetHash(htmx),
+        };
+        const finalize = (html: string) => {
+            let out = html.replaceAll('__AUTH_NAV__', authNavHtml);
+            for (const [name, v] of Object.entries(versions)) out = out.replaceAll(`/assets/${name}`, `/assets/${name}?v=${v}`);
+            return out;
+        };
         themed = {
-            indexHtml: withNav(indexHtml), deviceHtml: withNav(deviceHtml),
-            tasksHtml: withNav(tasksHtml), registerDeviceHtml: withNav(registerDeviceHtml),
+            indexHtml: finalize(indexHtml), deviceHtml: finalize(deviceHtml),
+            tasksHtml: finalize(tasksHtml), registerDeviceHtml: finalize(registerDeviceHtml),
             styles, deviceScript, tasksScript, registerDeviceScript, htmx,
         };
     }
@@ -418,13 +431,14 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
 
     if (themed) {
         const theme = themed;
-        // Serve the built assets with a content ETag and must-revalidate, so a
-        // deploy that changes device.js is picked up on the next request instead
-        // of being masked by heuristic browser caching.
+        // Templates request these with a ?v=<contenthash>. A versioned request is
+        // safe to cache forever; a bare one (bookmark) must revalidate via ETag.
         const asset = (contentType: string, body: string) => {
             const etag = `"${crypto.createHash('sha1').update(body).digest('base64url')}"`;
             return async (request: FastifyRequest, reply: FastifyReply) => {
-                reply.header('cache-control', 'no-cache').header('etag', etag);
+                const versioned = Boolean((request.query as { v?: string }).v);
+                reply.header('cache-control', versioned ? 'public, max-age=31536000, immutable' : 'no-cache')
+                    .header('etag', etag);
                 if (request.headers['if-none-match'] === etag) return reply.code(304).send();
                 return reply.type(contentType).send(body);
             };
