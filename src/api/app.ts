@@ -71,7 +71,10 @@ body{font:15px system-ui,sans-serif;margin:0;background:#f6f7f9;color:#17202a}na
 async function registeredWithStatus() {
     const [registered, connected] = await Promise.all([loadRegisteredDevices(), discoverConnectedDevices()]);
     const online = new Map(connected.map((device) => [device.udid, device]));
-    return registered.map((device) => ({ ...redactDevice(device), connected: online.get(device.udid) ?? null }));
+    return registered.map((device) => ({
+        ...redactDevice(device),
+        connected: device.disabled ? null : online.get(device.udid) ?? null,
+    }));
 }
 
 export async function createApp(options: CreateAppOptions): Promise<FastifyInstance> {
@@ -237,7 +240,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
             return reply.code(201).send(redactDevice(devices.at(-1)!));
         },
     );
-    app.patch<{ Params: { udid: string }; Body: { name?: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; coordinates?: unknown; pluginData?: Record<string, JsonObject> } }>(
+    app.patch<{ Params: { udid: string }; Body: { name?: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; coordinates?: unknown; disabled?: boolean; pluginData?: Record<string, JsonObject> } }>(
         '/api/devices/:udid', async (request, reply) => {
             if (request.body.passcode !== undefined && request.body.passcode !== '' && !PASSCODE_PATTERN.test(request.body.passcode)) {
                 return reply.code(400).send({ error: 'Device passcode must contain at least four digits' });
@@ -245,8 +248,12 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
             const devices = await loadRegisteredDevices();
             const index = devices.findIndex(({ udid }) => udid === request.params.udid);
             if (index < 0) return reply.code(404).send({ error: 'Device not found' });
+            if (request.body.disabled === true && await options.scheduler.activeExecution(request.params.udid)) {
+                return reply.code(409).send({ error: 'Stop the running automation before disabling this device' });
+            }
             const { passcode, coordinates, ...patch } = request.body;
             devices[index] = { ...devices[index]!, ...patch, udid: request.params.udid };
+            if (patch.disabled === false) delete devices[index]!.disabled;
             // passcode: a value sets it, an empty string clears it, omitting it leaves it untouched
             if (passcode === '') delete devices[index]!.passcode;
             else if (passcode !== undefined) devices[index]!.passcode = passcode;
@@ -379,6 +386,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
     app.post<{ Body: CreateTaskInput & { assetIds?: string[] } }>('/api/schedules', async (request, reply) => {
         const device = (await loadRegisteredDevices()).find(({ udid }) => udid === request.body.deviceUdid);
         if (!device) return reply.code(404).send({ error: 'Device not found' });
+        if (device.disabled) return reply.code(409).send({ error: 'This device is disabled — activate it before scheduling automation' });
         const schedule = await options.scheduler.createTask(
             request.body, device.pluginData[request.body.task.pluginId] ?? {}, new Date(), request.body.assetIds ?? [],
         );
@@ -488,7 +496,11 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         app.get('/assets/htmx.min.js', asset('text/javascript', theme.htmx));
         app.get('/api/fragments/devices', async (_request, reply) => {
             const devices = await registeredWithStatus();
-            const cards = devices.map((device) => {
+            const active = devices.filter((device) => !device.disabled);
+            const disabled = devices.filter((device) => device.disabled);
+            const toggleButton = (udid: string, label: string, next: boolean) =>
+                `<button type="button" class="button secondary device-toggle" data-toggle-device="${encodeURIComponent(udid)}" data-disabled="${next}">${label}</button>`;
+            const cards = active.map((device) => {
                 const accounts = Object.values(device.pluginData).flatMap((value) => {
                     const candidate = value.accounts;
                     return Array.isArray(candidate) ? candidate.filter((entry) => typeof entry === 'string') : [];
@@ -496,9 +508,13 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
                 const preview = device.connected
                     ? `<div class="device-preview-frame"><img class="device-preview" src="/api/devices/${encodeURIComponent(device.udid)}/remote/stream" alt="Live screen from ${escapeHtml(device.name)}" draggable="false" hx-preserve="true"></div>`
                     : '<div class="device-preview-frame unavailable" aria-hidden="true"><div class="device-icon"></div></div>';
-                return `<article class="device-card">${preview}<div class="device-copy"><h2>${escapeHtml(device.name)}</h2><p>${device.connected ? `iOS ${escapeHtml(device.connected.osVersion)}` : escapeHtml(device.udid)}</p><span class="connected${device.connected ? '' : ' offline'}"><span></span>${device.connected ? 'Online' : 'Offline'}</span>${accounts.length ? `<p class="accounts">${accounts.map(escapeHtml).join(', ')}</p>` : ''}</div><a class="button secondary" href="/devices/${encodeURIComponent(device.udid)}">Open device <span aria-hidden="true">→</span></a></article>`;
+                return `<article class="device-card">${preview}<div class="device-copy"><h2>${escapeHtml(device.name)}</h2><p>${device.connected ? `iOS ${escapeHtml(device.connected.osVersion)}` : escapeHtml(device.udid)}</p><span class="connected${device.connected ? '' : ' offline'}"><span></span>${device.connected ? 'Online' : 'Offline'}</span>${accounts.length ? `<p class="accounts">${accounts.map(escapeHtml).join(', ')}</p>` : ''}</div><div class="device-card-actions"><a class="button secondary" href="/devices/${encodeURIComponent(device.udid)}">Open device <span aria-hidden="true">→</span></a>${toggleButton(device.udid, 'Disconnect', true)}</div></article>`;
             }).join('');
-            return reply.type('text/html').send(`<section id="device-list" class="device-list" hx-get="/api/fragments/devices" hx-trigger="every 5s" hx-swap="outerHTML" aria-live="polite">${cards || '<div class="empty-state"><h2>No devices registered</h2></div>'}</section>`);
+            const disabledPanel = disabled.length
+                ? `<details class="disabled-devices"${disabled.length ? '' : ' hidden'}><summary>Disconnected devices (${disabled.length})</summary><ul>${disabled.map((device) => `<li><span>${escapeHtml(device.name)}</span>${toggleButton(device.udid, 'Reconnect', false)}</li>`).join('')}</ul></details>`
+                : '';
+            const toggleScript = `<script>if(!window.__deviceToggle){window.__deviceToggle=1;document.addEventListener('click',async function(e){var b=e.target.closest('[data-toggle-device]');if(!b)return;e.preventDefault();b.disabled=true;var r=await fetch('/api/devices/'+b.dataset.toggleDevice,{method:'PATCH',headers:{'content-type':'application/json'},body:JSON.stringify({disabled:b.dataset.disabled==='true'})});if(r.ok){if(window.htmx)htmx.ajax('GET','/api/fragments/devices',{target:'#device-list',swap:'outerHTML'})}else{b.disabled=false;alert(((await r.json().catch(function(){return{}}))||{}).error||'Request failed')}})}</script>`;
+            return reply.type('text/html').send(`<section id="device-list" class="device-list" hx-get="/api/fragments/devices" hx-trigger="every 5s" hx-swap="outerHTML" aria-live="polite">${cards || '<div class="empty-state"><h2>No active devices</h2></div>'}${disabledPanel}${toggleScript}</section>`);
         });
         app.get<{ Params: { udid: string } }>('/api/devices/:udid/fragments/summary', async (request, reply) => {
             const device = (await discoverConnectedDevices()).find(({ udid }) => udid === request.params.udid);
@@ -514,7 +530,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
     app.get('/', async (_request, reply) => {
         if (themed) return reply.type('text/html').send(themed.indexHtml);
         const devices = await registeredWithStatus();
-        const cards = devices.map((device) => `<div class="card"><h2>${escapeHtml(device.name)}</h2><p class="muted"><code>${escapeHtml(device.udid)}</code></p><p>${device.connected ? `Online · iOS ${escapeHtml(device.connected.osVersion)}` : 'Offline'}</p><a class="button" href="/devices/${encodeURIComponent(device.udid)}">Open device</a></div>`).join('');
+        const cards = devices.map((device) => `<div class="card"><h2>${escapeHtml(device.name)}</h2><p class="muted"><code>${escapeHtml(device.udid)}</code></p><p>${device.disabled ? 'Disconnected' : device.connected ? `Online · iOS ${escapeHtml(device.connected.osVersion)}` : 'Offline'}</p><a class="button" href="/devices/${encodeURIComponent(device.udid)}">Open device</a></div>`).join('');
         const connected = await discoverConnectedDevices();
         const registeredIds = new Set(devices.map(({ udid }) => udid));
         const candidates = connected.filter(({ udid }) => !registeredIds.has(udid)).map((device) => `<option value="${escapeHtml(device.udid)}" data-name="${escapeHtml(device.name)}">${escapeHtml(device.name)} · ${escapeHtml(device.osVersion)}</option>`).join('');

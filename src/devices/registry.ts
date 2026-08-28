@@ -14,7 +14,14 @@ export interface RegisteredDevice {
     passcode?: string;
     /** Per-device single-tap coordinate overrides (dashboard calibration). */
     coordinates?: DeviceCoordinateOverrides;
+    /** When true the farm keeps the entry but stops supervising it — no WDA, no worker, no discovery polling. */
+    disabled?: boolean;
     pluginData: Record<string, JsonObject>;
+}
+
+/** Devices the farm should actively supervise (everything except the disabled ones). */
+export function activeDevices(devices: readonly RegisteredDevice[]): RegisteredDevice[] {
+    return devices.filter((device) => !device.disabled);
 }
 
 export const PASSCODE_PATTERN = /^\d{4,}$/;
@@ -59,6 +66,7 @@ export async function saveRegisteredDevices(devices: RegisteredDevice[], registr
             device.coordinates = validateCoordinateOverrides(device.coordinates, device.coordinateProfile);
             if (Object.keys(device.coordinates).length === 0) delete device.coordinates;
         }
+        if (device.disabled !== true) delete device.disabled;
         if (unique.has(device.udid)) throw new Error(`Device ${device.udid} is already registered`);
         unique.add(device.udid);
     }

@@ -1,7 +1,7 @@
 import type { JobWithMetadata } from 'pg-boss';
 
 import { assertDatabaseReady, createDatabaseConnection } from '../database/client.js';
-import { loadRegisteredDevices } from '../devices/registry.js';
+import { activeDevices, loadRegisteredDevices } from '../devices/registry.js';
 import { configuredPluginModules, loadPlugins } from '../loader.js';
 import { PluginRegistry } from '../registry.js';
 import { executeAutomation } from './executor.js';
@@ -20,7 +20,7 @@ export async function startWorker(plugins: PluginRegistry): Promise<WorkerRuntim
     const workingQueues = new Set<string>();
 
     const registerDeviceWorkers = async (): Promise<void> => {
-        for (const device of await loadRegisteredDevices()) {
+        for (const device of activeDevices(await loadRegisteredDevices())) {
             const queue = await ensureDeviceQueue(boss, device.udid);
             if (workingQueues.has(queue)) continue;
             await boss.work<ExecutionJob>(queue, { includeMetadata: true }, async ([job]) => {

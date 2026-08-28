@@ -9,7 +9,7 @@ export * from './loader.js';
 export * from './security.js';
 export * from './tiktok-plugin.js';
 export * from './dashboard-theme.js';
-export { loadRegisteredDevices, saveRegisteredDevices } from './devices/registry.js';
+export { activeDevices, loadRegisteredDevices, saveRegisteredDevices } from './devices/registry.js';
 export {
     CALIBRATABLE_POINTS, POINT_LABELS, resolveDeviceCoordinates, validateCoordinateOverrides,
     type CalibratablePoint, type DeviceCoordinateOverrides,

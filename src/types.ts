@@ -14,6 +14,7 @@ export interface RegisteredDevice extends DeviceIdentity {
     mjpegLocalPort?: number;
     passcode?: string;
     coordinates?: Record<string, { x: number; y: number }>;
+    disabled?: boolean;
     pluginData: Record<string, JsonObject>;
 }
 

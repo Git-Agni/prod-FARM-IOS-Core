@@ -2,7 +2,7 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 import { discoverConnectedDeviceUdids } from './discovery.js';
-import { loadRegisteredDevices, type RegisteredDevice } from './registry.js';
+import { activeDevices, loadRegisteredDevices, type RegisteredDevice } from './registry.js';
 
 export type DeviceConnectionPhase = 'disconnected' | 'connecting' | 'unlock-required' | 'ready' | 'error';
 export type AppiumConnectionPhase = 'ready' | 'unavailable';
@@ -133,12 +133,15 @@ export class DeviceConnectionManager implements DeviceConnections {
         if (this.running || this.closing) return;
         this.running = true;
         try {
-            const [devices, connected, appiumReady] = await Promise.all([
+            const [allDevices, connected, appiumReady] = await Promise.all([
                 this.loadDevices(),
                 this.connectedUdids(),
                 this.endpointReady(`http://${process.env.APPIUM_HOST ?? '127.0.0.1'}:${Number(process.env.APPIUM_PORT ?? 4725)}/status`),
             ]);
             this.appium = appiumReady ? 'ready' : 'unavailable';
+            // Disabled devices are supervised exactly like unregistered ones:
+            // their WDA child is stopped and their runtime forgotten.
+            const devices = activeDevices(allDevices);
             const registered = new Set(devices.map(({ udid }) => udid));
             for (const [udid, runtime] of this.runtimes) {
                 if (!registered.has(udid)) {
@@ -269,7 +272,7 @@ export class DeviceConnectionManager implements DeviceConnections {
         child.kill('SIGTERM');
         await Promise.race([
             new Promise<void>((resolve) => child.once('exit', () => resolve())),
-            new Promise<void>((resolve) => setTimeout(resolve, 5_000)),
+            new Promise<void>((resolve) => { setTimeout(resolve, 5_000).unref(); }),
         ]);
         if (child.exitCode === null) child.kill('SIGKILL');
     }

@@ -124,6 +124,11 @@ Registered devices live in `devices.json` (git‑ignored):
 - `coordinateProfile` selects a compiled tap layout — see
   [coordinates.md](coordinates.md).
 - `pluginData[<pluginId>]` is per‑device plugin config (never secrets).
+- `disabled: true` keeps the entry but stops the farm supervising it — no
+  WebDriverAgent, no scheduler worker, no discovery polling. Toggle it from the
+  dashboard ("Disconnect" on a device card, "Reconnect" under **Disconnected
+  devices**) or with `PATCH /api/devices/:udid` (`{"disabled":true}` /
+  `{"disabled":false}`). Scheduling is rejected while a device is disabled.
 - `passcode` is the device unlock code, used to wake a locked phone before
   automation. It lives here because `devices.json` is git‑ignored and written
   `0600`. It is **never** returned by the API — `GET /api/devices` reports
