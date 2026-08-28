@@ -1,3 +1,4 @@
+import { inject } from './support.js';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
@@ -25,22 +26,22 @@ test('PATCH toggles disabled, scheduling is blocked, and the fragment lists it s
     const app = await createApp({ plugins: new PluginRegistry([]), scheduler, dashboardTheme: defaultDashboardTheme });
     context.after(() => app.close());
 
-    const disabled = await app.inject({ method: 'PATCH', url: '/api/devices/udid-a', payload: { disabled: true } });
+    const disabled = await inject(app, { method: 'PATCH', url: '/api/devices/udid-a', payload: { disabled: true } });
     assert.equal(disabled.statusCode, 200);
     assert.equal(disabled.json().disabled, true);
     assert.equal(JSON.parse(await readFile(configPath, 'utf8'))[0].disabled, true);
 
-    const blocked = await app.inject({
+    const blocked = await inject(app, {
         method: 'POST', url: '/api/schedules',
         payload: { deviceUdid: 'udid-a', runWindowMinutes: 30, timing: { kind: 'now' }, task: { pluginId: 'x', taskType: 'y', taskVersion: 1, payload: {} } },
     });
     assert.equal(blocked.statusCode, 409);
 
-    const fragment = await app.inject({ method: 'GET', url: '/api/fragments/devices' });
+    const fragment = await inject(app, { method: 'GET', url: '/api/fragments/devices' });
     assert.match(fragment.body, /Disconnected devices \(1\)/);
     assert.match(fragment.body, /data-toggle-device="udid-a" data-disabled="false"/);
 
-    const reenabled = await app.inject({ method: 'PATCH', url: '/api/devices/udid-a', payload: { disabled: false } });
+    const reenabled = await inject(app, { method: 'PATCH', url: '/api/devices/udid-a', payload: { disabled: false } });
     assert.equal(reenabled.statusCode, 200);
     assert.equal(reenabled.json().disabled, undefined);
     assert.equal(JSON.parse(await readFile(configPath, 'utf8'))[0].disabled, undefined);

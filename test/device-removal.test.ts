@@ -1,3 +1,4 @@
+import { inject } from './support.js';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
@@ -33,10 +34,10 @@ test('DELETE /api/devices/:udid forgets the device and cancels its schedules', a
     const app = await createApp({ plugins: new PluginRegistry([]), scheduler });
     context.after(() => app.close());
 
-    const missing = await app.inject({ method: 'DELETE', url: '/api/devices/udid-unknown' });
+    const missing = await inject(app, { method: 'DELETE', url: '/api/devices/udid-unknown' });
     assert.equal(missing.statusCode, 404);
 
-    const removed = await app.inject({ method: 'DELETE', url: '/api/devices/udid-drop' });
+    const removed = await inject(app, { method: 'DELETE', url: '/api/devices/udid-drop' });
     assert.equal(removed.statusCode, 204);
     assert.deepEqual(statusChanges, [['active-1', 'cancelled']]);
 

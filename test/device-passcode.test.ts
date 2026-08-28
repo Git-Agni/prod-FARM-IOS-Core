@@ -1,3 +1,4 @@
+import { inject } from './support.js';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
@@ -28,7 +29,7 @@ test('the passcode lives in devices.json and never leaves through the API', asyn
     const app = await createApp({ plugins: new PluginRegistry([]), scheduler });
     context.after(() => app.close());
 
-    const set = await app.inject({
+    const set = await inject(app, {
         method: 'PATCH', url: '/api/devices/udid-1',
         payload: { passcode: '123456' }, headers: { 'content-type': 'application/json' },
     });
@@ -37,17 +38,17 @@ test('the passcode lives in devices.json and never leaves through the API', asyn
     assert.equal(set.json().hasPasscode, true);
     assert.equal((await onDisk())[0]!.passcode, '123456');
 
-    const list = await app.inject({ method: 'GET', url: '/api/devices' });
+    const list = await inject(app, { method: 'GET', url: '/api/devices' });
     assert.equal(list.json()[0].passcode, undefined);
     assert.equal(list.json()[0].hasPasscode, true);
 
-    const short = await app.inject({
+    const short = await inject(app, {
         method: 'PATCH', url: '/api/devices/udid-1',
         payload: { passcode: '12' }, headers: { 'content-type': 'application/json' },
     });
     assert.equal(short.statusCode, 400);
 
-    const cleared = await app.inject({
+    const cleared = await inject(app, {
         method: 'PATCH', url: '/api/devices/udid-1',
         payload: { passcode: '' }, headers: { 'content-type': 'application/json' },
     });

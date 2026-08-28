@@ -1,3 +1,4 @@
+import { inject } from './support.js';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
@@ -22,32 +23,32 @@ test('calibrate: GET reports points, PATCH stores and clears overrides', async (
     const app = await createApp({ plugins: new PluginRegistry([]), scheduler });
     context.after(() => app.close());
 
-    const list = await app.inject({ method: 'GET', url: '/api/devices/u1/coordinates' });
+    const list = await inject(app, { method: 'GET', url: '/api/devices/u1/coordinates' });
     assert.equal(list.statusCode, 200);
     assert.equal(list.json().screenSize.width, 375);
     const like = list.json().points.find((p: { name: string }) => p.name === 'like');
     assert.equal(like.overridden, false);
     assert.deepEqual(like.current, like.default);
 
-    const set = await app.inject({
+    const set = await inject(app, {
         method: 'PATCH', url: '/api/devices/u1',
         payload: { coordinates: { like: { x: 350, y: 320 } } }, headers: { 'content-type': 'application/json' },
     });
     assert.equal(set.statusCode, 200);
     assert.deepEqual((await onDisk())[0]!.coordinates, { like: { x: 350, y: 320 } });
 
-    const after = await app.inject({ method: 'GET', url: '/api/devices/u1/coordinates' });
+    const after = await inject(app, { method: 'GET', url: '/api/devices/u1/coordinates' });
     const like2 = after.json().points.find((p: { name: string }) => p.name === 'like');
     assert.equal(like2.overridden, true);
     assert.deepEqual(like2.current, { x: 350, y: 320 });
 
-    const bad = await app.inject({
+    const bad = await inject(app, {
         method: 'PATCH', url: '/api/devices/u1',
         payload: { coordinates: { like: { x: 1, y: 9999 } } }, headers: { 'content-type': 'application/json' },
     });
     assert.equal(bad.statusCode, 400);
 
-    const clear = await app.inject({
+    const clear = await inject(app, {
         method: 'PATCH', url: '/api/devices/u1',
         payload: { coordinates: {} }, headers: { 'content-type': 'application/json' },
     });

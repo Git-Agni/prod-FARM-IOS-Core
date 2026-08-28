@@ -28,7 +28,7 @@
                 <label>Device name<input id="registration-name" name="name" required maxlength="100"></label>
                 <label>Coordinate profile <span class="field-help">The detected model is recommended automatically; you may override it.</span><select id="registration-profile" name="coordinateProfile" required><option value="">Detecting model</option></select></label>
                 <label class="wide">TikTok accounts <span class="field-help">Optional. Add comma-separated signed-in handles now, or manage them later from the device page.</span><input id="registration-accounts" name="accounts" placeholder="@account_one, @account_two"></label>
-                <label class="wide">Unlock passcode <span class="field-help">Optional; stored only in the ignored owner-readable .env.devices file.</span><input id="registration-passcode" name="passcode" type="password" inputmode="numeric" autocomplete="off" pattern="[0-9]{4,}"></label>
+                <label class="wide">Unlock passcode <span class="field-help">Optional; stored only in the git-ignored owner-readable devices.json file, never returned by the API.</span><input id="registration-passcode" name="passcode" type="password" inputmode="numeric" autocomplete="off" pattern="[0-9]{4,}"></label>
                 <div class="wide inline-actions"><button class="button secondary" type="submit">Save details</button><span id="registration-ports" class="run-meta"></span></div>
             </form>
 

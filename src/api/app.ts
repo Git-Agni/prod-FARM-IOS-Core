@@ -92,21 +92,26 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         }
     });
 
+    // CSRF guard — runs for every deployment, auth or not. The default loopback
+    // dashboard is otherwise open to form-encoded POSTs from any page the
+    // operator has open in the same browser (tap the phone, stop executions,
+    // launch tasks). A Bearer token means a real API client, not a browser form.
+    app.addHook('onRequest', async (request, reply) => {
+        if (['GET', 'HEAD', 'OPTIONS'].includes(request.method)) return;
+        if (request.headers.authorization?.startsWith('Bearer ')) return;
+        const origin = request.headers.origin;
+        const configured = [process.env.PUBLIC_ORIGIN, ...(process.env.PHONE_FARM_TRUSTED_ORIGINS ?? '').split(',')]
+            .map((value) => value?.trim().replace(/\/+$/, '')).filter(Boolean);
+        const forwardedProtocol = String(request.headers['x-forwarded-proto'] ?? 'http').split(',')[0]?.trim();
+        const expected = configured.length ? configured : [`${forwardedProtocol}://${request.headers.host}`];
+        if (!origin || !expected.includes(origin.replace(/\/+$/, ''))) {
+            return reply.code(403).send({ error: 'Request origin is not trusted' });
+        }
+    });
+
     if (options.authProvider) {
         await options.authProvider.registerRoutes(app);
         app.addHook('onRequest', async (request, reply) => {
-            const unsafe = !['GET', 'HEAD', 'OPTIONS'].includes(request.method);
-            const bearer = request.headers.authorization?.startsWith('Bearer ');
-            if (unsafe && !bearer) {
-                const origin = request.headers.origin;
-                const configured = [process.env.PUBLIC_ORIGIN, ...(process.env.PHONE_FARM_TRUSTED_ORIGINS ?? '').split(',')]
-                    .map((value) => value?.trim().replace(/\/+$/, '')).filter(Boolean);
-                const forwardedProtocol = String(request.headers['x-forwarded-proto'] ?? 'http').split(',')[0]?.trim();
-                const expected = configured.length ? configured : [`${forwardedProtocol}://${request.headers.host}`];
-                if (!origin || !expected.includes(origin.replace(/\/+$/, ''))) {
-                    return reply.code(403).send({ error: 'Request origin is not trusted' });
-                }
-            }
             if (options.authProvider?.isPublicPath(request.url.split('?')[0] ?? request.url)) return;
             const user = await options.authProvider?.authenticate(request, reply);
             if (!user && !reply.sent) await reply.code(401).send({ error: 'Authentication required' });

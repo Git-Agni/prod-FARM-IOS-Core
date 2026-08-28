@@ -150,8 +150,8 @@ Pair it with `registerRoutes` to serve the page the link points at. Unlike
 task panels, a plugin route can register **any** path (not just under
 `/plugins/<id>`) and return a whole HTML document — it still sits inside the
 authenticated host, so link `/assets/styles.css` for the dashboard's styling.
-The private `com.git-agni.mac-stats` plugin is a worked example: a `Mac` nav
-link, `GET /mac` (a live host-stats page) and `GET /mac/stats.json`.
+A host-stats plugin, for example, might add a `Mac` nav link plus
+`GET /mac` (a live page) and `GET /mac/stats.json`.
 
 ### Device panels
 ```ts

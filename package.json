@@ -2,6 +2,7 @@
   "name": "@git-agni/phone-farm-core",
   "version": "0.1.0-review.0",
   "private": false,
+  "license": "Apache-2.0",
   "description": "Standalone iOS device farm with registration, streaming, scheduling, plugins, and TikTok automation",
   "files": [
     "src",
@@ -24,7 +25,7 @@
     "./worker": "./src/scheduler/worker.ts"
   },
   "scripts": {
-    "appium": "APPIUM_HOME=.appium2 appium --base-path / --port 4725 --log-level info",
+    "appium": "APPIUM_HOME=.appium2 node node_modules/appium/index.js --address 127.0.0.1 --base-path / --port 4725 --log-level info",
     "appium:install-driver": "APPIUM_HOME=.appium2 appium driver install xcuitest@7.26.3",
     "wda:prepare": "node --env-file-if-exists=.env --env-file-if-exists=.env.devices --import tsx src/devices/wda/prepare.ts",
     "wda:service": "node --env-file-if-exists=.env --env-file-if-exists=.env.devices --import tsx src/devices/wda-service.ts",
