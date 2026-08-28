@@ -116,7 +116,10 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         const forwardedProtocol = String(request.headers['x-forwarded-proto'] ?? 'http').split(',')[0]?.trim();
         const expected = configured.length ? configured : [`${forwardedProtocol}://${request.headers.host}`];
         if (!origin || !expected.includes(origin.replace(/\/+$/, ''))) {
-            return reply.code(403).send({ error: 'Request origin is not trusted' });
+            return reply.code(403).send({
+                error: 'Cross-origin write blocked. Send an Authorization: Bearer token for API clients, '
+                    + 'or add the origin to PHONE_FARM_TRUSTED_ORIGINS.',
+            });
         }
     });
 
