@@ -1,4 +1,4 @@
-import { index, integer, jsonb, pgSchema, primaryKey, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import { bigint, index, integer, jsonb, pgSchema, primaryKey, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 
 import type { JsonObject, ScheduleTiming } from '../types.js';
 
@@ -66,7 +66,7 @@ export const assets = schedulerSchema.table('assets', {
     scheduleId: uuid('schedule_id').references(() => schedules.id, { onDelete: 'cascade' }),
     executionId: uuid('execution_id').references(() => executions.id, { onDelete: 'cascade' }),
     relativePath: text('relative_path').notNull().unique(), originalName: text('original_name').notNull(),
-    mimeType: text('mime_type').notNull(), size: integer('size').notNull(), sha256: text('sha256').notNull(),
+    mimeType: text('mime_type').notNull(), size: bigint('size', { mode: 'number' }).notNull(), sha256: text('sha256').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
 }, (table) => [index('assets_schedule_idx').on(table.scheduleId), index('assets_execution_idx').on(table.executionId)]);
 

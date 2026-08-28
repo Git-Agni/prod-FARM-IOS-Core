@@ -169,15 +169,13 @@ export function createTikTokPlugin(configuration: TikTokPluginConfiguration = {}
                 if (accounts.some((value) => !/^@[A-Za-z0-9._]{1,64}$/.test(value))) {
                     return reply.code(400).send({ error: 'TikTok handles may contain letters, numbers, periods, and underscores' });
                 }
-                const devices = await context.loadDevices();
-                const index = devices.findIndex(({ udid }) => udid === request.params.udid);
-                if (index < 0) return reply.code(404).send({ error: 'Device is not registered' });
-                const device = devices[index]!;
-                devices[index] = {
-                    ...device,
-                    pluginData: { ...device.pluginData, 'com.git-agni.tiktok': { ...device.pluginData['com.git-agni.tiktok'], accounts } },
-                };
-                await context.saveDevices(devices);
+                const found = await context.mutateDevices((devices) => {
+                    const device = devices.find(({ udid }) => udid === request.params.udid);
+                    if (!device) return false;
+                    device.pluginData = { ...device.pluginData, 'com.git-agni.tiktok': { ...device.pluginData['com.git-agni.tiktok'], accounts } };
+                    return true;
+                });
+                if (!found) return reply.code(404).send({ error: 'Device is not registered' });
                 return { accounts };
             });
 
@@ -185,6 +183,7 @@ export function createTikTokPlugin(configuration: TikTokPluginConfiguration = {}
                 '/api/devices/:udid/fragments/scroll-run', async (request, reply) => {
                     const device = await deviceData(request.params.udid);
                     if (!device) return reply.code(404).send({ error: 'Device is not registered' });
+                    if (device.disabled) return reply.code(409).send({ error: 'This device is disconnected — reconnect it before scheduling automation' });
                     const body = request.body;
                     const kind = body.scheduleKind ?? 'now';
                     const timing: ScheduleTiming = kind === 'now' ? { kind: 'now' }
@@ -223,6 +222,7 @@ export function createTikTokPlugin(configuration: TikTokPluginConfiguration = {}
             context.app.post<{ Params: { udid: string } }>('/api/devices/:udid/posts', async (request, reply) => {
                 const device = await deviceData(request.params.udid);
                 if (!device) return reply.code(404).send({ error: 'Device is not registered' });
+                if (device.disabled) return reply.code(409).send({ error: 'This device is disconnected — reconnect it before posting' });
                 const dataRoot = path.resolve(process.env.SCHEDULER_DATA_DIR ?? '.scheduler-data');
                 const assetRoot = path.join(dataRoot, 'assets');
                 await mkdir(assetRoot, { recursive: true });

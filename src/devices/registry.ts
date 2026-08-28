@@ -75,3 +75,22 @@ export async function saveRegisteredDevices(devices: RegisteredDevice[], registr
     await writeFile(temporaryPath, `${JSON.stringify(devices, null, 2)}\n`, { mode: 0o600 });
     await rename(temporaryPath, registryPath);
 }
+
+// Every load-modify-save of devices.json in one process must go through here,
+// or two overlapping mutations (a passcode save racing a disable toggle) each
+// read the same file and the second write clobbers the first.
+let registryMutation: Promise<unknown> = Promise.resolve();
+
+export function mutateRegisteredDevices<T>(
+    mutate: (devices: RegisteredDevice[]) => T | Promise<T>,
+    registryPath = defaultRegistryPath,
+): Promise<T> {
+    const run = registryMutation.then(async () => {
+        const devices = await loadRegisteredDevices(registryPath);
+        const result = await mutate(devices);
+        await saveRegisteredDevices(devices, registryPath);
+        return result;
+    });
+    registryMutation = run.catch(() => undefined);
+    return run;
+}

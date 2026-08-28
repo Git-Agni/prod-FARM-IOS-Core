@@ -7,8 +7,11 @@ function settings(device: RegisteredDevice | undefined): JsonObject {
 }
 
 export function coordinateProfile(device: RegisteredDevice | undefined): string {
-    const value = settings(device).coordinateProfile;
-    return typeof value === 'string' ? value : 'iphone8';
+    // The top-level devices.json field is canonical (what the dashboard and
+    // resolveDeviceCoordinates use); the pluginData copy is a legacy fallback.
+    if (typeof device?.coordinateProfile === 'string') return device.coordinateProfile;
+    const legacy = settings(device).coordinateProfile;
+    return typeof legacy === 'string' ? legacy : 'iphone8';
 }
 
 export function registeredAccounts(device: RegisteredDevice | undefined): string[] {

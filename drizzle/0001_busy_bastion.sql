@@ -1,0 +1,1 @@
+ALTER TABLE "scheduler"."assets" ALTER COLUMN "size" SET DATA TYPE bigint;

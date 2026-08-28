@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, lt, or, sql } from 'drizzle-orm';
+import { and, desc, eq, inArray, isNull, lt, or, sql } from 'drizzle-orm';
 import { fromDrizzle, type PgBoss } from 'pg-boss';
 import { rm } from 'node:fs/promises';
 import path from 'node:path';
@@ -15,6 +15,25 @@ import { initialRunAt, latestDueOccurrence } from './recurrence.js';
 import { DEFAULT_MIN_SCHEDULE_GAP_MINUTES, estimatedTaskWindow, validateTaskInput, windowsTooClose } from './validation.js';
 
 export interface ExecutionDetail extends ExecutionRow { logs: string[] }
+
+/** Thrown by setScheduleStatus for a disallowed status change (e.g. resuming a completed schedule). */
+export class ScheduleTransitionError extends Error {}
+
+/**
+ * Schedule status state machine. A completed or cancelled schedule can only be
+ * cancelled — never resumed, which would recompute nextRunAt and re-fire a
+ * one-shot (a duplicate public post).
+ */
+export function scheduleTransitionAllowed(from: string, to: 'active' | 'paused' | 'cancelled'): boolean {
+    if (from === to) return true;
+    const allowed: Record<string, Array<typeof to>> = {
+        active: ['paused', 'cancelled'],
+        paused: ['active', 'cancelled'],
+        completed: ['cancelled'],
+        cancelled: [],
+    };
+    return (allowed[from] ?? []).includes(to);
+}
 
 function taskEnvelope(row: Pick<ScheduleRow, 'pluginId' | 'taskType' | 'taskVersion' | 'payload'>): TaskEnvelope {
     return { pluginId: row.pluginId, taskType: row.taskType, taskVersion: row.taskVersion, payload: row.payload };
@@ -156,6 +175,9 @@ export class SchedulerRepository {
     async setScheduleStatus(id: string, status: 'active' | 'paused' | 'cancelled', now = new Date()): Promise<ScheduleRow | null> {
         const [current] = await this.connection.db.select().from(schedules).where(eq(schedules.id, id)).limit(1);
         if (!current) return null;
+        if (!scheduleTransitionAllowed(current.status, status)) {
+            throw new ScheduleTransitionError(`Cannot change a ${current.status} schedule to ${status}`);
+        }
         const [updated] = await this.connection.db.update(schedules).set({
             status, nextRunAt: status === 'active' ? initialRunAt(current.timing, now) : current.nextRunAt, updatedAt: now,
         }).where(eq(schedules.id, id)).returning();
@@ -239,7 +261,10 @@ export class SchedulerRepository {
         await this.connection.db.update(executions).set({
             status, exitCode, error, finishedAt: new Date(), updatedAt: new Date(),
         }).where(eq(executions.id, id));
-        await this.purgeTerminalAssets(id);
+        // Keep the media for retryable outcomes — the dashboard Retry button
+        // accepts failed/stopped and would otherwise hit "asset is missing".
+        // failed/stopped media is reclaimed by cleanup() once it ages out.
+        if (status === 'succeeded' || status === 'cancelled') await this.purgeTerminalAssets(id);
     }
 
     async resetForRetry(id: string, error: string): Promise<void> {
@@ -260,8 +285,14 @@ export class SchedulerRepository {
             await this.finishExecution(id, 'cancelled', null, 'Cancelled before execution');
             return 'queued';
         }
-        const definition = this.plugins.task(taskEnvelope(execution));
-        if (execution.status !== 'running' || !definition.supportsStop(execution.payload)) return 'unsupported';
+        if (execution.status !== 'running') return 'unsupported';
+        // If the plugin was uninstalled, still let the operator request a stop —
+        // a running execution nobody can inspect is exactly what needs stopping.
+        let supportsStop = true;
+        try {
+            supportsStop = this.plugins.task(taskEnvelope(execution)).supportsStop(execution.payload);
+        } catch { /* plugin unavailable */ }
+        if (!supportsStop) return 'unsupported';
         await this.connection.db.update(executions).set({ stopRequestedAt: new Date(), updatedAt: new Date() })
             .where(eq(executions.id, id));
         return 'running';
@@ -284,6 +315,9 @@ export class SchedulerRepository {
             const jobId = await this.boss.send(queueNameForDevice(source.deviceUdid), { executionId: created.id }, {
                 db: fromDrizzle(tx, sql), retryLimit: policy.retryLimit,
                 retryDelay: policy.retryDelaySeconds, retryBackoff: policy.retryBackoff,
+                // Match materializeDue — a retried multi-hour task must not be
+                // expired by pg-boss's ~15-minute default while it's still running.
+                expireInSeconds: Math.max(900, Math.ceil(definition.estimateDurationMs(source.payload) / 1000) + 600),
             });
             if (!jobId) throw new Error('Unable to enqueue retry execution');
             await tx.update(executions).set({ queueJobId: jobId }).where(eq(executions.id, created.id));
@@ -317,6 +351,16 @@ export class SchedulerRepository {
             lt(executions.finishedAt, cutoff), inArray(executions.status, ['succeeded', 'failed', 'cancelled', 'skipped', 'stopped']),
         )).returning({ id: executions.id });
         return removed.length;
+    }
+
+    /** Media uploaded via POST /api/assets but never attached to a schedule (abandoned post form). */
+    async sweepOrphanedAssets(olderThanHours = Number(process.env.SCHEDULER_ORPHAN_ASSET_HOURS ?? 24)): Promise<number> {
+        const cutoff = new Date(Date.now() - olderThanHours * 3_600_000);
+        const rows = await this.connection.db.select({ id: assets.id }).from(assets).where(and(
+            isNull(assets.scheduleId), isNull(assets.executionId), lt(assets.createdAt, cutoff),
+        ));
+        await this.purgeAssetIds(rows.map(({ id }) => id));
+        return rows.length;
     }
 
     private async purgeTerminalAssets(executionId: string): Promise<void> {

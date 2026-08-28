@@ -9,7 +9,7 @@ import { remote, type Browser } from 'webdriverio';
 import { switchTikTokAccount, tapCoordinate } from '../tiktok/actions.js';
 import { coordinateProfiles, coordinatesForProfile, profileForProductType, type CoordinateProfile } from './coordinates.js';
 import { discoverConnectedDevices, type Device } from './discovery.js';
-import { loadRegisteredDevices, saveRegisteredDevices, type RegisteredDevice } from './registry.js';
+import { loadRegisteredDevices, mutateRegisteredDevices, type RegisteredDevice } from './registry.js';
 import { passcodeForDevice, setDevicePasscode } from './secrets.js';
 import { WdaRemoteControl } from './wda-remote.js';
 import { diagnoseWdaLaunchFailure } from './wda/diagnostics.js';
@@ -285,9 +285,13 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
                 if (action === 'prepare' && this.activePreparation === id) this.activePreparation = undefined;
                 session.busy = false;
                 this.recalculate(session);
-                await this.persist(session);
+                await this.persist(session).catch((error: unknown) => {
+                    this.log(session, `Failed to persist registration state: ${error instanceof Error ? error.message : String(error)}`);
+                });
             }
-        })();
+        })().catch((error: unknown) => {
+            console.error('Registration background task crashed:', error);
+        });
         await this.persist(session);
         return publicSnapshot(session);
     }
@@ -452,9 +456,8 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
     private async finalize(session: RegistrationSession): Promise<RegistrationSnapshot> {
         this.recalculate(session);
         if (!session.canFinalize) throw new Error('Every live readiness check must pass before registration can finish');
-        const alreadyRegistered = (await this.loadDevices()).some(({ udid }) => udid === session.device.udid);
-        if (!alreadyRegistered) {
-            const devices = await this.loadDevices();
+        const added = await mutateRegisteredDevices((devices) => {
+            if (devices.some(({ udid }) => udid === session.device.udid)) return false;
             devices.push({
                 name: session.name,
                 udid: session.device.udid,
@@ -462,15 +465,12 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
                 wdaLocalPort: session.wdaLocalPort,
                 mjpegLocalPort: session.mjpegLocalPort,
                 ...(session.passcode ? { passcode: session.passcode } : {}),
-                pluginData: {
-                    'com.git-agni.tiktok': {
-                        accounts: session.tiktokAccounts,
-                        ...(session.coordinateProfile ? { coordinateProfile: session.coordinateProfile } : {}),
-                    },
-                },
+                // coordinateProfile is a top-level field; don't duplicate it into pluginData.
+                pluginData: { 'com.git-agni.tiktok': { accounts: session.tiktokAccounts } },
             });
-            await saveRegisteredDevices(devices);
-        } else if (session.passcode) {
+            return true;
+        });
+        if (!added && session.passcode) {
             await setDevicePasscode(session.device.udid, session.passcode);
         }
         session.checks.wda = check('checking', 'Handing WDA ownership to the persistent fleet service');

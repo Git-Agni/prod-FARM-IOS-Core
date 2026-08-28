@@ -9,7 +9,7 @@ import path from 'node:path';
 import { Readable } from 'node:stream';
 
 import { discoverConnectedDevices } from '../devices/discovery.js';
-import { loadRegisteredDevices, saveRegisteredDevices, redactDevice, PASSCODE_PATTERN, type RegisteredDevice } from '../devices/registry.js';
+import { loadRegisteredDevices, mutateRegisteredDevices, saveRegisteredDevices, redactDevice, PASSCODE_PATTERN, type RegisteredDevice } from '../devices/registry.js';
 import {
     CALIBRATABLE_POINTS, POINT_LABELS, coordinatesForProfile, resolveDeviceCoordinates, validateCoordinateOverrides,
 } from '../devices/coordinates.js';
@@ -17,11 +17,13 @@ import { RegistryWdaRemoteControl } from '../devices/registry-remote.js';
 import type {
     DeviceRegistrationManager, RegistrationAction, RegistrationUpdate,
 } from '../devices/registration.js';
-import { WdaRemoteControl, type RemoteAction } from '../devices/wda-remote.js';
+import { type RemoteAction } from '../devices/wda-remote.js';
+import { requestWdaService } from '../devices/wda-service-client.js';
+import type { DeviceConnectionStatus } from '../devices/connection-manager.js';
 import type { AuthProvider, PluginNavLink } from '../plugin.js';
 import type { PluginRegistry } from '../registry.js';
 import type { CreateTaskInput, JsonObject, ScheduleTiming } from '../types.js';
-import type { SchedulerRepository } from '../scheduler/repository.js';
+import { ScheduleTransitionError, type SchedulerRepository } from '../scheduler/repository.js';
 
 export interface CreateAppOptions {
     plugins: PluginRegistry;
@@ -51,6 +53,11 @@ interface LoadedDashboardTheme {
 
 function errorMessage(error: unknown): string {
     return error instanceof Error ? error.message : String(error);
+}
+
+/** Thrown inside route bodies / registry mutations; mapped to its status by setErrorHandler. */
+function httpError(statusCode: number, message: string): Error & { statusCode: number } {
+    return Object.assign(new Error(message), { statusCode });
 }
 
 function escapeHtml(value: unknown): string {
@@ -170,13 +177,22 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         const execution = executions.find(({ status }) => status === 'running') ?? executions[0];
         if (!execution) return `<section id="device-activity" class="run-panel"><div class="run-heading"><span class="status idle"><span class="dot"></span>idle</span><span class="run-meta">No automation has run on this device yet.</span></div>${message ? `<p class="run-error">${escapeHtml(message)}</p>` : ''}<pre>Waiting for output…</pre></section>`;
         const detail = await options.scheduler.execution(execution.id);
-        const definition = options.plugins.task({
-            pluginId: execution.pluginId, taskType: execution.taskType,
-            taskVersion: execution.taskVersion, payload: execution.payload,
-        });
-        const stop = execution.status === 'queued' || (execution.status === 'running' && definition.supportsStop(execution.payload))
+        // A plugin (or task version) can be uninstalled while old executions
+        // still reference it — degrade instead of throwing out of the fragment.
+        let definition: { summarize(payload: JsonObject): string; supportsStop(payload: JsonObject): boolean } | undefined;
+        try {
+            definition = options.plugins.task({
+                pluginId: execution.pluginId, taskType: execution.taskType,
+                taskVersion: execution.taskVersion, payload: execution.payload,
+            });
+        } catch { /* plugin unavailable */ }
+        const summary = definition
+            ? definition.summarize(execution.payload)
+            : `${execution.pluginId}/${execution.taskType}@${execution.taskVersion} (plugin not installed)`;
+        const canStop = execution.status === 'queued' || (execution.status === 'running' && (definition?.supportsStop(execution.payload) ?? true));
+        const stop = canStop
             ? `<form hx-post="/api/executions/${execution.id}/stop" hx-target="#device-activity" hx-swap="outerHTML"><button class="button secondary" type="submit">Stop</button></form>` : '';
-        return `<section id="device-activity" class="run-panel" hx-get="/api/devices/${encodeURIComponent(deviceUdid)}/fragments/activity" hx-trigger="every 1s" hx-swap="outerHTML"><div class="run-heading"><span class="status ${escapeHtml(execution.status)}"><span class="dot"></span>${escapeHtml(execution.status)}</span><span class="run-meta">${escapeHtml(definition.summarize(execution.payload))} · ${escapeHtml(execution.scheduledFor.toISOString())}</span></div>${message ? `<p class="run-error">${escapeHtml(message)}</p>` : ''}${stop}<pre>${detail?.logs.length ? detail.logs.map(escapeHtml).join('\n') : escapeHtml(execution.error ?? 'Waiting for worker output…')}</pre></section>`;
+        return `<section id="device-activity" class="run-panel" hx-get="/api/devices/${encodeURIComponent(deviceUdid)}/fragments/activity" hx-trigger="every 1s" hx-swap="outerHTML"><div class="run-heading"><span class="status ${escapeHtml(execution.status)}"><span class="dot"></span>${escapeHtml(execution.status)}</span><span class="run-meta">${escapeHtml(summary)} · ${escapeHtml(execution.scheduledFor.toISOString())}</span></div>${message ? `<p class="run-error">${escapeHtml(message)}</p>` : ''}${stop}<pre>${detail?.logs.length ? detail.logs.map(escapeHtml).join('\n') : escapeHtml(execution.error ?? 'Waiting for worker output…')}</pre></section>`;
     };
 
     app.get('/health', async () => {
@@ -231,50 +247,61 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         await options.registrations.cancel(request.params.id);
         return reply.code(204).send();
     });
-    app.post<{ Body: { name: string; udid: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; pluginData?: Record<string, JsonObject> } }>(
+    app.post<{ Body: { name?: string; udid?: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; coordinateProfile?: string; pluginData?: Record<string, JsonObject> } }>(
         '/api/devices', async (request, reply) => {
-            const devices = await loadRegisteredDevices();
-            if (!request.body.udid || devices.some(({ udid }) => udid === request.body.udid)) {
-                return reply.code(409).send({ error: 'A unique device UDID is required' });
-            }
-            if (request.body.passcode !== undefined && !PASSCODE_PATTERN.test(request.body.passcode)) {
+            const { name, udid, wdaLocalPort, mjpegLocalPort, passcode, coordinateProfile, pluginData } = request.body;
+            if (!udid) return reply.code(400).send({ error: 'A device UDID is required' });
+            if (passcode !== undefined && !PASSCODE_PATTERN.test(passcode)) {
                 return reply.code(400).send({ error: 'Device passcode must contain at least four digits' });
             }
-            devices.push({ ...request.body, pluginData: request.body.pluginData ?? {} });
-            await saveRegisteredDevices(devices);
-            return reply.code(201).send(redactDevice(devices.at(-1)!));
+            const created = await mutateRegisteredDevices((devices) => {
+                if (devices.some((device) => device.udid === udid)) throw httpError(409, 'A device with this UDID is already registered');
+                // Explicit whitelist — never mass-assign arbitrary body keys into devices.json.
+                const device: RegisteredDevice = {
+                    name: name ?? udid, udid, pluginData: pluginData ?? {},
+                    ...(wdaLocalPort !== undefined ? { wdaLocalPort } : {}),
+                    ...(mjpegLocalPort !== undefined ? { mjpegLocalPort } : {}),
+                    ...(coordinateProfile !== undefined ? { coordinateProfile: coordinateProfile as RegisteredDevice['coordinateProfile'] } : {}),
+                    ...(passcode !== undefined ? { passcode } : {}),
+                };
+                devices.push(device);
+                return device;
+            });
+            return reply.code(201).send(redactDevice(created));
         },
     );
-    app.patch<{ Params: { udid: string }; Body: { name?: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; coordinates?: unknown; disabled?: boolean; pluginData?: Record<string, JsonObject> } }>(
+    app.patch<{ Params: { udid: string }; Body: { name?: string; wdaLocalPort?: number; mjpegLocalPort?: number; passcode?: string; coordinates?: unknown; disabled?: boolean; coordinateProfile?: string; pluginData?: Record<string, JsonObject> } }>(
         '/api/devices/:udid', async (request, reply) => {
-            if (request.body.passcode !== undefined && request.body.passcode !== '' && !PASSCODE_PATTERN.test(request.body.passcode)) {
+            const { passcode, coordinates, name, wdaLocalPort, mjpegLocalPort, disabled, coordinateProfile, pluginData } = request.body;
+            if (passcode !== undefined && passcode !== '' && !PASSCODE_PATTERN.test(passcode)) {
                 return reply.code(400).send({ error: 'Device passcode must contain at least four digits' });
             }
-            const devices = await loadRegisteredDevices();
-            const index = devices.findIndex(({ udid }) => udid === request.params.udid);
-            if (index < 0) return reply.code(404).send({ error: 'Device not found' });
-            if (request.body.disabled === true && await options.scheduler.activeExecution(request.params.udid)) {
-                return reply.code(409).send({ error: 'Stop the running automation before disabling this device' });
+            if (disabled === true && await options.scheduler.activeExecution(request.params.udid)) {
+                return reply.code(409).send({ error: 'Stop the running automation before disconnecting this device' });
             }
-            const { passcode, coordinates, ...patch } = request.body;
-            devices[index] = { ...devices[index]!, ...patch, udid: request.params.udid };
-            if (patch.disabled === false) delete devices[index]!.disabled;
-            // passcode: a value sets it, an empty string clears it, omitting it leaves it untouched
-            if (passcode === '') delete devices[index]!.passcode;
-            else if (passcode !== undefined) devices[index]!.passcode = passcode;
-            // coordinates: the object replaces the whole override map; {} clears it
-            if (coordinates !== undefined) {
-                try {
-                    const overrides = validateCoordinateOverrides(coordinates, devices[index]!.coordinateProfile);
-                    if (Object.keys(overrides).length === 0) delete devices[index]!.coordinates;
-                    else devices[index]!.coordinates = overrides;
-                } catch (error) {
-                    return reply.code(400).send({ error: errorMessage(error) });
+            const updated = await mutateRegisteredDevices((devices) => {
+                const device = devices.find((entry) => entry.udid === request.params.udid);
+                if (!device) throw httpError(404, 'Device not found');
+                if (name !== undefined) device.name = name;
+                if (wdaLocalPort !== undefined) device.wdaLocalPort = wdaLocalPort;
+                if (mjpegLocalPort !== undefined) device.mjpegLocalPort = mjpegLocalPort;
+                if (coordinateProfile !== undefined) device.coordinateProfile = coordinateProfile as RegisteredDevice['coordinateProfile'];
+                if (pluginData !== undefined) device.pluginData = pluginData;
+                if (disabled === true) device.disabled = true;
+                else if (disabled === false) delete device.disabled;
+                // passcode: a value sets it, '' clears it, omitting it leaves it
+                if (passcode === '') delete device.passcode;
+                else if (passcode !== undefined) device.passcode = passcode;
+                // coordinates: the object replaces the whole override map; {} clears it
+                if (coordinates !== undefined) {
+                    const overrides = validateCoordinateOverrides(coordinates, device.coordinateProfile);
+                    if (Object.keys(overrides).length === 0) delete device.coordinates;
+                    else device.coordinates = overrides;
                 }
-            }
-            await saveRegisteredDevices(devices);
+                return device;
+            });
             remote.forget(request.params.udid);
-            return redactDevice(devices[index]!);
+            return redactDevice(updated);
         },
     );
     app.get<{ Params: { udid: string } }>('/api/devices/:udid/coordinates', async (request, reply) => {
@@ -293,9 +320,8 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         };
     });
     app.delete<{ Params: { udid: string } }>('/api/devices/:udid', async (request, reply) => {
-        const devices = await loadRegisteredDevices();
-        const index = devices.findIndex(({ udid }) => udid === request.params.udid);
-        if (index < 0) return reply.code(404).send({ error: 'Device not found' });
+        const exists = (await loadRegisteredDevices()).some(({ udid }) => udid === request.params.udid);
+        if (!exists) return reply.code(404).send({ error: 'Device not found' });
         if (await options.scheduler.activeExecution(request.params.udid)) {
             return reply.code(409).send({ error: 'Stop the running automation before removing this device' });
         }
@@ -304,8 +330,10 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
                 await options.scheduler.setScheduleStatus(schedule.id, 'cancelled');
             }
         }
-        devices.splice(index, 1);
-        await saveRegisteredDevices(devices);
+        await mutateRegisteredDevices((devices) => {
+            const index = devices.findIndex(({ udid }) => udid === request.params.udid);
+            if (index >= 0) devices.splice(index, 1);
+        });
         remote.forget(request.params.udid);
         return reply.code(204).send();
     });
@@ -322,19 +350,10 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         return results;
     });
 
-    app.get<{ Params: { udid: string } }>('/api/devices/:udid/screenshot', async (request, reply) => {
-        const device = (await loadRegisteredDevices()).find(({ udid }) => udid === request.params.udid);
-        if (!device) return reply.code(404).send({ error: 'Device not found' });
-        const remote = new WdaRemoteControl({ deviceUdid: device.udid, wdaUrl: `http://127.0.0.1:${device.wdaLocalPort ?? 8100}` });
-        return reply.type('image/png').send(await remote.getScreenshot(device.udid));
-    });
-    app.post<{ Params: { udid: string }; Body: RemoteAction }>('/api/devices/:udid/actions', async (request, reply) => {
-        const device = (await loadRegisteredDevices()).find(({ udid }) => udid === request.params.udid);
-        if (!device) return reply.code(404).send({ error: 'Device not found' });
-        const remote = new WdaRemoteControl({ deviceUdid: device.udid, wdaUrl: `http://127.0.0.1:${device.wdaLocalPort ?? 8100}` });
-        await remote.performAction(device.udid, request.body);
-        return reply.code(204).send();
-    });
+    // NB: /remote/screenshot and /remote/action below are the canonical
+    // endpoints — they carry the activeExecution guard and the cached
+    // per-device client. The old unprefixed /screenshot and /actions twins
+    // that bypassed both were removed.
     app.get<{ Params: { udid: string } }>('/api/devices/:udid/remote/info', async (request, reply) => {
         const device = (await discoverConnectedDevices()).find(({ udid }) => udid === request.params.udid);
         if (!device) return reply.code(404).send({ error: 'Device is not connected' });
@@ -369,13 +388,25 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
     app.get<{ Params: { udid: string } }>('/api/devices/:udid/connection', async (request, reply) => {
         const registered = (await loadRegisteredDevices()).find(({ udid }) => udid === request.params.udid);
         if (!registered) return reply.code(404).send({ error: 'Device is not registered' });
+        // Prefer the real per-device state the wda-service supervisor tracks
+        // (physical, wda, appium, retryCount, message).
+        try {
+            const response = await requestWdaService('/devices', { timeoutMs: 2_000 });
+            if (response.statusCode >= 200 && response.statusCode < 300) {
+                const status = (JSON.parse(response.body).devices as DeviceConnectionStatus[])
+                    .find((entry) => entry.udid === registered.udid);
+                if (status) return status;
+            }
+        } catch { /* supervisor socket unavailable — fall back to a probe */ }
         const connected = (await discoverConnectedDevices()).some(({ udid }) => udid === registered.udid);
         let wda = false;
-        try { wda = (await fetch(`http://127.0.0.1:${registered.wdaLocalPort ?? 8100}/status`)).ok; } catch {}
+        try {
+            wda = (await fetch(`http://127.0.0.1:${registered.wdaLocalPort ?? 8100}/status`, { signal: AbortSignal.timeout(2_000) })).ok;
+        } catch { /* WDA not up */ }
         return {
             udid: registered.udid, physical: connected ? 'connected' : 'disconnected',
-            wda: wda ? 'ready' : connected ? 'connecting' : 'disconnected', appium: 'ready',
-            managed: true, message: wda ? 'WDA is ready' : connected ? 'Waiting for WDA' : 'Reconnect the USB cable',
+            wda: wda ? 'ready' : connected ? 'connecting' : 'disconnected', appium: 'unknown',
+            managed: false, message: wda ? 'WDA is ready' : connected ? 'Waiting for WDA' : 'Reconnect the USB cable',
             retryCount: 0, updatedAt: new Date().toISOString(),
         };
     });
@@ -427,16 +458,21 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         }, device.pluginData[current.pluginId] ?? {});
         return schedule ?? reply.code(409).send({ error: 'Completed or cancelled schedules cannot be edited' });
     });
-    app.post<{ Params: { id: string }; Body: { status: 'active' | 'paused' | 'cancelled' } }>('/api/schedules/:id/status', async (request, reply) => {
-        const schedule = await options.scheduler.setScheduleStatus(request.params.id, request.body.status);
-        return schedule ?? reply.code(404).send({ error: 'Schedule not found' });
-    });
-    for (const action of ['pause', 'resume', 'cancel'] as const) {
-        app.post<{ Params: { id: string } }>(`/api/schedules/:id/${action}`, async (request, reply) => {
-            const status = action === 'pause' ? 'paused' : action === 'resume' ? 'active' : 'cancelled';
-            const schedule = await options.scheduler.setScheduleStatus(request.params.id, status);
+    const changeStatus = async (id: string, status: 'active' | 'paused' | 'cancelled', reply: FastifyReply) => {
+        try {
+            const schedule = await options.scheduler.setScheduleStatus(id, status);
             return schedule ?? reply.code(404).send({ error: 'Schedule not found' });
-        });
+        } catch (error) {
+            if (error instanceof ScheduleTransitionError) return reply.code(409).send({ error: errorMessage(error) });
+            throw error;
+        }
+    };
+    app.post<{ Params: { id: string }; Body: { status: 'active' | 'paused' | 'cancelled' } }>('/api/schedules/:id/status',
+        (request, reply) => changeStatus(request.params.id, request.body.status, reply));
+    for (const action of ['pause', 'resume', 'cancel'] as const) {
+        const status = action === 'pause' ? 'paused' : action === 'resume' ? 'active' : 'cancelled';
+        app.post<{ Params: { id: string } }>(`/api/schedules/:id/${action}`,
+            (request, reply) => changeStatus(request.params.id, status, reply));
     }
     app.post<{ Params: { id: string } }>('/api/executions/:id/stop', async (request, reply) => {
         const result = await options.scheduler.requestStop(request.params.id);
@@ -485,7 +521,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
     for (const plugin of options.plugins.list()) {
         if (plugin.registerRoutes) await plugin.registerRoutes({
             app, routePrefix: `/plugins/${plugin.id}`, scheduler: options.scheduler, remote,
-            loadDevices: loadRegisteredDevices, saveDevices: saveRegisteredDevices, renderActivity,
+            loadDevices: loadRegisteredDevices, saveDevices: saveRegisteredDevices, mutateDevices: mutateRegisteredDevices, renderActivity,
         });
     }
 

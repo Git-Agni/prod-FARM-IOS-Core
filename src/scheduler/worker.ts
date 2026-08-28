@@ -61,7 +61,10 @@ export async function startWorker(plugins: PluginRegistry): Promise<WorkerRuntim
     await repository.materializeDue();
     const materializeTimer = setInterval(() => void repository.materializeDue().catch(console.error), 5_000);
     const deviceTimer = setInterval(() => void registerDeviceWorkers().catch(console.error), 30_000);
-    const cleanupTimer = setInterval(() => void repository.cleanup().catch(console.error), 60 * 60_000);
+    const cleanupTimer = setInterval(() => {
+        void repository.cleanup().catch(console.error);
+        void repository.sweepOrphanedAssets().catch(console.error);
+    }, 60 * 60_000);
     const reconcileTimer = setInterval(() => void repository.reconcileQueueStates().catch(console.error), 60_000);
     return {
         async close() {

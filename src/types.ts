@@ -12,6 +12,8 @@ export interface DeviceIdentity {
 export interface RegisteredDevice extends DeviceIdentity {
     wdaLocalPort?: number;
     mjpegLocalPort?: number;
+    /** Compiled tap-layout key; canonical here, not in pluginData. */
+    coordinateProfile?: string;
     passcode?: string;
     coordinates?: Record<string, { x: number; y: number }>;
     disabled?: boolean;

@@ -177,7 +177,7 @@ try {
     console.log(`Opening TikTok on ${udid}`);
     driver = await remote({
         hostname: process.env.APPIUM_HOST ?? '127.0.0.1',
-        port: positiveInteger('APPIUM_PORT', 4723),
+        port: positiveInteger('APPIUM_PORT', 4725),
         path: '/',
         logLevel: 'info',
         connectionRetryCount: 0,

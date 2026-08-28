@@ -95,6 +95,8 @@ export interface PluginRouteContext {
     remote: RemoteControl;
     loadDevices(): Promise<RegisteredDevice[]>;
     saveDevices(devices: RegisteredDevice[]): Promise<void>;
+    /** Load → mutate → save devices.json atomically under the shared in-process lock. Prefer this over load+saveDevices. */
+    mutateDevices<T>(mutate: (devices: RegisteredDevice[]) => T | Promise<T>): Promise<T>;
     renderActivity(deviceUdid: string, message?: string): Promise<string>;
 }
 

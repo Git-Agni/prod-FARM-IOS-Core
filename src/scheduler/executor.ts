@@ -56,11 +56,12 @@ function deviceAutomation(registered: RegisteredDevice, passcode: string | undef
         terminateApp: (bundleId) => appRequest('/wda/apps/terminate', bundleId),
         pause: (milliseconds, signal) => new Promise((resolve, reject) => {
             if (signal?.aborted) return reject(signal.reason);
-            const timer = setTimeout(resolve, milliseconds);
-            signal?.addEventListener('abort', () => {
-                clearTimeout(timer);
-                reject(signal.reason);
-            }, { once: true });
+            const onAbort = () => { clearTimeout(timer); reject(signal!.reason); };
+            const timer = setTimeout(() => {
+                signal?.removeEventListener('abort', onAbort);
+                resolve();
+            }, milliseconds);
+            signal?.addEventListener('abort', onAbort, { once: true });
         }),
         screenshot: () => remote.getScreenshot(udid),
         tap: (x, y) => remote.performAction(udid, { type: 'tap', x, y }),
