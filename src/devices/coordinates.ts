@@ -141,11 +141,11 @@ export const CALIBRATABLE_POINTS = [
 export type CalibratablePoint = typeof CALIBRATABLE_POINTS[number];
 
 export const POINT_LABELS: Record<CalibratablePoint, string> = {
-    profileTab: 'Profile tab', homeTab: 'Home tab', accountSwitcher: 'Account switcher',
-    create: 'Create (+)', upload: 'Upload', selectMultiple: 'Select multiple', useLayout: 'Use layout',
-    pickerNext: 'Media picker · Next', editorNext: 'Editor · Next', caption: 'Caption field',
-    keyboardBack: 'Keyboard · back', draft: 'Save draft', finish: 'Post / Finish',
-    like: 'Like button', save: 'Save/bookmark button',
+    profileTab: 'TikTok: Profile tab', homeTab: 'TikTok: Home tab', accountSwitcher: 'TikTok: Account switcher',
+    create: 'TikTok: Create (+)', upload: 'TikTok: Upload', selectMultiple: 'TikTok: Select multiple', useLayout: 'TikTok: Use layout',
+    pickerNext: 'TikTok: Media picker · Next', editorNext: 'TikTok: Editor · Next', caption: 'TikTok: Caption field',
+    keyboardBack: 'TikTok: Keyboard · back', draft: 'TikTok: Save draft', finish: 'TikTok: Post / Finish',
+    like: 'TikTok: Like button', save: 'TikTok: Save/bookmark button',
 };
 
 /** Per-device overrides for the calibratable points, stored on the devices.json entry. */
