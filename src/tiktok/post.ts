@@ -25,9 +25,11 @@ async function importMedia(manifest: PostManifest): Promise<number> {
         console.log(`Importing media ${manifest.files.length - index}/${manifest.files.length}: ${file.name}`);
         const data = await readFile(file.path);
         // WDA's /wda/import-media takes the whole file base64-encoded in a JSON
-        // body; past ~400 MB the base64 string exceeds Node's string limit.
-        if (data.length > 400 * 1024 * 1024) {
-            throw new Error(`${file.name} is ${(data.length / 1_048_576).toFixed(0)} MB — the TikTok media import limit is 400 MB`);
+        // body. base64 is 4*ceil(n/3) chars and JSON.stringify allocates a
+        // second copy; Node's max string length (~512 MiB) caps the input near
+        // 384 MiB, so refuse well before that.
+        if (data.length > 350 * 1024 * 1024) {
+            throw new Error(`${file.name} is ${(data.length / 1_048_576).toFixed(0)} MB — the TikTok media import limit is 350 MB`);
         }
         const response = await fetch(`${wdaUrl}/wda/import-media`, {
             method: 'POST', headers: { 'content-type': 'application/json' },

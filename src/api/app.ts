@@ -60,6 +60,13 @@ function httpError(statusCode: number, message: string): Error & { statusCode: n
     return Object.assign(new Error(message), { statusCode });
 }
 
+function csrfBlocked(reply: FastifyReply): FastifyReply {
+    return reply.code(403).send({
+        error: 'Cross-origin write blocked. Send an Authorization: Bearer token for API clients, '
+            + 'or add the origin to PHONE_FARM_TRUSTED_ORIGINS.',
+    });
+}
+
 function escapeHtml(value: unknown): string {
     return String(value ?? '').replace(/[&<>"']/g, (character) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -111,16 +118,24 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         if (['GET', 'HEAD', 'OPTIONS'].includes(request.method)) return;
         if (request.headers.authorization?.startsWith('Bearer ')) return;
         const origin = request.headers.origin;
+        if (!origin) return csrfBlocked(reply);
         const configured = [process.env.PUBLIC_ORIGIN, ...(process.env.PHONE_FARM_TRUSTED_ORIGINS ?? '').split(',')]
-            .map((value) => value?.trim().replace(/\/+$/, '')).filter(Boolean);
-        const forwardedProtocol = String(request.headers['x-forwarded-proto'] ?? 'http').split(',')[0]?.trim();
-        const expected = configured.length ? configured : [`${forwardedProtocol}://${request.headers.host}`];
-        if (!origin || !expected.includes(origin.replace(/\/+$/, ''))) {
-            return reply.code(403).send({
-                error: 'Cross-origin write blocked. Send an Authorization: Bearer token for API clients, '
-                    + 'or add the origin to PHONE_FARM_TRUSTED_ORIGINS.',
-            });
+            .map((value) => value?.trim().replace(/\/+$/, '')).filter((value): value is string => Boolean(value));
+        if (configured.length) {
+            if (!configured.includes(origin.replace(/\/+$/, ''))) return csrfBlocked(reply);
+            return;
         }
+        // Nothing configured: same-origin only, compared by host (ignoring
+        // scheme) so a TLS-terminating proxy that doesn't forward
+        // x-forwarded-proto still passes. URL normalises default ports, so
+        // compare the Origin's host against the request Host under both schemes.
+        // Set PHONE_FARM_TRUSTED_ORIGINS if the proxy also rewrites Host.
+        let originHost: string;
+        try { originHost = new URL(origin).host; } catch { return csrfBlocked(reply); }
+        const hostMatches = ['http', 'https'].some((scheme) => {
+            try { return new URL(`${scheme}://${request.headers.host}`).host === originHost; } catch { return false; }
+        });
+        if (!hostMatches) return csrfBlocked(reply);
     });
 
     if (options.authProvider) {
@@ -411,12 +426,13 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         try {
             wda = (await fetch(`http://127.0.0.1:${registered.wdaLocalPort ?? 8100}/status`, { signal: AbortSignal.timeout(2_000) })).ok;
         } catch { /* WDA not up */ }
-        return {
+        const fallback: DeviceConnectionStatus = {
             udid: registered.udid, physical: connected ? 'connected' : 'disconnected',
-            wda: wda ? 'ready' : connected ? 'connecting' : 'disconnected', appium: 'unknown',
+            wda: wda ? 'ready' : connected ? 'connecting' : 'disconnected', appium: 'unavailable',
             managed: false, message: wda ? 'WDA is ready' : connected ? 'Waiting for WDA' : 'Reconnect the USB cable',
             retryCount: 0, updatedAt: new Date().toISOString(),
         };
+        return fallback;
     });
     app.post<{ Params: { udid: string } }>('/api/devices/:udid/reconnect', async (request, reply) => {
         if (await options.scheduler.activeExecution(request.params.udid)) {

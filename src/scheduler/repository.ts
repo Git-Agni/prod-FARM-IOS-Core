@@ -354,8 +354,10 @@ export class SchedulerRepository {
     }
 
     /** Media uploaded via POST /api/assets but never attached to a schedule (abandoned post form). */
-    async sweepOrphanedAssets(olderThanHours = Number(process.env.SCHEDULER_ORPHAN_ASSET_HOURS ?? 24)): Promise<number> {
-        const cutoff = new Date(Date.now() - olderThanHours * 3_600_000);
+    async sweepOrphanedAssets(olderThanHours = Number(process.env.SCHEDULER_ORPHAN_ASSET_HOURS)): Promise<number> {
+        // A destructive job — an empty/NaN env must not collapse the window to 0.
+        const hours = Number.isFinite(olderThanHours) && olderThanHours >= 1 ? olderThanHours : 24;
+        const cutoff = new Date(Date.now() - hours * 3_600_000);
         const rows = await this.connection.db.select({ id: assets.id }).from(assets).where(and(
             isNull(assets.scheduleId), isNull(assets.executionId), lt(assets.createdAt, cutoff),
         ));
