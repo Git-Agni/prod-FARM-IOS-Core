@@ -23,6 +23,9 @@ h1 { margin-bottom: 8px; font-size: clamp(34px, 6vw, 58px); line-height: 1; lett
 h2 { margin-bottom: 7px; font-size: 20px; letter-spacing: -.02em; }
 p { margin-bottom: 0; color: var(--muted); line-height: 1.55; }
 .shell { width: min(1060px, calc(100% - 32px)); margin: 0 auto; padding: 58px 0 80px; }
+.app-footer { width: min(1060px, calc(100% - 32px)); margin: -48px auto 28px; color: #5b6675; font-size: 12px; text-align: center; }
+.app-footer a { color: #7c8797; text-decoration: none; }
+.app-footer a:hover { color: var(--text); }
 .page-header, .device-summary, .section-heading, .run-heading, .modal-head { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
 .page-header { margin-bottom: 30px; align-items: end; }
 .eyebrow { display: block; margin-bottom: 10px; color: #788597; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }

@@ -71,11 +71,44 @@ Persistent WebDriverAgent supervisor, controlled over a Unix socket
   message }`. States: `ready`, `unlock-required`, `error`, …
 - Single‑supervisor by design; a lock prevents duplicates.
 
-### `appium` — `appium --port 4725`
+### `appium` — `appium --address 127.0.0.1 --port 4725`
 Appium 3 with the XCUITest driver, isolated in `APPIUM_HOME=.appium2`. Task
 subprocesses (e.g. `src/tiktok/doomscroll.ts`) connect to it with
 `webdriverio`. The dashboard's remote control does **not** go through Appium —
-it talks to WDA directly.
+it talks to WDA directly. Binds loopback only.
+
+## Xcode, signing, and device pairing
+
+The farm never talks to a device directly at the USB level for *control* — it
+delegates the whole pair/trust/sign/launch chain to Xcode's toolchain:
+
+- **Pairing & trust** are the OS's job. An iPhone must be paired (USB + "Trust
+  This Computer") and, on iOS 16+, have **Developer Mode** enabled before any
+  of this works. `xcrun xctrace list devices` / `discoverConnectedDevices()`
+  (`appium-ios-device`, over `usbmuxd`) is how the app learns a device is
+  attached; it does not initiate pairing.
+- **The Developer Disk Image** for the device's iOS version is mounted by
+  Xcode on first pair. `xcodebuild` needs it present to launch a test bundle.
+- **Signing.** `src/devices/wda/prepare.ts` runs `xcodebuild build-for-testing`
+  with `CODE_SIGN_STYLE=Automatic` and `DEVELOPMENT_TEAM=$XCODE_ORG_ID`. Xcode
+  automatic signing creates/refreshes a development provisioning profile that
+  lists the connected UDIDs and embeds it in `WebDriverAgentRunner-Runner.app`.
+  This is why a new device must be plugged in (and the Apple ID have a free
+  slot — the 100-UDID limit) when `wda:prepare` runs. Signing reads a
+  certificate from the **login keychain**, which is only unlocked in a
+  graphical session — hence the "run from Terminal.app, not SSH" rule.
+- **Launch.** `wda-service` runs `xcodebuild test-without-building
+  -destination id=<udid>` per active device: it installs the pre-signed
+  `WebDriverAgentRunner` and starts it as a UI test. WDA then serves HTTP on
+  the device's `:8100` and MJPEG on `:9100`, which `wda-service` USB-forwards
+  to the host's `:81xx` / `:91xx`.
+
+The **registration wizard** (`src/devices/registration.ts`) is a UI over this
+chain: its `host` / `connection` / `signing` / `developer` / `wda` checks each
+probe one link (Xcode selected, device visible over usbmux, a signing identity
+present, the DDI mounted, WDA reachable) and surface a specific fix before the
+device is written to `devices.json`. `wda:prepare` is the same signing step
+without the UI, for scripted or bulk (`--all`) setup.
 
 ## Data & state
 

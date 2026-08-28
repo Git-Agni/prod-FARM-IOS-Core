@@ -14,7 +14,47 @@ scheduler that runs versioned automation tasks (a TikTok plugin ships built‑in
 | A physical iPhone | Developer‑enabled, trusted, connected by USB. |
 | An Apple Developer team | For signing WebDriverAgent. |
 
-## 1. Install
+## 1. Xcode & first device pairing
+
+Everything downstream — signing WebDriverAgent, launching it as a UI test,
+the registration wizard's checks — assumes Xcode can already **see and sign
+for** the iPhone. Do this once, before touching the repo:
+
+1. **Install the full Xcode** from the App Store (not just the Command Line
+   Tools), open it once, and accept the licence:
+   ```sh
+   sudo xcodebuild -license accept
+   sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+   xcodebuild -runFirstLaunch
+   ```
+   `xcode-select -p` must now print `…/Xcode.app/Contents/Developer`.
+
+2. **Add your Apple ID** in Xcode → Settings → Accounts. Select the team and
+   note its **Team ID** (the 10-character string) — that's `XCODE_ORG_ID`
+   in step 3. A free personal team works for a single device; a paid team is
+   needed for more than one, and for the device list not to expire weekly.
+
+3. **Pair the iPhone.** Connect it by USB, unlock it, tap **Trust This
+   Computer**, enter the passcode. In Xcode → Window → **Devices and
+   Simulators**, the device should appear and, after a minute, read
+   **"Connected"** (not "Preparing" or "Unavailable") — Xcode is downloading
+   the matching Developer Disk Image in the background.
+
+4. **Enable Developer Mode** (iOS 16+): on the phone, Settings → Privacy &
+   Security → **Developer Mode** → on → restart → confirm. If the toggle
+   isn't there yet, it appears after the first pair with Xcode.
+
+5. **Login keychain** — `wda:prepare` (step 5) signs with a certificate in
+   your login keychain, which is only unlocked in a graphical session. Run it
+   from Terminal.app / a remote desktop, not a bare SSH shell.
+
+Verify the phone is visible to the toolchain:
+
+```sh
+xcrun xctrace list devices      # your iPhone must be under "Devices", not "Devices Offline"
+```
+
+## 2. Install
 
 ```sh
 git clone <this-repo> phone-farm
@@ -23,7 +63,7 @@ npm install
 npm run appium:install-driver     # installs the XCUITest driver into ./.appium2
 ```
 
-## 2. Configure
+## 3. Configure
 
 ```sh
 cp .env.example .env
@@ -44,14 +84,14 @@ dashboard's registration wizard resolve the target device on their own; pass
 `--udid <udid>` (or set `IOS_UDID`) only to pin a specific one. Device
 passcodes stay out of `.env` too — see [devices & secrets](#devices-and-secrets).
 
-## 3. Database
+## 4. Database
 
 ```sh
 npm run db:up        # start the bundled Postgres (skip if you run your own)
 npm run db:migrate   # apply scheduler + pg-boss schema
 ```
 
-## 4. Build WebDriverAgent
+## 5. Build WebDriverAgent
 
 ```sh
 npm run wda:prepare                 # the connected / sole registered device
@@ -70,7 +110,7 @@ It ends with `** TEST BUILD SUCCEEDED **`.
 > and `security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k <pw>
 > ~/Library/Keychains/login.keychain-db` first.
 
-## 5. Run the four processes
+## 6. Run the four processes
 
 Each is long‑lived. In development that's four terminals; for an always‑on host,
 wrap each in a `launchd` agent (macOS) or systemd unit with your own process
@@ -87,7 +127,7 @@ npm run web            # dashboard + API on :3000
 Open <http://127.0.0.1:3000>, go to **Register device**, pick the connected
 device, and step through the checks. Unlock the phone when WDA first launches.
 
-## 6. Schedule something
+## 7. Schedule something
 
 From a device page you can run the built‑in TikTok tasks (`doomscroll`,
 `post`) now or on a `daily`/`weekly`/`once` schedule. Watch progress in
