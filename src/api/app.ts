@@ -336,10 +336,19 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         return { device, screen: await remote.getScreenInfo(device.udid) };
     });
     app.get<{ Params: { udid: string } }>('/api/devices/:udid/remote/screenshot', async (request, reply) => {
-        return reply.header('cache-control', 'no-store').type('image/png').send(await remote.getScreenshot(request.params.udid));
+        try {
+            return reply.header('cache-control', 'no-store').type('image/png').send(await remote.getScreenshot(request.params.udid));
+        } catch {
+            // A flapping device shouldn't spew 500s into the log every 5s from the grid poll.
+            return reply.code(503).header('cache-control', 'no-store').send();
+        }
     });
     app.get<{ Params: { udid: string } }>('/api/devices/:udid/remote/stream', async (request, reply) => {
-        const upstream = await remote.getMjpegStream(request.params.udid);
+        // Close the upstream device stream the moment the browser goes away —
+        // otherwise every HTMX fragment swap leaks a live MJPEG connection.
+        const abort = new AbortController();
+        request.raw.once('close', () => abort.abort());
+        const upstream = await remote.getMjpegStream(request.params.udid, abort.signal);
         if (!upstream.body) return reply.code(503).send({ error: 'Device stream is unavailable' });
         return reply.header('cache-control', 'no-store, no-cache, must-revalidate')
             .type(upstream.headers.get('content-type') ?? 'multipart/x-mixed-replace; boundary=--BoundaryString')
@@ -505,8 +514,11 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
                     const candidate = value.accounts;
                     return Array.isArray(candidate) ? candidate.filter((entry) => typeof entry === 'string') : [];
                 });
+                // A still screenshot that refreshes with the 5s fragment poll —
+                // not a live MJPEG stream. Streaming every device's screen through
+                // the tunnel at once is what made the grid crawl.
                 const preview = device.connected
-                    ? `<div class="device-preview-frame"><img class="device-preview" src="/api/devices/${encodeURIComponent(device.udid)}/remote/stream" alt="Live screen from ${escapeHtml(device.name)}" draggable="false" hx-preserve="true"></div>`
+                    ? `<div class="device-preview-frame"><img class="device-preview" src="/api/devices/${encodeURIComponent(device.udid)}/remote/screenshot?t=${Date.now()}" alt="Screen of ${escapeHtml(device.name)}" draggable="false" onerror="this.style.visibility='hidden'"></div>`
                     : '<div class="device-preview-frame unavailable" aria-hidden="true"><div class="device-icon"></div></div>';
                 return `<article class="device-card">${preview}<div class="device-copy"><h2>${escapeHtml(device.name)}</h2><p>${device.connected ? `iOS ${escapeHtml(device.connected.osVersion)}` : escapeHtml(device.udid)}</p><span class="connected${device.connected ? '' : ' offline'}"><span></span>${device.connected ? 'Online' : 'Offline'}</span>${accounts.length ? `<p class="accounts">${accounts.map(escapeHtml).join(', ')}</p>` : ''}</div><div class="device-card-actions"><a class="button secondary" href="/devices/${encodeURIComponent(device.udid)}">Open device <span aria-hidden="true">→</span></a>${toggleButton(device.udid, 'Disconnect', true)}</div></article>`;
             }).join('');

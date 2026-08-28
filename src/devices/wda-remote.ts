@@ -73,7 +73,8 @@ interface W3cPointerSource {
 export interface RemoteControl {
     getScreenInfo(udid: string): Promise<ScreenInfo>;
     getScreenshot(udid: string): Promise<Buffer>;
-    getMjpegStream(udid: string): Promise<Response>;
+    /** `signal` should be tied to the client request so the upstream device stream closes when the viewer leaves. */
+    getMjpegStream(udid: string, signal?: AbortSignal): Promise<Response>;
     performAction(udid: string, action: RemoteAction): Promise<void>;
     isLocked(udid: string): Promise<boolean>;
     /** Drop any cached client for this device so its next use re-reads devices.json. */
@@ -159,13 +160,16 @@ export class WdaRemoteControl {
         return Buffer.from(payload.value, 'base64');
     }
 
-    async getMjpegStream(udid: string): Promise<Response> {
+    async getMjpegStream(udid: string, signal?: AbortSignal): Promise<Response> {
         this.assertTarget(udid);
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), this.timeoutMs);
+        // A connect deadline for the handshake, then hand the stream over to the
+        // caller's signal so it lives exactly as long as the client stays connected.
+        const connect = new AbortController();
+        const timer = setTimeout(() => connect.abort(new RemoteDeviceError('WDA video stream did not connect in time')), this.timeoutMs);
+        const combined = signal ? AbortSignal.any([signal, connect.signal]) : connect.signal;
         let response: Response;
         try {
-            response = await this.fetch(`${this.mjpegUrl}/`, { signal: controller.signal });
+            response = await this.fetch(`${this.mjpegUrl}/`, { signal: combined });
         } catch (error) {
             throw new RemoteDeviceError(`WDA video stream is unavailable: ${errorMessage(error)}`);
         } finally {
