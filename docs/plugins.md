@@ -19,6 +19,7 @@ const plugin: PhoneFarmPlugin = {
     version: '1.0.0',           // package version, informational
     displayName: 'Instagram',
     tasks: [ /* TaskDefinition[] */ ],
+    navLinks: [],               // optional — links in the dashboard top nav
     devicePanels: [],           // optional
     registrationChecks: [],     // optional
     wdaExtensions: [],           // optional
@@ -135,6 +136,22 @@ from a plugin route, `ctx.saveDevices()`.
 never in `pluginData`, task summaries, logs, or HTML.
 
 ## Optional surfaces
+
+### Nav links + full pages
+
+`navLinks` puts entries in the dashboard's top navigation (rendered into a
+`__PLUGIN_NAV__` slot on every themed page and the fallback page):
+
+```ts
+navLinks: [{ label: 'Mac', href: '/mac', order: 20 }]  // lower order = further left
+```
+
+Pair it with `registerRoutes` to serve the page the link points at. Unlike
+task panels, a plugin route can register **any** path (not just under
+`/plugins/<id>`) and return a whole HTML document — it still sits inside the
+authenticated host, so link `/assets/styles.css` for the dashboard's styling.
+The private `com.git-agni.mac-stats` plugin is a worked example: a `Mac` nav
+link, `GET /mac` (a live host-stats page) and `GET /mac/stats.json`.
 
 ### Device panels
 ```ts

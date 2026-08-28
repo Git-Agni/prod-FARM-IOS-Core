@@ -33,7 +33,10 @@ Fastify app on `WEB_PORT` (default 3000).
 - JSON API under `/api/*` (devices, registrations, schedules, executions,
   assets, remote control).
 - Live device screen: `GET /api/devices/:udid/remote/stream` proxies the
-  phone's MJPEG feed; `POST …/remote/action` forwards tap/swipe to WDA.
+  phone's MJPEG feed (used on the device page; the device **grid** uses
+  periodic `…/remote/screenshot` stills instead). The proxy aborts the
+  upstream feed when the browser disconnects. `POST …/remote/action` forwards
+  tap/swipe to WDA.
 - Loads plugins (`PHONE_FARM_PLUGINS`) and the auth provider
   (`PHONE_FARM_AUTH_PLUGIN`); mounts each plugin's **panels** on the device
   page and its **routes** under `/plugins/<pluginId>`.
@@ -45,7 +48,10 @@ Fastify app on `WEB_PORT` (default 3000).
 ### `worker` — `src/scheduler/worker.ts` → `startWorker()`
 Headless. Owns task execution.
 
-- One pg-boss worker per registered device, queue `ios-device-<hash(udid)>`.
+- One pg-boss worker per **active** registered device, queue
+  `ios-device-<hash(udid)>`. A device with `disabled: true` in `devices.json`
+  is skipped here and by `wda-service` — the entry stays but nothing supervises
+  it.
 - Every 5 s, `materializeDue()` turns due schedules into `executions` rows and
   enqueues jobs; every 30 s it picks up newly registered devices.
 - For each job: `executeAutomation()` (`src/scheduler/executor.ts`) waits for
@@ -78,8 +84,8 @@ it talks to WDA directly.
 | PostgreSQL `scheduler.*` | `schedules`, `executions`, `execution_attempts`, `execution_logs`, `assets`. Drizzle ORM; migrations in `drizzle/`. |
 | PostgreSQL `pgboss.*` | Job queue (one partitioned queue per device). |
 | PostgreSQL `drizzle.*` | Applied‑migration ledger. |
-| `devices.json` | Registered devices: udid, name, ports, `coordinateProfile`, `pluginData`. Git‑ignored. |
-| `.env` / `.env.devices` | Configuration and secrets (device passcodes). Git‑ignored. |
+| `devices.json` | Registered devices: `udid`, `name`, ports, `coordinateProfile`, per‑device `coordinates` overrides, `passcode`, `disabled`, `pluginData`. Git‑ignored, `0600`. |
+| `.env` | Configuration and secrets (DB URL, signing IDs, auth keys). Git‑ignored. Device passcodes live in `devices.json`, not here. |
 | `.scheduler-data/assets/` | Uploaded media for `post`‑style tasks, content‑addressed. |
 | `.wda/` | wda-service socket and locks. |
 | `.appium2/` | Isolated Appium home with the pinned XCUITest driver. |
