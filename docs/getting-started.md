@@ -11,8 +11,8 @@ scheduler that runs versioned automation tasks (a TikTok plugin ships built‑in
 | macOS + Xcode | Real‑device builds and signing. `xcode-select -p` must point at an Xcode install, not the Command Line Tools. |
 | Node.js 22+ | `engines.node >= 22`. The app runs TypeScript directly through `tsx`; there is no build step for the server. |
 | PostgreSQL 14+ | `docker compose up -d postgres` is provided, or bring your own and set `DATABASE_URL`. |
-| A physical iPhone | Developer‑enabled, trusted, connected by USB. iOS 16/17/18 are supported. |
-| An Apple Developer team | For signing WebDriverAgent. A free personal team works for one device. |
+| A physical iPhone | Developer‑enabled, trusted, connected by USB. |
+| An Apple Developer team | For signing WebDriverAgent. |
 
 ## 1. Install
 
