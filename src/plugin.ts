@@ -81,6 +81,13 @@ export interface WdaExtension {
     patchFiles: Array<{ path: string; sha256: string }>;
 }
 
+/** A link a plugin contributes to the dashboard's top navigation. */
+export interface PluginNavLink {
+    label: string;
+    href: string;
+    order?: number;
+}
+
 export interface PluginRouteContext {
     app: FastifyInstance;
     routePrefix: string;
@@ -96,6 +103,7 @@ export interface PhoneFarmPlugin {
     version: string;
     displayName: string;
     tasks: readonly TaskDefinition[];
+    navLinks?: readonly PluginNavLink[];
     devicePanels?: readonly DevicePanel[];
     registrationChecks?: readonly RegistrationCheck[];
     wdaExtensions?: readonly WdaExtension[];

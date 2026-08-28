@@ -69,6 +69,33 @@ test('a configured auth provider adds a Log out link to the nav', async (context
     assert.match(String(cssBare.headers['cache-control']), /no-cache/);
 });
 
+test('a plugin can contribute nav links and register its own routes', async (context) => {
+    const app = await createApp({
+        plugins: new PluginRegistry([{
+            id: 'com.example.stats', version: '1.0.0', displayName: 'Stats', tasks: [],
+            navLinks: [{ label: 'Stats', href: '/stats' }],
+            registerRoutes({ app: instance }) {
+                instance.get('/stats', async (_request, reply) => reply.type('text/html').send('<h1>stats</h1>'));
+            },
+        }]),
+        scheduler: {} as SchedulerRepository,
+        registrations: registrations(),
+        dashboardTheme: defaultDashboardTheme,
+    });
+    context.after(() => app.close());
+
+    for (const url of ['/', '/tasks', '/devices/register']) {
+        const res = await app.inject({ method: 'GET', url });
+        assert.equal(res.statusCode, 200, url);
+        assert.match(res.body, /href="\/stats"[^>]*>Stats</, url);
+        assert.doesNotMatch(res.body, /__PLUGIN_NAV__/, url);
+    }
+
+    const stats = await app.inject({ method: 'GET', url: '/stats' });
+    assert.equal(stats.statusCode, 200);
+    assert.match(stats.body, /<h1>stats<\/h1>/);
+});
+
 test('serves and drives the public registration wizard', async (context) => {
     const app = await createApp({
         plugins: new PluginRegistry([]),

@@ -18,7 +18,7 @@ import type {
     DeviceRegistrationManager, RegistrationAction, RegistrationUpdate,
 } from '../devices/registration.js';
 import { WdaRemoteControl, type RemoteAction } from '../devices/wda-remote.js';
-import type { AuthProvider } from '../plugin.js';
+import type { AuthProvider, PluginNavLink } from '../plugin.js';
 import type { PluginRegistry } from '../registry.js';
 import type { CreateTaskInput, JsonObject, ScheduleTiming } from '../types.js';
 import type { SchedulerRepository } from '../scheduler/repository.js';
@@ -59,12 +59,13 @@ function escapeHtml(value: unknown): string {
     })[character] ?? character);
 }
 
-function page(title: string, body: string, logoutPath?: string): string {
+function page(title: string, body: string, logoutPath?: string, navLinks: readonly PluginNavLink[] = []): string {
     const logout = logoutPath ? `<a href="${escapeHtml(logoutPath)}" style="float:right;margin-right:0">Log out</a>` : '';
+    const extra = navLinks.map((link) => `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`).join('');
     return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escapeHtml(title)}</title><style>
 body{font:15px system-ui,sans-serif;margin:0;background:#f6f7f9;color:#17202a}nav{padding:16px 24px;background:#111827;color:white}nav a{color:white;margin-right:18px}main{max-width:1100px;margin:24px auto;padding:0 20px}.card{background:white;border:1px solid #dde2e8;border-radius:10px;padding:18px;margin:14px 0}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid #e5e7eb}code{font-size:12px}.muted{color:#64748b}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}button,.button{background:#2563eb;color:white;border:0;border-radius:6px;padding:8px 12px;text-decoration:none;cursor:pointer}input,select,textarea{padding:8px;border:1px solid #cbd5e1;border-radius:6px}</style></head>
-<body><nav><a href="/">Devices</a><a href="/tasks">Tasks</a><a href="/docs">API</a>${logout}</nav><main>${body}</main></body></html>`;
+<body><nav><a href="/">Devices</a><a href="/tasks">Tasks</a><a href="/docs">API</a>${extra}${logout}</nav><main>${body}</main></body></html>`;
 }
 
 async function registeredWithStatus() {
@@ -113,7 +114,13 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
     const logoutPath = options.authProvider?.logoutPath;
     const authNavHtml = logoutPath
         ? `<a class="button secondary app-logout" href="${escapeHtml(logoutPath)}">Log out</a>` : '';
-    const renderPage = (title: string, body: string) => page(title, body, logoutPath);
+    const navLinks: PluginNavLink[] = options.plugins.list()
+        .flatMap((plugin) => plugin.navLinks ?? [])
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    const pluginNavHtml = navLinks
+        .map((link) => `<a class="button secondary" href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`)
+        .join('');
+    const renderPage = (title: string, body: string) => page(title, body, logoutPath, navLinks);
     const assetHash = (body: string) => crypto.createHash('sha1').update(body).digest('base64url').slice(0, 10);
 
     let themed: LoadedDashboardTheme | null = null;
@@ -139,7 +146,7 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
             'htmx.min.js': assetHash(htmx),
         };
         const finalize = (html: string) => {
-            let out = html.replaceAll('__AUTH_NAV__', authNavHtml);
+            let out = html.replaceAll('__AUTH_NAV__', authNavHtml).replaceAll('__PLUGIN_NAV__', pluginNavHtml);
             for (const [name, v] of Object.entries(versions)) out = out.replaceAll(`/assets/${name}`, `/assets/${name}?v=${v}`);
             return out;
         };
