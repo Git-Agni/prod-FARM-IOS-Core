@@ -8,18 +8,25 @@
     <script src="/assets/htmx.min.js" defer></script>
 </head>
 <body>
-    <main class="shell device-shell" data-device-udid="__DEVICE_UDID__">
-        <nav class="breadcrumb">
-            <a href="/">Devices</a><span>/</span><a href="/tasks">Tasks</a><span>/</span><span>Device workspace</span>
-            <span class="nav-actions">
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <a class="brand-name" href="/">iOS Farm</a>
+                <a class="brand-by" href="https://gethandler.ai" target="_blank" rel="noopener">by Handler</a>
+            </div>
+            <nav class="topbar-nav">
+                <a class="crumb" href="/">Devices</a>
+                <a class="crumb" href="/tasks">Tasks</a>
                 <button id="open-tasks" class="button secondary" type="button">Tasks &amp; schedules</button>
                 <button id="open-accounts" class="button secondary" type="button">Accounts</button>
                 <button id="open-passcode" class="button secondary" type="button">Passcode</button>
                 <button id="open-calibrate" class="button secondary" type="button">Touch points</button>
                 <button id="open-remove" class="button danger" type="button">Remove device</button>
                 __PLUGIN_NAV____AUTH_NAV__
-            </span>
-        </nav>
+            </nav>
+        </div>
+    </header>
+    <main class="shell device-shell" data-device-udid="__DEVICE_UDID__">
         <section id="device-summary" class="device-summary loading-card"
             hx-get="/api/devices/__DEVICE_UDID__/fragments/summary" hx-trigger="load" hx-swap="outerHTML">
             <span class="spinner" aria-hidden="true"></span>Loading device details…

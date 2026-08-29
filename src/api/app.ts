@@ -75,7 +75,7 @@ function escapeHtml(value: unknown): string {
 
 // Shown at the foot of every dashboard page. Override the link with
 // PHONE_FARM_BRAND_URL; the text is fixed.
-const FOOTER_HTML = `Built by <a href="${escapeHtml(process.env.PHONE_FARM_BRAND_URL ?? 'https://agniverse.co')}" target="_blank" rel="noopener">Agni</a> with love and curry`;
+const FOOTER_HTML = `Built by <a href="${escapeHtml(process.env.PHONE_FARM_BRAND_URL ?? 'https://agniverse.co')}" target="_blank" rel="noopener">Agniverse</a>, with love and curry &#10084;&#65039;`;
 
 function page(title: string, body: string, logoutPath?: string, navLinks: readonly PluginNavLink[] = []): string {
     const logout = logoutPath ? `<a href="${escapeHtml(logoutPath)}" style="float:right;margin-right:0">Log out</a>` : '';
