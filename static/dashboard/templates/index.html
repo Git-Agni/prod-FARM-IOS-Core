@@ -8,14 +8,22 @@
     <script src="/assets/htmx.min.js" defer></script>
 </head>
 <body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <a class="brand-name" href="/">iOS Farm</a>
+                <a class="brand-by" href="https://gethandler.ai" target="_blank" rel="noopener">by Handler</a>
+            </div>
+            <nav class="topbar-nav"><a class="button primary" href="/devices/register">Register device</a><a class="button secondary" href="/tasks">Tasks</a><button class="button secondary" type="button" hx-get="/api/fragments/devices" hx-target="#device-list" hx-swap="outerHTML">Refresh</button>__PLUGIN_NAV____AUTH_NAV__</nav>
+        </div>
+    </header>
     <main class="shell">
         <header class="page-header">
             <div>
-                <span class="eyebrow">Automation workspace · by Handler</span>
+                <span class="eyebrow">Automation workspace</span>
                 <h1>Devices</h1>
                 <p>Choose a connected iPhone to control it or run automation.</p>
             </div>
-            <div class="inline-actions"><a class="button primary" href="/devices/register">Register device</a><a class="button secondary" href="/tasks">Tasks</a><button class="button secondary" type="button" hx-get="/api/fragments/devices" hx-target="#device-list" hx-swap="outerHTML">Refresh</button>__PLUGIN_NAV____AUTH_NAV__</div>
         </header>
         <section id="device-list" class="device-list" hx-get="/api/fragments/devices" hx-trigger="load" hx-swap="outerHTML" aria-live="polite">
             <div class="loading-card"><span class="spinner" aria-hidden="true"></span>Looking for connected devices…</div>

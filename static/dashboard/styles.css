@@ -22,7 +22,17 @@ h1, h2, p { margin-top: 0; }
 h1 { margin-bottom: 8px; font-size: clamp(34px, 6vw, 58px); line-height: 1; letter-spacing: -.055em; }
 h2 { margin-bottom: 7px; font-size: 20px; letter-spacing: -.02em; }
 p { margin-bottom: 0; color: var(--muted); line-height: 1.55; }
-.shell { width: min(1060px, calc(100% - 32px)); margin: 0 auto; padding: 58px 0 80px; }
+.shell { width: min(1060px, calc(100% - 32px)); margin: 0 auto; padding: 36px 0 80px; }
+.topbar { position: sticky; top: 0; z-index: 60; border-bottom: 1px solid var(--border); background: rgb(8 11 16 / 84%); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; width: min(1060px, calc(100% - 32px)); margin: 0 auto; padding: 9px 0; }
+.brand { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-name { font-size: 17px; font-weight: 800; letter-spacing: -.02em; text-decoration: none; }
+.brand-by { color: var(--muted); font-size: 11px; font-weight: 650; letter-spacing: .02em; text-decoration: none; }
+.brand-by:hover { color: var(--text); }
+.topbar-nav { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 7px; }
+.topbar-nav .button { min-height: 34px; padding: 0 12px; font-size: 12px; }
+.topbar-nav .crumb { color: #778294; font-size: 13px; text-decoration: none; margin: 0 4px; }
+.topbar-nav .crumb:hover { color: var(--text); }
 .app-footer { width: min(1060px, calc(100% - 32px)); margin: -48px auto 28px; color: #5b6675; font-size: 12px; text-align: center; }
 .app-footer a { color: #7c8797; text-decoration: none; }
 .app-footer a:hover { color: var(--text); }

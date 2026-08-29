@@ -7,11 +7,18 @@
     <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <a class="brand-name" href="/">iOS Farm</a>
+                <a class="brand-by" href="https://gethandler.ai" target="_blank" rel="noopener">by Handler</a>
+            </div>
+            <nav class="topbar-nav"><a class="button secondary" href="/">Devices</a><button id="refresh-tasks" class="button secondary" type="button">Refresh</button>__PLUGIN_NAV____AUTH_NAV__</nav>
+        </div>
+    </header>
     <main class="shell">
-        <nav class="breadcrumb"><a href="/">Devices</a><span>/</span><span>Tasks</span>__PLUGIN_NAV____AUTH_NAV__</nav>
         <header class="page-header">
             <div><span class="eyebrow">Durable scheduler</span><h1>Tasks</h1><p>Upcoming schedules and execution history across every device.</p></div>
-            <button id="refresh-tasks" class="button secondary" type="button">Refresh</button>
         </header>
         <section class="panel task-section">
             <div class="section-heading"><div><span class="eyebrow">Queue</span><h2>Schedules</h2></div></div>
