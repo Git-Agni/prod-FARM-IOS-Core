@@ -118,7 +118,7 @@ manager — they need no arguments, just the repo as the working directory and
 `.env` on the path.
 
 ```sh
-npm run appium         # Appium 3 + XCUITest on :4725
+npm run appium         # Appium 2 + XCUITest on :4725
 npm run wda:service    # per-device WebDriverAgent supervisor (Unix socket + :8100+/:9100+)
 npm run worker         # scheduler worker — runs due tasks
 npm run web            # dashboard + API on :3000
