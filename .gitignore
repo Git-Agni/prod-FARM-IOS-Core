@@ -8,3 +8,4 @@ devices.json
 .scheduler-data/
 static/assets/
 *.log
+.appium2/
