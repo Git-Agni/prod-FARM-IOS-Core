@@ -1,3 +1,10 @@
+import { execFileSync } from 'node:child_process';
+
 export function resolveDeveloperDir(): string {
-    return process.env.XCODE_DEVELOPER_DIR ?? '/Applications/Xcode_26.2.app/Contents/Developer';
+    if (process.env.XCODE_DEVELOPER_DIR) return process.env.XCODE_DEVELOPER_DIR;
+    try {
+        return execFileSync('xcode-select', ['-p'], { encoding: 'utf8' }).trim();
+    } catch {
+        return '/Applications/Xcode.app/Contents/Developer';
+    }
 }
