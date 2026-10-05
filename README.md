@@ -14,6 +14,7 @@ It runs locally as-is; authentication is optional on a loopback bind. Harden it 
 - [docs/architecture.md](docs/architecture.md) — the four processes, data stores, task model, source map
 - [docs/plugins.md](docs/plugins.md) — write a plugin: tasks, execution context, versioning, panels, routes
 - [docs/coordinates.md](docs/coordinates.md) — tap-layout profiles and how to add one
+- [docs/humanizer.md](docs/humanizer.md) — humanizer: random delays, jittered taps, curved swipes, typing
 - [PLUGIN_DEVELOPMENT.md](PLUGIN_DEVELOPMENT.md) — plugin trust and compatibility rules
 - [SECURITY.md](SECURITY.md) — before exposing the dashboard beyond loopback
 
@@ -40,6 +41,19 @@ npm run web
 ```
 
 TikTok support is enabled by default. Set `PHONE_FARM_PLUGINS` to comma-separated ESM package names to add more task plugins. Set `PHONE_FARM_AUTH_PLUGIN` to an ESM authentication provider before binding `WEB_HOST` outside loopback; startup deliberately fails otherwise.
+
+## Humanizer
+
+`src/tiktok/humanizer.ts` adds human-like randomness to the TikTok automation (enabled by default):
+
+- **Taps** — small Gaussian offset from the target point (≤6px), randomized hold (60–160ms instead of a fixed 100ms), and a short 50ms travel instead of an instant jump.
+- **Pauses** — every fixed `driver.pause()` is jittered around its original value (floor 70%, cap 130%).
+- **Swipes** — doomscroll swipes follow a quadratic Bezier trajectory with start/end jitter, a randomized control point, and eased per-segment timing (400–550ms total).
+- **Caption typing** — the caption is sent in small random chunks (1–6 characters, spaces sent separately) with 40–120ms delays between chunks and occasional 300–800ms pauses.
+
+Defaults live in `defaultConfig()` in `src/tiktok/humanizer.ts`; see [docs/humanizer.md](docs/humanizer.md) for the full list. Set `HUMANIZER=off` to restore the original fixed coordinates, timings, straight swipes, and single-request caption typing exactly.
+
+Step order, retry logic, and the 60s post-upload wait are unchanged (the post-upload wait is never shorter than 60s).
 
 ## Plugin contract
 

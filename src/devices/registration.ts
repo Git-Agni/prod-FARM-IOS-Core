@@ -418,11 +418,11 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
             session.checks.video = check('passed', 'WDA returned a live MJPEG frame');
             const coordinates = coordinatesForProfile(session.coordinateProfile).tiktok;
             const beforeTouch = await control.getScreenshot(session.device.udid);
-            await tapCoordinate(driver, coordinates.profileTab.x, coordinates.profileTab.y, 'Profile tab readiness check');
+            await tapCoordinate(driver, coordinates.profileTab.x, coordinates.profileTab.y, 'Profile tab readiness check', { jitter: false });
             await driver.pause(1_000);
             const profileScreen = await control.getScreenshot(session.device.udid);
             if (profileScreen.equals(beforeTouch)) throw new Error('The Profile tap produced no visible screen change');
-            await tapCoordinate(driver, coordinates.homeTab.x, coordinates.homeTab.y, 'Home tab readiness check');
+            await tapCoordinate(driver, coordinates.homeTab.x, coordinates.homeTab.y, 'Home tab readiness check', { jitter: false });
             await driver.pause(1_000);
             const homeScreen = await control.getScreenshot(session.device.udid);
             if (homeScreen.equals(profileScreen)) throw new Error('The Home tap produced no visible screen change');

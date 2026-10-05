@@ -2,7 +2,7 @@ import { remote, type Browser } from 'webdriverio';
 
 import { loadRegisteredDevices, resolveDeviceCoordinates, WdaRemoteControl } from '@git-agni/phone-farm-core';
 import { coordinateProfile, registeredAccounts } from './runtime-settings.js';
-import { switchTikTokAccount, tapCoordinate } from './actions.js';
+import { switchTikTokAccount, tapCoordinate, setScreenSize } from './actions.js';
 import { detectEngagementControls } from './engagement-controls.js';
 import {
     PROFILES,
@@ -14,6 +14,7 @@ import {
     isPersonality,
     pickWatchDurationMs,
 } from './doomscroll-profile.js';
+import { isEnabled, humanDelay, swipeSequence } from './humanizer.js';
 
 function positiveInteger(name: string, fallback: number): number {
     const rawValue = process.env[name] ?? String(fallback);
@@ -58,6 +59,7 @@ const saveEnabled = booleanEnv('DOOMSCROLL_SAVE_ENABLED', true);
 const switchAccountName = process.env.TIKTOK_SWITCH_ACCOUNT?.trim() || undefined;
 const registeredDevice = (await loadRegisteredDevices()).find((device) => device.udid === udid);
 const coordinates = resolveDeviceCoordinates(coordinateProfile(registeredDevice), registeredDevice?.coordinates);
+setScreenSize(coordinates.screenSize);
 const tiktokCoordinates = coordinates.tiktok;
 const accountSwitchCoords = {
     profileTabX: tiktokCoordinates.profileTab.x,
@@ -248,19 +250,38 @@ try {
 
         // Coordinate actions bypass XCTest's expensive application-element
         // lookup, which can hang on TikTok's continuously updating feed.
-        await driver.performActions([{
-            type: 'pointer',
-            id: 'finger',
-            parameters: { pointerType: 'touch' },
-            actions: [
-                { type: 'pointerMove', duration: 0, x: swipeX, y: swipeStartY },
-                { type: 'pointerDown', button: 0 },
-                { type: 'pause', duration: 100 },
-                { type: 'pointerMove', duration: swipeDurationMs, x: swipeX, y: swipeEndY },
-                { type: 'pointerUp', button: 0 },
-            ],
-        }]);
-        await driver.releaseActions();
+        if (isEnabled()) {
+            const seq = swipeSequence(swipeX, swipeStartY, swipeX, swipeEndY, coordinates.screenSize.width, coordinates.screenSize.height);
+            await driver.performActions([{
+                type: 'pointer',
+                id: 'finger',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: seq.path[0].x, y: seq.path[0].y },
+                    { type: 'pointerDown', button: 0 },
+                    { type: 'pause', duration: 100 },
+                    ...seq.path.slice(1).flatMap((point, i) => {
+                        return { type: 'pointerMove', duration: seq.durations[i], x: point.x, y: point.y };
+                    }),
+                    { type: 'pointerUp', button: 0 },
+                ],
+            }]);
+            await driver.releaseActions();
+        } else {
+            await driver.performActions([{
+                type: 'pointer',
+                id: 'finger',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: swipeX, y: swipeStartY },
+                    { type: 'pointerDown', button: 0 },
+                    { type: 'pause', duration: 100 },
+                    { type: 'pointerMove', duration: swipeDurationMs, x: swipeX, y: swipeEndY },
+                    { type: 'pointerUp', button: 0 },
+                ],
+            }]);
+            await driver.releaseActions();
+        }
         swipes += 1;
     }
 
