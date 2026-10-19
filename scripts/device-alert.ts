@@ -7,6 +7,8 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { Message, Blocks, Md } from 'slack-block-builder';
 import { probeDevice, deviceIssues, PHONE_UDID } from './lib/device-health.js';
 import { sendAlert } from './lib/ops-notify.js';
+import { createDatabaseConnection } from '../src/database/client.js';
+import { workerHeartbeatIssue } from '../src/publishing/worker-health.js';
 
 const statePath = '.scheduler-data/device-alert-state.json';
 const REALERT_MS = 3 * 60 * 60_000;
@@ -19,6 +21,20 @@ const probe = await probeDevice();
 if (!probe.wdaReady && probe.usbConnected && /retries stopped|error/i.test(probe.serviceMessage))
     try { execFileSync('curl', ['-s', '-m', '20', '-X', 'POST', '--unix-socket', '.wda/wda-service.sock', `http://localhost/devices/${PHONE_UDID}/reconnect`], { stdio: 'ignore' }); } catch { /* next run tries again */ }
 const issues = deviceIssues(probe, state.batteryPct);
+// Posting worker heartbeat (Oct 19). A stuck worker is restarted; startup sends its interrupted job to review.
+{
+    const db = createDatabaseConnection();
+    try {
+        const row = (await db.pool.query('SELECT last_tick FROM scheduler.publishing_worker_health WHERE id=1')).rows[0];
+        const issue = workerHeartbeatIssue(row?.last_tick ? new Date(row.last_tick) : null);
+        if (issue) {
+            issues.push({ key: issue.key, text: issue.text + (issue.restart ? ' Restarting it now.' : '') });
+            if (issue.restart) try { execFileSync('launchctl', ['kickstart', '-k', `gui/${process.getuid?.()}/ai.clicktoclose.phone-farm.worker`], { stdio: 'ignore', timeout: 60_000 }); } catch { /* alert still goes out */ }
+        }
+    } catch (error) {
+        issues.push({ key: 'worker:unreadable', text: `Cannot read the posting worker's heartbeat: ${error instanceof Error ? error.message : String(error)}` });
+    } finally { await db.close().catch(() => undefined); }
+}
 if (probe.battery) state.batteryPct = probe.battery.pct;
 const now = Date.now();
 const fresh = issues.filter(i => !state.alerts[i.key] || now - state.alerts[i.key]! > REALERT_MS);

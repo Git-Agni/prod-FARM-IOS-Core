@@ -24,6 +24,17 @@ export function releaseWorkerHealth(row: any, now = new Date()) {
     };
 }
 
+/** Oct 19: the heartbeat sat at 09:37 PT for five hours and nothing alerted. The worker touches it every 30 s, even
+ * during a long job, so 5 minutes of silence means it is stuck or gone. device-alert.ts sends this and, past 15 minutes,
+ * restarts the worker through launchd. */
+export const workerStaleAlertMs = 5 * 60_000, workerRestartMs = 15 * 60_000;
+export function workerHeartbeatIssue(lastTick: Date | null, now = Date.now()) {
+    const age = lastTick ? now - lastTick.getTime() : Infinity;
+    if (age <= workerStaleAlertMs) return null;
+    const since = lastTick ? lastTick.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit' }) + ' PT' : 'never';
+    return { key: 'worker:stale', text: `The posting worker's heartbeat is *stale* (last ${since}). Nothing posts until it runs again.`, restart: age > workerRestartMs };
+}
+
 export class ReleaseWorkerStatusStore {
     constructor(private pool: Pool) {}
     async initialize() {
@@ -39,6 +50,10 @@ export class ReleaseWorkerStatusStore {
             VALUES(1,now(),$1,$2,$3) ON CONFLICT(id) DO UPDATE SET last_tick=EXCLUDED.last_tick,
             control_mode=EXCLUDED.control_mode,state=EXCLUDED.state,blockers=EXCLUDED.blockers`,
             [value.controlMode,value.state,JSON.stringify(value.blockers)]);
+    }
+    /** Liveness only, while a long job holds the tick. The state and blockers from the tick's start stay unchanged. */
+    async touch() {
+        await this.pool.query('UPDATE scheduler.publishing_worker_health SET last_tick=now() WHERE id=1');
     }
     async status() {
         return releaseWorkerHealth((await this.pool.query('SELECT * FROM scheduler.publishing_worker_health WHERE id=1')).rows[0]);

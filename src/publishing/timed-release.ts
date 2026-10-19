@@ -10,6 +10,9 @@ export function insidePostingWindow(runAt: number, admittedAt: number, now: numb
     return admittedAt-runAt<=45*60_000 && now-runAt<=55*60_000;
 }
 
+const interruptedResult=`jsonb_build_object('error',CASE WHEN share_claimed_at IS NULL THEN 'Worker interrupted before Share; nothing was submitted'
+  ELSE 'Worker interrupted; inspect the phone before rescheduling' END,'interruptedBeforeShare',share_claimed_at IS NULL)`;
+
 /** Durable, one-shot posting jobs. Only an explicitly armed job can run. */
 export class TimedReleaseStore {
     constructor(private pool: Pool) {}
@@ -85,6 +88,11 @@ export class TimedReleaseStore {
     }
     private async run(id: string, driverFor: (item: any) => Promise<ReleaseDriver>, admittedAt: number) {
         const c=await this.pool.connect();let locked=false;let phone='';let started=false;let prepared=false;let driver: (ReleaseDriver & { leaveVideo?: () => Promise<void> }) | undefined;
+        // Oct 19: a pooler drop killed this client mid-run. The failure write below then threw on the dead client, the
+        // release stayed 'running', and the unlock in finally threw before release(), leaking the client. Four such leaks
+        // emptied the pool and the worker hung. Fall back to a fresh pooled client and destroy a broken one.
+        let broken=false;const onError=()=>{broken=true;};c.on('error',onError);
+        const q=(sql:string,params:unknown[])=>c.query(sql,params).catch(()=>{broken=true;return this.pool.query(sql,params);});
         try {
             const item=(await c.query('SELECT * FROM scheduler.publishing_items WHERE id=$1',[id])).rows[0];
             if(!item) return;
@@ -136,16 +144,18 @@ export class TimedReleaseStore {
             // Save what the phone showed, so the cause is visible without guessing. Bounded and read-only.
             const capture=(driver as {captureFailure?:(label:string)=>Promise<string>}|undefined)?.captureFailure;
             const evidence=capture?await capture.call(driver,id.slice(0,8)).catch(()=>undefined):undefined;
-            if(started)await c.query(`UPDATE scheduler.publishing_releases SET state='needs_review',result=result||$2::jsonb,updated_at=now() WHERE item_id=$1`,[id,JSON.stringify({error:e instanceof Error?e.message:String(e),...(evidence?{failureEvidence:evidence}:{})})]);
+            if(started)await q(`UPDATE scheduler.publishing_releases SET state='needs_review',result=result||$2::jsonb,updated_at=now() WHERE item_id=$1`,[id,JSON.stringify({error:e instanceof Error?e.message:String(e),...(evidence?{failureEvidence:evidence}:{})})]);
             // A half-finished composer breaks the next run. Close the app only when nothing was submitted.
-            const claimed=started&&(await c.query('SELECT share_claimed_at FROM scheduler.publishing_releases WHERE item_id=$1',[id])).rows[0]?.share_claimed_at;
+            const claimed=started&&(await q('SELECT share_claimed_at FROM scheduler.publishing_releases WHERE item_id=$1',[id])).rows[0]?.share_claimed_at;
             if(started&&!claimed&&!prepared)await (driver as {resetAfterFailure?:()=>Promise<void>}|undefined)?.resetAfterFailure?.().catch(()=>undefined);
         } finally {
             if(driver?.leaveVideo) {
                 try { await driver.leaveVideo(); }
-                catch(error) { await c.query("UPDATE scheduler.publishing_releases SET result=result||$2::jsonb WHERE item_id=$1",[id,JSON.stringify({exitVideoError:error instanceof Error?error.message:String(error)})]).catch(()=>undefined); }
+                catch(error) { await q("UPDATE scheduler.publishing_releases SET result=result||$2::jsonb WHERE item_id=$1",[id,JSON.stringify({exitVideoError:error instanceof Error?error.message:String(error)})]).catch(()=>undefined); }
             }
-            if(locked)await c.query('SELECT pg_advisory_unlock(hashtextextended($1,0))',[phone]);c.release();}
+            // A dead session already dropped its advisory lock on the server.
+            if(locked)await c.query('SELECT pg_advisory_unlock(hashtextextended($1,0))',[phone]).catch(()=>{broken=true;});
+            c.off('error',onError);c.release(broken);}
     }
     /** Check delayed receipts under the same phone lock. This path cannot call Share. */
     async reconcilePending(driverFor: (item: any) => Promise<ReleaseDriver>, itemId?: string) {
@@ -156,7 +166,7 @@ export class TimedReleaseStore {
           AND ($1::uuid IS NOT NULL OR updated_at<now()-interval '5 minutes')
           ORDER BY run_at LIMIT 1`, [itemId ?? null]);
         for (const row of pending.rows) {
-            const c=await this.pool.connect();let phone='';let locked=false;
+            const c=await this.pool.connect();let phone='';let locked=false;let broken=false;const onError=()=>{broken=true;};c.on('error',onError);
             let driver: (ReleaseDriver & {reconcile?: (input: any) => ReturnType<ReleaseDriver['verify']>; leaveVideo?: () => Promise<void>}) | undefined;
             try {
                 const item=(await c.query('SELECT * FROM scheduler.publishing_items WHERE id=$1',[row.item_id])).rows[0];
@@ -178,17 +188,26 @@ export class TimedReleaseStore {
                     await c.query('COMMIT');
                 } catch(e){await c.query('ROLLBACK');throw e;}
             } catch(e) {
-                await c.query("UPDATE scheduler.publishing_releases SET result=result||$2::jsonb||jsonb_build_object('receiptChecks',COALESCE((result->>'receiptChecks')::int,CASE WHEN result ? 'lastReceiptCheck' THEN 1 ELSE 0 END)+1),updated_at=now() WHERE item_id=$1 AND state='needs_review'",[row.item_id,JSON.stringify({lastReceiptCheck:new Date().toISOString(),receiptCheckError:e instanceof Error?e.message:String(e),...(e instanceof ReceiptVerificationError?{receipts:e.receipts}:{})})]);
-                if(e instanceof ReceiptVerificationError)await c.query(`UPDATE scheduler.publishing_items SET results=jsonb_set(results,'{release}',COALESCE(results->'release','{}'::jsonb)||jsonb_build_object('receipts',$2::jsonb)),updated_at=now() WHERE id=$1`,[row.item_id,JSON.stringify(e.receipts)]);
+                const q=(sql:string,params:unknown[])=>c.query(sql,params).catch(()=>{broken=true;return this.pool.query(sql,params);});
+                await q("UPDATE scheduler.publishing_releases SET result=result||$2::jsonb||jsonb_build_object('receiptChecks',COALESCE((result->>'receiptChecks')::int,CASE WHEN result ? 'lastReceiptCheck' THEN 1 ELSE 0 END)+1),updated_at=now() WHERE item_id=$1 AND state='needs_review'",[row.item_id,JSON.stringify({lastReceiptCheck:new Date().toISOString(),receiptCheckError:e instanceof Error?e.message:String(e),...(e instanceof ReceiptVerificationError?{receipts:e.receipts}:{})})]);
+                if(e instanceof ReceiptVerificationError)await q(`UPDATE scheduler.publishing_items SET results=jsonb_set(results,'{release}',COALESCE(results->'release','{}'::jsonb)||jsonb_build_object('receipts',$2::jsonb)),updated_at=now() WHERE id=$1`,[row.item_id,JSON.stringify(e.receipts)]);
             } finally {
                 if(driver?.leaveVideo)await driver.leaveVideo().catch(()=>undefined);
-                if(locked)await c.query('SELECT pg_advisory_unlock(hashtextextended($1,0))',[phone]);
-                c.release();
+                if(locked)await c.query('SELECT pg_advisory_unlock(hashtextextended($1,0))',[phone]).catch(()=>{broken=true;});
+                c.off('error',onError);c.release(broken);
             }
         }
     }
     async recoverInterrupted() {
-        // Never replay a job interrupted while running, even if no receipt survived.
-        await this.pool.query(`UPDATE scheduler.publishing_releases SET state='needs_review',result=result||'{"error":"Worker interrupted; inspect the phone before rescheduling"}'::jsonb,updated_at=now() WHERE state='running'`);
+        // Never replay a job interrupted while running, even if no receipt survived. The Share claim is written before
+        // any Share tap, so a job with no claim submitted nothing; lane-slotter.ts may give it a new slot.
+        await this.pool.query(`UPDATE scheduler.publishing_releases SET state='needs_review',result=result||${interruptedResult},updated_at=now() WHERE state='running'`);
+    }
+    /** Oct 19: two jobs stayed 'running' for hours after their failure write was lost, while the worker kept ticking.
+     * The worker runs one job at a time and calls this between jobs, so an idle unclaimed 'running' row is orphaned.
+     * Claimed rows are left alone: attended scripts set 'running' together with their claim. */
+    async recoverStale() {
+        return (await this.pool.query(`UPDATE scheduler.publishing_releases SET state='needs_review',result=result||${interruptedResult},updated_at=now()
+          WHERE state='running' AND share_claimed_at IS NULL AND updated_at<now()-interval '30 minutes' RETURNING item_id::text`)).rows.map((r:any)=>r.item_id as string);
     }
 }

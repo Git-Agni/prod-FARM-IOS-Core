@@ -16,7 +16,13 @@ export function databaseUrl(): string {
 }
 
 export function createDatabaseConnection(connectionString = databaseUrl()): DatabaseConnection {
-    const pool = new Pool({ connectionString, max: Number(process.env.DATABASE_POOL_SIZE ?? 10) });
+    // Oct 19 09:37 PT: after three pooler drops, all 4 clients were checked out and dead, and pool.connect() waited
+    // forever with no socket open. Posting stopped for five hours. Never wait forever for a client or a query.
+    // query_timeout stays above the 180 s statement_timeout that attended scripts set for a blocking phone lock.
+    const pool = new Pool({
+        connectionString, max: Number(process.env.DATABASE_POOL_SIZE ?? 10),
+        connectionTimeoutMillis: 30_000, query_timeout: 300_000, keepAlive: true, keepAliveInitialDelayMillis: 10_000,
+    });
     // Oct 13 02:00 and Oct 15 20:11: the Supabase pooler dropped a connection ("Connection terminated unexpectedly").
     // With no listener, pg re-throws the client's 'error' event and the whole worker crashed mid-post. Log it instead:
     // the query in flight still rejects and its own handler records the failure; the pool replaces the client.

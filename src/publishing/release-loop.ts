@@ -29,6 +29,12 @@ import { ReleaseWorkerStatusStore } from './worker-health.js';
 import { mirroringStatus } from '../devices/mirroring/controller.js';
 import { phoneAudioStatus, verifiedPhoneMute } from '../devices/mirroring/audio.js';
 
+/** Oct 19: one tick waited forever on an exhausted database pool and posting stopped for five hours. No single step
+ * (a 25-minute release, a 15-minute Story run, an 8-minute receipt or comment check) may go this long without progress.
+ * Exiting lets launchd's KeepAlive restart the worker, and startup marks the interrupted job for review. */
+export const stalledTickMs = 40 * 60_000;
+export const tickStalled = (busy: boolean, progressAt: number, now = Date.now()) => busy && now - progressAt > stalledTickMs;
+
 /** Runs armed native releases at their target time. One release at a time; the store's phone lock and Share claim do the rest. */
 export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<void> }> {
     const store = new TimedReleaseStore(pool);
@@ -40,11 +46,20 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
     await health.initialize();
     const automation=new MirroringAutomationStore(pool),imports=new MirroringMediaStore(pool),nativeStories=new NativeStoryStore(pool);
     await automation.initialize();await imports.initialize();await nativeStories.initialize();await nativeStories.recoverInterrupted();
-    let busy = false;
+    let busy = false, progressAt = Date.now();
+    const progress = () => { progressAt = Date.now(); };
     const controller = new AbortController();
+    // While a long job runs, keep the heartbeat current so a stale heartbeat means the worker is really stuck or gone.
+    const watchdog = setInterval(() => {
+        if (tickStalled(busy, progressAt)) {
+            console.error(new Date().toISOString(), `release worker made no progress for ${Math.round((Date.now()-progressAt)/60_000)} min; exiting so launchd restarts it`);
+            process.exit(1);
+        }
+        if (busy) void health.touch().catch(() => undefined);
+    }, 30_000);
     const tick = async () => {
         if (busy) return;
-        busy = true;
+        busy = true; progress();
         try {
             if (phoneControlMode() === 'mirroring') {
                 const status=await automation.status();
@@ -65,7 +80,7 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
                         if(flow.qualified&&commentsReady||pilot)allowed.push(row.id);
                     }catch{/* Unmapped items remain unchanged. */}
                 }
-                const driverFor=async(item:any)=>createMirroringDriver(pool,item,AbortSignal.any([controller.signal,AbortSignal.timeout(15*60_000)]));
+                const driverFor=async(item:any)=>(progress(),createMirroringDriver(pool,item,AbortSignal.any([controller.signal,AbortSignal.timeout(15*60_000)])));
                 const qualified=Object.values(status.flows).some((f:any)=>f.qualified);
                 await health.tick({controlMode:'mirroring',state:allowed.length||qualified?'running':'blocked',blockers:allowed.length||qualified?[]:['Native layouts and a real worker pilot are required before automatic posting.']});
                 await store.tick(driverFor,udid=>devices.some(d=>d.udid===udid),allowed);
@@ -121,7 +136,10 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
                 return;
             }
             await health.tick({controlMode:'wda',state:'running',blockers:[]});
+            const stale = await store.recoverStale();
+            if (stale.length) console.error(new Date().toISOString(), 'recovered stalled releases with no Share claim:', stale.join(','));
             const driverFor = async (item: any, timeoutMs = 25*60000) => {
+                progress();
                 const releaseSignal=AbortSignal.any([controller.signal,AbortSignal.timeout(timeoutMs)]);
                 const device = (await loadRegisteredDevices()).find(d => d.udid === item.input.deviceUdid);
                 if (!device || device.disabled) throw new Error('Phone is not enabled');
@@ -142,7 +160,7 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
                 return new InstagramRelease(`http://127.0.0.1:${device.wdaLocalPort ?? 8100}`, releaseSignal,directImports);
             };
             // Log any step that holds a tick for more than 20 s, so a starved comment queue shows its cause.
-            const timed=async(step:string,run:()=>Promise<unknown>)=>{const t=Date.now();try{await run();}finally{const s=Math.round((Date.now()-t)/1000);if(s>20)console.log(new Date().toISOString(),'tick step',step,s+'s');}};
+            const timed=async(step:string,run:()=>Promise<unknown>)=>{const t=Date.now();progress();try{await run();}finally{const s=Math.round((Date.now()-t)/1000);if(s>20)console.log(new Date().toISOString(),'tick step',step,s+'s');}};
             await timed('releases',()=>store.tick(driverFor, udid => readiness.get(udid) === true, allowed));
             // Oct 17: a Story failure (vision-score outage, plan error) must never skip the receipt checks and comments below.
             await timed('stories',()=>runDirectStories(pool,AbortSignal.any([controller.signal,AbortSignal.timeout(15*60000)]))).catch(e=>console.error('Stories step:',e));
@@ -155,6 +173,7 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
             for (const row of receiptChecks.rows) await timed('receipt check '+row.item_id.slice(0,8),()=>store.reconcilePending((item:any)=>driverFor(item,8*60000), row.item_id));
             // One comment job per tick, after due video releases. Never delay an imminent slot.
             {
+                progress();
                 const candidates=await pool.query(`SELECT i.* FROM scheduler.publishing_items i
                   WHERE i.status IN ('published','needs_review') AND i.id=ANY($1::uuid[])
                   AND (i.input ? 'firstComment' OR (i.input->'targets'->0->>'platform'='youtube' AND EXISTS(SELECT 1 FROM scheduler.publishing_items s
@@ -199,5 +218,5 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
     let pending = tick();
     const timer = setInterval(() => { if (!busy) pending = tick(); }, 20_000);
     await pending;
-    return { async close() { clearInterval(timer); controller.abort(); await pending; } };
+    return { async close() { clearInterval(timer); clearInterval(watchdog); controller.abort(); await pending; } };
 }
