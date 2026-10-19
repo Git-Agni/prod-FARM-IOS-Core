@@ -23,3 +23,12 @@ test('a metadata row label must sit in the left label column, not in the title o
  assert.equal(metadataRowMatches(words,'Related video').length,1);
  assert.equal(metadataRowMatches([...words,{text:'Tags',x:158,y:900}],'Tags').length,1);
 });
+// Oct 19 14:41 frame (d6671ed2): OCR of the Attributes row on the Add details screen.
+test('the Attributes row is found by its whole "AI use, Tags" line, not a lone Tags word',()=>{
+ const row=[{text:'Collaborations,',x:159,y:1805},{text:'Comments,',x:515,y:1807},{text:'Al',x:158,y:1976},{text:'use,',x:217,y:1984},{text:'Tags',x:324,y:1976}];
+ assert.equal(metadataRowMatches(row,'AI use, Tags').length,1);
+ assert.deepEqual(metadataRowMatches(row,'Tags'),[]);
+ const title=[{text:'Walmart\'s',x:321,y:459},{text:'Price',x:520,y:459},{text:'Tags',x:684,y:459}];
+ assert.equal(metadataRowMatches([...title,...row],'AI use, Tags').length,1);
+ assert.equal(metadataRowMatches(row,'Community').length,0);
+});

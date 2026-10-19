@@ -23,11 +23,15 @@ export const ocrTagKey=(value:string)=>value.toLowerCase().replace(/[il1|]/g,'i'
 export function nativeTagsMatch(expected:string[],seen:string[]){const keys=new Set(seen.map(ocrTagKey));return expected.every(tag=>keys.has(ocrTagKey(tag)));}
 /** Oct 19 07:25: a title with the word "Tags" ("Walmart's Price Tags Now...") made the Tags row ambiguous. Row labels sit in
  * the left label column (about 51 pt, 153 px); the title starts at 107 pt and mid-line words sit further right. */
+/** Oct 19 14:41: the Tags entry sits at the end of the Attributes row, "AI use, Tags" (OCR: "Al" 158, "use," 217,
+ * "Tags" 324), so a lone "Tags" in the label column never matched. Match the whole line from its first word, with
+ * the same I/l folding as tags and punctuation ignored. */
+const rowWordKey=(value:string)=>ocrTagKey(value).replace(/[^\p{L}\p{N}]/gu,'');
 export function metadataRowMatches<W extends {text:string,x:number,y:number}>(words:W[],phrase:string){
- const parts=phrase.toLowerCase().split(' ');
- return words.filter(w=>w.text.toLowerCase()===parts[0]&&w.y>280&&w.y<2400&&w.x>=100&&w.x<300).filter(w=>{
+ const parts=phrase.split(' ').map(rowWordKey);
+ return words.filter(w=>rowWordKey(w.text)===parts[0]&&w.y>280&&w.y<2400&&w.x>=100&&w.x<300).filter(w=>{
   const line=words.filter(n=>Math.abs(n.y-w.y)<25&&n.x>=w.x).sort((a,b)=>a.x-b.x);
-  return parts.every((p,n)=>line[n]?.text.toLowerCase()===p);
+  return parts.every((p,n)=>line[n]&&rowWordKey(line[n].text)===p);
  });
 }
 /** Fresh native composer for one reviewed file. Submission still uses the normal one-shot claim. */
@@ -88,7 +92,7 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
  private async attributes(input:PostingInput){
   // The small grey Attributes heading is not reliably recognized. Its unique
   // Tags subtitle is visible on the same reviewed row.
-  if(!await this.visible('accessibility id','Attributes'))await this.metadataRow('Tags');await this.waitFor('accessibility id','Attributes','Native Attributes');
+  if(!await this.visible('accessibility id','Attributes'))await this.metadataRow('AI use, Tags');await this.waitFor('accessibility id','Attributes','Native Attributes');
   let words:Awaited<ReturnType<typeof recognizeWords>>;
   if(!await this.aiUseIsNo()){
    await this.tapElement('predicate string','name == "id.elements.components.metadata_editor.altered_content_picker" AND label == "AI use" AND visible == 1','AI use');
