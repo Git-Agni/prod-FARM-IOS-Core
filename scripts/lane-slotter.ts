@@ -2,8 +2,7 @@
  * own hours in src/publishing/cadence.ts: Instagram Trial Reels with linked Facebook (8 a day), TikTok (4) and YouTube
  * Shorts (4, 22 minutes after the slot). Every armed, unclaimed post moves to the next free slot in its lane, oldest booking
  * first. Slots with a Share claim, a running or published post, or a post due within 10 minutes are kept and skipped.
- * A post that missed its slot without a Share claim (worker interrupted, or posting window missed) goes back in the
- * queue: the claim is written before any Share tap, so it submitted nothing (Oct 19). Dry run by default; --apply writes. Database only; no phone input. */
+ * Dry run by default; --apply writes. Database only; no phone input. */
 import {createDatabaseConnection} from '../src/database/client.js';
 import {requestHash,validatePostingInput} from '../src/publishing/model.js';
 import {publishingCadence as cadence,slotsFrom} from '../src/publishing/cadence.js';
@@ -15,24 +14,12 @@ const hoursOf=laneHours();
 const db=createDatabaseConnection(),c=await db.pool.connect();const moves:any[]=[];
 try{
  await c.query('BEGIN');
- // Same duplicate rule as arming: no other item for this video and account may be live, queued or under review.
- const rearmed=new Set((await c.query(`UPDATE scheduler.publishing_releases r SET state='armed',updated_at=now(),
-   result=r.result||jsonb_build_object('rearmedAfterMiss',jsonb_build_object('at',now(),'missedRunAt',r.run_at,'error',r.result->>'error'))
-   FROM scheduler.publishing_items i WHERE i.id=r.item_id AND r.state='needs_review' AND r.share_claimed_at IS NULL
-   AND i.status='held' AND i.version=r.item_version AND r.run_at>now()-interval '24 hours'
-   AND (r.result->>'interruptedBeforeShare'='true' OR r.result->>'error' LIKE 'Posting window missed%')
-   AND NOT EXISTS (SELECT 1 FROM scheduler.publishing_items o LEFT JOIN scheduler.publishing_releases orr ON orr.item_id=o.id
-     WHERE o.id<>i.id AND o.media->>'sha256'=i.media->>'sha256'
-     AND (o.status IN ('published','needs_review','publishing') OR orr.state IN ('armed','running','published','needs_review'))
-     AND EXISTS (SELECT 1 FROM jsonb_array_elements(o.input->'targets') a,jsonb_array_elements(i.input->'targets') b
-       WHERE a->>'platform'=b->>'platform' AND lower(ltrim(a->>'account','@'))=lower(ltrim(b->>'account','@'))))
-   RETURNING r.item_id::text id`)).rows.map((r:any)=>r.id as string));
  // No phone lock (Oct 15 20:05: a busy phone made the hourly run skip). Row locks below serialize with the worker,
  // and only armed posts with no Share claim, due 10+ minutes out, ever move.
  const rows=(await c.query(`SELECT i.*,r.run_at,r.state,r.share_claimed_at FROM scheduler.publishing_items i JOIN scheduler.publishing_releases r ON r.item_id=i.id
    WHERE r.state<>'cancelled' FOR UPDATE OF i,r`)).rows;
  const now=Date.now(),t=(r:any)=>new Date(r.run_at).getTime();
- const fixed=(r:any)=>r.state!=='armed'||!!r.share_claimed_at||t(r)<now+10*minute&&!rearmed.has(r.id);
+ const fixed=(r:any)=>r.state!=='armed'||!!r.share_claimed_at||t(r)<now+10*minute;
  const slotOf=(r:any)=>Math.round((t(r)-(laneOf(r.input)==='youtube'?cadence.youtubeOffsetMinutes*minute:0))/hour)*hour;
  // Oct 17: this was now+30 min while posts more than 10 min out were movable, so the :22 Short (17 min out at the
  // hourly :05 run) was pushed an hour later every hour and never posted. Fill from the same 10-minute line.
@@ -58,6 +45,6 @@ try{
  await c.query(apply?'COMMIT':'ROLLBACK');
  const pt=(s:string)=>new Date(s).toLocaleString('en-US',{timeZone:cadence.timezone,weekday:'short',hour:'numeric',minute:'2-digit'});
  if(process.argv.includes('--verbose'))for(const m of moves)console.log(`${m.lane.padEnd(10)} ${pt(m.from).padEnd(14)} -> ${pt(m.to).padEnd(14)} ${m.name}`);
- console.log(JSON.stringify({moved:moves.length,rearmed:rearmed.size,applied:apply}));
+ console.log(JSON.stringify({moved:moves.length,applied:apply}));
 }catch(e){await c.query('ROLLBACK').catch(()=>{});throw e;}
 finally{c.release();await db.close();}
