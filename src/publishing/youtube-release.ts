@@ -17,6 +17,19 @@ export function isFullYouTubeTrim(value:string,durationSeconds:number){
  return Number.isFinite(durationSeconds)&&durationSeconds>0&&value.startsWith(prefix)&&Math.abs(galleryDurationSeconds(value.slice(prefix.length))-durationSeconds)<1;
 }
 
+/** Oct 19: OCR reads the capital I of "AITools" and "AIAgents" as a lowercase l ("AlTools"); six Shorts stopped at the tag
+ * check with every chip typed correctly. Compare tags with I, l, 1 and | folded together. */
+export const ocrTagKey=(value:string)=>value.toLowerCase().replace(/[il1|]/g,'i');
+export function nativeTagsMatch(expected:string[],seen:string[]){const keys=new Set(seen.map(ocrTagKey));return expected.every(tag=>keys.has(ocrTagKey(tag)));}
+/** Oct 19 07:25: a title with the word "Tags" ("Walmart's Price Tags Now...") made the Tags row ambiguous. Row labels sit in
+ * the left label column (about 51 pt, 153 px); the title starts at 107 pt and mid-line words sit further right. */
+export function metadataRowMatches<W extends {text:string,x:number,y:number}>(words:W[],phrase:string){
+ const parts=phrase.toLowerCase().split(' ');
+ return words.filter(w=>w.text.toLowerCase()===parts[0]&&w.y>280&&w.y<2400&&w.x>=100&&w.x<300).filter(w=>{
+  const line=words.filter(n=>Math.abs(n.y-w.y)<25&&n.x>=w.x).sort((a,b)=>a.x-b.x);
+  return parts.every((p,n)=>line[n]?.text.toLowerCase()===p);
+ });
+}
 /** Fresh native composer for one reviewed file. Submission still uses the normal one-shot claim. */
 /** Gallery cells read "45 seconds" or, past a minute, "1 minute 5 seconds" (Oct 13: a 65 s Short failed the old check). */
 export function galleryDurationSeconds(value:string){
@@ -55,11 +68,7 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
    await this.waitFor('accessibility id','id.metadata_editor.upload_button','Upload Short button',10_000).catch(()=>{throw Error('YouTube metadata composer is not active');});
    const png=Buffer.from((await this.request('/screenshot')).value,'base64'),m=await sharp(png).metadata();
    if(m.width!==1290||m.height!==2796)throw Error('YouTube metadata screen size changed');
-   const words=await recognizeWords(png),parts=phrase.toLowerCase().split(' '),found=[];
-   for(const w of words.filter(w=>w.text.toLowerCase()===parts[0]&&w.y>280&&w.y<2400)){
-    const line=words.filter(n=>Math.abs(n.y-w.y)<25&&n.x>=w.x).sort((a,b)=>a.x-b.x);
-    if(parts.every((p,n)=>line[n]?.text.toLowerCase()===p))found.push(w);
-   }
+   const words=await recognizeWords(png),found=metadataRowMatches(words,phrase);
    if(found.length>1)throw Error('YouTube metadata row is ambiguous: '+phrase);
    if(found.length===1){const w=found[0]!;await this.tapPoint(250,(w.y+w.height/2)/3);return;}
    const current=words.map(w=>w.text).join('|');if(current===last||pass===2)throw Error('YouTube metadata row is missing: '+phrase);last=current;
@@ -100,8 +109,7 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
   const area=()=>sharp(shot).extract({left:0,top:Math.round(130*scale),width,height:Math.round(420*scale)});
   const reads=await Promise.all([area().resize({width:width*2}),area().negate({alpha:false}).grayscale().resize({width:width*2}),area().negate({alpha:false}).grayscale()]
    .map(async img=>recognizeWords(await img.png().toBuffer())));
-  const seen=new Set([...words.filter(w=>w.y<1700),...reads.flat()].map(w=>w.text.toLowerCase()));
-  if(!input.youtube!.publishing!.tags.every(tag=>seen.has(tag.toLowerCase())))throw Error('Native YouTube tags did not match');
+  if(!nativeTagsMatch(input.youtube!.publishing!.tags,[...words.filter(w=>w.y<1700),...reads.flat()].map(w=>w.text)))throw Error('Native YouTube tags did not match');
   await this.tapElement('accessibility id','id.elements.components.metadata_editor.app_bar.back_button','Back to details');
   await this.metadataRow('Community');await this.waitFor('accessibility id','Community','Native Community');
   if(!(await this.nodes()).some(n=>n.name==='id.elements.components.metadata_editor.comment_picker'&&n.label==='Comments. On'))throw Error('YouTube comments are not On');
