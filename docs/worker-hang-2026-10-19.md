@@ -59,3 +59,24 @@ Every stop happened before Upload, with no Share claim.
 
 "Phone control is missing: You..." did not occur in the last 36 hours of release results. Capabilities still report
 `youtube: preparation_only`; that field describes the old Mirroring flow, not the WDA worker.
+
+## Missed posts, checked live and re-armed
+
+No row had a Share claim. Each was checked before re-arming, then re-armed through `autopilot-backlog.ts` (which
+runs `TimedReleaseStore.arm` and its duplicate check) and slotted by `lane-slotter.ts`. Evidence is saved on each item
+as `results.liveCheckBeforeRearm`.
+
+| Item | Video | Platform | Live check | New slot (PT) |
+|---|---|---|---|---|
+| 446abdd6 | banks AI agents | Instagram + Facebook | Graph: 300 IG posts, 100 FB Reels, no caption match (control 230fc11f found) | Mon 18:00 |
+| 0ced7846 | banks AI agents | TikTok | Native profile grid, no match after full wait (control fc9d0d01 found) | Mon 18:00 |
+| d6671ed2 | banks AI agents | YouTube | Public feed and Shorts page, 63 titles, no exact title | Mon 17:22 |
+| 11216851 | hyperframes | YouTube | Same, no match. The backlog had cancelled it after three tag-OCR stops; counter reset | Mon 18:22 |
+| 7bceeb5e | Getty bankruptcy | YouTube | Same, no match | Mon 20:22 |
+
+First posts after the fix: cc713493 (loops, Instagram Trial plus Facebook,
+https://www.instagram.com/reel/DesSLOjhOlA/, https://www.facebook.com/reel/1879996903358356/) and 57107660
+(loops, TikTok, full caption in the @antoniorevenue grid).
+
+The live lane hours are hourly from 07:00 to 23:00 for every lane (page override in `.scheduler-data/lane-hours.json`).
+They differ from the 8/4/4 default in `cadence.ts`. The override was left unchanged.
