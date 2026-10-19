@@ -57,6 +57,9 @@ the Tags entry is the end of the Attributes row, read as "Al" (x 158), "use," (x
 whole "AI use, Tags" line from its first word, with I/l folding. A title containing "Tags" still cannot match.
 Every stop happened before Upload, with no Share claim.
 
+VERIFIED live: the next Short, 8b7989a2 (ca-original, 15:22 PT slot), passed preflight on the new code, claimed Upload
+once at 15:34:23 PT and published: https://youtube.com/shorts/Z9mjaRcNaCY (exact title on the public Shorts page).
+
 "Phone control is missing: You..." did not occur in the last 36 hours of release results. Capabilities still report
 `youtube: preparation_only`; that field describes the old Mirroring flow, not the WDA worker.
 
