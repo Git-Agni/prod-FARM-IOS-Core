@@ -23,7 +23,12 @@ const db=createDatabaseConnection(),c=await db.pool.connect();
 const held:any[]=[],planned:any[]=[];
 try{
  await c.query('BEGIN');
- if(!(await c.query('SELECT pg_try_advisory_xact_lock(hashtextextended($1,0)) locked',[phone])).rows[0].locked)throw Error('Phone busy; try again after the current job');
+ // Oct 20: a try-lock failed "Phone busy" on about half the hourly runs (322 in 293), because a :00 or :22 post is
+ // usually still running at :05, so missed posts waited hours for a quiet hour. Wait for the current job instead
+ // (up to 30 minutes); the database work then takes seconds and the worker continues.
+ await c.query("SET LOCAL statement_timeout='30min'");
+ await c.query({text:'SELECT pg_advisory_xact_lock(hashtextextended($1,0))',values:[phone],query_timeout:31*60_000});
+ await c.query("SET LOCAL statement_timeout=0");
  const items=(await c.query('SELECT * FROM scheduler.publishing_items ORDER BY created_at FOR UPDATE')).rows;
  const releases=new Map((await c.query('SELECT * FROM scheduler.publishing_releases FOR UPDATE')).rows.map(r=>[r.item_id,r]));
  // requeue-verified-unposted.ts records Graph proof that a claimed Share never reached Instagram or Facebook.
