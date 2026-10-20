@@ -1,5 +1,7 @@
 import { CronExpressionParser } from 'cron-parser';
 
+const hourly = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] as const;
+
 /** Antonio's cadence: one video every 2 hours from Oct 11 16:45 (every 3 hours from Oct 7, hourly from Oct 5). Target times, not publication approval. */
 export const publishingCadence = {
     owner: 'phone_farm_worker', timezone: 'America/Los_Angeles',
@@ -11,10 +13,11 @@ export const publishingCadence = {
     storyCron: '0 8,16 * * *', storyTimes: ['08:00', '16:00'],
     storySequencesPerDay: 2, planningDays: 3,
     missedSlotPolicy: 'review_before_rescheduling',
-    // Antonio, Oct 15 19:15 PT: 8 Instagram Trial Reels a day (each with its linked Facebook post), 4 TikToks and
-    // 4 YouTube Shorts. scripts/lane-slotter.ts owns every armed post's time from these lists, one lane per platform;
-    // a Short posts 22 minutes after its slot so it never collides with the Instagram post.
-    instagramHours: [7, 9, 11, 13, 15, 17, 19, 21], tiktokHours: [9, 13, 17, 21], youtubeHours: [9, 13, 17, 21], youtubeOffsetMinutes: 22,
+    // Antonio, Oct 20: every lane posts hourly from 07:00 to 23:00 PT (17 slots a day each): Instagram Trial Reels
+    // (each with its linked Facebook post), TikTok and YouTube Shorts. This matches the calendar-page override saved
+    // Oct 17 (.scheduler-data/lane-hours.json). scripts/lane-slotter.ts owns every armed post's time from these lists,
+    // one lane per platform; a Short posts 22 minutes after its slot so it never collides with the Instagram post.
+    instagramHours: hourly, tiktokHours: hourly, youtubeHours: hourly, youtubeOffsetMinutes: 22,
 } as const;
 
 export function upcomingVideoSlots(now = new Date(), count = 72): Date[] {
@@ -27,10 +30,13 @@ export function upcomingVideoSlots(now = new Date(), count = 72): Date[] {
 /** UTC ms for hour `h` (PT) on the PT calendar day `day` (YYYY-MM-DD), handling daylight saving. */
 function ptHour(day:string,h:number){
  const guess=Date.parse(`${day}T${String(h).padStart(2,'0')}:00:00Z`);
- const shown=new Date(guess).toLocaleString('en-US',{timeZone:publishingCadence.timezone,hour12:false,hour:'2-digit',year:'numeric',month:'2-digit',day:'2-digit'});
- const [md,hh]=shown.split(', ');const [m,d,y]=md.split('/');
- const diff=Date.parse(`${y}-${m}-${d}T${hh.padStart(2,'0').replace('24','00')}:00:00Z`)-guess;
- return guess-diff;
+ const offsetAt=(ms:number)=>{
+  const shown=new Date(ms).toLocaleString('en-US',{timeZone:publishingCadence.timezone,hour12:false,hour:'2-digit',year:'numeric',month:'2-digit',day:'2-digit'});
+  const [md,hh]=shown.split(', ');const [m,d,y]=md.split('/');
+  return Date.parse(`${y}-${m}-${d}T${hh.padStart(2,'0').replace('24','00')}:00:00Z`)-Math.floor(ms/3600000)*3600000;
+ };
+ // Take the offset at the answer, not at the guess, so early hours on a clock-change day land right.
+ return guess-offsetAt(guess-offsetAt(guess));
 }
 export function slotsFrom(from:number,hours:readonly number[],days=30){
  const out:number[]=[];
