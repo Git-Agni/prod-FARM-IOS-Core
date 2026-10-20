@@ -187,26 +187,60 @@ async function photoLastUse(pool: import('pg').Pool): Promise<Map<string, number
     return m;
 }
 
-/** Journal frame (Oct 17, modelled on Nik Setting and SooWei Goh): the full-colour picture, a soft dark band at the top and
- * 2 to 5 short lowercase lines, left-aligned, like a note written on the photo. Proof frames put the real screenshot under
- * the words. Text stays inside x 80..860 so it never reaches Instagram's right-edge buttons. */
+/** The Full Visual kit's bands (engine/full-visual/src/theme.ts), applied to Story frames on Oct 20: one centre axis
+ * (x 540); the words in the caption band (y 300 to 520, wrap 740 px, starting at the kit's 74 px and shrinking to fit);
+ * the real thing in the stage (y 540 to 1450, 900 px wide, big and centred); nothing in the last 220 px, which
+ * Instagram owns. */
+export const KIT = { axis: W / 2, captionTop: 300, captionBottom: 520, wrap: 740, sizeMax: 74, sizeMin: 44, stageTop: 540, stageBottom: 1450, stageWidth: 900 } as const;
+/** Caption lines and size that fit the band, or null when the text is too long for one frame (one idea per frame). */
+export function captionLayout(text: string): { size: number; lineHeight: number; lines: string[] } | null {
+    // The largest size that fits wins, but a layout ending a paragraph on one lone word gives way to a slightly smaller
+    // size without one; with none, the first fit stands.
+    let first: { size: number; lineHeight: number; lines: string[] } | null = null;
+    for (let size = KIT.sizeMax; size >= KIT.sizeMin; size -= 2) {
+        const lineHeight = Math.round(size * 1.12), perLine = Math.floor(KIT.wrap / (size * 0.58));
+        // Balanced wrap: the narrowest width that keeps each paragraph's line count, so no line is a lone word.
+        const balanced = (l: string) => { const n = wrapLines(l, perLine).length; let w = perLine;
+            while (w > 8 && wrapLines(l, w - 1).length === n) w--; return wrapLines(l, w); };
+        const lines = text.split('\n').flatMap(balanced);
+        if ((lines.length - 1) * lineHeight + size > KIT.captionBottom - KIT.captionTop) continue;
+        const layout = { size, lineHeight, lines };
+        first ??= layout;
+        const lone = text.split('\n').some(l => { const w = balanced(l); return w.length > 1 && !w[w.length - 1]!.includes(' '); });
+        if (!lone) return layout;
+    }
+    return first;
+}
+/** True when the text fits the caption band. */
+export const fits = (text: string) => captionLayout(text) !== null;
+
+/** Story frame on the kit's bands: the full-colour photo as the ground with a soft dark band behind the caption, the words
+ * centred in the caption band, and the real thing (a Reel reference image or a proof card) big and centred in the stage.
+ * The stage stops 60 px above a known face so the person stays visible. */
 export async function journalFrame(source: PoolPhoto | Buffer, text: string, { card }: { card?: ProofCard } = {}): Promise<Buffer> {
     const raw = Buffer.isBuffer(source) ? source : await photoBuffer(source.file, source.t);
     const bg = await sharp(raw, { failOn: 'none' }).rotate().resize(W, H, { fit: 'cover', position: 'attention' })
         .modulate({ saturation: 1.1, brightness: 1.06 }).toBuffer();
-    const size = 50, step = Math.round(size * 1.3), lines = text.split('\n').flatMap(l => wrapLines(l, 30));
-    if (lines.length > 6) throw Error(`Story text is longer than six lines: ${text}`);
-    const top = 300, textBottom = top + (lines.length - 1) * step + 20;
+    const layout = captionLayout(text);
+    if (!layout) throw Error(`Story text does not fit the caption band: ${text}`);
+    const { size, lineHeight, lines } = layout;
     const band = `<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0.62"/>`
-        + `<stop offset="0.75" stop-color="#000" stop-opacity="0.38"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>`
+        + `<stop offset="0.72" stop-color="#000" stop-opacity="0.4"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>`
         + `<filter id="s"><feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#000" flood-opacity="0.6"/></filter></defs>`
-        + `<rect x="0" y="0" width="${W}" height="${textBottom + 220}" fill="url(#g)"/>`;
-    const words = lines.map((l, i) => `<text x="80" y="${top + i * step}" font-family="SF Pro Display, Helvetica Neue, Helvetica, Arial" font-weight="700" font-size="${size}" fill="#fff" filter="url(#s)">${esc(l)}</text>`).join('');
+        + `<rect x="0" y="0" width="${W}" height="${KIT.captionBottom + 160}" fill="url(#g)"/>`;
+    const words = lines.map((l, i) => `<text x="${KIT.axis}" y="${Math.round(KIT.captionTop + size * 0.82 + i * lineHeight)}" font-family="SF Pro Display, Helvetica Neue, Helvetica, Arial" font-weight="700" font-size="${size}" text-anchor="middle" fill="#fff" filter="url(#s)">${esc(l)}</text>`).join('');
     const layers: OverlayOptions[] = [{ input: Buffer.from(`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">${band}${words}</svg>`) }];
     if (card) {
-        const img = await sharp(card.file).resize(920, 700, { fit: 'inside' }).png().toBuffer(), m = await sharp(img).metadata();
-        const mask = Buffer.from(`<svg width="${m.width}" height="${m.height}"><rect width="${m.width}" height="${m.height}" rx="22" fill="#fff"/></svg>`);
-        layers.push({ input: await sharp(img).composite([{ input: mask, blend: 'dest-in' }]).png().toBuffer(), left: Math.round((W - m.width!) / 2), top: textBottom + 70 });
+        const face = Buffer.isBuffer(source) ? null : source.faceTop;
+        const bottom = face != null && face * H - 60 - KIT.stageTop >= 400 ? Math.min(KIT.stageBottom, Math.round(face * H - 60)) : KIT.stageBottom;
+        const boxH = bottom - KIT.stageTop;
+        const img = await sharp(card.file).resize(KIT.stageWidth, boxH, { fit: 'inside' }).png().toBuffer(), m = await sharp(img).metadata();
+        const r = 22, mask = Buffer.from(`<svg width="${m.width}" height="${m.height}"><rect width="${m.width}" height="${m.height}" rx="${r}" fill="#fff"/></svg>`);
+        const rounded = await sharp(img).composite([{ input: mask, blend: 'dest-in' }]).png().toBuffer();
+        const left = Math.round(KIT.axis - m.width! / 2), top = Math.round(KIT.stageTop + (boxH - m.height!) / 2), pad = 50;
+        const shadow = await sharp({ create: { width: m.width! + pad * 2, height: m.height! + pad * 2, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+            .composite([{ input: Buffer.from(`<svg width="${m.width! + pad * 2}" height="${m.height! + pad * 2}"><rect x="${pad}" y="${pad + 12}" width="${m.width}" height="${m.height}" rx="${r}" fill="#000" opacity="0.45"/></svg>`) }]).blur(20).png().toBuffer();
+        layers.push({ input: shadow, left: left - pad, top: top - pad }, { input: rounded, left, top });
     }
     return sharp(bg).composite(layers).removeAlpha().png().toBuffer();
 }
@@ -218,9 +252,6 @@ export function topicMatch(headline: string, caption: string) {
     const text = caption.toLowerCase();
     return terms.some(w => new RegExp(`\\b${w}`).test(text));
 }
-
-/** True when the text fits a journal frame (six lines of about 30 characters). */
-export const fits = (text: string) => text.split('\n').flatMap(l => wrapLines(l, 30)).length <= 6;
 
 /** The Reel caption's own sentences, original casing (lowercasing broke names like Claude Code). No filler. */
 export function captionSentences(caption: string): string[] {
