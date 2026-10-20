@@ -9,7 +9,7 @@ import type { PostingInput } from './model.js';
 import {ReceiptVerificationError, type ReleaseDriver, type ReleaseEvidence} from './release-policy.js';
 import { FacebookVerifier } from './facebook-verify.js';
 import { WdaApp, parseGalleryCell } from './wda-app.js';
-import {locateRelatedCover,locateRelatedCoverInCells} from './instagram-related.js';
+import {locateRelatedCover,locateRelatedCoverInCells,locateHeadlineInCells,reelByUrl,reviewedRelatedReel} from './instagram-related.js';
 import {metaReceipts} from './meta-receipts.js';
 
 const run = promisify(execFile);
@@ -238,23 +238,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
             await this.tapElement('accessibility id','Link a reel','Related Reel');
         }
         await this.waitFor('accessibility id','Select a reel','Owned Reel picker');
-        // The heading appears before the grid finishes loading. Re-read once,
-        // without touching the grid, if its cover is not yet identifiable.
-        // Thumbnails can take several seconds to render (blank grid seen Oct 7 13:25). Re-read without touching the grid.
-        let found;
-        for(let attempt=0;;attempt++){
-            try{found=await locateRelatedCover(Buffer.from((await this.request('/screenshot')).value,'base64'),related);break;}
-            catch(e){
-                // After the grid has had time to load, look at the real cells and scroll down page by page.
-                if(attempt>=3){
-                    const cells=visibleNativeNodes((await this.request(this.session+'/source')).value).filter(n=>n.type==='XCUIElementTypeCell'&&n.width>=130&&n.width<=150&&n.height>=240);
-                    try{found=await locateRelatedCoverInCells(Buffer.from((await this.request('/screenshot')).value,'base64'),cells,related);break;}catch{}
-                    if(attempt>=12)throw e;
-                    await this.request(this.session+'/wda/dragfromtoforduration',{fromX:215,fromY:760,toX:215,toY:360,duration:0.3});
-                }
-                await this.sleep(1500);
-            }
-        }
+        const found=await this.findRelatedTile(related);
         await this.tapPoint(found.x,found.y);
         await this.waitFor('accessibility id','Edit linked reel','Link title');
         const rows=(await this.request(this.session+'/elements',{using:'class name',value:'XCUIElementTypeTextField'})).value;
@@ -267,6 +251,47 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         await this.tapElement('accessibility id','OK','Return to composer');
         return {url:related.url,label:related.label,verified:true};
     }
+
+    /** Find the related Reel's tile in the open "Select a reel" picker; returns the point to tap. The reviewed default
+     * Reel is matched by its saved cover image; every other Reel by its cover headline (instagram-reels.json), read
+     * with OCR, because the tiles have no accessibility text. Scrolls down page by page, at most 12 times. No match,
+     * or a headline on two tiles, throws before any tile is tapped. */
+    protected async findRelatedTile(related:NonNullable<PostingInput['instagramRelatedReel']>):Promise<{x:number;y:number}> {
+        const cellsNow=async()=>visibleNativeNodes((await this.request(this.session+'/source')).value).filter(n=>n.type==='XCUIElementTypeCell'&&n.width>=130&&n.width<=150&&n.height>=240);
+        const shot=async()=>Buffer.from((await this.request('/screenshot')).value,'base64');
+        if(related.url===reviewedRelatedReel){
+            // The heading appears before the grid finishes loading. Re-read once,
+            // without touching the grid, if its cover is not yet identifiable.
+            // Thumbnails can take several seconds to render (blank grid seen Oct 7 13:25). Re-read without touching the grid.
+            for(let attempt=0;;attempt++){
+                try{return await locateRelatedCover(await shot(),related);}
+                catch(e){
+                    // After the grid has had time to load, look at the real cells and scroll down page by page.
+                    if(attempt>=3){
+                        try{return await locateRelatedCoverInCells(await shot(),await cellsNow(),related);}catch{}
+                        if(attempt>=12)throw e;
+                        await this.request(this.session+'/wda/dragfromtoforduration',{fromX:215,fromY:760,toX:215,toY:360,duration:0.3});
+                    }
+                    await this.sleep(1500);
+                }
+            }
+        }
+        const reel=reelByUrl(related.url);
+        if(!reel?.headline||reel.caption!==related.caption||reel.label!==related.label)throw Error('This related Reel is not in the Reel catalog with a cover headline; no Reel selected');
+        await this.sleep(3000);   // thumbnails render a few seconds after the heading
+        for(let page=0;;page++){
+            const png=await shot(),{found,scores}=await locateHeadlineInCells(png,await cellsNow(),reel.headline);
+            await this.pickerPage(png,page,scores.map(s=>({...s.cell,score:s.score,text:s.text})));
+            if(found)return found;
+            if(page>=12)throw Error('Related Reel headline was not found in the picker; no Reel selected');
+            await this.assertInputApp();
+            await this.request(this.session+'/wda/dragfromtoforduration',{fromX:215,fromY:760,toX:215,toY:360,duration:0.3});
+            await this.sleep(1500);
+        }
+    }
+
+    /** Each picker page OCR read; attended calibration saves them as evidence. */
+    protected async pickerPage(_png:Buffer,_page:number,_tiles:unknown[]):Promise<void>{}
 
     protected async verifyRelatedReel(receipts:Record<string,{verified:boolean;evidence:string}>) {
         const related=this.input?.instagramRelatedReel;
@@ -281,11 +306,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
             if(await this.visible('predicate string','label == "Link a reel" AND visible == 1')){
                 await this.tapElement('predicate string','label == "Link a reel" AND visible == 1','Add missing related Reel');
                 await this.waitFor('accessibility id','Select a reel','Owned Reel picker');
-                let found;
-                for(let attempt=0;;attempt++){
-                    try{found=await locateRelatedCover(Buffer.from((await this.request('/screenshot')).value,'base64'),related);break;}
-                    catch(e){if(attempt>=10)throw e;await this.sleep(1500);}
-                }
+                const found=await this.findRelatedTile(related);
                 await this.tapPoint(found.x,found.y);
                 await this.waitFor('accessibility id','Edit linked reel','Link title');
                 const rows=(await this.request(this.session+'/elements',{using:'class name',value:'XCUIElementTypeTextField'})).value;

@@ -1,0 +1,1197 @@
+{
+ "_note": "Published Instagram Reels on @antoniorevenue that a Trial Reel may link. 'headline' is the cover text OCR finds on the picker tile; 'label' is the public link title (Instagram keeps 15 characters); 'topics' are vocabulary phrases from the caption. Edit any of them freely. Only Reels with inPicker true can be chosen: the native \"Select a reel\" picker lists Reels on the main profile grid (regular Reels and promoted Trial Reels), not Trial Reels still in trial. Set inPicker and a reviewed label after a picker scan (scripts/calibrate-related-reels.ts saves one). Built by scripts/refresh-instagram-reels.ts, which keeps existing entries. Topics in 'generic' count half, so two broad words alone do not pick a Reel.",
+ "defaultUrl": "https://www.instagram.com/reel/Dd7K1yvCIgq/",
+ "generic": [
+  "claude code",
+  "codex",
+  "github",
+  "open source",
+  "open-source",
+  "repo",
+  "skill",
+  "skills",
+  "plugin",
+  "plugins",
+  "agent",
+  "agents",
+  "team",
+  "content",
+  "video",
+  "posts",
+  "reel",
+  "reels",
+  "email",
+  "call",
+  "calls",
+  "model",
+  "models",
+  "google",
+  "prompt",
+  "prompts",
+  "research",
+  "session",
+  "notes",
+  "assistant"
+ ],
+ "vocabulary": [
+  "claude code",
+  "codex",
+  "github",
+  "open source",
+  "open-source",
+  "repo",
+  "skill",
+  "skills",
+  "plugin",
+  "plugins",
+  "mcp",
+  "agent",
+  "agents",
+  "sub-agents",
+  "coding agents",
+  "harness",
+  "sales",
+  "sales agent",
+  "sales team",
+  "sales calls",
+  "sales call",
+  "closer",
+  "pipeline",
+  "outbound",
+  "cold email",
+  "cold emails",
+  "leads",
+  "customers",
+  "local businesses",
+  "replies",
+  "reply",
+  "memory",
+  "second brain",
+  "wiki",
+  "obsidian",
+  "notes",
+  "remembers",
+  "handoff",
+  "session",
+  "chatgpt",
+  "openai",
+  "gemini",
+  "google",
+  "anthropic",
+  "model",
+  "models",
+  "frontier model",
+  "usage limit",
+  "api bill",
+  "free-tier",
+  "linkedin",
+  "instagram",
+  "tiktok",
+  "youtube",
+  "reels",
+  "reel",
+  "viral",
+  "hooks",
+  "content",
+  "posts",
+  "carousel",
+  "carousels",
+  "canva",
+  "video",
+  "videos",
+  "animation",
+  "motion",
+  "render",
+  "voice",
+  "editing",
+  "video editor",
+  "captions",
+  "design",
+  "logo",
+  "brand",
+  "front-end",
+  "website",
+  "vibe coding",
+  "vibe code",
+  "designer",
+  "jobs",
+  "layoffs",
+  "hiring",
+  "job search",
+  "team",
+  "bankruptcy",
+  "sued",
+  "prices",
+  "pricing",
+  "money",
+  "banks",
+  "moat",
+  "dashboard",
+  "inbox",
+  "email",
+  "calendar",
+  "assistant",
+  "weekend",
+  "workflow",
+  "loops",
+  "graphs",
+  "process maps",
+  "org charts",
+  "flowchart",
+  "phone",
+  "calls",
+  "call",
+  "phone number",
+  "scraper",
+  "scraping",
+  "scrape",
+  "web scraping",
+  "research",
+  "keyword",
+  "comfyui",
+  "images",
+  "ads",
+  "hormozi",
+  "karpathy",
+  "harvey",
+  "playbooks",
+  "offers",
+  "audit",
+  "scorecard",
+  "business coach",
+  "prompts",
+  "prompt"
+ ],
+ "reels": [
+  {
+   "url": "https://www.instagram.com/reel/Dd7K1yvCIgq/",
+   "label": "Claude YouTube",
+   "caption": "Comment YOUTUBE and I'll send you 11 free Claude skills that run most of your YouTube workflow. One writes scripts from 21 hook formulas, and the others handle titles, thumbnails, edit notes, comments and your weekly plan. One even breaks down the top videos in your niche, and you still do the upload yourself.\n\n#claude #ai #aitips #youtube #aitools",
+   "headline": "",
+   "sha256": "",
+   "topics": [],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DetJEGzo46j/",
+   "caption": "Claude can now help plan your whole LinkedIn week.\n\nA free GitHub project adds 12 LinkedIn skills to Claude Code. First it interviews you about your career, so it writes from your real stories in your voice.\n\nThen it plans your week: topics, hooks, formats and posting times. Other skills draft your comments and rewrite your profile. Before you post, it checks the draft and strips out the AI tells. Nothing goes live until you approve it.\n\nComment GHOSTWRITER and I'll send you the install steps.\n\n#claudeai #linkedin #linkedingrowth #aitools #personalbranding",
+   "label": "",
+   "headline": "12 FREE SKILLS TURN CLAUDE INTO YOUR LINKEDIN GHOSTWRITER",
+   "sha256": "c000057331a2a2b0819c4b95be32cb285405b6d263f829ae1614af8daf018cca",
+   "topics": [
+    "claude code",
+    "github",
+    "skills",
+    "linkedin",
+    "hooks",
+    "voice"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DetCTmToK82/",
+   "caption": "Motion designers spend hours on keyframes. With Claude Code and the right GitHub repos, you just describe the animation. Claude writes the code.\n\nComment \"MOTION\" and I'll send you all 20 repos.\n\n#ai #claudecode #motiongraphics #animation #github\n\n-\n\nclaude, remotion, after effects alternative, video editing, motion design, content creators, animated videos, 3d animation, gsap",
+   "label": "",
+   "headline": "CLAUDE CODE + 20 REPOS = YOUR MOTION STUDIO",
+   "sha256": "95754da994f32992b780c21fff387e581e4d0559c4874f48629b146d1180d560",
+   "topics": [
+    "claude code",
+    "github",
+    "content",
+    "video",
+    "videos",
+    "animation",
+    "motion",
+    "editing",
+    "design"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Des7VG8IJ-H/",
+   "caption": "Andrej Karpathy shared a simple way to give your business its own AI wiki.\n\nYou need Claude Code and Obsidian. Make two folders, raw and wiki. Drop in your pricing, processes, old proposals and call transcripts. Paste his idea file into Claude Code, and it writes linked pages for your clients, services and processes.\n\nAsk it questions and save the good answers back into the wiki. It gets smarter every time you use it.\n\nComment KARPATHY and I'll send you the setup guide.\n\n#claudecode #obsidian #secondbrain #aiforbusiness #aiautomation",
+   "label": "",
+   "headline": "KARPATHY'S AI WIKI FOR YOUR WHOLE BUSINESS",
+   "sha256": "341560895a56b7c9d24b5743ffe3eabcb7c51125ed6f38b505e87a4386106484",
+   "topics": [
+    "claude code",
+    "wiki",
+    "obsidian",
+    "pricing",
+    "call",
+    "karpathy"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Des0c6Yowg4/",
+   "caption": "ChatGPT keeps notes on you. You can see them and wipe them yourself.\n\nWhen memory is on, it can use your past chats and your saved memories. Ask it what it remembers about you. Then open Settings, Personalization, Memory, and delete what you don't want or turn memory off.\n\nThe catch: deleting a chat doesn't delete a memory saved from it. Delete the saved memory too.\n\nComment DOSSIER and I'll send you the prompts and the checklist.\n\n#chatgpt #aitips #dataprivacy #aitools #chatgptprompts",
+   "label": "",
+   "headline": "CHATGPT KEEPS NOTES ON YOU. WIPE THEM NOW",
+   "sha256": "cae3cdc05f6fb76344553d0cb892b882dd1a4ed1eec47a9e1605a03c5fb1326f",
+   "topics": [
+    "memory",
+    "notes",
+    "remembers",
+    "chatgpt",
+    "prompts"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DestqfFosTh/",
+   "caption": "Someone turned Claude into a free Instagram content team, with 54 skills.\n\nIt's called Claude Content Skills. One skill finds what's blowing up in your niche. Another studies a viral reel and writes 10 hooks. Then it scripts the reel, writes the caption and plans two weeks of posts.\n\nOne command, Content Factory, runs them all in order. Free and open source on GitHub.\n\nComment SQUAD and I'll send you the install steps.\n\n#claudeai #instagramgrowth #contentcreation #aitools #socialmediamarketing",
+   "label": "",
+   "headline": "54 FREE SKILLS TURN CLAUDE INTO AN INSTAGRAM TEAM",
+   "sha256": "c455d14c4207efa005e35b2c7b5e10e6e7aa9c0765e75be2c24c4b8098dc3d48",
+   "topics": [
+    "github",
+    "open source",
+    "skill",
+    "skills",
+    "instagram",
+    "reel",
+    "viral",
+    "hooks",
+    "content",
+    "posts",
+    "team"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DesmymvI-NR/",
+   "caption": "JPMorgan and Schwab just locked AI agents out of your accounts. But JPMorgan is testing its own AI to move your cash. Who really controls your money? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "BANKS JUST BLOCKED YOUR AI AGENT. WHY?",
+   "sha256": "433c31365c3b6862b5cf1738c0aaa25ff9ad78808d848d30bf555106983a3808",
+   "topics": [
+    "agent",
+    "agents",
+    "sales",
+    "brand",
+    "money",
+    "banks"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Desf2f4I7oh/",
+   "caption": "This GitHub repo gained over 600 stars today.\n\nIt's called ai-memory. Quit Claude Code halfway through and open Codex in the same folder. It picks up a handoff: where you left off, what failed and what's still open.\n\nPoint your whole team at one server and every agent can use what the others learned. The memory is plain markdown you can open in Obsidian. Free under MIT.\n\nComment RELAY and I'll send you the setup steps.\n\n#claudecode #aitools #aiagents #opensource #github",
+   "label": "",
+   "headline": "600 STARS TODAY: YOUR AI TOOLS SHARE ONE MEMORY",
+   "sha256": "ceffc93fe28bf277d9af7a7bc0d2ca4361f9afb21edd687a6c0bcd5a214f98d6",
+   "topics": [
+    "claude code",
+    "codex",
+    "github",
+    "repo",
+    "agent",
+    "memory",
+    "obsidian",
+    "handoff",
+    "team"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DesZLYpvSmY/",
+   "caption": "5 things I would build inside Claude in one weekend.\n\nA morning dashboard, a second brain, a day-planning assistant, a content agent and a team of AI helpers.\n\nComment CHIEF and I'll send you the step-by-step guide.\n\n#claudeai #aitools #aiagents #businessautomation #secondbrain",
+   "label": "",
+   "headline": "5 THINGS TO BUILD IN CLAUDE THIS WEEKEND",
+   "sha256": "f4fe69b6836f2a927cd7ad216772a301f24a8964b60508c3763855087974fda8",
+   "topics": [
+    "agent",
+    "second brain",
+    "content",
+    "team",
+    "dashboard",
+    "assistant",
+    "weekend"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DesSLOjhOlA/",
+   "caption": "Prompting AI isn't enough anymore. You need loops and graphs.\n\nA prompt gives AI one set of instructions. A loop lets it do the work, check the result and fix what failed. A graph maps your whole workflow: every step is a box, and the arrows are the rules for when to retry, stop or ask you.\n\nOne-off task: prompt. A job you can grade pass or fail: loop. A process you repeat every week: graph.\n\nComment LOOPS and I'll send you a template to map your workflows.\n\n#aiagents #aiautomation #aiworkflow #claudeai #aitools",
+   "label": "",
+   "headline": "PROMPTING ISN'T ENOUGH. YOU NEED LOOPS AND GRAPHS",
+   "sha256": "2ac7a282042014f7fc810a3b6469b23863f1f34b625ecedb2d630256a2218c3d",
+   "topics": [
+    "workflow",
+    "loops",
+    "graphs",
+    "prompt"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DepR5BpoA27/",
+   "caption": "Comment \"HIRING\" and I'll send you my AI applicant screening guide \ud83d\udc47\nA geophysicist lost his job and built AI Job Search on Claude Code. It has over 48,000 stars on GitHub and was trending today.\nWhat the README says it does: 1. Scores each job and drafts a tailored CV and cover letter 2. A second AI agent critiques the drafts 3. Reads Gmail for interview invites and runs a mock interview\nHis own result: 69 applications, 20 first interviews, one signed contract. If you hire, test real work before you trust the paper.\nFollow @antoniorevenue. I post every day. #aitools #claudecode #hiring #aiagents #aiforbusiness",
+   "label": "",
+   "headline": "HIS AI WROTE 69 APPLICATIONS THEN HE GOT HIRED",
+   "sha256": "71a67df32b26c77bacde80eba7d8a96a30eb92b73efadbfbca2a73bb71f9d1fc",
+   "topics": [
+    "claude code",
+    "github",
+    "agent",
+    "hiring",
+    "job search"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Depfon3yFHZ/",
+   "caption": "Comment \"FLEET\" and I'll send you my agent fleet setup guide \ud83d\udc47\nOrca is a free app that runs Claude Code, Codex and other coding agents side by side. It has over 95,000 stars on GitHub and was trending today.\nWhat the README says it does: 1. Sends one prompt to five agents, each in its own copy of the project 2. Pings your phone when an agent finishes 3. Lets you review the work and merge the winner\nStop doing every task yourself. Run the fleet and review the best result.\nFollow @antoniorevenue. I post every day. #aitools #claudecode #aiagents #automation #aiforbusiness",
+   "label": "",
+   "headline": "5 CODING AGENTS ONE TASK PICK THE WINNER",
+   "sha256": "28a66da9a10a9d10d795faa453a400af9402d486ce3e2593b5b59e6e9384d7c1",
+   "topics": [
+    "claude code",
+    "codex",
+    "github",
+    "agent",
+    "agents",
+    "coding agents",
+    "phone",
+    "prompt"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeriEFUoiVr/",
+   "caption": "Comment \"COMFY\" and I'll send you my ComfyUI ad workflow setup guide \ud83d\udc47\nComfyUI is a free, open-source app that makes images, video and sound on your own computer. It has almost 139,000 stars on GitHub and was trending today.\nWhat the README says it does: 1. You connect boxes into a workflow, no code 2. It runs open models on as little as 4 GB of video memory 3. You save the workflow and run it again\nThe model isn't the edge anymore. The workflow is.\nFollow @antoniorevenue. I post every day. #aitools #comfyui #aiforbusiness #automation #contentcreation",
+   "label": "",
+   "headline": "STOP RENTING YOUR AI IMAGES OWN THE MACHINE",
+   "sha256": "c1db831b7e5bfcb251bbf5f4b593a2ea117670ef0bbfb443b0938d0b5e55f490",
+   "topics": [
+    "github",
+    "open-source",
+    "memory",
+    "model",
+    "models",
+    "video",
+    "workflow",
+    "comfyui",
+    "images"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DerbQmvo2cL/",
+   "caption": "No API bill. Just a free sales agent inside Claude Code.\n\nHarvey finds local businesses, reads their sites, writes cold email and handles the replies. Nothing goes out until you approve it.\n\nComment HARVEY and I'll send you the repo and setup guide.\n\n#claudecode #aiagents #salesautomation #aitools #opensource",
+   "label": "",
+   "headline": "NO API BILL. JUST A FREE SALES AGENT",
+   "sha256": "a8c692a37477abaf6a347fd4159aa79a465a0f6cd967941018878ef183af27fc",
+   "topics": [
+    "claude code",
+    "repo",
+    "agent",
+    "sales",
+    "sales agent",
+    "cold email",
+    "local businesses",
+    "replies",
+    "api bill",
+    "email",
+    "harvey"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeqkPsKIe2U/",
+   "caption": "Your Claude plan can now run your outbound, free.\n\nHarvey is an open source agent that runs on your existing Claude subscription instead of an API bill. It finds leads, writes the emails, tracks replies and shows your pipeline on a live dashboard.\n\nComment PROSPECT and I'll send you the repo and setup guide.\n\n#claudecode #outbound #aiagents #salesautomation #aitools",
+   "label": "",
+   "headline": "YOUR CLAUDE PLAN NOW RUNS YOUR OUTBOUND",
+   "sha256": "019f5990b1e06be92fdf4ec0e8e4f22d254d09ba095c8ebac9d4cca1e391142b",
+   "topics": [
+    "open source",
+    "repo",
+    "agent",
+    "pipeline",
+    "outbound",
+    "leads",
+    "replies",
+    "api bill",
+    "dashboard",
+    "harvey"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeqdWffIKHh/",
+   "caption": "Stop buying leads. This free Claude Code agent finds them for you.\n\nHarvey is open source. It finds local businesses, researches them and writes personalized cold emails, then tracks the replies. Nothing sends without your approval.\n\nComment COLDEMAIL and I'll send you the repo and setup guide.\n\n#coldemail #leadgeneration #claudecode #aiagents #salesautomation",
+   "label": "",
+   "headline": "STOP BUYING LEADS CLAUDE FINDS THEM FOR FREE",
+   "sha256": "db32d69af2633c7e65da044d82d0329e22f9e5746afe16931255d8c6367f34d6",
+   "topics": [
+    "claude code",
+    "open source",
+    "repo",
+    "agent",
+    "cold emails",
+    "leads",
+    "local businesses",
+    "replies",
+    "harvey"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeqWhtDIHHa/",
+   "caption": "Google just released Gemini 4 Argon, its latest frontier model.\n\nGoogle showed it turning project notes into a client proposal deck. Then it drafted the email and set up a scheduled task for new requests.\n\nComment ARGON and I'll send you the steps to try it.\n\n#Gemini #Google #AITools #AIAgents #Productivity",
+   "label": "",
+   "headline": "GEMINI 4 ARGON NOW BUILDS YOUR CLIENT DECKS",
+   "sha256": "e807b29e46ccc75bcc9c2397eb7ddff990430cd45b5c7ea5ef8456e1cc1708a0",
+   "topics": [
+    "notes",
+    "gemini",
+    "google",
+    "model",
+    "frontier model",
+    "email"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeqPuYRIjYb/",
+   "caption": "Comment \"TEAM\" and I'll send you the whole AI sales manager map \ud83d\udc47\n\n5 of the 7 AI jobs that run a sales team:\n1. 1 AM: checks yesterday's calls for missed disclosures\n2. Every 15 min: sends the closer a brief before each call\n3. Every 30 min: nudges the closer once on calls with no outcome\n4. 6 PM: posts the day's cash to the sales channel\n5. 6:30 PM: scores setter calls and tells the manager what to say instead\n\nEvery job pulls the real numbers with a script before it writes a word.\n\nFollow @antoniorevenue. I post every day.\n\n#salesteam #aiforbusiness #automation #salesmanagement #aitools",
+   "label": "",
+   "headline": "STEAL MY AI SALES MANAGER AUTOMATION",
+   "sha256": "6da9cfca5a31bf1698100696b119a813fe952c2f66f25a8418185c9dc1ba9856",
+   "topics": [
+    "sales",
+    "sales team",
+    "closer",
+    "posts",
+    "jobs",
+    "team",
+    "calls",
+    "call"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeqI0dZI181/",
+   "caption": "This free AI agent writes your cold emails for you.\n\nHarvey runs on your Claude Code subscription instead of an API bill. It finds local businesses, writes email that mentions something real about each one, and handles the replies. You approve every send.\n\nComment HARVEY and I'll send you the repo and setup guide.\n\n#claudecode #coldemail #aiagents #aitools #smallbusiness",
+   "label": "",
+   "headline": "THIS FREE AI AGENT WRITES YOUR COLD EMAILS",
+   "sha256": "da104a5652288344d415ea9c309e3b04cc0b746d25505bbf3e4c988c516d9eb6",
+   "topics": [
+    "claude code",
+    "repo",
+    "agent",
+    "cold emails",
+    "local businesses",
+    "replies",
+    "api bill",
+    "email",
+    "harvey"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeqCB2hIQo4/",
+   "caption": "Your Claude Code plan can find you customers.\n\nHarvey is a free, open source sales agent. It finds local businesses, reads their websites and writes cold email that mentions something real about them. Nothing sends without your approval.\n\nComment HARVEY and I'll send you the repo and setup guide.\n\n#claudecode #aiagents #leadgen #aitools #salesautomation",
+   "label": "",
+   "headline": "YOUR CLAUDE PLAN NOW FINDS YOU NEW CUSTOMERS",
+   "sha256": "1078017dfa0e7722351d29996404eba33c47125bb66552de2a052757e5450d7d",
+   "topics": [
+    "claude code",
+    "open source",
+    "repo",
+    "agent",
+    "sales",
+    "sales agent",
+    "cold email",
+    "customers",
+    "local businesses",
+    "email",
+    "harvey"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeptUqvhp4o/",
+   "caption": "This repo has over 27,000 GitHub stars, and it audits your AI agent in two minutes.\n\niFixAi is open source. It checks if your agent does the job it's supposed to do, then gives you a scorecard and a report.\n\nComment IFIXAI and I'll send you the setup steps.\n\n#AIAgents #ClaudeCode #AITools #OpenSource #Automation",
+   "label": "",
+   "headline": "AUDIT YOUR AI AGENT IN TWO MINUTES FREE, OPEN SOURCE",
+   "sha256": "870f20c6b55e68c7a6b9c94b9e57888c29e76ac325243526e02cf487f5128ce9",
+   "topics": [
+    "github",
+    "open source",
+    "repo",
+    "agent",
+    "audit",
+    "scorecard"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DepmfHWyuuR/",
+   "caption": "Comment \"RUFLO\" and I'll send you my agent harness setup guide \ud83d\udc47\nRuflo is a free harness for Claude Code and Codex. It has over 75,000 stars on GitHub and was trending today.\nWhat the README says it does: 1. Adds about 100 specialized agents that work as a team 2. Shows agents, tokens and cost in one cockpit 3. Lets you set the limits, starting at read and ask\nThe model isn't the edge anymore. The harness is.\nFollow @antoniorevenue. I post every day. #aitools #claudecode #aiagents #automation #aiforbusiness",
+   "label": "",
+   "headline": "100+ AI AGENTS IN CLAUDE CODE YOU SET THE LIMITS",
+   "sha256": "98c2c639a6c5d204266bea0ded45891f5cda0d100c75197af7f2331ac6c548be",
+   "topics": [
+    "claude code",
+    "codex",
+    "github",
+    "agent",
+    "agents",
+    "harness",
+    "model",
+    "team"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DepYwxnvEVg/",
+   "caption": "Google paid a reported $2.7 billion for its tech. Now Character.ai filed for bankruptcy and Disney bid $20 million. What killed it? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "CHARACTER.AI IS BANKRUPT. WHAT KILLED IT?",
+   "sha256": "51687aa557cef3e6b7d2be0a56de1a26b07fa2758e9026f3fe9bb1abc67aa022",
+   "topics": [
+    "sales",
+    "google",
+    "brand",
+    "bankruptcy"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DepFKWGIgZy/",
+   "caption": "You can give Claude Code its own phone number, so it calls you when it needs a decision.\n\nYou ask for a quick call, say what you want changed, and hang up. Your answer goes back into the session and Claude Code keeps working.\n\nAll you need is a Claude Code subscription and a Bland API key.\n\nComment PHONE and I'll send you the full guide.\n\n#claudecode #aiagents #automation #aitools #claude",
+   "label": "",
+   "headline": "GIVE CLAUDE CODE A PHONE NUMBER IT CALLS YOU",
+   "sha256": "718034780a72558a0f322f027f1f1be58cc823d9bc552ab30b7aa1b0b592a36e",
+   "topics": [
+    "claude code",
+    "session",
+    "phone",
+    "calls",
+    "call",
+    "phone number"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Deo3W9woP51/",
+   "caption": "This free Claude skill has over 3,000 GitHub stars, and it designs your logo.\n\nlogo-design-skill builds logo concepts as SVG files, tests each one, then builds the full kit once you pick a direction.\n\nComment LOGO and I'll send you the setup steps.\n\n#Branding #LogoDesign #ClaudeCode #AITools #OpenSource",
+   "label": "",
+   "headline": "CLAUDE DESIGNS YOUR LOGO FOR FREE OPEN SOURCE SKILL",
+   "sha256": "487041643f9fa1ae7f9e3bec61d57be4c3b66dd2f9c776cc00b8692f814831be",
+   "topics": [
+    "github",
+    "open source",
+    "skill",
+    "logo"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeoAcSgoRis/",
+   "caption": "Getty Images is heading to bankruptcy as AI crowds in. Is your moat next? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "GETTY IMAGES IS GOING BANKRUPT. WHAT'S YOUR MOAT?",
+   "sha256": "4571631ceb031c7348cf17d4a4cfaad9c83fa9430764ca51e6f619d4fa1d0f0d",
+   "topics": [
+    "sales",
+    "brand",
+    "bankruptcy",
+    "moat",
+    "images"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Den5rnLIPYF/",
+   "caption": "Comment \"HANDOFF\" and I'll send you my agent setup guide \ud83d\udc47\nCLI-Anything has over 52,000 stars on GitHub and was trending today. It's a free, open-source tool that gives real apps a command line so your AI agent can run them.\nWhat the README says it does: 1. Gives apps like Blender, GIMP and LibreOffice a command line 2. Lists 103 ready-made CLIs in its CLI-Hub 3. Lets your agent find and install them itself\nTest it on one weekly task first, and check the result yourself.\nFollow @antoniorevenue. I post every day. #clianything #aitools #aiagents #automation #aiforbusiness",
+   "label": "",
+   "headline": "YOUR AGENT CAN NOW RUN REAL SOFTWARE",
+   "sha256": "fedd14206134a87390dba3d22f3915c87682fa0bd99f8a96a2b74de7a1148750",
+   "topics": [
+    "github",
+    "open-source",
+    "agent",
+    "handoff"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DenyrQAo4nz/",
+   "caption": "This free repo got almost a thousand GitHub stars in three days, and it spots new AI names early.\n\nnew-term-radar is open source. Each day it reads X, Hugging Face, GitHub and site maps, then builds a keyword table with a decision for each name.\n\nComment SURGE and I'll send you the setup steps.\n\n#SEO #AITools #KeywordResearch #ClaudeCode #OpenSource",
+   "label": "",
+   "headline": "FIND NEW AI NAMES BEFORE KEYWORD TOOLS FREE, OPEN SOURCE",
+   "sha256": "04320fd881e9db54e392ba2df459e6356fa1b848e52a15af179fb286b5c62dfc",
+   "topics": [
+    "github",
+    "open source",
+    "repo",
+    "keyword"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DendIdUI2KN/",
+   "caption": "This free repo has over 63,000 GitHub stars, and it lets Claude make videos for you.\n\nHyperFrames is open source. You write a video as plain HTML, and it renders an MP4 on your own computer. Claude Code can plan, build and render it for you.\n\nComment HYPER and I'll send you the setup steps.\n\n#ClaudeCode #Claude #AITools #VideoMarketing #OpenSource",
+   "label": "",
+   "headline": "CLAUDE MAKES VIDEOS FROM PLAIN HTML FREE, OPEN SOURCE",
+   "sha256": "56614650b7af0509e609be1b4c23caa85dc9b7d271d998a281ee805a5fb70269",
+   "topics": [
+    "claude code",
+    "github",
+    "open source",
+    "repo",
+    "video",
+    "videos",
+    "render"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DenWTNwIG50/",
+   "caption": "Comment \"FOLDERS\" and I'll send you my folder setup, prompts and a full walkthrough.\n\nThese models are so good now that a few small details change everything:\n\n1. Clone any site with two agents: a designer and a builder\n2. Hand Claude a reel you love and crank effort to max\n3. Give Claude Code a brain: your voice, your business, your audience\n\nFollow for daily AI tips.\n\n#claudeai #claudecode #aitools #aiautomation #businessautomation",
+   "label": "",
+   "headline": "3 CLAUDE HACKS NOTHING TO INSTALL NOTHING TO LEARN",
+   "sha256": "e634b58e62666b2940b4460a9389ec091f887e92cfcb9d4cb861edea038a8ec6",
+   "topics": [
+    "claude code",
+    "agents",
+    "models",
+    "reel",
+    "voice",
+    "designer",
+    "prompts"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DenP4mcPjyj/",
+   "caption": "An open-source sales agent that runs on your Claude Code subscription instead of an API bill.\n\nIt finds local businesses, reads their websites, writes cold email that mentions something real about them, and handles the replies. Nothing sends without your approval.\n\nComment HARVEY and I'll send you the repo and setup guide.\n\n#claudecode #aiagents #coldemail #aitools #salesautomation",
+   "label": "",
+   "headline": "A FREE AI AGENT THAT FINDS YOUR CUSTOMERS",
+   "sha256": "6aafd9ba8f1f1b5eeb4f2fe498bcf97ebeea44d353098bd991180eb8b7304f40",
+   "topics": [
+    "claude code",
+    "open-source",
+    "repo",
+    "agent",
+    "sales",
+    "sales agent",
+    "cold email",
+    "customers",
+    "local businesses",
+    "replies",
+    "api bill",
+    "email",
+    "harvey"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DenIklFh8TC/",
+   "caption": "Comment \"MASTER\" and I'll send you the full setup \ud83d\udc47\n\nYour video editor, your content strategist and your app builder. All inside Claude \ud83e\udd2f\n\nThree free skills:\n1. Edit cuts the dead space, adds captions and plans the visuals\n2. Virality finds what's working in your niche and rewrites it in your voice\n3. Build takes you from an idea to a working app or website\n\n#claudeai #aitools #claudeskills #contentcreation #aiautomation",
+   "label": "",
+   "headline": "3 CLAUDE SKILLS THAT EDIT, GO VIRAL AND BUILD ANYTHING",
+   "sha256": "bbe614d40d7f01eaee33e1c0cc399d4025cd5741ba2f294c838106f0b57e40c1",
+   "topics": [
+    "skills",
+    "viral",
+    "content",
+    "video",
+    "voice",
+    "video editor",
+    "captions",
+    "website"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DenCVytSFNi/",
+   "caption": "Comment \"DUB\" and I'll send you my own-voice studio setup guide \ud83d\udc47\nVoiceStudio has over 62,000 stars on GitHub and was trending today. It's a free, open-source voice studio that runs on your own computer.\nWhat the README says it does: 1. Clones a voice or designs a new one 2. Dubs videos in 646 languages 3. Gives your AI agents a local API and MCP server\nClone only voices you have permission to use, and test it on one training video first.\nFollow @antoniorevenue. I post every day. #voicestudio #aitools #automation #businessowner #aiforbusiness",
+   "label": "",
+   "headline": "THE FREE ELEVENLABS ON YOUR COMPUTER",
+   "sha256": "22548d149f626e1324b48743148635e5957ccd4bd6314145e8e3fae2d3d38338",
+   "topics": [
+    "github",
+    "open-source",
+    "mcp",
+    "agents",
+    "video",
+    "videos",
+    "voice"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dem7ZLZBprj/",
+   "caption": "Walmart's price tags now light up from your phone. Is your shop next? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "WALMART'S SHELVES RUN ON SOFTWARE IS YOURS NEXT?",
+   "sha256": "0fe25114aca7d9c823de439ed51122dafc32d18370be37088ca77d2855d9d029",
+   "topics": [
+    "sales",
+    "brand",
+    "phone"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dem0DjlPqUT/",
+   "caption": "Claude Code forgets your whole project when a session ends.\n\nClaude-Mem is an open source memory plugin for Claude Code. It writes a summary of each step and brings those summaries back in the next session.\n\nComment MEMORY and I'll send you the setup steps.\n\n#ClaudeCode #Claude #AITools #AIAgents #Productivity",
+   "label": "",
+   "headline": "CLAUDE FORGETS YOUR WHOLE PROJECT OPEN SOURCE MEMORY FIXES IT",
+   "sha256": "293fdce0caa83dff4cacd8888b28130bfdf5c0fe840db4e72f1f5ce76dc46170",
+   "topics": [
+    "claude code",
+    "open source",
+    "plugin",
+    "memory",
+    "session"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dejs6IKoYWz/",
+   "caption": "Comment \"GRILL\" and I'll send you my grill me setup \ud83d\udc47\n\nMost AI work goes wrong before it starts. The brief is vague, so the agent guesses.\n\nMatt Pocock's free skill pack fixes that. Type grill me and Claude questions your plan first:\n1. It asks in rounds, with a suggested answer for each question\n2. You only correct what's wrong\n3. It won't build until you both agree on the plan\n\nUse it before your next campaign, offer page or SOP.\n\nFollow @antoniorevenue. I post every day.\n\n#claudeai #aitools #automation #businessowner #aiforbusiness",
+   "label": "",
+   "headline": "STOP PROMPTING UNTIL CLAUDE GRILLS YOU",
+   "sha256": "5fa18c4c64d9fe0f0087a87c6f524420f4db2da4cfd449aa19202d246c52cc51",
+   "topics": [
+    "skill",
+    "agent"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeipHVLIMmf/",
+   "caption": "Google promised Finland $15 billion for AI. Then it was told to stop. \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "",
+   "sha256": "e9c6b029d09ace8ec749accf2c58d0b0ce89e0c7b468cf4473d08b4392a9ecd5",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeikgDSINN_/",
+   "caption": "5 things I would build inside Claude in one weekend.\n\n1. An AI dashboard for your calendar, inbox and tasks that refreshes every morning\n2. A second brain that holds everything about your business in one place\n3. An AI executive assistant that plans your day and checks it at night\n4. A content agent that reads your comments and numbers and picks your next video\n5. A team of AI helpers run by one chief of staff\n\nComment \"COMMUNITY\" and I'll send you the step-by-step guide.\n\n#claudeai #aitools #aiagents #businessautomation #secondbrain",
+   "label": "",
+   "headline": "5 CLAUDE BUILDS FOR ONE WEEKEND",
+   "sha256": "ae79f8d56ca57c2ebd0459f9a45a072595f227a05dedbb750b5e8a9deab6d15e",
+   "topics": [
+    "agent",
+    "second brain",
+    "content",
+    "video",
+    "team",
+    "dashboard",
+    "inbox",
+    "calendar",
+    "assistant",
+    "weekend"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Deh4OIiS2wc/",
+   "caption": "Kroger is cutting 3,000 corporate jobs as AI moves in. Is your team next? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "KROGER IS CUTTING 3,000 JOBS IS YOUR TEAM NEXT?",
+   "sha256": "51010f670e49b38cfe8e0c3018f7fbbccdfc42add778a86848582dee2327305c",
+   "topics": [
+    "sales",
+    "brand",
+    "jobs",
+    "team"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DehjsruIQr1/",
+   "caption": "AT&T just teamed up with OpenAI to need fewer law firms. Is your team next? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "AT&T NEEDS FEWER LAW FIRMS YOUR TEAM NEXT?",
+   "sha256": "81aa79b45b847bb0593cb9815b94d9022c189850cc0946af6f74c1987992053a",
+   "topics": [
+    "sales",
+    "openai",
+    "brand",
+    "team"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DehV5cwoMcS/",
+   "caption": "A Claude skill with 47,000 GitHub stars now draws your org charts, funnels and process maps, in your own brand.\n\nComment \"FLOWCHART\" and I'll send you my process map guide.\n\nFollow @antoniorevenue. I post every day.\n\n#claudeai #processmapping #aitools #businesssystems #smallbusiness",
+   "label": "",
+   "headline": "CLAUDE CAN NOW DRAW YOUR PROCESS MAP",
+   "sha256": "76c5aebd7f2600a18a8534a51c0cbdc467c8e548da3f5aa52e8b01ac2d983d14",
+   "topics": [
+    "github",
+    "skill",
+    "brand",
+    "process maps",
+    "org charts",
+    "flowchart"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dee_oBzIPmy/",
+   "caption": "Anthropic's plugin repo now has over 100 plugins for your team. The sales one has 36 skills, from call prep to forecasts.\n\nComment \"PLUGIN\" and I'll send you my sales setup guide.\n\nFollow @antoniorevenue. I post every day.\n\n#claudeai #anthropic #salesteam #aitools #salesprocess",
+   "label": "",
+   "headline": "CLAUDE NOW HAS A SALES PLAYBOOK FOR YOUR TEAM",
+   "sha256": "bbe8d62174e0f0e49d7a601207afb88c4bb70283cedaa81166aca02540ae7d16",
+   "topics": [
+    "repo",
+    "skills",
+    "plugin",
+    "plugins",
+    "sales",
+    "anthropic",
+    "team",
+    "call"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeexCnGo-Mq/",
+   "caption": "Meta just banned TikTok from buying ads on Instagram. Do you actually own your customers? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "META JUST PROVED YOU RENT YOUR CUSTOMERS",
+   "sha256": "648907c62e2aab18a0255ea6dd3416ebea9dea403918383a1f7afbb2ca756813",
+   "topics": [
+    "sales",
+    "customers",
+    "instagram",
+    "tiktok",
+    "brand",
+    "ads"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeQiTrMoZUs/",
+   "caption": "Elon Musk is a trillionaire again. But is SpaceX worth the hype? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "",
+   "sha256": "51a663fd60f87cb14285c2be73e88da18dd9972fc1776c7d1470137f0255bd7c",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeQ3ABeImkx/",
+   "caption": "Would you let AI set your prices? McDonald's just got sued over it. \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "",
+   "sha256": "0a4655785138beccdd06fa9ab427681bf646938b0d00878623f45c42a2aacc9b",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeYWYDOo-zv/",
+   "caption": "Don't use ChatGPT for work this week until you turn on these 4 updates from OpenAI's DevDay.\n\n1. GPT-6.1 Sol for coding, at a fifth of the price per token\n2. Dots, always-on agents that run on their own cloud computer\n3. ChatGPT Space, where your team and ChatGPT work in the same documents\n4. ChatGPT inside Slack and Teams\n\nComment \"SOL\" and I'll send you the full breakdown for your business.\n\n#chatgpt #openai #aitools #automation #business",
+   "label": "ChatGPT updates",
+   "headline": "CHATGPT 4 UPGRADES",
+   "sha256": "bb1fdf1d1ee4f37d63f00aaa8c6105edecb189777e33d5c161ff11e4993e9179",
+   "topics": [
+    "agents",
+    "chatgpt",
+    "openai",
+    "team"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeYlSYwoxmc/",
+   "caption": "Comment ARENA and I'll send you the setup for a free Claude skill that runs up to 100 sub-agents on the same task and keeps the best answer. Each one tries a different strategy, they compete in a bracket, and you get the winner back, so you stop re-prompting. Start with the 16-agent quick mode, because more agents means more tokens.\n\n#claude #ai #aitools #aitips #claudeai",
+   "label": "Claude arena",
+   "headline": "IF CLAUDE KEEPS",
+   "sha256": "9360a64a647eb50f7337563bf122a04da7ce4d603d5b19dd31d2e527da40f32e",
+   "topics": [
+    "skill",
+    "agents",
+    "sub-agents"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DecugXFSC_3/",
+   "caption": "Comment \"SWAP\" and I'll send you my free model setup guide \ud83d\udc47\n\nFree Claude Code just hit 705 stars in one day on GitHub. It keeps the Claude Code app and swaps the model underneath.\n\nWhat the README says it does:\n1. Connects 61 providers: free, paid and local models\n2. Runs 11 coding agents from one model list\n3. Tries your next model when a provider goes down\n\nTest a free model on low-stakes work before you change anything that matters.\n\nFollow @antoniorevenue. I post every day.\n\n#claudeai #aitools #automation #businessowner #aiforbusiness",
+   "label": "",
+   "headline": "CLAUDE CODE NOW RUNS ON FREE MODELS",
+   "sha256": "765a48a42e6866b4fdf2ac858bcf87a1bb10b2aef6b7802493483d6acd913036",
+   "topics": [
+    "claude code",
+    "github",
+    "agents",
+    "coding agents",
+    "model",
+    "models"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeZAt-_Icb0/",
+   "caption": "Comment DESIGN to get this free DESIGN.md library of brand design systems.\n\nIf you want better front-end designs, don't start prompting from scratch.\n\nYou can use the design language of brands like Apple, Tesla and Ferrari in your own projects.\n\nEach file breaks down a brand's visual system, with its colors, fonts, spacing and layouts. It also gives clear rules on what to use and what to avoid.\n\nSo you pick the one that fits your project, add it with a single command, and ask your coding agent to follow it.\n\nThink of it like handing your AI a style guide from a real design team, so it stops guessing what looks good.\n\n#designmd #claudecode #webdesign #aicoding #frontend",
+   "label": "",
+   "headline": "",
+   "sha256": "91f51a59c2834ffb9aa1c83a7359c873db6857208d85e4d5b9fe0666ec86f618",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeZOiFJokn2/",
+   "caption": "Comment SPLIT and I'll send you the free skill and the full setup.\n\nA lot of expensive AI builds go wrong at the plan, before anyone writes code.\n\nClaudex Loop is a free, open-source skill for Claude Code and Codex that puts two models on the same job. One writes the plan and the other reviews it before any code gets written. Then they swap jobs, so whoever built the code never grades it.\n\nYou stop being the copy-paste layer between two chats. The plan, the reviews and the fixes all land in one log.\n\nTwo honest notes. You're running two models, so you pay for two. And a second review catches a lot, but you still make the final call.\n\nFollow for AI workflows that help you build more and redo less.\n\n#claudecode #codex #aiworkflow #aicoding #opensource",
+   "label": "",
+   "headline": "",
+   "sha256": "9cf69ccbf6f6e5d0c1dfa1ec3bf82d0a03144ef426e83b32ded7c665ea93159e",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeaFZuWy7Oj/",
+   "caption": "Comment \"SKILL\" and I'll send you Agent Reach plus the full setup guide \ud83d\udd78\ufe0f\u26a1\n\nThis free AI skill lets your agent read the whole internet, even LinkedIn, with zero API keys to buy.\n\nIt's called Agent Reach. It's open source and has more than 75,000 stars on GitHub.\n\nSet it up in five steps \ud83d\udc47\n1\ufe0f\u20e3 Open Claude Code, Cursor, or whatever agent you use\n2\ufe0f\u20e3 Paste the one-line install prompt I'll DM you\n3\ufe0f\u20e3 Approve the install when your agent asks\n4\ufe0f\u20e3 Run \"agent-reach doctor\" to see which platforms are live\n5\ufe0f\u20e3 Tell your agent \"help me set up LinkedIn\"\n\nWhat you get:\n\u2705 YouTube and GitHub work with zero setup\n\u2705 Twitter, Reddit and Instagram through your own logged-in browser\n\u2705 No monthly scraping bill\n\u2705 Works with any agent that can run a command\n\n\ud83d\udc49 Comment \"SKILL\" and I'll DM you the link and the setup guide\n\n#AgentReach #ClaudeCode #AIagents #WebScraping #LeadGeneration",
+   "label": "",
+   "headline": "",
+   "sha256": "fc89a265d216b989b57f158ab62a1cdf0534304e83bd66132af42f86e62fac62",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeaTH6hBdiX/",
+   "caption": "Comment CLAUDE to get this free tool that keeps Claude Code running after your usage limit runs out.\n\nIt's called FreeLLMAPI, and it's a free, open-source router.\n\nIt gives you one endpoint for free-tier models from providers like Gemini, Kimi, GLM and Mistral.\n\nSo the moment one model hits its limit, it switches you to the next one, and your session keeps going.\n\nSetup is one install script plus your provider keys.\n\n#claudecode #freellmapi #githubrepo #opensource #claudeai",
+   "label": "",
+   "headline": "",
+   "sha256": "7244aaa1b6affa88055a3824afec17f837a31dd7d62f0b354645db5fe68bc7ab",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeahDBKIsoi/",
+   "caption": "You can now run your Instagram with a free agent skill in ChatGPT or Claude.\n\nIt writes posts from proven hook formulas, comments for you, plans your week and turns viral reels into scripts. Nothing gets posted until you say yes.\n\nComment \"CHATGPT\" and I'll send you the link.\n\n#chatgpt #instagramgrowth #aitools #contentcreator #automation",
+   "label": "ChatGPT for IG",
+   "headline": "NEVER POST WITHOUT CHATGPT",
+   "sha256": "6ac22549e5cca5453e0684dc66aa5da001ef618c2637c72ae362269276fd7e9c",
+   "topics": [
+    "skill",
+    "agent",
+    "chatgpt",
+    "instagram",
+    "reels",
+    "viral",
+    "posts"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DecaBIBItsx/",
+   "caption": "Claude's maker admitted its AI sent police a fake murder tip. Is your AI next? \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment AUDIT and I'll send you the AI audit that scores every sales call.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "CLAUDE SENT POLICE A FAKE TIP IS YOUR AI NEXT?",
+   "sha256": "9ab8717fda990dd6ffe0e15c216516ec25ba5d1dd138c16825e31ea04268e03d",
+   "topics": [
+    "sales",
+    "sales call",
+    "call",
+    "audit"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dea8XXHI6xn/",
+   "caption": "Comment CHANNEL and I'll send it over.\n\n#facelessyoutube #youtube #aitools #claude #contentcreation",
+   "label": "",
+   "headline": "",
+   "sha256": "fe1f5fdbec5de0323ff01c4ceb33a32ece9a1f8d2d85ad8afecbfecae9183898",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DebKFfLoqeV/",
+   "caption": "Comment YOUTUBE and I'll send you 11 free Claude skills that run most of your YouTube workflow. One writes scripts from 21 hook formulas, and the others handle titles, thumbnails, edit notes, comments and your weekly plan. One even breaks down the top videos in your niche, and you still do the upload yourself.\n\n#claude #ai #aitips #youtube #aitools",
+   "label": "",
+   "headline": "",
+   "sha256": "11bed7c8fd229d6ab0dea93926b8225349933f1b0901e2c48af7ad9ddf7ec152",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DecNRYKo0Me/",
+   "caption": "Comment \"FOUNDER\" and I'll send you the repo plus a setup guide.\n\n#aiagents #businessautomation #claudeai #opensource #aitools",
+   "label": "",
+   "headline": "17 AI AGENTS RUN MY ENTIRE BUSINESS",
+   "sha256": "7fa7f59fbb93159c480261c3fddf8d612fff6575f345bb8d173039f185d4e109",
+   "topics": [
+    "repo",
+    "agents"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeP5swJSmbr/",
+   "caption": "Google promised Finland $15 billion for AI. Then it was told to stop. \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "",
+   "sha256": "e9c6b029d09ace8ec749accf2c58d0b0ce89e0c7b468cf4473d08b4392a9ecd5",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DebX2U5IOeX/",
+   "caption": "\u26a1 Comment \"CLAUDE\" and I'll DM you the install list plus the setup steps \ud83c\udf81\n\nClaude Code gets a lot more powerful when you add the right add-ons. These five free ones keep you working past your usage limit, make your pages look better, trim the context you send, give Claude long-term memory and let it test its own work in a browser.\n\nIf you use Claude Code to build real business systems, install these before your next session.\n\n#claudecode #ai #claude #plugin #aitools",
+   "label": "",
+   "headline": "NEVER USE CLAUDE CODE",
+   "sha256": "2e4a3216b9c313282b436cb0298622b9b77edc58de94759a7d05edfb1715a734",
+   "topics": [
+    "claude code",
+    "plugin",
+    "memory",
+    "session",
+    "usage limit"
+   ],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeZ3uZxovCg/",
+   "caption": "Your inbox mixes your to-do list with everyone else's, sorted by whoever wrote last.\n\nInbox Zero is a free, open-source email assistant built by one developer. It solves a few different problems:\n- blocks cold email\n- drafts replies in your voice\n- tracks who owes a reply, in both directions\n- files your attachments\n\nThe reply tracker is the one worth the setup. It splits the threads where you're the holdup from the ones where you're waiting on someone else.\n\nThen connect Claude and tell it how to handle incoming mail in plain language. Claude's replies stay as drafts until you send them, and your email stays in Gmail or Outlook.\n\nOne honest note: anything you connect to your email deserves a proper look at what it can access before you switch it on.\n\nComment INBOX and I'll send you the repo and setup guide. Follow for more ideas that make your work easier.\n\n#inboxzero #emailautomation #productivity #claudeai #opensource",
+   "label": "",
+   "headline": "",
+   "sha256": "5101b8fe784b4c3baa9a2841049793ffa8a8be39749486ed71ced47c244684d8",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeZcOxQoM_Y/",
+   "caption": "Comment CODING to get these 4 free plugins that level up your vibe coding.\n\nDon't start vibe coding with Claude Code until you've installed these four.\n\nFirst is Ponytail. It pushes Claude to write less code.\n\nSecond is OmniRoute. When your usage limit runs out, it switches you to another model so you keep working.\n\nThird is Graphify. It turns your codebase into a knowledge graph, so your agent stops rereading the same files.\n\nAnd finally, Agent Skills. It's a pack of 25 engineering skills from Addy Osmani for planning, coding, testing and shipping.\n\n#claudecode #vibecoding #aicoding #omniroute #agentskills",
+   "label": "",
+   "headline": "",
+   "sha256": "a8b2656ee457acef2b99459f5dbad4ceae1d3bfd1d12edd102d539c21b91ed4e",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeXmT3ZSYA7/",
+   "caption": "Connect Claude to Canva \ud83e\udd16\n\nBuild your brand kit and three templates once, then Claude makes carousels on any topic in minutes. I have more prompts that can help you run your creator business. Comment \"CAROUSEL\" and I'll send you my prompts!\n\n#contentcreator #aiautomation #claudeai #instagramgrowth #creatoreconomy",
+   "label": "Canva carousels",
+   "headline": "YOUR CLAUDE DESIGNS CAROUSELS IN CANVA",
+   "sha256": "313632561c350b4b3802f49de9277d9f2a99430c746f1bfc42ece32e8a047868",
+   "topics": [
+    "carousel",
+    "carousels",
+    "canva",
+    "brand",
+    "prompts"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeX8IRqI7Gg/",
+   "caption": "Before anyone vibe codes your business website, get six documents first. Product requirements, feature by feature. Technical requirements, so nobody's guessing at tools halfway through. The app flow, click by click. A design brief that keeps every screen on brand. A backend schema for where client data lives and who sees it. And an implementation plan for build order. Claude can draft all six for you.\n\nComment BLUEPRINT and I'll send you what goes in each one.\n\n#webdesign #vibecoding #claudeai #businesssystems #aitools",
+   "label": "Plan a website",
+   "headline": "CLAUDE CAN PLAN YOUR WEBSITE IN 6 DOCS",
+   "sha256": "1297e7fb0557fba79881b7ede6dcb11463c64052a3d31a4fe54dc38dae5f001d",
+   "topics": [
+    "design",
+    "brand",
+    "website"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeV2GNmRuWi/",
+   "caption": "Comment \"EDIT\" for the link\n\n#claudecode #videoediting #aitools #contentcreator #automation",
+   "label": "",
+   "headline": "",
+   "sha256": "bb19bfda20185b78f69e74501fbf73da10e90943eb3607ea6677f1c19c8878dc",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeQNtEgoMcv/",
+   "caption": "What happens when AI agents make your sales calls? Klarna already found out. \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment AUDIT and I'll send you the AI sales call audit.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
+   "label": "",
+   "headline": "",
+   "sha256": "bef7635b8e7fbd3be6f177ac0ab399462f619c6d9a4d6948959f656f75387c02",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeR7kvbok7o/",
+   "caption": "I turned Alex Hormozi's playbooks into a business coach inside Claude Code.\n\nIt's a free repo and the setup takes about two minutes. Ask it about offers, pricing, ads, hooks or sales scripts, and it answers from the playbooks.\n\nComment \"HORMOZI\" and I'll send you the link.\n\n#claudecode #hormozi #aitools #businessgrowth #entrepreneur",
+   "label": "",
+   "headline": "",
+   "sha256": "8d1b26ec5d26a9827af0c3a7fd087d111a66495c01e8c1c832c36f44819375d0",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DePkiVjP0oq/",
+   "caption": "Your AI finished its part. The next agent could take over, but it's waiting for you to copy the result into another app.\n\nAgent Tincan is a free, open source relay. Your AI agents ask each other for help and send results back over your private Tailscale network.\n\nIn practice:\n- Your main agent needs help with a task\n- It sends the request through the relay\n- A connected agent picks it up and uses its own tools\n- The result comes back to you\n\nTwo honest caveats. It needs setup and a relay that stays online. And connected agents trust each other, so choose which actions need your approval.\n\nComment \"TIN\" and I'll send you the link.\n\n#aiagents #claudecode #automation #opensource #aitools",
+   "label": "",
+   "headline": "",
+   "sha256": "5b0dd9d0bcf3e3ce8624844ecc45cd862a1f87908c2b5280c794a7cfaa4176eb",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DePP8EMobeM/",
+   "caption": "Free Claude scraper \ud83e\udd2f Comment SCRAPE and I'll send you the setup guide \ud83d\udc47\n\nScrapling is a free, open-source web scraping library that can fetch pages through a real browser. When a site changes its layout, it finds your data again. And it plugs straight into Claude Code as an MCP server.\n\n#claude #ai #aitools #claudeai #webscraping",
+   "label": "",
+   "headline": "",
+   "sha256": "aa3e8971ac14a03be77a01073dbdfbdaa46f098c252047fe715fd7cd02566840",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeOLJ4aotW4/",
+   "caption": "I turned Alex Hormozi's playbooks into a business coach inside Claude Code.\n\nIt's a free repo and the setup takes about two minutes. Ask it about offers, pricing, ads, hooks or sales scripts, and it answers from the playbooks.\n\nComment \"HORMOZI\" and I'll send you the link.\n\n#claudecode #hormozi #aitools #businessgrowth #entrepreneur",
+   "label": "",
+   "headline": "",
+   "sha256": "4773222d2b01f1114eecf5869cf962405b1f61e0db1437702e69cec923b6fe88",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeN94vPogVT/",
+   "caption": "Is Claude Fable 5.5 already here? \ud83d\udc40\n\nSince early October, people say Claude routes them to a newer model. The picker still says Fable 5.1. The demos are wild: a playable Waymo run, full animations from one line, games built in an hour.\n\nThe facts: Anthropic released Fable 5.1 on September 1. The Opus 5.5 launch on September 22 named Sonnet and Haiku as next. As of October 6, there's no Fable 5.5 announcement.\n\nA public GitHub list already tracks 78 of these demos. Each one is the poster's own claim.\n\nComment \"FABLE\" and I'll send you all 78 demos plus a simple test you can run on any new AI model.\n\n#claude #anthropic #aitools #ainews #claudeai",
+   "label": "Fable 5.5 here?",
+   "headline": "FABLE 5.5 ALREADY HERE?",
+   "sha256": "3b26a220f34e27ad63fe312e5f987a7e900ce59e87b92ce342f7a70dca317abb",
+   "topics": [
+    "github",
+    "anthropic",
+    "model"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeNVKbIS_OH/",
+   "caption": "Your AI finished its part. The next agent could take over, but it's waiting for you to copy the result into another app.\n\nAgent Tincan is a free, open source relay. Your AI agents ask each other for help and send results back over your private Tailscale network.\n\nIn practice:\n- Your main agent needs help with a task\n- It sends the request through the relay\n- A connected agent picks it up and uses its own tools\n- The result comes back to you\n\nTwo honest caveats. It needs setup and a relay that stays online. And connected agents trust each other, so choose which actions need your approval.\n\nComment \"TIN\" and I'll send you the link.\n\n#aiagents #claudecode #automation #opensource #aitools",
+   "label": "",
+   "headline": "",
+   "sha256": "2a9f5072cb228a1b01e54fac4ba647664bc4eddae716ed44d6bfbf27f9dcb19f",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeNRzwcy24U/",
+   "caption": "Claude has a skill that finds the right Claude skill for almost anything \ud83e\udd2f Wait until the end!\n\nIt's called find-skills, built by Vercel Labs. Tell Claude what you're working on. It searches the skills directory and installs the best ones for you. Over 3 million installs already.\n\n\ud83d\udc49 Comment \"FINDER\" and I'll send you the link and the setup guide\n\n#Claude #ClaudeCode #ClaudeSkills #AITools #AIAutomation",
+   "label": "",
+   "headline": "",
+   "sha256": "1922eb33b19669989148d3e2e512eff56f49d25f18c7d68d53660931e3c63793",
+   "topics": [],
+   "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeGPMIyomnq/",
+   "caption": "Comment CHATCUT and I\u2019ll send you the setup guide \nLet ChatCut handle the rough cut while you review the result.\nInstall the ChatCut plugin in the ChatGPT desktop app, then give it your raw footage and one prompt. It cuts the best takes and adds motion graphics and B-roll.\n\nWant more? Just ask for it in the chat. Transitions, sound effects, anything.\n\nSave your editing  style as a skill, so your next video starts from the same edit.\n\n#chatcut #chatgpt #aivideoediting #videoediting #aitools",
+   "label": "",
+   "headline": "",
+   "sha256": "a613164dc7ede85c30e34d14a46f51fedd7197cb9d2c4700f802290c97acb839",
+   "topics": [],
+   "inPicker": false
+  }
+ ]
+}

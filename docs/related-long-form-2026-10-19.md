@@ -25,19 +25,39 @@ One AI Brain"; model news links the Jev video. Industry news with no topic hit k
 
 To refresh the catalog after a new long-form upload, add its ID, length, titles and topics to the JSON file.
 
-## Instagram Reels (not built yet)
+## Instagram Reels (Oct 20)
 
-The Reel picker has no text in its accessibility tree. Today the driver finds one reviewed Reel by comparing its
-cover image to a saved screenshot (`src/publishing/instagram-related.ts`). Faces look nearly identical across
-covers, so image matching does not scale. Each tile does show a large cover headline, so the planned approach is:
+Each Instagram post now links the owned Reel that matches its topic, chosen from `src/publishing/instagram-reels.json`.
+The choice is deterministic (`chooseRelatedReel` in `src/publishing/instagram-related.ts`). A shared vocabulary topic
+counts 1, a generic one (claude code, github, agent...) counts 0.5, at least one must be specific, and below 2 the
+post keeps the reviewed default Reel (Claude YouTube). It never links the post itself, the same video (hash or
+caption), or a re-cut with the same cover headline.
 
-1. Build a Reel catalog from posted Instagram items (caption, permalink, and the cover headline read from the
-   source video's opening frame).
-2. Pick the Reel by caption topic, the same way as YouTube.
-3. In the picker, read tile headlines with the existing OCR and tap the one exact match. Stop on no match or
-   two matches.
+The picker tiles have no accessibility text. The driver OCRs each visible tile's top 60% (plain, and bright-text masks
+at 190 and 110 so red and green words survive) and taps only when one tile matches the stored headline, either as a
+fuzzy substring (0.8) or by covering 80% of its words in any order. A second tile within 0.15 stops the run, as does no
+match after 12 scrolls. Nothing is tapped in either case. The default Reel keeps its saved-cover image match.
 
-This needs attended calibration on the phone (no Share) before it runs in the worker.
+Verified live on Oct 20 (attended, no Share, composer of agency-blend, left through abandon and app reset):
+
+- The picker lists only Reels on the main profile grid: regular Reels and promoted Trial Reels. None of the 50 newest
+  Trial Reels appeared in 13 pages. So only catalog Reels with `inPicker: true` can be chosen.
+- Six database Reels are identifiable there today: Fable 5.5, Never post without ChatGPT, If Claude keeps, ChatGPT 4
+  upgrades, Canva carousels, Plan a website. "Never use Claude Code" is listed but its text sits on a photo; OCR fails.
+- Fable 5.5, Never post and ChatGPT 4 upgrades were found and tapped (Edit linked reel opened, then Cancel). Plan a
+  website ran the full selection: label saved, readback "Linked reel · Plan a website", preflight passed before Share.
+- Instagram keeps 15 characters of the link title ("Plan your website in 6 docs" saved as "Plan your websi"). The
+  input check now rejects labels over 15.
+
+Evidence (local, not committed): `docs/evidence/instagram-related-topics-2026-10-20/`.
+
+Scripts: `refresh-instagram-reels.ts` adds newly published Reels (headline from the opening frame, `inPicker` false);
+`calibrate-related-reels.ts ITEM_ID URL,URL` repeats the attended check; `link-reels-by-topic.ts --queued [--apply]`
+sets each queued post's related Reel.
+
+Open limits: none of the Oct 20 queue (leads, phone, Harvey, agency topics) matches the six picker Reels, so those
+posts get the default. Many topic-rich picker Reels ("AI answers your calls 24/7", "Entire AI agency free on GitHub")
+predate the database and have no permalink or exact caption on file. Adding them needs a read-only profile scan.
 
 ## Same session: YouTube description Back
 

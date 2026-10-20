@@ -81,8 +81,9 @@ export function validatePostingInput(value: unknown): PostingInput {
         if (url.protocol !== 'https:' || !['instagram.com', 'www.instagram.com'].includes(url.hostname)
             || url.username || url.password || url.search || url.hash || !/^\/reel\/[A-Za-z0-9_-]+\/$/.test(url.pathname))
             throw new Error('Use the exact public Instagram Reel URL');
-        if (!reel.caption.trim() || reel.caption.length > 2200 || !reel.label.trim() || reel.label.length > 32)
-            throw new Error('Related Reel needs an exact caption and a link label of at most 32 characters');
+        // Oct 20: Instagram's link title field keeps 15 characters ("Plan your website in 6 docs" saved as "Plan your websi").
+        if (!reel.caption.trim() || reel.caption.length > 2200 || !reel.label.trim() || reel.label.trim().length > 15)
+            throw new Error('Related Reel needs an exact caption and a link label of at most 15 characters');
         instagramRelatedReel = { url: url.href, caption: reel.caption, label: reel.label.trim() };
     }
     let firstComment: string | undefined;
