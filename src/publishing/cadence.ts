@@ -1,6 +1,7 @@
 import { CronExpressionParser } from 'cron-parser';
 
 const hourly = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] as const;
+const fourADay = [9, 13, 17, 21] as const;
 
 /** Antonio's cadence: one video every 2 hours from Oct 11 16:45 (every 3 hours from Oct 7, hourly from Oct 5). Target times, not publication approval. */
 export const publishingCadence = {
@@ -13,11 +14,11 @@ export const publishingCadence = {
     storyCron: '0 8,16 * * *', storyTimes: ['08:00', '16:00'],
     storySequencesPerDay: 2, planningDays: 3,
     missedSlotPolicy: 'review_before_rescheduling',
-    // Antonio, Oct 20: every lane posts hourly from 07:00 to 23:00 PT (17 slots a day each): Instagram Trial Reels
-    // (each with its linked Facebook post), TikTok and YouTube Shorts. This matches the calendar-page override saved
-    // Oct 17 (.scheduler-data/lane-hours.json). scripts/lane-slotter.ts owns every armed post's time from these lists,
+    // Antonio, Oct 20: Instagram Trial Reels (each with its linked Facebook post) post hourly from 07:00 to 23:00 PT
+    // (17 a day); TikTok and YouTube Shorts stay at 4 a day (9, 13, 17, 21). Keep the calendar-page override
+    // (.scheduler-data/lane-hours.json) equal to these lists. scripts/lane-slotter.ts owns every armed post's time,
     // one lane per platform; a Short posts 22 minutes after its slot so it never collides with the Instagram post.
-    instagramHours: hourly, tiktokHours: hourly, youtubeHours: hourly, youtubeOffsetMinutes: 22,
+    instagramHours: hourly, tiktokHours: fourADay, youtubeHours: fourADay, youtubeOffsetMinutes: 22,
 } as const;
 
 export function upcomingVideoSlots(now = new Date(), count = 72): Date[] {
