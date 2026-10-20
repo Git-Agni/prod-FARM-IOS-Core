@@ -1,0 +1,263 @@
+{
+ "readAt": "2026-10-20T10:50-07:00",
+ "source": "Instagram Graph API /media (read-only) for permalink, caption and cover; tile match on scan-page*.png with the locateHeadlineInCells scoring: every inPicker headline scored >=0.8 on exactly one tile, 0.15 ahead of others on its page",
+ "canvaCorrection": "Graph cover of DeXmT3ZSYA7 reads MAKE CAROUSELS WITH CLAUDE; YOUR CLAUDE DESIGNS CAROUSELS IN CANVA is DeYQiXTRLCq. Both share one caption, so the database receipt named the older Reel.",
+ "reels": [
+  {
+   "url": "https://www.instagram.com/reel/DeP5swJSmbr/",
+   "timestamp": "2026-10-08T21:32:51+0000",
+   "isSharedToFeed": true,
+   "headline": "GOOGLE PROMISED FINLAND",
+   "label": "Google Finland",
+   "graphCoverOcr": "GOOGLE | GOOGLE PROMISED FINLAND | : : 1 ¢ WA Lo \" | “ ‘! 1 1 . T‘ L f 'zn \" “ ‘ ) ' ” / { | ) i // ,/, ' GOOGLE PROMISED.FINLAND - Y |"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeYQiXTRLCq/",
+   "timestamp": "2026-10-12T03:24:09+0000",
+   "isSharedToFeed": true,
+   "headline": "YOUR CLAUDE DESIGNS CAROUSELS IN CANVA",
+   "label": "Canva carousels",
+   "graphCoverOcr": "YOUR CLAUDE DESIGNS CAROUSELS INCANVA | DESIGNS CAROUSELS | YOUR CLAUDE DESIGNS CAROUSELS INCANVA"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeOLJ4aotW4/",
+   "timestamp": "2026-10-08T05:24:34+0000",
+   "isSharedToFeed": true,
+   "headline": "HORMOZI MODE",
+   "label": "Hormozi coach",
+   "graphCoverOcr": "| % HORNMOZ MODE | HORMC MODE | o MODE"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeLXF9jI1u3/",
+   "timestamp": "2026-10-07T03:16:19+0000",
+   "isSharedToFeed": true,
+   "headline": "GOOGLE JUST OPEN-SOURCED A SECURITY TEAM",
+   "label": "Google security",
+   "graphCoverOcr": "GOOGLE JUST OPEN-SOURCED ASECURITY TEAM = | GOOGLE JUST OPEN-SOURCED | . . GOOGLE JUST OPEN-SOURCED ASECURITYTEAM L."
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeKXsqzowVi/",
+   "timestamp": "2026-10-06T18:08:22+0000",
+   "isSharedToFeed": true,
+   "headline": "STOP LOSING YOUR BEST PROMPTS",
+   "label": "Prompt library",
+   "graphCoverOcr": "STOP LOSING YOUR BEST PROMPTS | T T 5 YOUR -» | STOP LOSING | YOUR BEST PROMPTS : ]I \\‘"
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dd6wCjsorze/",
+   "timestamp": "2026-09-30T16:23:41+0000",
+   "isSharedToFeed": true,
+   "headline": "SOMEONE MADE 1,000 FAKE CUSTOMERS FREE",
+   "label": "Fake customers",
+   "graphCoverOcr": "Predict Anything Join the waitlict get notified af launch! :*,,J . L& , | Predict Anything ;ryL-venen-.o * Starea Join the waitlict fo get motified af launch! F"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DdHb001AIUR/",
+   "timestamp": "2026-09-10T18:03:33+0000",
+   "isSharedToFeed": true,
+   "headline": "ODDS AI TRADING ACROSS 1000+ MARKETS",
+   "label": "Odds trading AI",
+   "graphCoverOcr": "= *CLAUDECODE ODDS trading across 1000+ markets }I | *CLAUDE CODE | ODDS Al trading across 1000+ markets | CLAUDE CODE ODDS Al trading across 1000+ markets | a "
+  },
+  {
+   "url": "https://www.instagram.com/reel/DcwJnEdkYW3/",
+   "timestamp": "2026-09-01T17:01:46+0000",
+   "isSharedToFeed": true,
+   "headline": "TRAIN YOUR OWN AI MODEL",
+   "label": "Train AI model",
+   "graphCoverOcr": "| *CLAUDECODE TRAIN YOUR OWN | Al MODEL - l : 1 | * CLAUDE CODE | TRAIN YOUR OWN Al MODEL | _-- “ | | CLAUDE CODE TRAIN YOUR OWN Al MODEL £= I"
+  },
+  {
+   "url": "https://www.instagram.com/reel/Db6FZoeDPG5/",
+   "timestamp": "2026-08-11T17:05:54+0000",
+   "isSharedToFeed": true,
+   "headline": "$200/MO PER DEV FREE DOES IT ALL",
+   "label": "Free coding AI",
+   "graphCoverOcr": "| % CLAUDE CODE $200/MO PER DEV Free Does It All f . 'y | * CLAUDE CODE | $200/MO PER DEV Free Does It All D r] | CLAUDE CODE $200/MO PER DEV Free Does It All /"
+  },
+  {
+   "url": "https://www.instagram.com/reel/Db11rVMDZqE/",
+   "timestamp": "2026-08-10T01:31:42+0000",
+   "isSharedToFeed": true,
+   "headline": "GOOGLE'S FREE AGENT SKILLS",
+   "label": "Google skills",
+   "graphCoverOcr": "* CLAUDE CODE GOOGLE'S FREE | AGENT SKILLS ) | * CLAUDE CODE GOOGLE'S FREE AGENT SKILLS o L | CLAUDE CODE GOOGLE'S FREE AGENT SKILLS ‘ /,, =Y"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbzQ48NDGHq/",
+   "timestamp": "2026-08-09T01:31:45+0000",
+   "isSharedToFeed": true,
+   "headline": "GOOGLE ENGINEER OPEN-SOURCED HIS AI TOOLKIT",
+   "label": "Google AI tools",
+   "graphCoverOcr": "| CODE GOOGLE ENGINEER - OPEN-SOURCED Al : TOOLKIT : | *CLAUDE CODE GOOGLE ENGINEER OPEN-SOURCED HIS Al TOOLKIT ] | CLAUDE CODE GOOGLE ENGINEER OPEN-SOURCED HIS"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbyWu2AlWui/",
+   "timestamp": "2026-08-08T17:03:37+0000",
+   "isSharedToFeed": true,
+   "headline": "AI TRADING AGENTS 96K STARS",
+   "label": "Trading agents",
+   "graphCoverOcr": "| * CLAUDE CODE Al TRADING AGENTS | 96K STARS . | * CLAUDE CODE | Al TRADING AGENTS 96K STARS _ » 1] | CLAUDE CODE Al TRADING AGENTS 96K STARS 4 3* ‘R"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbwsIPdgDU0/",
+   "timestamp": "2026-08-08T01:32:08+0000",
+   "isSharedToFeed": true,
+   "headline": "AI THAT GETS SMARTER EVERY TIME IT RUNS",
+   "label": "Self-improve AI",
+   "graphCoverOcr": "CLAUDE CODE Al THAT GETS SMARTER EVERY TIME IT RUNS | * CLAUDE CODE | Al THAT GETS EVERY TIME IT RUNS ), ‘-] ] | CLAUDE CODE Al THAT GETS SMARTER | EVERY TIME I"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbqvVrDE1uv/",
+   "timestamp": "2026-08-05T18:04:38+0000",
+   "isSharedToFeed": true,
+   "headline": "AI AGENT GETS ITS OWN COMPUTER",
+   "label": "Agent computer",
+   "graphCoverOcr": "* CLAUDE CODE Al Agent Gets Its Own Computer | 1 | * CLAUDE CODE | Al Agent Gets Its Own Computer v] ) | CLAUDE CODE Al Agent Gets Its Own Computer /,_.{ ‘ ‘n\\."
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbmY6ckjY_f/",
+   "timestamp": "2026-08-04T01:31:45+0000",
+   "isSharedToFeed": true,
+   "headline": "70B AI ON A 4GB GPU",
+   "label": "70B on 4GB GPU",
+   "graphCoverOcr": "% CLAUDE CODE 70B Al on a 4GB GPU 27K Stars, Save '. t‘. r ) | * CLAUDE CODE 70B Al on a 4GB GPU 27K Stars, Save 8K/Year | b | 1 . | CLAUDE CODE 70B Al on a 4GB"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbgVKeIDeNb/",
+   "timestamp": "2026-08-01T17:03:24+0000",
+   "isSharedToFeed": true,
+   "headline": "BYTEDANCE OPEN SOURCED DEER-FLOW SUPER AGENT",
+   "label": "DeerFlow agent",
+   "graphCoverOcr": "CLAUDE CODE BYTEDANCE OPEN SOURCED DEER-FLOW SUPER AGENT i | * CLAUDE CODE | BYTEDANCE OPEN SOURCED DEER-FLOW SUPER AGENT | CLAUDE CODE BYTEDANCE OPEN SOURCED c"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbMUTNvE2yT/",
+   "timestamp": "2026-07-24T22:31:09+0000",
+   "isSharedToFeed": true,
+   "headline": "ALIBABA'S AI CODE REVIEW TOOL",
+   "label": "AI code review",
+   "graphCoverOcr": "* CLAUDE CODE Alibaba's Al Code Review Tool .l' | | * CLAUDE CODE Alibaba's Al Code Review Tool | “ . | CLAUDE CODE Alibaba's Al Code Review Tool"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbGsHIskj3C/",
+   "timestamp": "2026-07-22T18:03:53+0000",
+   "isSharedToFeed": true,
+   "headline": "CHINA JUST MADE FRONTIER AI FREE",
+   "label": "Kimi K3 free",
+   "graphCoverOcr": "* CLAUDE CODE JUST MADE FRONTIER Al FREE I | * CLAUDE CODE CHINA JUST MADE FRONTIER Al FREE - ?’ | CLAUDE CODE CHINA JUST MADE FRONTIER Al FREE"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbGasIDD756/",
+   "timestamp": "2026-07-22T15:31:31+0000",
+   "isSharedToFeed": true,
+   "headline": "YOUR ELEVENLABS BILL JUST HIT $0",
+   "label": "Free AI voice",
+   "graphCoverOcr": "* CLAUDE CODE YOUR ELEVENLABS BILL JUST HIT $0 l | * CLAUDE CODE YOUR ELEVENLABS BILL JUST HIT $0 | CLAUDE CODE YOUR ELEVENLABS BILL JUST HIT $0"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbGT1W0FT-Y/",
+   "timestamp": "2026-07-22T14:31:37+0000",
+   "isSharedToFeed": true,
+   "headline": "FREE SEMRUSH KILLER JUST DROPPED",
+   "label": "Free SEO tool",
+   "graphCoverOcr": "‘ % OPEN-SEO FREE SEMRUSH KILLER JUST : DROPPED : | * OPEN-SEO | FREE SEMRUSH DROPPED ' Y] ? | OPEN-SEO FREE SEMRUSH 1 DROPPED | ) \" l"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DanrpI1EaAU/",
+   "timestamp": "2026-07-10T17:03:13+0000",
+   "isSharedToFeed": true,
+   "headline": "AN OS FOR YOUR AI CODING AGENT",
+   "label": "Agent OS",
+   "graphCoverOcr": "AN OS FOR YOUR | CLAUDE CODE AN OS FOR YOUR Al CODING AGENT | ¥ CLAUDE CODE AN OS FOR YOUR Al CODING AGENT [ ! p l"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DajAvJOjzFg/",
+   "timestamp": "2026-07-08T21:31:21+0000",
+   "isSharedToFeed": true,
+   "headline": "GPT-5.6 DROPS THIS THURSDAY",
+   "label": "GPT-5.6 launch",
+   "graphCoverOcr": "GPT-5.6 DROPS THIS THURSDAY Mt | CLAUDE CODE GPT-5.6 DROPS THIS THURSDAY -t [ | CLAUDE CODE GPT-5.6 DROPS THIS THURSDAY 'Ml"
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dag69DNDPwS/",
+   "timestamp": "2026-07-08T02:02:19+0000",
+   "isSharedToFeed": true,
+   "headline": "OPENAI'S NEXT MODEL IS 3 MODELS",
+   "label": "GPT-5.6 models",
+   "graphCoverOcr": "OPENAI'S NEXT MODEL IS 3 MODELS m a | CLAUDE CODE OPENAI'S NEXT MODEL IS 3 MODELS _'-‘ | ¥ CLAUDE CODE OPENAI'S NEXT MODEL IS 3 MODELS e a"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DagmboOG1AY/",
+   "timestamp": "2026-07-07T23:02:59+0000",
+   "isSharedToFeed": true,
+   "headline": "EVERY AI MODEL FREE. ONE ENDPOINT",
+   "label": "Every AI model",
+   "graphCoverOcr": "EVERY Al MODEL FREE. ONE ENDPOINT ' _ v | | CLAUDE CODE EVERY Al MODEL FREE. ONE ENDPOINT ‘ | i | CLAUDE CODE EVERY Al MODEL FREE. ONE ENDPOINT . N 1’ | i"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DagR2uPFDTD/",
+   "timestamp": "2026-07-07T20:03:11+0000",
+   "isSharedToFeed": true,
+   "headline": "AI NOW DOES REAL HUMAN WORK",
+   "label": "AI real work",
+   "graphCoverOcr": "Al NOW DOES REAL HUMAN WORK | CLAUDE CODE Al NOW DOES REAL HUMAN WORK | * CLAUDE CODE Al NOW DOES REAL HUMAN WORK"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DaeWOtzkS4S/",
+   "timestamp": "2026-07-07T02:02:50+0000",
+   "isSharedToFeed": true,
+   "headline": "AN AI AGENT THAT TRADES FOR YOU",
+   "label": "AI trader",
+   "graphCoverOcr": "AN Al AGENT THAT TRADES FOR YOU | CLAUDE CODE AN Al AGENT THAT TRADES FOR YOU ) | CLAUDE CODE AN Al AGENT THAT TRADES FOR —You"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DaeBi1Mj3Nw/",
+   "timestamp": "2026-07-06T23:02:10+0000",
+   "isSharedToFeed": true,
+   "headline": "STRIX AN AI HACKER ON YOUR SIDE",
+   "label": "AI pentester",
+   "graphCoverOcr": "() AN Al HACKER ON YOUR SIDE u | sTRIX AN Al ON YOUR SIDE ¢ | sTRIX AN Al HACKER ON YOUR SIDE a"
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dads9dzFTrL/",
+   "timestamp": "2026-07-06T20:02:18+0000",
+   "isSharedToFeed": true,
+   "headline": "THE VIRAL PROMPT EVERYONE IS COPYING",
+   "label": "Viral prompt",
+   "graphCoverOcr": "THE VIRAL PROMPT EVERYONE IS \"COPYING I ™ | CLAUDE CODE THE VIRAL PROMPT EVERYONE IS COPYING | | ¥ CLAUDE CODE THE VIRAL PROMPT EVERYONE IS COPYING 'i.... { N a"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DadYd_-oLLF/",
+   "timestamp": "2026-07-06T17:03:16+0000",
+   "isSharedToFeed": true,
+   "headline": "ENTIRE AI AGENCY FREE ON GITHUB",
+   "label": "AI agency free",
+   "graphCoverOcr": "CLAUDE CODE ENTIRE Al AGENCY FREE ON GITHUB | CLAUDE CODE ENTIRE Al AGENCY FREE ON GITHUB ] | ¥ CLAUDE CODE ENTIRE Al AGENCY FREE ON GITHUB ' /r.; . \\"
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dabc6rJDS7I/",
+   "timestamp": "2026-07-05T23:03:35+0000",
+   "isSharedToFeed": true,
+   "headline": "AI ANSWERS YOUR CALLS 24/7",
+   "label": "AI phone agent",
+   "graphCoverOcr": "Al ANSWERS YOUR || | “’ﬂ. - | CLAUDE CODE Al ANSWERS YOUR CALLS | ¥ CLAUDE CODE Al ANSWERS YOUR CALLS 24/7 |"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DabSU1UCg_W/",
+   "timestamp": "2026-07-05T21:31:04+0000",
+   "isSharedToFeed": true,
+   "headline": "CLAUDE AS A SENIOR ENGINEER",
+   "label": "Claude engineer",
+   "graphCoverOcr": "CLAUDE AS A SENIOR ENGINEER | CLAUDE CODE CLAUDE AS A SENIOR ENGINEER | CLAUDE CODE CLAUDE AS A SENIOR ENGINEER l !"
+  },
+  {
+   "url": "https://www.instagram.com/reel/DabILCUjwA2/",
+   "timestamp": "2026-07-05T20:02:25+0000",
+   "isSharedToFeed": true,
+   "headline": "CLAUDE WORKS WHILE YOU SLEEP",
+   "label": "Claude routines",
+   "graphCoverOcr": "CLAUDE WORKS q | CLAUDE CODE CLAUDE WORKS WHILE YOU SLEEP ) | CLAUDE CODE CLAUDE WORKS WHILE YOU SLEEP"
+  }
+ ]
+}

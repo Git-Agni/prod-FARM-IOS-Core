@@ -16,14 +16,15 @@ test('every catalog Reel the picker lists can be linked',()=>{
         assert.ok(!urls.has(r.url));urls.add(r.url);
         if(!r.inPicker||!r.headline)continue;
         validatePostingInput({requestId:'related-catalog-test',deviceUdid:'synthetic-device',runAt:'2026-10-21T16:00:00Z',timezone:'America/Los_Angeles',caption:'c',targets:[{platform:'instagram',account:'antoniorevenue'}],instagramTrial:true,automaticPromotion:true,facebookMode:'linked_from_instagram',instagramRelatedReel:{url:r.url,caption:r.caption,label:r.label}});
-        assert.ok(r.label.length<=15&&r.sha256&&r.topics.length);
+        assert.ok(r.label.length<=15&&r.topics.length);
         for(const o of reelCatalog.reels)if(o!==r&&o.headline)assert.ok(headlineSimilarity(r.headline,o.headline)<.8,r.headline+' ~ '+o.headline);
     }
 });
 test('a post links the Reel that matches its topic',()=>{
     assert.equal(chooseRelatedReel({caption:'Connect Claude to Canva and it designs your carousel posts',sha256:'new'}).reel.label,'Canva carousels');
     assert.equal(chooseRelatedReel({caption:'OpenAI just shipped new ChatGPT agents for your team',sha256:'new'}).reel.label,'ChatGPT updates');
-    assert.equal(chooseRelatedReel({caption:'Comment PHONE and give Claude Code a phone number so it can call you',sha256:'new'}).reel.url,reelCatalog.defaultUrl,'Trial Reels are not in the picker');
+    const phone=chooseRelatedReel({caption:'Comment PHONE and give Claude Code a phone number so it can call you',sha256:'new'}).reel;
+    assert.ok(phone.inPicker&&phone.label==='AI phone agent','the listed main-grid Reel, not the phone-number Trial Reel the picker hides');
 });
 test('a weak, generic or self match keeps the default Reel',()=>{
     assert.equal(chooseRelatedReel({caption:'A trip to the beach',sha256:'new'}).reel.url,reelCatalog.defaultUrl);
@@ -59,4 +60,17 @@ test('the Oct 20 live picker pages find each listed Reel on exactly one tile',as
     assert.deepEqual((await locateHeadlineInCells(p0.png,p0.cells,'FABLE 5.5 ALREADY HERE?')).found,{x:70,y:230,score:1});
     assert.equal((await locateHeadlineInCells(p2.png,p2.cells,'CLAUDE CAN PLAN YOUR WEBSITE IN 6 DOCS')).found?.y,657,'split across OCR passes');
     assert.equal((await locateHeadlineInCells(p2.png,p2.cells,'FABLE 5.5 ALREADY HERE?')).found,undefined);
+});
+test('older main-grid Reels read from the Graph API are found on their Oct 20 picker tile',async()=>{
+    const root='docs/evidence/instagram-related-topics-2026-10-20',scan=JSON.parse(await readFile(root+'/picker-scan.json','utf8'));
+    const page=async(n:number)=>({png:await readFile(`${root}/scan-page${n}.png`),cells:scan.find((p:any)=>p.page===n).tiles});
+    const p6=await page(6),p8=await page(8);
+    for(const [p,label,x,y] of [[p6,'AI agency free',0,535],[p6,'Free SEO tool',143,535],[p8,'AI phone agent',0,520],[p8,'Claude routines',287,520]] as const){
+        const reel=reelCatalog.reels.find(r=>r.label===label)!;
+        assert.ok(reel.inPicker&&reel.url.startsWith('https://www.instagram.com/reel/'));
+        const found=(await locateHeadlineInCells(p.png,p.cells,reel.headline)).found;
+        assert.deepEqual([found?.x,found?.y],[x+70,y+97],label);
+    }
+    assert.equal((await locateHeadlineInCells(p6.png,p6.cells,'CLAUDE WORKS WHILE YOU SLEEP')).found,undefined,'on page 8, not 6');
+    assert.equal(chooseRelatedReel({caption:'Give your AI agent a phone number so it answers sales calls with its own voice',sha256:'new'}).reel.label,'AI phone agent');
 });

@@ -21,13 +21,16 @@ try{
  const reviewed=(await db.pool.query(`SELECT input->'instagramRelatedReel' r FROM scheduler.publishing_items WHERE input->'instagramRelatedReel'->>'url'=$1 LIMIT 1`,[reviewedRelatedReel])).rows[0]?.r;
  if(reviewed)reels.push(kept.get(reviewedRelatedReel)??{...reviewed,headline:'',sha256:'',topics:[],inPicker:true});
  for(const r of rows){
-  if(reels.some(x=>x.url===r.url))continue;
+  // A video already catalogued under its corrected permalink (Oct 20: two same-caption receipts named one Reel) is skipped.
+  if(reels.some(x=>x.url===r.url)||[...kept.values()].some(x=>x.url!==r.url&&x.sha256===r.media.sha256))continue;
   const old=kept.get(r.url);if(old){reels.push(old);continue;}
   let headline='';
   try{const {stdout}=await run('ffmpeg',['-loglevel','error','-i',r.media.path,'-frames:v','1','-f','image2pipe','-vcodec','png','-'],{encoding:'buffer',maxBuffer:64<<20});headline=await coverHeadline(stdout as unknown as Buffer);}
   catch(e){console.log('no frame:',r.media.name,String(e).slice(0,80));}
   reels.push({url:r.url,caption:r.caption,label:label(headline),headline,sha256:r.media.sha256,topics:topicsIn(r.caption+' '+headline,json.vocabulary),inPicker:false});
  }
+ // Keep entries added by hand from the Instagram Graph API (older Reels with no database item, sha256 empty).
+ for(const r of kept.values())if(!reels.some(x=>x.url===r.url))reels.push(r);
  const clash=reels.filter(a=>a.headline&&reels.some(b=>b!==a&&b.headline&&headlineSimilarity(a.headline,b.headline)>=.8));
  for(const a of clash){console.log('ambiguous headline:',a.url,a.headline);a.headline='';}
  await writeFile(file,JSON.stringify({...json,reels},null,1)+'\n');

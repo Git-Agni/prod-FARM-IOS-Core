@@ -160,7 +160,8 @@
   "scorecard",
   "business coach",
   "prompts",
-  "prompt"
+  "prompt",
+  "the agency"
  ],
  "reels": [
   {
@@ -1032,11 +1033,15 @@
   {
    "url": "https://www.instagram.com/reel/DeP5swJSmbr/",
    "caption": "Google promised Finland $15 billion for AI. Then it was told to stop. \ud83d\ude31\ud83d\udc46\ud83c\udffb\n\nComment SCALE and I'll send you the system behind a $150M brand.\n\nFollow @antoniorevenue. I post every day.\n\n#ai #business #sales #entrepreneur",
-   "label": "",
-   "headline": "",
+   "label": "Google Finland",
+   "headline": "GOOGLE PROMISED FINLAND",
    "sha256": "e9c6b029d09ace8ec749accf2c58d0b0ce89e0c7b468cf4473d08b4392a9ecd5",
-   "topics": [],
-   "inPicker": false
+   "topics": [
+    "sales",
+    "google",
+    "brand"
+   ],
+   "inPicker": true
   },
   {
    "url": "https://www.instagram.com/reel/DebX2U5IOeX/",
@@ -1072,7 +1077,7 @@
    "inPicker": false
   },
   {
-   "url": "https://www.instagram.com/reel/DeXmT3ZSYA7/",
+   "url": "https://www.instagram.com/reel/DeYQiXTRLCq/",
    "caption": "Connect Claude to Canva \ud83e\udd16\n\nBuild your brand kit and three templates once, then Claude makes carousels on any topic in minutes. I have more prompts that can help you run your creator business. Comment \"CAROUSEL\" and I'll send you my prompts!\n\n#contentcreator #aiautomation #claudeai #instagramgrowth #creatoreconomy",
    "label": "Canva carousels",
    "headline": "YOUR CLAUDE DESIGNS CAROUSELS IN CANVA",
@@ -1147,11 +1152,22 @@
   {
    "url": "https://www.instagram.com/reel/DeOLJ4aotW4/",
    "caption": "I turned Alex Hormozi's playbooks into a business coach inside Claude Code.\n\nIt's a free repo and the setup takes about two minutes. Ask it about offers, pricing, ads, hooks or sales scripts, and it answers from the playbooks.\n\nComment \"HORMOZI\" and I'll send you the link.\n\n#claudecode #hormozi #aitools #businessgrowth #entrepreneur",
-   "label": "",
-   "headline": "",
+   "label": "Hormozi coach",
+   "headline": "HORMOZI MODE",
    "sha256": "4773222d2b01f1114eecf5869cf962405b1f61e0db1437702e69cec923b6fe88",
-   "topics": [],
-   "inPicker": false
+   "topics": [
+    "claude code",
+    "repo",
+    "sales",
+    "hooks",
+    "pricing",
+    "ads",
+    "hormozi",
+    "playbooks",
+    "offers",
+    "business coach"
+   ],
+   "inPicker": true
   },
   {
    "url": "https://www.instagram.com/reel/DeN94vPogVT/",
@@ -1192,6 +1208,418 @@
    "sha256": "a613164dc7ede85c30e34d14a46f51fedd7197cb9d2c4700f802290c97acb839",
    "topics": [],
    "inPicker": false
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeLXF9jI1u3/",
+   "caption": "Comment \"CODE\" and I'll send you the repo plus the full safe setup guide.\n\nGoogle just open-sourced Mantis: a set of security skills that turns your coding agent into a full review team.\n\nDon't just trust the code your AI hands back. Mantis maps your code and builds a threat model. Then it hunts weak spots, drops the duplicates, and tries to prove each bug is real.\n\nWhen a bug is real, it can write a patch, rerun the attack, and rank the risk that's left. Your developer gets the proof and the fix in one report.\n\nThe important part: run it only inside an isolated, locked-down setup. Mantis can write and run unstable code, and every finding still needs a security expert to check it.\n\nComment \"CODE\" and I'll send you the repo plus the full safe setup guide.\n\nShare this with the developer who lets an AI agent touch client code.\n\n#aitools #aicoding #claudecode #cybersecurity #appsec",
+   "label": "Google security",
+   "headline": "GOOGLE JUST OPEN-SOURCED A SECURITY TEAM",
+   "sha256": "",
+   "topics": [
+    "repo",
+    "skills",
+    "agent",
+    "google",
+    "model",
+    "team"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DeKXsqzowVi/",
+   "caption": "Comment PROMPT to get a free, open-source AI prompt library.\n\nIt's called prompts.chat, and its community has shared prompts for writing, coding, images, video and research.\n\nYou can plug the library into Claude Code as a plugin or an MCP server.\n\nThen your agent picks the best prompt for the task you're working on, so you stop copying and pasting.\n\nThink of it like giving your agent its own library card. It grabs what it needs, right when it needs it.\n\nNo more digging through old notes to find the prompt that worked last time.\n\n#promptlibrary #aiprompting #githubrepo #promptschat #opensourceai",
+   "label": "Prompt library",
+   "headline": "STOP LOSING YOUR BEST PROMPTS",
+   "sha256": "",
+   "topics": [
+    "claude code",
+    "open-source",
+    "plugin",
+    "mcp",
+    "agent",
+    "notes",
+    "video",
+    "research",
+    "images",
+    "prompts",
+    "prompt"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dd6wCjsorze/",
+   "caption": "Someone open-sourced a tool that runs thousands of AI customers through your launch before a real one sees it.\n\nYou give it the material, like a launch post, a new price or an ad. You tell it what you want to know. It builds a crowd of AI characters with different backgrounds, lets them react to each other, and reports back.\n\nIt's called MiroFish, and it's free and open source.\n\nThink of it as a cheap first test before the expensive one with real customers.\n\nComment SIMULATE and I'll send you the guide to set it up.\n\n#productlaunch #aitools #opensource #marketing #startups",
+   "label": "Fake customers",
+   "headline": "SOMEONE MADE 1,000 FAKE CUSTOMERS FREE",
+   "sha256": "",
+   "topics": [
+    "open source",
+    "customers"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DdHb001AIUR/",
+   "caption": "An open source AI trading agent is crossing 1000+ markets while you sleep.\n\nCloddsBot is a self-hosted AI trading terminal built on Claude. It scans Polymarket, Kalshi, Binance, Hyperliquid and Solana for an edge, executes in seconds, manages risk, and settles machine-to-machine payments.\n\nNo hedge fund. No hiring a quant. Your own bot on your own server.\n\nComment ODDS and I will DM you the repo.\n\n#AI #OpenSource #GitHub #AIAgents #Developer",
+   "label": "Odds trading AI",
+   "headline": "ODDS AI TRADING ACROSS 1000+ MARKETS",
+   "sha256": "",
+   "topics": [
+    "github",
+    "open source",
+    "repo",
+    "agent",
+    "hiring"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DcwJnEdkYW3/",
+   "caption": "Paid AI courses and consultants keep the model a black box. MiniMind is a free, open source project that trains a real 64 million parameter language model from scratch in about two hours, on one consumer GPU, for less than a dollar of compute. Fifty five thousand GitHub stars, Apache licensed, and fully hands on. You build the model, you own it.\n\nComment MINIMIND and I will send you the repo.\n\n#OpenSource #GitHub #Developer #Entrepreneur #AgencyOwner",
+   "label": "Train AI model",
+   "headline": "TRAIN YOUR OWN AI MODEL",
+   "sha256": "",
+   "topics": [
+    "github",
+    "open source",
+    "repo",
+    "model"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/Db6FZoeDPG5/",
+   "caption": "You are paying $200 a month per developer for coding tools.\n\n83,000 developers just switched to a free alternative.\n\nOpenHands is an open source AI agent that writes code, runs it, fixes bugs, and ships pull requests. It matches paid tools on real benchmarks.\n\nIf your agency ships software, this cuts your dev costs to zero.\n\nComment HANDS and I'll DM you the repo.\n\n#ai #aiagents #opencode #developer #sales #startup",
+   "label": "Free coding AI",
+   "headline": "$200/MO PER DEV FREE DOES IT ALL",
+   "sha256": "",
+   "topics": [
+    "open source",
+    "repo",
+    "agent"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/Db11rVMDZqE/",
+   "caption": "Google just gave your competitors free AI workers. 17K devs are already using them.\n\nWhile you pay consultants $60/hr, Google's official agent skills handle Cloud, Search, and Analytics for free.\n\nComment GSKILLS and I'll DM you the repo.\n\n#AIagents #GoogleAI #AgentSkills #Automation #RevenueAutomation",
+   "label": "Google skills",
+   "headline": "GOOGLE'S FREE AGENT SKILLS",
+   "sha256": "",
+   "topics": [
+    "repo",
+    "skills",
+    "agent",
+    "google"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbzQ48NDGHq/",
+   "caption": "Google's lead Chrome engineer just open-sourced his AI toolkit. 84,524 stars and climbing.\n\nAddy Osmani dropped a library of production-grade skills that make AI coding agents 10x more effective. For agency owners and entrepreneurs, this means shipping products without a full dev team.\n\nComment AGENTKIT and I'll DM you the repo.\n\n#AIagents #ClaudeCode #OpenSource #AgencyOwners #BuildInPublic",
+   "label": "Google AI tools",
+   "headline": "GOOGLE ENGINEER OPEN-SOURCED HIS AI TOOLKIT",
+   "sha256": "",
+   "topics": [
+    "repo",
+    "skills",
+    "agents",
+    "coding agents",
+    "google",
+    "team"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbyWu2AlWui/",
+   "caption": "96K developers are using AI to make trading decisions. This is wild.\n\nTradingAgents is a free open source framework where different AI models act as analysts, traders, and risk managers. They debate in real time before executing a single trade.\n\nYou could build a custom trading desk for your business without hiring a quant.\n\nComment TRADEAI and I will DM you the repo.\n\n#AItrading #TradingAgents #AIautomation #entrepreneur #opensoruce",
+   "label": "Trading agents",
+   "headline": "AI TRADING AGENTS 96K STARS",
+   "sha256": "",
+   "topics": [
+    "open source",
+    "repo",
+    "agents",
+    "models",
+    "hiring"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbwsIPdgDU0/",
+   "caption": "There is an AI agent that gets smarter every single time it runs. It is called prime-agent, built by Prime Intellect. A self-improving RLM agent for coding and autonomous tasks. 6,400 stars in 3 months. If your dev team is still writing boilerplate by hand, you are burning money. It learns from its own mistakes and never makes them twice. Comment PRIME and I will send you the repo.\n\n#AIagents #CodingAgent #SelfImprovingAI #DeveloperTools #Automation",
+   "label": "Self-improve AI",
+   "headline": "AI THAT GETS SMARTER EVERY TIME IT RUNS",
+   "sha256": "",
+   "topics": [
+    "repo",
+    "agent",
+    "team",
+    "money"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbqvVrDE1uv/",
+   "caption": "Your AI agent can now browse websites, click buttons, fill forms, and scrape data on its own. Cloudflare just open sourced the tool making it happen. If your agency pays a VA for manual research and data entry, this runs 24/7 for free. \n\nComment COMPUTE and I will DM you the repo.\n\n#aiagents #automation #salesautomation #aitools #openhouse",
+   "label": "Agent computer",
+   "headline": "AI AGENT GETS ITS OWN COMPUTER",
+   "sha256": "",
+   "topics": [
+    "repo",
+    "agent",
+    "scrape",
+    "research"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbmY6ckjY_f/",
+   "caption": "You are paying $5,000 a month for cloud GPUs to run your AI products. AirLLM runs 70B parameter LLMs on a single 4GB GPU. That is $58,000 a year back in your pocket.\n\nComment AIRLLM and I will DM you the repo.\n\n#AI #Entrepreneur #AgencyOwner #CostSavings #OpenSource",
+   "label": "70B on 4GB GPU",
+   "headline": "70B AI ON A 4GB GPU",
+   "sha256": "",
+   "topics": [
+    "repo"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbgVKeIDeNb/",
+   "caption": "ByteDance just open-sourced a SuperAgent that researches, codes, and creates content autonomously.\n\n78,588 stars on GitHub in weeks. It runs tasks that take your team hours, for free.\n\nIf you run an agency and you are not using this, your competitors will.\n\nComment DEERFLOW and I will send you the repo.\n\n#AI #Automation #ByteDance #OpenSource #AgencyOwner",
+   "label": "DeerFlow agent",
+   "headline": "BYTEDANCE OPEN SOURCED DEER-FLOW SUPER AGENT",
+   "sha256": "",
+   "topics": [
+    "github",
+    "repo",
+    "agent",
+    "content",
+    "team"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbMUTNvE2yT/",
+   "caption": "Alibaba just open sourced the AI code reviewer they use internally. It catches bugs with deterministic rules plus LLM agents, with built-in SQL injection, XSS, and NPE detection. 11,000+ stars in two months. Teams pay hundreds a month for CodeRabbit and SonarQube - this replaces them for free.\n\nComment CODEFIX and I will send you the repo.\n\n#ai #codereview #opensource #devtools #entrepreneur",
+   "label": "AI code review",
+   "headline": "ALIBABA'S AI CODE REVIEW TOOL",
+   "sha256": "",
+   "topics": [
+    "repo",
+    "agents"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbGsHIskj3C/",
+   "caption": "China just made frontier AI free. Kimi K3 matches Claude on the agent leaderboards: 2.8 trillion parameters, 1M token context, $0, open source, free CLI coding agent included. Your AI bill is now optional.\n\nComment KIMI and I will send you everything.\n\n#ai #kimi #opensource #tech #entrepreneur",
+   "label": "Kimi K3 free",
+   "headline": "CHINA JUST MADE FRONTIER AI FREE",
+   "sha256": "",
+   "topics": [
+    "open source",
+    "agent"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbGasIDD756/",
+   "caption": "Your ElevenLabs bill just became optional. Voicebox is the open source AI voice studio with 45,000 GitHub stars: clone your voice, dictate, create voiceovers, all free on your machine. That is up to $99 a month back in your pocket.\n\nComment VOICEBOX and I will send you the repo.\n\n#ai #opensource #voiceover #creator #entrepreneur",
+   "label": "Free AI voice",
+   "headline": "YOUR ELEVENLABS BILL JUST HIT $0",
+   "sha256": "",
+   "topics": [
+    "github",
+    "open source",
+    "repo",
+    "voice"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DbGT1W0FT-Y/",
+   "caption": "You are paying $130 a month for Semrush and it just became optional. open-seo is a free open source alternative to Semrush and Ahrefs: keyword research, site audits, rank tracking, all self hosted. That is $1,500+ a year back in your pocket.\n\nComment SEO and I will send you the repo.\n\n#seo #ai #opensource #marketing #entrepreneur",
+   "label": "Free SEO tool",
+   "headline": "FREE SEMRUSH KILLER JUST DROPPED",
+   "sha256": "",
+   "topics": [
+    "open source",
+    "repo",
+    "research",
+    "keyword"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DanrpI1EaAU/",
+   "caption": "Someone built an operating system for your AI coding agent, and it has 227,000 stars on GitHub. It's called ECC. It gives Claude Code real skills, long-term memory, and security guardrails, so your agent stops repeating mistakes and researches before it writes code. Works across Claude, Codex, Cursor, and Opencode. One install, free, MIT.\n\nComment ECC and I'll send you the repo.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#claudecode #ai #aiagents #github",
+   "label": "Agent OS",
+   "headline": "AN OS FOR YOUR AI CODING AGENT",
+   "sha256": "",
+   "topics": [
+    "claude code",
+    "codex",
+    "github",
+    "repo",
+    "skills",
+    "agent",
+    "memory"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DajAvJOjzFg/",
+   "caption": "OpenAI just confirmed GPT-5.6 goes live this Thursday, and it's not one model, it's three. Sol is the frontier reasoning model for the hardest problems and long-running agents. Terra and Luna give you GPT-5.5 level power at a fraction of the cost, the fastest and cheapest tier OpenAI has shipped. Biggest jump since GPT-5, and it drops in days.\n\nComment GPT and I'll send you the full breakdown.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#chatgpt #openai #ai #gpt5",
+   "label": "GPT-5.6 launch",
+   "headline": "GPT-5.6 DROPS THIS THURSDAY",
+   "sha256": "",
+   "topics": [
+    "agents",
+    "chatgpt",
+    "openai",
+    "model"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dag69DNDPwS/",
+   "caption": "OpenAI just previewed GPT-5.6, and it is actually three models: Sol, Terra, and Luna. Sol is the frontier flagship, Terra matches GPT-5.5 at half the cost, Luna is the fastest and cheapest. GA is weeks away. Comment SOL and I'll send you the breakdown.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#openai #ai #gpt #aitools",
+   "label": "GPT-5.6 models",
+   "headline": "OPENAI'S NEXT MODEL IS 3 MODELS",
+   "sha256": "",
+   "topics": [
+    "openai",
+    "model",
+    "models"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DagmboOG1AY/",
+   "caption": "Someone built a free gateway to every AI model. OmniRoute: one endpoint, 237 providers, 90+ free, ~1.6B free tokens a month, auto-fallback so you never hit limits. Works with Claude Code, Cursor, Copilot. Comment ROUTE and I'll send you the repo.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#ai #claudecode #aitools #opensource",
+   "label": "Every AI model",
+   "headline": "EVERY AI MODEL FREE. ONE ENDPOINT",
+   "sha256": "",
+   "topics": [
+    "claude code",
+    "repo",
+    "model"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DagR2uPFDTD/",
+   "caption": "AI just crossed a line on real work. CAIS tested 240 real freelance projects and Claude Fable 5 completed 16.1% at a professional standard, double the previous best. Actual client jobs, done end to end by AI. Comment WORK and I'll send you the study.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#ai #claude #anthropic #futureofwork",
+   "label": "AI real work",
+   "headline": "AI NOW DOES REAL HUMAN WORK",
+   "sha256": "",
+   "topics": [
+    "anthropic",
+    "jobs"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DaeWOtzkS4S/",
+   "caption": "A university lab open-sourced a personal trading agent and it's exploding on GitHub. Vibe-Trading: one command, full market research, analysis, and execution. Almost 17,000 stars. Not financial advice. Comment VIBE and I'll send you the repo.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#ai #trading #aiagents #github",
+   "label": "AI trader",
+   "headline": "AN AI AGENT THAT TRADES FOR YOU",
+   "sha256": "",
+   "topics": [
+    "github",
+    "repo",
+    "agent",
+    "research"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DaeBi1Mj3Nw/",
+   "caption": "Hackers have an AI now, and so do you. Strix is an open-source AI penetration tester: it attacks your app like a real attacker, finds the vulnerabilities, and helps you fix them first. 31,736 stars and exploding. Comment STRIX and I'll send you the repo.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#ai #cybersecurity #github #aitools",
+   "label": "AI pentester",
+   "headline": "STRIX AN AI HACKER ON YOUR SIDE",
+   "sha256": "",
+   "topics": [
+    "github",
+    "open-source",
+    "repo"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dads9dzFTrL/",
+   "caption": "This prompt is going viral: 26,693 likes in a day. Lyra turns ChatGPT into a master prompt engineer that deconstructs, diagnoses, and rebuilds any rough prompt into a precision prompt for ChatGPT, Claude, or Gemini. Comment PROMPT and I'll send you the full prompt.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#chatgpt #ai #prompts #aitools",
+   "label": "Viral prompt",
+   "headline": "THE VIRAL PROMPT EVERYONE IS COPYING",
+   "sha256": "",
+   "topics": [
+    "chatgpt",
+    "gemini",
+    "viral",
+    "prompts",
+    "prompt"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DadYd_-oLLF/",
+   "caption": "Someone built an entire AI agency and open sourced it. The Agency has 124,000 stars on GitHub: frontend wizards, ad writers, Reddit ninjas, each with its own process. It plugs into Claude Code, and a desktop app installs your dream team in one click. Comment AGENCY and I'll send you the repo.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#claudecode #ai #aiagents #github",
+   "label": "AI agency free",
+   "headline": "ENTIRE AI AGENCY FREE ON GITHUB",
+   "sha256": "",
+   "topics": [
+    "claude code",
+    "github",
+    "repo",
+    "team",
+    "the agency"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/Dabc6rJDS7I/",
+   "caption": "xAI just turned AI phone agents into a 2-minute setup. Voice Agent Builder: no code, free phone number, 80+ voices, 25+ languages, $0.05/min. Support, sales, and scheduling answered 24/7 without hiring. Comment VOICE and I'll send you the setup.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#ai #xai #grok #aiagents",
+   "label": "AI phone agent",
+   "headline": "AI ANSWERS YOUR CALLS 24/7",
+   "sha256": "",
+   "topics": [
+    "agent",
+    "agents",
+    "sales",
+    "voice",
+    "hiring",
+    "phone",
+    "calls",
+    "phone number"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DabSU1UCg_W/",
+   "caption": "This free framework just hit 239,000 stars and gives Claude Code a real engineering process: plan, write tests, build, then review. It chains skills so Claude works like a senior engineer, not autocomplete.\n\nComment POWER and I'll send you the repo.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#claudecode #ai #aitools #vibecoding",
+   "label": "Claude engineer",
+   "headline": "CLAUDE AS A SENIOR ENGINEER",
+   "sha256": "",
+   "topics": [
+    "claude code",
+    "repo",
+    "skills"
+   ],
+   "inPicker": true
+  },
+  {
+   "url": "https://www.instagram.com/reel/DabILCUjwA2/",
+   "caption": "Claude Code now works while you sleep. Routines are cloud schedules that run your coding agent automatically, laptop closed, and report back. The closest thing to hiring an AI employee. Comment ROUTINE and I'll send you the setup.\n\nFollow @antoniorevenue so my DM with the resource reaches you.\n\n#claudecode #ai #aitools #vibecoding",
+   "label": "Claude routines",
+   "headline": "CLAUDE WORKS WHILE YOU SLEEP",
+   "sha256": "",
+   "topics": [
+    "claude code",
+    "agent",
+    "hiring"
+   ],
+   "inPicker": true
   }
  ]
 }
