@@ -49,6 +49,10 @@ Verified live on Oct 20 (attended, no Share, composer of agency-blend, left thro
 - Instagram keeps 15 characters of the link title ("Plan your website in 6 docs" saved as "Plan your websi"). The
   input check now rejects labels over 15.
 
+Worker restarted under the phone lock at 08:55 PT. The 10:00 PT post (cweekend, https://www.instagram.com/reel/DeuUrZxoy5S/)
+ran the new driver with the default Reel: Instagram and Facebook receipts verified, Trial confirmed, and the Watch link
+opened the exact related Reel. Its topic matched no picker Reel, so this is not yet a topic-matched live link.
+
 Evidence (local, not committed): `docs/evidence/instagram-related-topics-2026-10-20/`.
 
 Scripts: `refresh-instagram-reels.ts` adds newly published Reels (headline from the opening frame, `inPicker` false);
