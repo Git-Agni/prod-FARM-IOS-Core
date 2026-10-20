@@ -9,7 +9,7 @@ import {createDatabaseConnection} from '../src/database/client.js';
 import {PublishingStore} from '../src/publishing/store.js';
 import {validatePostingInput,requestHash} from '../src/publishing/model.js';
 import {inspectShortsVideo} from '../src/publishing/youtube-shorts.js';
-import {reviewedLongForm} from '../src/publishing/prepared-youtube.js';
+import {chooseLongForm} from '../src/publishing/youtube-longform.js';
 
 const titlesArg=process.argv.find(v=>v.startsWith('--titles='))?.split('=')[1],apply=process.argv.includes('--apply');
 const key=(name:string)=>name.replace(/^video-/,'').replace(/\.mp4$/,'');
@@ -42,7 +42,7 @@ try{
    facebookMode:'direct',instagramTrial:false,automaticPromotion:false,
    youtube:{title,channelId:'UCMZWuXp0lsxE2vmuifYMWuA',visibility:'public',madeForKids:false,publishing:{
     tags:hashtags.map(h=>h.slice(1).toLowerCase()),aiUse:'no',category:'Howto & Style',hashtags,coverMode:'existing_frame',
-    commentKeyword:keyword,relatedVideoId:reviewedLongForm.id}},
+    commentKeyword:keyword,relatedVideoId:chooseLongForm({caption,youtube:{title,publishing:{tags:hashtags.map(h=>h.slice(1).toLowerCase())}}}).video.id}},
   });
   if(!apply){console.log('would create:',k,'|',title,'|',keyword,'|',hashtags.join(' '));continue;}
   const results={youtubePreparation:{...probe,checkedAt:new Date().toISOString(),status:'media_validated',uploaded:false,published:false,nativeChannelVerified:false},autoShorts:{createdAt:new Date().toISOString(),from:src.id}};

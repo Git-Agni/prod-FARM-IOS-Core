@@ -1,15 +1,31 @@
-/** Give held Shorts the reviewed long-form link the YouTube driver requires (prepared-youtube.ts reviewedLongForm).
- * Usage: link-shorts-long-form.ts <id,id,...> [--apply]. Held items with no release only; database only. */
+/** Link each Short to the owned long-form video that matches its topic (src/publishing/youtube-longform.ts).
+ * Usage: link-shorts-long-form.ts <id,id,...|--queued> [--apply]. --queued takes every unclaimed Short that is held,
+ * armed 10+ minutes out, or in review with no Upload claim. Database only; no phone input.
+ * An armed release keeps its slot: its item_version moves with the item, like lane-slotter.ts.
+ * The cover review keeps its frame-zero result and is rebound to the new link. */
 import {createDatabaseConnection} from '../src/database/client.js';
-import {reviewedLongForm} from '../src/publishing/prepared-youtube.js';
+import {chooseLongForm} from '../src/publishing/youtube-longform.js';
 import {requestHash,validatePostingInput} from '../src/publishing/model.js';
 const [list]=process.argv.slice(2),apply=process.argv.includes('--apply');
-const db=createDatabaseConnection();
-try{for(const id of list.split(',')){
- const i=(await db.pool.query(`SELECT i.* FROM scheduler.publishing_items i LEFT JOIN scheduler.publishing_releases r ON r.item_id=i.id
-   WHERE i.id=$1 AND i.status='held' AND r.item_id IS NULL AND i.input->'targets' @> '[{"platform":"youtube"}]'`,[id])).rows[0];
- if(!i){console.log('skip (not a held, unreleased Short):',id);continue;}
- const input=validatePostingInput({...i.input,youtube:{...i.input.youtube,publishing:{...i.input.youtube.publishing,relatedVideoId:reviewedLongForm.id}}});
- if(apply)await db.pool.query(`UPDATE scheduler.publishing_items SET input=$2,request_hash=$3,version=version+1,updated_at=now() WHERE id=$1 AND status='held'`,[id,input,requestHash(input,i.media.sha256)]);
- console.log(apply?'linked:':'would link:',i.media.name);
-}}finally{await db.close();}
+if(!list)throw Error('Usage: link-shorts-long-form.ts <id,id,...|--queued> [--apply]');
+const db=createDatabaseConnection(),c=await db.pool.connect();
+try{
+ await c.query('BEGIN');
+ const rows=(await c.query(`SELECT i.*,r.state,r.share_claimed_at,r.run_at FROM scheduler.publishing_items i LEFT JOIN scheduler.publishing_releases r ON r.item_id=i.id
+   WHERE i.input->'targets' @> '[{"platform":"youtube"}]' AND i.status IN ('held','needs_review') AND r.share_claimed_at IS NULL
+   AND (r.item_id IS NULL OR r.state IN ('needs_review','cancelled') OR (r.state='armed' AND r.run_at>now()+interval '10 minutes'))
+   AND ($1::uuid[] IS NULL OR i.id=ANY($1::uuid[])) FOR UPDATE OF i`,[list==='--queued'?null:list.split(',')])).rows;
+ for(const i of rows){
+  const pick=chooseLongForm(i.input),from=i.input.youtube?.publishing?.relatedVideoId;
+  if(pick.video.id===from){console.log('keep  ',i.media.name.slice(0,40).padEnd(40),'->',pick.video.titles[0]);continue;}
+  const input=validatePostingInput({...i.input,youtube:{...i.input.youtube,publishing:{...i.input.youtube.publishing,relatedVideoId:pick.video.id}}});
+  const choice={at:new Date().toISOString(),from,to:pick.video.id,score:pick.score,topics:pick.topics};
+  const review=i.results?.directYouTubeReview?{...i.results.directYouTubeReview,relatedVideoId:pick.video.id}:undefined;
+  await c.query(`UPDATE scheduler.publishing_items SET input=$2,request_hash=$3,version=version+1,updated_at=now(),
+    results=results||jsonb_build_object('relatedLongForm',$4::jsonb)||CASE WHEN $5::jsonb IS NULL THEN '{}'::jsonb ELSE jsonb_build_object('directYouTubeReview',$5::jsonb) END WHERE id=$1`,
+    [i.id,input,requestHash(input,i.media.sha256),JSON.stringify(choice),review?JSON.stringify(review):null]);
+  await c.query(`UPDATE scheduler.publishing_releases SET item_version=item_version+1,updated_at=now() WHERE item_id=$1 AND state='armed' AND share_claimed_at IS NULL`,[i.id]);
+  console.log(apply?'linked':'would ',i.media.name.slice(0,40).padEnd(40),'->',pick.video.titles[0],'['+pick.topics.join(', ')+']');
+ }
+ await c.query(apply?'COMMIT':'ROLLBACK');
+}catch(e){await c.query('ROLLBACK').catch(()=>{});throw e;}finally{c.release();await db.close();}

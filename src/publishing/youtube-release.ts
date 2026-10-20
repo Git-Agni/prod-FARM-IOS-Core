@@ -1,7 +1,8 @@
 import{readFile}from'node:fs/promises';
 import{createHash}from'node:crypto';
 import sharp from'sharp';
-import{PreparedYouTubeRelease,reviewedLongForm}from'./prepared-youtube.js';
+import{PreparedYouTubeRelease}from'./prepared-youtube.js';
+import{longFormById,pickerRowMatches}from'./youtube-longform.js';
 import{visibleNativeNodes}from'./native-xml.js';
 import{NativeMuteGuard}from'./native-mute.js';
 import{inspectShortsVideo}from'./youtube-shorts.js';
@@ -120,20 +121,22 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
   await this.tapElement('accessibility id','id.elements.components.metadata_editor.app_bar.back_button','Back to details');
  }
  private async related(){
+  const video=longFormById(this.input?.youtube?.publishing?.relatedVideoId);if(!video)throw Error('Related long-form video is not in the owned catalog; no Upload');
   await this.metadataRow('Related video');await this.waitFor('accessibility id','Select video','Owned video picker');let last='';
   // Newest videos list first; every new Short pushes the long-form further down (Oct 7 22:29 ran out at 5 scrolls).
-  for(let n=0;n<25;n++){
-   const nodes=await this.nodes(),matching=nodes.filter(n=>n.label?.startsWith(reviewedLongForm.title+' - 15 minutes, 57 seconds - Go to channel - '+reviewedLongForm.owner));
+  // Oct 19: topic-matched links can be the oldest long-form, so allow 60 scrolls; the loop stops when the list ends.
+  for(let n=0;n<60;n++){
+   const nodes=await this.nodes(),matching=nodes.filter(n=>pickerRowMatches(n.label,video));
    const rows=[...new Map(matching.map(n=>[[n.x,n.y,n.width,n.height,n.label].join('|'),n])).values()];
    if(rows.length){if(rows.length!==1)throw Error('Related long-form video is ambiguous');const r=rows[0]!;await this.tapPoint(r.x+r.width/2,r.y+r.height/2);return;}
    const current=nodes.filter(n=>n.name==='eml.cvr').map(n=>n.label).join('|');
-   if(!current||current===last||n===24)throw Error('Reviewed long-form video was not reached; no Upload');last=current;
+   if(!current||current===last||n===59)throw Error('Related long-form video was not reached; no Upload');last=current;
    await this.assertInputApp();await this.request(this.session+'/wda/dragfromtoforduration',{fromX:215,fromY:780,toX:215,toY:200,duration:.5});await this.sleep(500);
   }
  }
  override async preflight(input:PostingInput,mediaValue:unknown):Promise<ReleaseEvidence>{
   this.ready=false;this.input=input;const media=mediaValue as ReleaseMedia,review=this.saved.results?.directYouTubeReview;
-  if(!review?.coverReviewed||review.sourceSha256!==media.sha256||review.relatedVideoId!==reviewedLongForm.id||input.youtube?.publishing?.relatedVideoId!==reviewedLongForm.id||input.youtube.visibility!=='public'||input.youtube.madeForKids||input.youtube.publishing.aiUse!=='no')throw Error('This YouTube source needs its own reviewed cover and long-form link');
+  if(!review?.coverReviewed||review.sourceSha256!==media.sha256||!input.youtube?.publishing||!longFormById(input.youtube.publishing.relatedVideoId)||review.relatedVideoId!==input.youtube.publishing.relatedVideoId||input.youtube.visibility!=='public'||input.youtube.madeForKids||input.youtube.publishing.aiUse!=='no')throw Error('This YouTube source needs its own reviewed cover and long-form link');
   if(createHash('sha256').update(await readFile(media.path)).digest('hex')!==media.sha256)throw Error('Reviewed YouTube file changed');
   const probe=await inspectShortsVideo(media.path);await new NativeMuteGuard(this.base,this.signal).prepare();await this.start('com.google.ios.youtube');
   // Oct 11 02:52: YouTube now closes after each job (no picture-in-picture), so a cold launch can stay black past 20 s.
@@ -258,12 +261,19 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
   const distinct=[...new Map(backRects.map(r=>[JSON.stringify(r),r])).values()];
   if(distinct.length!==1)throw Error('Description Back is ambiguous');const back=distinct[0]!;
   if(back.x< -5||back.x>5||back.y<50||back.y>65||back.width!==48||back.height!==48)throw Error('Description Back moved');
-  await this.tapPoint(back.x+back.width/2,back.y+back.height/2);await this.sleep(500);
   // Hashtag suggestions mark the whole screen hidden, so decide by existence, not visibility (Oct 7 13:24):
-  // the Upload button exists only on the details screen. If it is absent, the first Back only closed the
-  // suggestions, so tap the same verified Back position once more. Never touches Upload.
+  // the Upload button exists only on the details screen. If it is absent, the Back only closed the
+  // suggestions, so tap the same verified Back position again. Never touches Upload.
   const uploadExists=async()=>((await this.request(this.session+'/elements',{using:'accessibility id',value:'id.metadata_editor.upload_button'})).value??[]).length>0;
-  if(!await uploadExists()){await this.assertInputApp();await this.tapPoint(back.x+back.width/2,back.y+back.height/2);await this.sleep(800);}
+  // Oct 19 20:22 and 21:22: two fixed-wait Back taps with the keyboard up left the editor open. Wait for the
+  // details screen after each tap, and tap again only while the editor's own Back is still there (max 3 taps).
+  const editorBack=async()=>((await this.request(this.session+'/elements',{using:'accessibility id',value:'id.elements.components.metadata_editor.app_bar.back_button'})).value??[]).length>0;
+  await this.sleep(800);
+  for(let tap=0;tap<3&&!await uploadExists();tap++){
+   if(!await editorBack())break;
+   await this.assertInputApp();await this.tapPoint(back.x+back.width/2,back.y+back.height/2);
+   for(let wait=0;wait<10&&!await uploadExists();wait++)await this.sleep(400);
+  }
   if(!await uploadExists())throw Error('Phone control is missing: Leave description');
   // Hashtag suggestions can stay open over the details screen. While open, iOS reports the whole screen hidden
   // (Upload, Related video, title). Tap the title bar by position, which is not a control, to close the list.
@@ -283,6 +293,6 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
   }
   if(!(await this.nodes()).some(n=>n.name==='id.elements.components.identity_chip_component'&&n.label.includes('@'+input.targets[0]!.account.replace(/^@/,''))))throw Error('YouTube upload account changed');
   await this.waitFor('accessibility id','id.metadata_editor.upload_button','Upload button on screen',10_000);
-  this.ready=true;return{exactMedia:true,videoFrameCover:true,caption:true,account:true,automaticPromotion:false,linkedFacebook:false,youtubeRelatedVideo:{id:reviewedLongForm.id,format:'long_form',verified:true}};
+  this.ready=true;return{exactMedia:true,videoFrameCover:true,caption:true,account:true,automaticPromotion:false,linkedFacebook:false,youtubeRelatedVideo:{id:input.youtube!.publishing!.relatedVideoId!,format:'long_form',verified:true}};
  }
 }

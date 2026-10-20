@@ -7,6 +7,7 @@ import {preparedInputHash} from './prepared-instagram.js';
 import {assertRelease,type ReleaseDriver,type ReleaseEvidence} from './release-policy.js';
 import type {ReleaseMedia} from './instagram-release.js';
 import {recognizeWords} from '../tiktok/ocr.js';
+import {longFormById} from './youtube-longform.js';
 
 export const reviewedLongForm={id:'DWREa1sv_Ho',title:'How I Use Jev AI Inside Businesses Doing $7M a Month',owner:'Antonio Monteiro | More Leads & Sales With AI',seconds:957};
 export function ownedShortsTabRect(xml:string){
@@ -83,7 +84,7 @@ export class PreparedYouTubeRelease extends WdaApp implements ReleaseDriver {
         }
     }
     async verify(){
-        const input=this.input!;
+        const input=this.input!,related=longFormById(input.youtube?.publishing?.relatedVideoId);
         // Prefer the public feed: no navigation, no tile guessing (Oct 7: the in-app grid lagged and opened an older Short).
         const fromFeed=await this.publicFeedReceipt(input,3*60_000);
         if(fromFeed)return {youtube:fromFeed};
@@ -133,8 +134,7 @@ export class PreparedYouTubeRelease extends WdaApp implements ReleaseDriver {
         }
         if(!nodes.some(n=>n.name==='eml.shorts-video-title-new'&&n.label===input.youtube!.title)
            ||!nodes.some(n=>n.name==='decorated-avatar-id'&&n.label==='Go to channel @'+input.targets[0]!.account.replace(/^@/,''))
-           ||!nodes.some(n=>n.name==='id.reel_multi_format_link'&&n.label===reviewedLongForm.title)
-           ||input.youtube!.publishing?.relatedVideoId!==reviewedLongForm.id)
+           ||!related||!nodes.some(n=>n.name==='id.reel_multi_format_link'&&related.titles.includes(n.label)))
             throw Error('Native Short title, owner or related long-form link needs review');
         await this.tapElement('accessibility id','eml.shorts-video-title-new','Published description');
         const description=visibleNativeNodes(String((await this.request(this.session+'/source')).value));
@@ -144,7 +144,7 @@ export class PreparedYouTubeRelease extends WdaApp implements ReleaseDriver {
         const close=await this.visible('accessibility id','id.ui.browse.close.button')
             ??await this.visible('predicate string','name == "id.elements.button" AND label == "Close" AND visible == 1');
         if(close){await this.assertInputApp();await this.request(this.session+'/element/'+close+'/click',{}).catch(()=>undefined);}
-        return {youtube:{verified:true,source:'youtube_app',evidence:'Exact native title, account and full description matched. Viewer-facing link matched the reviewed owned long-form video '+reviewedLongForm.id}};
+        return {youtube:{verified:true,source:'youtube_app',evidence:'Exact native title, account and full description matched. Viewer-facing link matched the owned long-form video '+related!.id}};
     }
     async reconcile(input:PostingInput){this.input=input;const fromFeed=await this.publicFeedReceipt(input,30_000);if(fromFeed)return {youtube:fromFeed};await this.start('com.google.ios.youtube');return this.verify();}
     async leaveVideo(){await this.exitApp('com.google.ios.youtube');}
