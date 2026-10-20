@@ -211,6 +211,17 @@ export async function journalFrame(source: PoolPhoto | Buffer, text: string, { c
     return sharp(bg).composite(layers).removeAlpha().png().toBuffer();
 }
 
+const TOPIC_STOP = new Set(['from', 'with', 'before', 'under', 'days', 'grew', 'every', 'rate', 'the', 'and', 'in', 'to']);
+/** True when a proof headline and a caption share a topic word ("show", "lead", "SMS", "refunds"). */
+export function topicMatch(headline: string, caption: string) {
+    const terms = headline.toLowerCase().match(/[a-z]{3,}/g)?.filter(w => !TOPIC_STOP.has(w)) ?? [];
+    const text = caption.toLowerCase();
+    return terms.some(w => new RegExp(`\\b${w}`).test(text));
+}
+
+/** True when the text fits a journal frame (six lines of about 30 characters). */
+export const fits = (text: string) => text.split('\n').flatMap(l => wrapLines(l, 30)).length <= 6;
+
 /** The Reel caption's own sentences, original casing (lowercasing broke names like Claude Code). No filler. */
 export function captionSentences(caption: string): string[] {
     const clean = (x: string) => x.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').replace(/^\s*(\d+[.)]|[-•*])\s*/, '').replace(/\s+/g, ' ').trim();
@@ -242,33 +253,42 @@ async function weekNumbers(pool: import('pg').Pool) {
 export async function buildLifestylePlan(pool: import('pg').Pool, runAt: Date, _opts: { spotlightTexts?: (c: string) => string[] } = {}) {
     const reels = await linkableReels(pool);
     if (!reels.length) return null;
-    const usable = reels.map(r => ({ ...r, s: captionSentences(r.caption ?? '') })).filter(r => r.s.length >= 3);
+    // Oct 20: the Full Visual kit's script rules (src/publishing/story-script.ts): the caption's hook, its mechanism in
+    // order, a re-hook before the last point, the turn, and a CTA that names what arrives. Only lines that fit a frame.
+    const { storyScript } = await import('./story-script.js');
+    const usable = reels.map(r => {
+        const sc = storyScript(r.caption ?? '');
+        return sc && fits(sc.hook) ? { ...r, sc: { ...sc, points: sc.points.filter(fits) } } : null;
+    }).filter((r): r is NonNullable<typeof r> => !!r && r.sc.points.length >= 2);
     if (!usable.length) return null;
     const reel = [...usable].sort((a, b) => a.uses - b.uses)[0]!;
-    const keyword = (reel.caption ?? '').match(/\bComment\s+["“']?([A-Z][A-Z0-9]{1,19})["”']?/)?.[1];
-    const cta = keyword ? `Comment ${keyword} on the reel\nand I'll send it to you` : 'The full reel is on my profile';
+    const { hook: a, points: [b, c], turn, cta } = reel.sc as { hook: string; points: [string, string]; turn?: string; cta: string };
+    const glue = (prefix: string, text: string) => fits(`${prefix}\n${text}`) ? `${prefix}\n${text}` : text;
     const type = storyTypeFor(runAt), slotIndex = Math.floor(runAt.getTime() / (12 * 3_600_000));
-    const cards = loadProofCards(), card = (k: number) => cards[(slotIndex * 2 + k) % cards.length]!;
+    // Proof proves the point (kit): cards whose headline shares a topic word with the Reel go first, the rest rotate.
+    const all0 = loadProofCards(), rotated = all0.map((_, k) => all0[(slotIndex * 2 + k) % all0.length]!);
+    const cards = [...rotated.filter(x => topicMatch(x.headline, reel.caption ?? '')), ...rotated.filter(x => !topicMatch(x.headline, reel.caption ?? ''))];
+    const card = (k: number) => cards[k % cards.length]!;
     const lastUse = await photoLastUse(pool), all = loadPhotoPool(), used = new Set<string>();
     const pick = async (filter: (p: PoolPhoto) => boolean) => {
         for (const p of pickPhotos(all.filter(p => filter(p) && !used.has(p.sha256)), lastUse, Math.min(12, all.length)))
             if ((await imageQuality(await photoBuffer(p.file, p.t))).ok) { used.add(p.sha256); return p; }
         throw Error('No picture passed the quality gate');
     };
-    const [a, b, c] = reel.s as [string, string, string];
     let spec: { text: string; card?: ProofCard; link?: boolean; stage: string }[];
     if (type === 'build') spec = [
-        { stage: 'hook', text: a }, { stage: 'point', text: `Here's how it works:\n${b}` }, { stage: 'point', text: c },
-        { stage: 'proof', text: `What it did for us:\n${card(0).headline}`, card: card(0) }, { stage: 'reply', text: cta, link: true }];
+        { stage: 'hook', text: a }, { stage: 'point', text: glue("Ok so here's how it works:", b) }, { stage: 'point', text: glue('And the best part?', c) },
+        // The cards are client results from our sales systems, never this Reel's tool: say so (kit: no overclaim).
+        { stage: 'proof', text: `From our client work:\n${card(0).headline}`, card: card(0) }, { stage: 'reply', text: cta, link: true }];
     else if (type === 'proof_stack') spec = [
-        { stage: 'hook', text: a }, { stage: 'point', text: b },
+        { stage: 'hook', text: a }, { stage: 'point', text: turn && fits(turn) ? turn : b },
         { stage: 'proof', text: card(0).headline, card: card(0) }, { stage: 'proof', text: card(1).headline, card: card(1) },
         { stage: 'reply', text: cta, link: true }];
     else { const w = await weekNumbers(pool); spec = [
         { stage: 'hook', text: 'Quick update on the week' },
         { stage: 'point', text: `${w.videos} videos went out this week\n${w.posts} posts across Instagram,\nTikTok and YouTube` },
         { stage: 'proof', text: card(0).headline, card: card(0) },
-        { stage: 'point', text: `The one I keep coming back to:\n${a}` }, { stage: 'reply', text: cta, link: true }]; }
+        { stage: 'point', text: glue('The one I keep coming back to:', a) }, { stage: 'reply', text: cta, link: true }]; }
     const date = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(runAt);
     const dir = path.resolve('.scheduler-data/story-assets', `${date}-${type}-${runAt.toISOString().slice(11, 13)}`);
     const fs = await import('node:fs/promises');

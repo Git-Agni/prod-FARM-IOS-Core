@@ -25,8 +25,8 @@ Story editor preview or the frame image itself. The round buttons on the right e
 - clipping: 10 if no text is cut off or hidden behind the right-edge buttons or the edges; lower if any word is clipped.
 - image: is the photo bright, sharp and attractive, with the person clearly visible?
 - privacy: "flag" only if it shows personal data of a lead, customer or rep (email address, phone number, home address, a private person's full name next to their data), else "ok". Revenue dashboards, cash numbers, client results and business or client names are approved for public posting and are "ok".
-- fit: does this frame support the story told by the sequence (frame 1 hook, middle frames proof/value, frame 5 call to action)?
-Also score hook (frame 1 stops the scroll, 0-10) and cta (frame 5 call to action is clear and fully visible, 0-10).
+- fit: does this frame support the story told by the sequence (frame 1 hook, middle frames proof/value, frame 5 call to action), and does its text follow from the previous frame as one idea with its reason, not a fragment or a repeat?
+Also score hook (frame 1 stops the scroll: a real named thing or the viewer's own thing in its first words, plus a number or a side someone could argue with; 0-10) and cta (frame 5 call to action is clear, fully visible and says exactly what the viewer gets, 0-10).
 Reply with JSON only: {"frames":[{"frame":1,"readability":0,"clipping":0,"image":0,"privacy":"ok","fit":0,"note":"short reason"},...5],"hook":0,"cta":0}`;
 
 
