@@ -16,6 +16,8 @@ Antonio asked that each post link a related video about the same topic, not alwa
   accepts any catalog video.
 - Queue: `link-shorts-long-form.ts --queued --apply` re-linked 32 unclaimed Shorts at 21:43 PT. Armed Shorts kept
   their slots; release and item versions match. The choice is saved in `results.relatedLongForm`.
+- VERIFIED live: the 22:22 PT Short d406f21d (logo) linked EJ3jguKfNB8, the oldest long-form in the picker, and
+  published at https://youtube.com/shorts/YwfZsG1Eu-8 (Upload claimed once at 22:28:33 PT).
 
 Typical picks: Claude Code tool Shorts link "I Rebuilt Alex Hormozi's $3,000 AI in Claude Code (Free)"; outbound
 and lead Shorts link the WarriorBabe outbound video; memory and wiki Shorts link "I Turned My Entire Business Into
