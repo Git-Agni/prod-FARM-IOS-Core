@@ -11,7 +11,7 @@ export type FrameScore={frame:number;readability:number;clipping:number;image:nu
 export type StoryScore={model:string;frames:FrameScore[];hook:number;cta:number;overall:number;pass:boolean;reasons:string[];scoredAt:string};
 
 let key:string|undefined;
-function openRouterKey(){
+export function openRouterKey(){
     key??=execFileSync('/usr/bin/python3',['-c',`
 import importlib.util,os
 s=importlib.util.spec_from_file_location("s",os.path.expanduser("~/.local/share/c2c-secrets/c2c_secrets.py"));m=importlib.util.module_from_spec(s);s.loader.exec_module(m)

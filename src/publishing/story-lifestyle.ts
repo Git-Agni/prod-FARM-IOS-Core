@@ -11,8 +11,12 @@ import path from 'node:path';
 import sharp, { type OverlayOptions } from 'sharp';
 
 export interface PoolPhoto { file: string; sha256: string; faceTop?: number | null; t?: number }
-/** Under a proof card at the top, only photos with the face low (or not visible) keep the face clear. */
-export const cardSafe = (p: PoolPhoto) => p.faceTop == null || p.faceTop > 0.7;
+/** Card frames (Oct 20): the stage card stops 60 px above the face, so the face must start at 0.52 of the height or lower
+ * to leave a stage at least 400 px tall. */
+export const cardSafe = (p: PoolPhoto) => p.faceTop == null || p.faceTop >= 0.52;
+/** The CTA frame: Instagram drops the link sticker near the centre (about 0.46 to 0.54 of the height), so the face sits
+ * clear below it. Only below: a face starting above the sticker can be a close-up that runs through it. */
+export const linkSafe = (p: PoolPhoto) => p.faceTop == null || p.faceTop > 0.55;
 const W = 1080, H = 1920, IMAGE = /\.(jpe?g|png|heic)$/i;
 
 export function loadPhotoPool(file = 'docs/stories/photo-pool.json'): PoolPhoto[] {
@@ -58,7 +62,7 @@ export function textOverlay(lines: string[], { top = 300, size = 58, red = -1 } 
 }
 
 /** Video stills: the full-resolution frame at t seconds. HEIC goes through macOS sips; everything else straight to sharp. */
-async function photoBuffer(file: string, t?: number): Promise<Buffer> {
+export async function photoBuffer(file: string, t?: number): Promise<Buffer> {
     if (t !== undefined) return execFileSync('ffmpeg', ['-v', 'error', '-ss', t.toFixed(2), '-i', file, '-frames:v', '1', '-f', 'image2pipe', '-vcodec', 'mjpeg', '-q:v', '2', '-'], { maxBuffer: 128 << 20 });
     if (!/\.heic$/i.test(file)) return readFile(file);
     const dir = await mkdtemp(path.join(os.tmpdir(), 'story-heic-'));
@@ -301,33 +305,48 @@ export async function buildLifestylePlan(pool: import('pg').Pool, runAt: Date, _
     const cards = [...rotated.filter(x => topicMatch(x.headline, reel.caption ?? '')), ...rotated.filter(x => !topicMatch(x.headline, reel.caption ?? ''))];
     const card = (k: number) => cards[k % cards.length]!;
     const lastUse = await photoLastUse(pool), all = loadPhotoPool(), used = new Set<string>();
-    const pick = async (filter: (p: PoolPhoto) => boolean) => {
-        for (const p of pickPhotos(all.filter(p => filter(p) && !used.has(p.sha256)), lastUse, Math.min(12, all.length)))
-            if ((await imageQuality(await photoBuffer(p.file, p.t))).ok) { used.add(p.sha256); return p; }
+    // Oct 20: the background shows what the frame is about (a laptop for a tool, a phone for the ask), least recently
+    // used among the closest fits.
+    const { rankPhotos, loadPhotoTags, topicIntent, frameIntent, newSeen, markSeen, sceneHash, hashDistance } = await import('./story-photo-match.js');
+    const tags = loadPhotoTags(), topic = topicIntent(reel.caption ?? ''), seen = newSeen(), seenHashes: bigint[] = [];
+    const pick = async (filter: (p: PoolPhoto) => boolean, intent: import('./story-photo-match.js').FrameIntent) => {
+        for (const p of rankPhotos(all.filter(p => filter(p) && !used.has(p.sha256)), intent, tags, lastUse, seen).slice(0, 12))
+        {
+            const raw = await photoBuffer(p.file, p.t), hash = await sceneHash(raw);
+            // Two shots of one scene (another file, same chair and counter) count as one scene.
+            if (seenHashes.some(h => hashDistance(h, hash) <= 12) || !(await imageQuality(raw)).ok) continue;
+            used.add(p.sha256); markSeen(seen, p, tags); seenHashes.push(hash); return p;
+        }
         throw Error('No picture passed the quality gate');
     };
-    let spec: { text: string; card?: ProofCard; link?: boolean; stage: string }[];
+    let spec: { text: string; card?: ProofCard; link?: boolean; stage: string; turn?: boolean }[];
     if (type === 'build') spec = [
         { stage: 'hook', text: a }, { stage: 'point', text: glue("Ok so here's how it works:", b) }, { stage: 'point', text: glue('And the best part?', c) },
         // The cards are client results from our sales systems, never this Reel's tool: say so (kit: no overclaim).
         { stage: 'proof', text: `From our client work:\n${card(0).headline}`, card: card(0) }, { stage: 'reply', text: cta, link: true }];
     else if (type === 'proof_stack') spec = [
-        { stage: 'hook', text: a }, { stage: 'point', text: turn && fits(turn) ? turn : b },
+        { stage: 'hook', text: a }, turn && fits(turn) ? { stage: 'point', text: turn, turn: true } : { stage: 'point', text: b },
         { stage: 'proof', text: card(0).headline, card: card(0) }, { stage: 'proof', text: card(1).headline, card: card(1) },
         { stage: 'reply', text: cta, link: true }];
     else { const w = await weekNumbers(pool); spec = [
         { stage: 'hook', text: 'Quick update on the week' },
         { stage: 'point', text: `${w.videos} videos went out this week\n${w.posts} posts across Instagram,\nTikTok and YouTube` },
         { stage: 'proof', text: card(0).headline, card: card(0) },
-        { stage: 'point', text: glue('The one I keep coming back to:', a) }, { stage: 'reply', text: cta, link: true }]; }
+        { stage: 'point', text: glue('The one I keep coming back to:', a), turn: true }, { stage: 'reply', text: cta, link: true }]; }
     const date = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(runAt);
     const dir = path.resolve('.scheduler-data/story-assets', `${date}-${type}-${runAt.toISOString().slice(11, 13)}`);
     const fs = await import('node:fs/promises');
     await fs.mkdir(dir, { recursive: true, mode: 0o700 });
+    // Photos are chosen for the most constrained frames first (the link frame, then card frames), so the few phone
+    // shots that clear the link sticker go to the ask. Card and link frames keep the face clear of the screenshot or sticker.
+    const photos: PoolPhoto[] = [];
+    for (const i of spec.map((_, i) => i).sort((a, b) => Number(!!spec[b]!.link) - Number(!!spec[a]!.link) || Number(!!spec[b]!.card) - Number(!!spec[a]!.card) || a - b)) {
+        const f = spec[i]!;
+        photos[i] = await pick(f.card ? cardSafe : f.link ? linkSafe : () => true, frameIntent(f.stage, type === 'documentation' && i < 2 ? 'content' : topic, f.turn));
+    }
     const frames = [];
     for (const [i, f] of spec.entries()) {
-        // Card and link frames keep the face low or out of frame so the screenshot or sticker never covers it.
-        const photo = await pick(f.card || f.link ? cardSafe : () => true), file = path.join(dir, `frame-${i + 1}.png`);
+        const photo = photos[i]!, file = path.join(dir, `frame-${i + 1}.png`);
         await fs.writeFile(file, await journalFrame(photo, f.text, { card: f.card }), { mode: 0o600 });
         frames.push({ stage: f.stage, text: f.text.replace(/\n/g, ' '), textBurnedIn: true, assetKind: 'lifestyle_frame', assetRef: file,
             photoSha256: photo.sha256, automatedChecks: true, claimReview: 'source_checked', sourceRef: f.card ? f.card.source : reel.url,
