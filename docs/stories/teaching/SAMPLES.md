@@ -136,3 +136,31 @@ Layout changes so every line has room:
 - D: the steps form a wider zig-zag, with labels under each step.
 
 **Vision scores:** A 9.0, B 9.5, C 8.9, D 8.9. All pass.
+
+## Reel promo sequences (2026-10-21)
+Antonio asked for Story variations that promote our best-performing reels. The picks are the top three Instagram reels from c2c-analytics `social_posts`, published since Aug 22 and read on Oct 21:
+
+| Sequence | Reel | Views | Way | Keyword (live) |
+|---|---|---|---|---|
+| E `e-promo-harvey` | DenP4mcPjyj | 134,418 (5,962 saves, 2,985 shares) | Social proof: "My top reel, 134K views" | HARVEY |
+| F `f-promo-phone` | DepFKWGIgZy | 28,607 | Curiosity: Claude Code calls your phone | PHONE |
+| G `g-promo-hiring` | DepR5BpoA27 | 6,831 | A person's story: his AI sent 69 applications | HIRING |
+
+Each one ends on the reel's own cover with its view count, plus Reply "KEYWORD".
+- **Copy:** every claim comes from that reel's caption.
+- **Keywords:** all three are live rows in `dm_keyword_assets`, and they send the guide each CTA names.
+- **Illustrations:** the CV and API-bill cards are drawn in code and contain no invented numbers.
+- **Vision scores:** E 8.6, F 9.5, G 9.4. All pass.
+- **Publishing:** a frame can't link to a reel. On the phone, the CTA frame needs Instagram's native reel share (sticker) so viewers can tap through.
+
+## Keyword routing check (2026-10-21)
+
+**How a keyword gets answered:**
+- GHL sends Instagram and Facebook comments and DMs to the n8n workflow "IG Comment Keyword Router (C2C)", `ZLrzPqqMf96PoJje`. It runs on the n8n-multi host, not the general one.
+- The workflow reads the active rows in c2c-analytics `dm_keyword_assets` (308 active). It matches either the exact keyword or a word in the message.
+- It sends that row's `dm_copy`, which is the lead-magnet page link plus the YouTube subscribe footer. A follow gate asks non-followers to follow first.
+
+**Gaps:**
+- No row sends a specific YouTube long-form video.
+- HUMANAI, SMS and AUTOPILOT, used by samples A, B and D, have no rows. A reply with those words would go to the AI classifier, so no magnet is sent.
+- Not yet tested: whether GHL fires the webhook for Story replies.

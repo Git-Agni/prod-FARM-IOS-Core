@@ -1,0 +1,249 @@
+{
+ "slug": "f-promo-phone",
+ "way": "Reel promo, curiosity: the phone rings (Claude Code phone reel, 28,607 views)",
+ "keyword": "PHONE",
+ "frames": [
+  {
+   "type": "scene",
+   "hook": true,
+   "photo": "d7725c69",
+   "dim": 0.35,
+   "blur": 6,
+   "title": "Claude Code can\n[[call your phone]]",
+   "titleTop": 170,
+   "bottom": "When it needs a decision from you 👉",
+   "bottomAt": 170,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.7,
+      14
+     ],
+     "look": [
+      0,
+      1.75,
+      0
+     ],
+     "fov": 34
+    },
+    "accent": "#34C759",
+    "objects": [
+     {
+      "kind": "phone",
+      "screen": "assets/screen-call.png",
+      "size": [
+       1.95,
+       4.0,
+       0.18
+      ],
+      "pos": [
+       0,
+       1.3,
+       0
+      ],
+      "rot": [
+       -4,
+       -14,
+       3
+      ],
+      "scale": 0.85
+     },
+     {
+      "kind": "ring",
+      "r": 1.55,
+      "tube": 0.012,
+      "color": "#34C759",
+      "pos": [
+       0,
+       1.4,
+       -0.3
+      ],
+      "opacity": 0.55
+     },
+     {
+      "kind": "ring",
+      "r": 2.05,
+      "tube": 0.01,
+      "color": "#34C759",
+      "pos": [
+       0,
+       1.4,
+       -0.3
+      ],
+      "opacity": 0.3
+     },
+     {
+      "kind": "light",
+      "pos": [
+       0,
+       1.4,
+       3
+      ],
+      "color": "#34C759",
+      "power": 16
+     }
+    ]
+   }
+  },
+  {
+   "type": "scene",
+   "photo": "aaae6275",
+   "dim": 0.3,
+   "blur": 6,
+   "title": "You ask for a quick call.\nSay what you want changed.\n**Then you hang up.**",
+   "titleTop": 200,
+   "pull": "Then this happens 👉",
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.6,
+      13.5
+     ],
+     "look": [
+      0,
+      1.2,
+      0
+     ],
+     "fov": 34
+    },
+    "accent": "#2780FF",
+    "objects": [
+     {
+      "kind": "tile",
+      "id": "c",
+      "img": "assets/si-claude.svg",
+      "size": [
+       1.2,
+       1.2,
+       0.26
+      ],
+      "pos": [
+       -1.0,
+       2.3,
+       0.4
+      ],
+      "rot": [
+       6,
+       20,
+       -4
+      ],
+      "fill": 0.66
+     },
+     {
+      "kind": "tile",
+      "id": "t",
+      "img": "assets/icon-call.svg",
+      "size": [
+       1.0,
+       1.0,
+       0.24
+      ],
+      "pos": [
+       1.0,
+       1.35,
+       0.6
+      ],
+      "rot": [
+       4,
+       -20,
+       4
+      ],
+      "fill": 1.0,
+      "color": "#34C759",
+      "lit": 0.15
+     },
+     {
+      "kind": "phone",
+      "id": "p",
+      "screen": "assets/screen-call.png",
+      "size": [
+       0.8,
+       1.6,
+       0.11
+      ],
+      "pos": [
+       -0.7,
+       0.05,
+       0.8
+      ],
+      "rot": [
+       -4,
+       18,
+       -3
+      ]
+     },
+     {
+      "kind": "link",
+      "from": "c",
+      "to": "t",
+      "state": "done",
+      "bend": 0.25
+     },
+     {
+      "kind": "link",
+      "from": "t",
+      "to": "p",
+      "state": "done",
+      "bend": -0.25
+     },
+     {
+      "kind": "text",
+      "text": "CLAUDE CODE",
+      "px": 80,
+      "bg": "#1c1c20",
+      "h": 0.22,
+      "pos": [
+       -1.0,
+       1.5,
+       0.7
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "CALLS YOU",
+      "px": 80,
+      "bg": "#1c1c20",
+      "h": 0.22,
+      "pos": [
+       1.0,
+       0.65,
+       0.9
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "YOU ANSWER",
+      "px": 80,
+      "bg": "#1c1c20",
+      "h": 0.22,
+      "pos": [
+       0.55,
+       -0.55,
+       1.0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "photo",
+   "photo": "8bc5feef",
+   "title": "Your answer goes back into the session",
+   "body": "**And Claude Code keeps working.**\nAll you need is Claude Code and a Bland API key.",
+   "bodyTop": 440,
+   "pull": "The full set up is in the reel 👉"
+  },
+  {
+   "type": "cta",
+   "title": "Watch the reel 👇",
+   "card": {
+    "kind": "reel",
+    "image": "assets/reel-phone-cover.jpg",
+    "views": "28.6K"
+   },
+   "send": "and I'll send you the full guide"
+  }
+ ]
+}

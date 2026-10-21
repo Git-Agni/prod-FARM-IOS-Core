@@ -89,7 +89,7 @@ svg.lines{position:absolute;left:0;top:0;width:1080px}
 .yt .bar:after{content:'';position:absolute;left:0;top:0;bottom:0;width:22%;background:#E8231F;border-radius:4px}
 .yt .vt{font:700 30px Inter;color:#111;margin:16px 6px 4px}
 .reel{position:absolute;top:430px;left:50%;transform:translateX(-50%) rotate(-2deg);width:430px;border-radius:30px;overflow:hidden;box-shadow:0 0 0 4px #2780FF,0 30px 80px rgba(0,0,0,.75)}
-.reel img{display:block;width:100%}
+.reel img{display:block;width:100%}.plays{position:absolute;left:22px;bottom:20px;font:800 34px Inter;text-shadow:0 2px 12px rgba(0,0,0,.9)}
 .reply{position:absolute;top:1250px;left:0;right:0;text-align:center;font:900 112px/1 Inter;letter-spacing:-2px}
 .reply .k{color:#2780FF}.send{position:absolute;top:1390px;left:0;right:0;text-align:center;font:500 46px Inter;color:#d0d0d0}
 .arrow{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-events:none}`;
@@ -172,7 +172,7 @@ async function frameHtml(f: any, i: number) {
     if (f.type === 'cta') {
         const card = f.card.kind === 'yt' ? `<div class="yt"><img src="${f.card.thumb}"><div class="bar"></div><div class="vt">${f.card.title}</div></div>`
             : f.card.kind === 'image' ? `<div class="shot" style="top:470px;width:${(f.card.width ?? 860) + 28}px"><img src="${asset(f.card.image)}" style="width:${f.card.width ?? 860}px"></div>`
-            : `<div class="reel"><img src="${asset(f.card.image)}"></div>`;
+            : `<div class="reel"><img src="${asset(f.card.image)}">${f.card.views ? `<div class="plays">▶ ${f.card.views}</div>` : ''}</div>`;
         const rsize = Math.min(112, Math.floor(1700 / (`Reply "${spec.keyword}"`.length + 1)));
         inner = `<div class="grid"></div><div class="title center" style="top:200px;font-size:54px">${md(f.title)}</div>${card}
           <div class="reply" style="font-size:${rsize}px;white-space:nowrap">Reply <span class="k">"${spec.keyword}"</span></div><div class="send">${f.send ?? "and I'll send it to you"}</div>`;

@@ -1,0 +1,360 @@
+{
+ "slug": "g-promo-hiring",
+ "way": "Reel promo, a person's story: AI Job Search (6,831 views, his own numbers from the README)",
+ "keyword": "HIRING",
+ "frames": [
+  {
+   "type": "scene",
+   "hook": true,
+   "photo": "055f3170",
+   "dim": 0.3,
+   "blur": 6,
+   "title": "He lost his job.\nHis AI sent [[69 applications]]",
+   "titleTop": 170,
+   "bottom": "Here's what happend next 👉",
+   "bottomAt": 170,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.7,
+      14
+     ],
+     "look": [
+      0,
+      1.75,
+      0
+     ],
+     "fov": 34
+    },
+    "objects": [
+     {
+      "kind": "card",
+      "img": "assets/screen-cv.png",
+      "size": [
+       1.6,
+       2.1,
+       0.04
+      ],
+      "pos": [
+       -0.6,
+       1.25,
+       -0.6
+      ],
+      "rot": [
+       -4,
+       14,
+       -6
+      ],
+      "glow": 0.9
+     },
+     {
+      "kind": "card",
+      "img": "assets/screen-cv.png",
+      "size": [
+       1.6,
+       2.1,
+       0.04
+      ],
+      "pos": [
+       -0.3,
+       1.33,
+       -0.3
+      ],
+      "rot": [
+       -4,
+       8,
+       -3
+      ],
+      "glow": 0.9
+     },
+     {
+      "kind": "card",
+      "img": "assets/screen-cv.png",
+      "size": [
+       1.6,
+       2.1,
+       0.04
+      ],
+      "pos": [
+       0.0,
+       1.41,
+       0.0
+      ],
+      "rot": [
+       -4,
+       2,
+       0
+      ],
+      "glow": 0.9
+     },
+     {
+      "kind": "card",
+      "img": "assets/screen-cv.png",
+      "size": [
+       1.6,
+       2.1,
+       0.04
+      ],
+      "pos": [
+       0.29999999999999993,
+       1.49,
+       0.29999999999999993
+      ],
+      "rot": [
+       -4,
+       -4,
+       3
+      ],
+      "glow": 0.9
+     },
+     {
+      "kind": "card",
+      "img": "assets/screen-cv.png",
+      "size": [
+       1.6,
+       2.1,
+       0.04
+      ],
+      "pos": [
+       0.6,
+       1.57,
+       0.6
+      ],
+      "rot": [
+       -4,
+       -10,
+       6
+      ],
+      "glow": 0.9
+     },
+     {
+      "kind": "text",
+      "text": "× 69",
+      "px": 120,
+      "bg": "#E8231F",
+      "h": 0.5,
+      "pos": [
+       1.35,
+       2.55,
+       1.3
+      ],
+      "rot": [
+       0,
+       -12,
+       6
+      ]
+     },
+     {
+      "kind": "light",
+      "pos": [
+       0,
+       1.4,
+       3
+      ],
+      "color": "#2780FF",
+      "power": 16
+     }
+    ]
+   }
+  },
+  {
+   "type": "list",
+   "photo": "37287de1",
+   "title": "What his AI does for **every job**",
+   "items": [
+    "Scores the job, then writes a **tailored CV** and cover letter",
+    "A second AI **critiques the drafts**",
+    "Reads Gmail for invites and runs a **mock interview**"
+   ],
+   "pull": "And the result? 👉"
+  },
+  {
+   "type": "scene",
+   "photo": "aaae6275",
+   "dim": 0.3,
+   "blur": 6,
+   "title": "His own numbers",
+   "titleTop": 220,
+   "pull": "If you hire, read this 👉",
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.6,
+      13.5
+     ],
+     "look": [
+      0,
+      1.55,
+      0
+     ],
+     "fov": 34
+    },
+    "objects": [
+     {
+      "kind": "tile",
+      "id": "a",
+      "size": [
+       1.3,
+       1.1,
+       0.26
+      ],
+      "radius": 0.2,
+      "color": "#ffffff",
+      "pos": [
+       -1.05,
+       2.85,
+       0.3
+      ],
+      "rot": [
+       6,
+       18,
+       -3
+      ],
+      "face": [
+       {
+        "text": "69",
+        "px": 200,
+        "w": 0.8,
+        "at": [
+         0,
+         0.15
+        ],
+        "color": "#111"
+       },
+       {
+        "text": "applications",
+        "px": 80,
+        "w": 1.1,
+        "at": [
+         0,
+         -0.33
+        ],
+        "color": "#666"
+       }
+      ]
+     },
+     {
+      "kind": "tile",
+      "id": "b",
+      "size": [
+       1.3,
+       1.1,
+       0.26
+      ],
+      "radius": 0.2,
+      "color": "#ffffff",
+      "pos": [
+       1.05,
+       1.5,
+       0.5
+      ],
+      "rot": [
+       4,
+       -18,
+       3
+      ],
+      "face": [
+       {
+        "text": "20",
+        "px": 200,
+        "w": 0.8,
+        "at": [
+         0,
+         0.15
+        ],
+        "color": "#111"
+       },
+       {
+        "text": "first interviews",
+        "px": 80,
+        "w": 1.2,
+        "at": [
+         0,
+         -0.33
+        ],
+        "color": "#666"
+       }
+      ]
+     },
+     {
+      "kind": "tile",
+      "id": "c",
+      "size": [
+       1.3,
+       1.15,
+       0.28
+      ],
+      "radius": 0.2,
+      "color": "#1F6FE5",
+      "pos": [
+       -0.95,
+       0.1,
+       0.7
+      ],
+      "rot": [
+       6,
+       16,
+       -3
+      ],
+      "face": [
+       {
+        "text": "1",
+        "px": 200,
+        "w": 0.5,
+        "at": [
+         0,
+         0.15
+        ],
+        "color": "#fff"
+       },
+       {
+        "text": "signed contract",
+        "px": 80,
+        "w": 1.25,
+        "at": [
+         0,
+         -0.33
+        ],
+        "color": "#fff"
+       }
+      ]
+     },
+     {
+      "kind": "link",
+      "from": "a",
+      "to": "b",
+      "state": "done",
+      "bend": 0.25
+     },
+     {
+      "kind": "link",
+      "from": "b",
+      "to": "c",
+      "state": "done",
+      "bend": -0.25
+     }
+    ]
+   }
+  },
+  {
+   "type": "photo",
+   "photo": "8bc5feef",
+   "title": "If you hire, test **real work**",
+   "body": "before you trust the paper.",
+   "bodyTop": 420,
+   "pull": "Watch the full reel 👉"
+  },
+  {
+   "type": "cta",
+   "title": "Watch the reel 👇",
+   "card": {
+    "kind": "reel",
+    "image": "assets/reel-hiring-cover.jpg",
+    "views": "6.8K"
+   },
+   "send": "and I'll send you my screening guide"
+  }
+ ]
+}
