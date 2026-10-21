@@ -1,0 +1,56 @@
+{
+ "slug": "d-behind-scenes",
+ "way": "Behind the scenes (Nik founder-day model): real timestamps from one reel's build log, ends on the system",
+ "keyword": "MIMIC",
+ "frames": [
+  {
+   "type": "timeline",
+   "photo": "video:1e",
+   "time": "11:37",
+   "label": "PM · Monday",
+   "title": "My AI system starts\n**tonight's reel**"
+  },
+  {
+   "type": "timeline",
+   "photo": "37287de1",
+   "time": "12:12",
+   "label": "AM",
+   "title": "By now it has picked a free repo with\n[[3,666 stars in three weeks]]",
+   "image": "assets/rm-home-headline.png",
+   "imageTop": 760
+  },
+  {
+   "type": "timeline",
+   "photo": "d7725c69",
+   "time": "12:13",
+   "label": "AM",
+   "title": "Script locked.\n**156 words, 18 beats.** Every claim checked against the repo."
+  },
+  {
+   "type": "timeline",
+   "photo": "aaae6275",
+   "time": "12:41",
+   "label": "AM",
+   "title": "Reel rendered.\n**Built from that repo's own images.**",
+   "image": "assets/reelmimic-cover.png",
+   "imageTop": 760,
+   "imageWidth": 460
+  },
+  {
+   "type": "timeline",
+   "photo": "8bc5feef",
+   "time": "1:02",
+   "label": "PM · Tuesday",
+   "title": "Live on Instagram and Facebook.\n**Posted by my phone, not by me.**"
+  },
+  {
+   "type": "cta",
+   "title": "Want the free tool this reel was about? 👇",
+   "card": {
+    "kind": "reel",
+    "image": "assets/reelmimic-cover.png"
+   },
+   "send": "and I'll send you the setup guide"
+  }
+ ]
+}

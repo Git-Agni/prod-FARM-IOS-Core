@@ -1,0 +1,59 @@
+{
+ "slug": "c-tool-breakdown",
+ "way": "Tool breakdown (kit reel to Story): the reel's own references, one frame per beat, reply for the setup guide",
+ "keyword": "MIMIC",
+ "frames": [
+  {
+   "type": "hook",
+   "title": "Copy the style of [[any video]]",
+   "bottom": "Not the footage. **The style** 👉",
+   "visual": {
+    "kind": "image",
+    "src": "assets/rm-home-headline.png",
+    "top": 700,
+    "width": 900
+   }
+  },
+  {
+   "type": "image",
+   "title": "It's called **ReelMimic**. Free and open source.\n((Almost 3,700 stars in three weeks))",
+   "image": "assets/reelmimic-cover.png",
+   "top": 640,
+   "width": 520
+  },
+  {
+   "type": "list",
+   "photo": "7b593bf4",
+   "title": "It breaks the video down",
+   "items": [
+    "Shots",
+    "Transitions",
+    "Colors",
+    "Camera moves"
+   ]
+  },
+  {
+   "type": "image",
+   "title": "Then up to **six AI agents** build it.\nAnd a **different agent reviews every shot**",
+   "image": "assets/rm-flow-agents.png",
+   "top": 640,
+   "width": 900
+  },
+  {
+   "type": "photo",
+   "photo": "d7725c69",
+   "title": "The edge isn't the footage anymore.\n**It's the style.**",
+   "body": "You don't brief an editor. **You show a reference.**",
+   "bodyTop": 470
+  },
+  {
+   "type": "cta",
+   "title": "Want to set it up on your own Claude Code? 👇",
+   "card": {
+    "kind": "reel",
+    "image": "assets/reelmimic-cover.png"
+   },
+   "send": "and I'll send you the setup guide"
+  }
+ ]
+}
