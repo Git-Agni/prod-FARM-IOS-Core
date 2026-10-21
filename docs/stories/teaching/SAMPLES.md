@@ -84,3 +84,37 @@ Antonio asked for one more review against the references, plus three requirement
 - render hooks put the subline under the headline.
 
 **Vision scores:** A 9.9, B 9.4, C 9.2, D 8.8. All pass.
+
+## Revision 4: 3D built in code, human copy (2026-10-21, evening)
+Antonio's feedback: the images didn't look like Devin's, and they should be generated in code from JSON. The clock frames in D didn't work. The copy should go through the humanizer and Hemingway rules, with a few typos so it sounds human.
+
+**3D built in code:** `scripts/story-scene3d.ts` is a Three.js scene builder. Each `scene` frame in a spec is plain JSON:
+- a camera;
+- objects (tile, card, phone, slab, text, link, ring, light);
+- states (`lit` for the active step, `dim` for the steps still to come).
+
+Real logos, screenshots and thumbnails go on the objects as textures. `render-teaching-story.ts` bundles the builder with esbuild and renders it in headless Chrome with SwiftShader WebGL. There's no image-model cost, and the same JSON gives the same frame every day.
+
+**What changed in each sequence:**
+
+| Sequence | Change |
+|---|---|
+| A | Hook is a 3D phone showing the three conflicting replies, with GHL, call and Calendly tiles on broken links |
+| B | Hook is the real $114K dashboard row as a tilted 3D card, with a "15 DAYS" tag |
+| C | The three GPT Image renders became code scenes: Claude/GitHub/Gmail tiles with email drafts, the Harvey dashboard leading to a draft, and an Approve button |
+| D | The clocks became one assembly line (Find, Write, Build, Post). Each frame lights the current step, ticks the done steps and dims the rest. Times sit in the headline. |
+
+**Copy:** shorter, plainer lines and a natural voice. Each sequence has one to three small typos, kept out of hooks, numbers, names, keywords and CTAs:
+
+| Sequence | Typos |
+|---|---|
+| A | "diffrent", "Heres", "Looks fine right?" |
+| B | "happend" |
+| C | "Its called" |
+| D | "aginst", "whats" |
+
+The email draft card is labelled "Example". New brand icons came from simple-icons 13.21.0: Claude, GitHub, Gmail, Instagram.
+
+**Vision scores:** A 9.6, B 9.6, C 8.8, D 8.8. All pass.
+
+The GPT renders in `assets/gen/` are kept but no longer used.

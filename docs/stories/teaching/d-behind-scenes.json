@@ -4,55 +4,1066 @@
  "keyword": "AUTOPILOT",
  "frames": [
   {
-   "type": "timeline",
+   "type": "scene",
    "photo": "video:1e",
-   "time": "11:37",
-   "label": "PM · Monday",
-   "title": "My AI system starts\n**tonight's reel**",
-   "pull": "Watch what it does next 👉"
+   "dim": 0.22,
+   "blur": 8,
+   "title": "My AI makes a reel\n[[while I sleep]]",
+   "titleTop": 170,
+   "hook": true,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.9,
+      13.5
+     ],
+     "look": [
+      0,
+      1.7,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -1.2,
+    "objects": [
+     {
+      "kind": "tile",
+      "img": "assets/si-github.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       -0.7,
+       3.0,
+       0
+      ],
+      "rot": [
+       6,
+       22,
+       -4
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "FIND",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       -1.55,
+       3.0,
+       0.3
+      ]
+     },
+     {
+      "kind": "card",
+      "img": "assets/card-script.png",
+      "size": [
+       1.45,
+       1.18,
+       0.05
+      ],
+      "glow": 0.95,
+      "pos": [
+       0.7,
+       2.1,
+       0.2
+      ],
+      "rot": [
+       -4,
+       -20,
+       3
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "WRITE",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       1.55,
+       2.1,
+       0.5
+      ]
+     },
+     {
+      "kind": "phone",
+      "screen": "assets/reelmimic-cover.png",
+      "size": [
+       0.95,
+       1.75,
+       0.12
+      ],
+      "pos": [
+       -0.7,
+       1.2,
+       0.4
+      ],
+      "rot": [
+       6,
+       22,
+       -3
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "BUILD",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       -1.55,
+       1.2,
+       0.7
+      ]
+     },
+     {
+      "kind": "tile",
+      "img": "assets/si-instagram.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       0.7,
+       0.3,
+       0.6
+      ],
+      "rot": [
+       -4,
+       -20,
+       4
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "POST",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       1.55,
+       0.3,
+       0.8999999999999999
+      ]
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       2.65,
+       0
+      ],
+      "to": [
+       0.391875,
+       2.45,
+       0.2
+      ],
+      "color": "#333338"
+     },
+     {
+      "kind": "link",
+      "from": [
+       0.391875,
+       1.75,
+       0.2
+      ],
+      "to": [
+       -0.391875,
+       1.5499999999999998,
+       0.4
+      ],
+      "color": "#333338"
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       0.85,
+       0.4
+      ],
+      "to": [
+       0.391875,
+       0.6499999999999999,
+       0.6
+      ],
+      "color": "#333338"
+     }
+    ]
+   },
+   "bottom": "Here's the whole night, step by step 👉",
+   "bottomAt": 170
   },
   {
-   "type": "timeline",
-   "photo": "37287de1",
-   "time": "12:12",
-   "label": "AM",
-   "title": "By now it has picked a free repo with\n[[3,666 stars in three weeks]]",
-   "image": "assets/rm-home-headline.png",
-   "imageTop": 760,
-   "pull": "Then it writes 👉"
+   "type": "scene",
+   "photo": "video:1e",
+   "dim": 0.22,
+   "blur": 8,
+   "title": "**12:12 AM.** It finds a free repo with\n[[3,666 stars in 3 weeks]]",
+   "titleTop": 200,
+   "pull": "Then it writes 👉",
+   "hook": false,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.9,
+      13.5
+     ],
+     "look": [
+      0,
+      1.7,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -1.2,
+    "objects": [
+     {
+      "kind": "tile",
+      "img": "assets/si-github.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       -0.7,
+       3.0,
+       0
+      ],
+      "rot": [
+       6,
+       22,
+       -4
+      ],
+      "lit": 0.3
+     },
+     {
+      "kind": "text",
+      "text": "FIND",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#2780FF",
+      "color": "#ffffff",
+      "pos": [
+       -1.55,
+       3.0,
+       0.3
+      ]
+     },
+     {
+      "kind": "card",
+      "img": "assets/card-script.png",
+      "size": [
+       1.45,
+       1.18,
+       0.05
+      ],
+      "glow": 0.95,
+      "pos": [
+       0.7,
+       2.1,
+       0.2
+      ],
+      "rot": [
+       -4,
+       -20,
+       3
+      ],
+      "dim": 0.18
+     },
+     {
+      "kind": "text",
+      "text": "WRITE",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       1.55,
+       2.1,
+       0.5
+      ]
+     },
+     {
+      "kind": "phone",
+      "screen": "assets/reelmimic-cover.png",
+      "size": [
+       0.95,
+       1.75,
+       0.12
+      ],
+      "pos": [
+       -0.7,
+       1.2,
+       0.4
+      ],
+      "rot": [
+       6,
+       22,
+       -3
+      ],
+      "dim": 0.18
+     },
+     {
+      "kind": "text",
+      "text": "BUILD",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       -1.55,
+       1.2,
+       0.7
+      ]
+     },
+     {
+      "kind": "tile",
+      "img": "assets/si-instagram.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       0.7,
+       0.3,
+       0.6
+      ],
+      "rot": [
+       -4,
+       -20,
+       4
+      ],
+      "dim": 0.18
+     },
+     {
+      "kind": "text",
+      "text": "POST",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       1.55,
+       0.3,
+       0.8999999999999999
+      ]
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       2.65,
+       0
+      ],
+      "to": [
+       0.391875,
+       2.45,
+       0.2
+      ],
+      "color": "#333338"
+     },
+     {
+      "kind": "link",
+      "from": [
+       0.391875,
+       1.75,
+       0.2
+      ],
+      "to": [
+       -0.391875,
+       1.5499999999999998,
+       0.4
+      ],
+      "color": "#333338"
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       0.85,
+       0.4
+      ],
+      "to": [
+       0.391875,
+       0.6499999999999999,
+       0.6
+      ],
+      "color": "#333338"
+     },
+     {
+      "kind": "light",
+      "pos": [
+       -0.95,
+       3.0,
+       2.4
+      ],
+      "color": "#2780FF",
+      "power": 14
+     }
+    ]
+   }
   },
   {
-   "type": "timeline",
-   "photo": "d7725c69",
-   "time": "12:13",
-   "label": "AM",
-   "title": "Script locked.\n**156 words, 18 beats.** Every claim checked against the repo.",
-   "pull": "Then it builds 👉"
+   "type": "scene",
+   "photo": "video:1e",
+   "dim": 0.22,
+   "blur": 8,
+   "title": "**12:13 AM.** Script done.\n156 words. Every claim checked aginst the repo.",
+   "titleTop": 200,
+   "pull": "Then it builds 👉",
+   "hook": false,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.9,
+      13.5
+     ],
+     "look": [
+      0,
+      1.7,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -1.2,
+    "objects": [
+     {
+      "kind": "tile",
+      "img": "assets/si-github.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       -0.7,
+       3.0,
+       0
+      ],
+      "rot": [
+       6,
+       22,
+       -4
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "✓ FIND",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#1c1c20",
+      "color": "#ffffff",
+      "pos": [
+       -1.55,
+       3.0,
+       0.3
+      ]
+     },
+     {
+      "kind": "card",
+      "img": "assets/card-script.png",
+      "size": [
+       1.45,
+       1.18,
+       0.05
+      ],
+      "glow": 0.95,
+      "pos": [
+       0.7,
+       2.1,
+       0.2
+      ],
+      "rot": [
+       -4,
+       -20,
+       3
+      ],
+      "lit": 0.3
+     },
+     {
+      "kind": "text",
+      "text": "WRITE",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#2780FF",
+      "color": "#ffffff",
+      "pos": [
+       1.55,
+       2.1,
+       0.5
+      ]
+     },
+     {
+      "kind": "phone",
+      "screen": "assets/reelmimic-cover.png",
+      "size": [
+       0.95,
+       1.75,
+       0.12
+      ],
+      "pos": [
+       -0.7,
+       1.2,
+       0.4
+      ],
+      "rot": [
+       6,
+       22,
+       -3
+      ],
+      "dim": 0.18
+     },
+     {
+      "kind": "text",
+      "text": "BUILD",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       -1.55,
+       1.2,
+       0.7
+      ]
+     },
+     {
+      "kind": "tile",
+      "img": "assets/si-instagram.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       0.7,
+       0.3,
+       0.6
+      ],
+      "rot": [
+       -4,
+       -20,
+       4
+      ],
+      "dim": 0.18
+     },
+     {
+      "kind": "text",
+      "text": "POST",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       1.55,
+       0.3,
+       0.8999999999999999
+      ]
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       2.65,
+       0
+      ],
+      "to": [
+       0.391875,
+       2.45,
+       0.2
+      ],
+      "color": "#2780FF"
+     },
+     {
+      "kind": "link",
+      "from": [
+       0.391875,
+       1.75,
+       0.2
+      ],
+      "to": [
+       -0.391875,
+       1.5499999999999998,
+       0.4
+      ],
+      "color": "#333338"
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       0.85,
+       0.4
+      ],
+      "to": [
+       0.391875,
+       0.6499999999999999,
+       0.6
+      ],
+      "color": "#333338"
+     },
+     {
+      "kind": "light",
+      "pos": [
+       0.95,
+       2.1,
+       2.4
+      ],
+      "color": "#2780FF",
+      "power": 14
+     }
+    ]
+   }
   },
   {
-   "type": "timeline",
-   "photo": "aaae6275",
-   "time": "12:41",
-   "label": "AM",
-   "title": "Reel rendered.\n**Built from that repo's own images.**",
-   "image": "assets/reelmimic-cover.png",
-   "imageTop": 760,
-   "imageWidth": 460,
-   "pull": "Then it posts 👉"
+   "type": "scene",
+   "photo": "video:1e",
+   "dim": 0.22,
+   "blur": 8,
+   "title": "**12:41 AM.** The reel is rendered.\nBuilt from the repo's own images.",
+   "titleTop": 200,
+   "pull": "Then it posts 👉",
+   "hook": false,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.9,
+      13.5
+     ],
+     "look": [
+      0,
+      1.7,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -1.2,
+    "objects": [
+     {
+      "kind": "tile",
+      "img": "assets/si-github.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       -0.7,
+       3.0,
+       0
+      ],
+      "rot": [
+       6,
+       22,
+       -4
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "✓ FIND",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#1c1c20",
+      "color": "#ffffff",
+      "pos": [
+       -1.55,
+       3.0,
+       0.3
+      ]
+     },
+     {
+      "kind": "card",
+      "img": "assets/card-script.png",
+      "size": [
+       1.45,
+       1.18,
+       0.05
+      ],
+      "glow": 0.95,
+      "pos": [
+       0.7,
+       2.1,
+       0.2
+      ],
+      "rot": [
+       -4,
+       -20,
+       3
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "✓ WRITE",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#1c1c20",
+      "color": "#ffffff",
+      "pos": [
+       1.55,
+       2.1,
+       0.5
+      ]
+     },
+     {
+      "kind": "phone",
+      "screen": "assets/reelmimic-cover.png",
+      "size": [
+       0.95,
+       1.75,
+       0.12
+      ],
+      "pos": [
+       -0.7,
+       1.2,
+       0.4
+      ],
+      "rot": [
+       6,
+       22,
+       -3
+      ],
+      "lit": 0.3
+     },
+     {
+      "kind": "text",
+      "text": "BUILD",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#2780FF",
+      "color": "#ffffff",
+      "pos": [
+       -1.55,
+       1.2,
+       0.7
+      ]
+     },
+     {
+      "kind": "tile",
+      "img": "assets/si-instagram.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       0.7,
+       0.3,
+       0.6
+      ],
+      "rot": [
+       -4,
+       -20,
+       4
+      ],
+      "dim": 0.18
+     },
+     {
+      "kind": "text",
+      "text": "POST",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#111114",
+      "color": "#555",
+      "pos": [
+       1.55,
+       0.3,
+       0.8999999999999999
+      ]
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       2.65,
+       0
+      ],
+      "to": [
+       0.391875,
+       2.45,
+       0.2
+      ],
+      "color": "#2780FF"
+     },
+     {
+      "kind": "link",
+      "from": [
+       0.391875,
+       1.75,
+       0.2
+      ],
+      "to": [
+       -0.391875,
+       1.5499999999999998,
+       0.4
+      ],
+      "color": "#2780FF"
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       0.85,
+       0.4
+      ],
+      "to": [
+       0.391875,
+       0.6499999999999999,
+       0.6
+      ],
+      "color": "#333338"
+     },
+     {
+      "kind": "light",
+      "pos": [
+       -0.95,
+       1.2,
+       2.4
+      ],
+      "color": "#2780FF",
+      "power": 14
+     }
+    ]
+   }
   },
   {
-   "type": "timeline",
-   "photo": "8bc5feef",
-   "time": "1:02",
-   "label": "PM · Tuesday",
-   "title": "Live on Instagram and Facebook.\n**Posted by my phone, not by me.**",
-   "pull": "Here's the point 👉"
+   "type": "scene",
+   "photo": "video:1e",
+   "dim": 0.22,
+   "blur": 8,
+   "title": "**1:02 PM next day.** Live on Instagram and Facebook.\nMy phone posted it, not me.",
+   "titleTop": 200,
+   "pull": "So whats the point? 👉",
+   "hook": false,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.9,
+      13.5
+     ],
+     "look": [
+      0,
+      1.7,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -1.2,
+    "objects": [
+     {
+      "kind": "tile",
+      "img": "assets/si-github.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       -0.7,
+       3.0,
+       0
+      ],
+      "rot": [
+       6,
+       22,
+       -4
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "✓ FIND",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#1c1c20",
+      "color": "#ffffff",
+      "pos": [
+       -1.55,
+       3.0,
+       0.3
+      ]
+     },
+     {
+      "kind": "card",
+      "img": "assets/card-script.png",
+      "size": [
+       1.45,
+       1.18,
+       0.05
+      ],
+      "glow": 0.95,
+      "pos": [
+       0.7,
+       2.1,
+       0.2
+      ],
+      "rot": [
+       -4,
+       -20,
+       3
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "✓ WRITE",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#1c1c20",
+      "color": "#ffffff",
+      "pos": [
+       1.55,
+       2.1,
+       0.5
+      ]
+     },
+     {
+      "kind": "phone",
+      "screen": "assets/reelmimic-cover.png",
+      "size": [
+       0.95,
+       1.75,
+       0.12
+      ],
+      "pos": [
+       -0.7,
+       1.2,
+       0.4
+      ],
+      "rot": [
+       6,
+       22,
+       -3
+      ]
+     },
+     {
+      "kind": "text",
+      "text": "✓ BUILD",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#1c1c20",
+      "color": "#ffffff",
+      "pos": [
+       -1.55,
+       1.2,
+       0.7
+      ]
+     },
+     {
+      "kind": "tile",
+      "img": "assets/si-instagram.svg",
+      "size": [
+       1.25,
+       1.25,
+       0.26
+      ],
+      "fill": 0.6,
+      "pos": [
+       0.7,
+       0.3,
+       0.6
+      ],
+      "rot": [
+       -4,
+       -20,
+       4
+      ],
+      "lit": 0.3
+     },
+     {
+      "kind": "text",
+      "text": "POST",
+      "px": 90,
+      "h": 0.26,
+      "bg": "#2780FF",
+      "color": "#ffffff",
+      "pos": [
+       1.55,
+       0.3,
+       0.8999999999999999
+      ]
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       2.65,
+       0
+      ],
+      "to": [
+       0.391875,
+       2.45,
+       0.2
+      ],
+      "color": "#2780FF"
+     },
+     {
+      "kind": "link",
+      "from": [
+       0.391875,
+       1.75,
+       0.2
+      ],
+      "to": [
+       -0.391875,
+       1.5499999999999998,
+       0.4
+      ],
+      "color": "#2780FF"
+     },
+     {
+      "kind": "link",
+      "from": [
+       -0.391875,
+       0.85,
+       0.4
+      ],
+      "to": [
+       0.391875,
+       0.6499999999999999,
+       0.6
+      ],
+      "color": "#2780FF"
+     },
+     {
+      "kind": "light",
+      "pos": [
+       0.95,
+       0.3,
+       2.4
+      ],
+      "color": "#2780FF",
+      "power": 14
+     }
+    ]
+   }
   },
   {
    "type": "photo",
    "photo": "d7725c69",
    "title": "Your business shouldn't stop\n**when you put your phone down**",
-   "body": "Start with **one job** you do every day.\nGive it a schedule and a check.",
+   "body": "Pick **one job** you do every day.\nGive it a schedule and a check.",
    "bodyTop": 520,
    "pull": "Here's how 👉"
   },

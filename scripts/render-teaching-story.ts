@@ -2,13 +2,14 @@
  * day", modelled on Devin Jatho's live Story, docs/stories/reference/devinjatho, and built on the Full Visual kit rules:
  * real material only, interfaces redrawn in code, one object that changes state, a boxed key word, a CTA that names what
  * arrives). One brand system for every way of telling the story: dark #0A0A0A, blue #2780FF, red #E8231F, Inter.
- * Frame types: hook, photo, orbit, states, list, proof, timeline, image, render (full-bleed 3D render), cta. Icons: built-in or logo:<path>. Text marks: **bold**, [[red box]], {{red}}, ((blue)).
+ * Frame types: hook, photo, orbit, states, list, proof, timeline, image, render (full-bleed 3D render), scene (3D built in code from JSON), cta. Icons: built-in or logo:<path>. Text marks: **bold**, [[red box]], {{red}}, ((blue)).
  * Photos are Story-pool photos named by SHA-256 prefix; images are paths relative to docs/stories/teaching/.
  * Usage: render-teaching-story.ts docs/stories/teaching/<slug>.json  ->  .scheduler-data/story-assets/teaching/<slug>/
  * Renders files only: no phone, no upload, no Story plan. */
 import { execFileSync } from 'node:child_process';
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { buildSync } from 'esbuild';
 import sharp from 'sharp';
 import { loadPhotoPool, photoBuffer } from '../src/publishing/story-lifestyle.js';
 
@@ -26,6 +27,11 @@ async function photo(prefix: string, name: string, dim = 1) {
     await sharp(await photoBuffer(p.file, p.t), { failOn: 'none' }).rotate().resize(1080, 1920, { fit: 'cover', position: 'attention' }).modulate({ brightness: dim }).jpeg({ quality: 90 }).toFile(file);
     return name + '.jpg';
 }
+/** Code-built 3D (scripts/story-scene3d.ts), bundled once per run and inlined into each scene frame. */
+let scene3d = '';
+const dataUri = (rel: string) => `data:image/${rel.endsWith('.svg') ? 'svg+xml' : rel.endsWith('.png') ? 'png' : 'jpeg'};base64,${readFileSync(path.join(base, rel)).toString('base64')}`;
+const inlineImages = (o: any): any => Array.isArray(o) ? o.map(inlineImages) : o && typeof o === 'object'
+    ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, ['img', 'screen'].includes(k) && typeof v === 'string' ? dataUri(v) : inlineImages(v)])) : o;
 function asset(rel: string) { const name = path.basename(rel); copyFileSync(path.join(base, rel), path.join(out, name)); return name; }
 
 const CSS = `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=block');
@@ -155,6 +161,14 @@ async function frameHtml(f: any, i: number) {
           ${(f.labels ?? []).map((l: any) => `<div class="chip" style="top:${l.top}px;${l.left != null ? `left:${l.left}px` : `right:${l.right ?? 40}px`}">${l.icon ? icon(l.icon) : ''}${md(l.text)}</div>`).join('')}
           ${f.bottom ? `<div class="bottom" style="${f.subTop ? `top:${f.subTop}px;bottom:auto` : `bottom:${f.bottomAt ?? 300}px`};text-shadow:0 2px 16px rgba(0,0,0,.95)">${md(f.bottom)}</div>` : ''}`;
     }
+    if (f.type === 'scene') {
+        scene3d ||= buildSync({ entryPoints: [path.resolve('scripts/story-scene3d.ts')], bundle: true, format: 'esm', write: false, target: 'es2022' }).outputFiles[0]!.text;
+        inner = `${f.photo ? `<div class="bg" style="background-image:url(${await photo(f.photo, 'bg' + i, f.dim ?? .35)});filter:blur(${f.blur ?? 0}px)"></div>` : '<div class="grid"></div>'}
+          <div id="scene" style="position:absolute;inset:0"></div><div class="shade" style="background:linear-gradient(180deg,rgba(10,10,10,.75) 0%,rgba(10,10,10,0) 30%,rgba(10,10,10,0) 72%,rgba(10,10,10,.75) 100%)"></div>
+          <div class="${f.hook ? 'hook' : 'title center'}" style="top:${f.titleTop ?? 200}px">${md(f.title)}</div>
+          ${f.bottom ? `<div class="bottom" style="${f.subTop ? `top:${f.subTop}px;bottom:auto` : `bottom:${f.bottomAt ?? 300}px`};text-shadow:0 2px 16px rgba(0,0,0,.95)">${md(f.bottom)}</div>` : ''}
+          <script>window.SCENE=${JSON.stringify(inlineImages(f.scene))}</script><script type="module">${scene3d.replace(/<\/script/g, '<\\/script')}</script>`;
+    }
     if (f.type === 'cta') {
         const card = f.card.kind === 'yt' ? `<div class="yt"><img src="${f.card.thumb}"><div class="bar"></div><div class="vt">${f.card.title}</div></div>`
             : f.card.kind === 'image' ? `<div class="shot" style="top:470px;width:${(f.card.width ?? 860) + 28}px"><img src="${asset(f.card.image)}" style="width:${f.card.width ?? 860}px"></div>`
@@ -174,7 +188,8 @@ const pngs: string[] = [];
 for (const [i, f] of spec.frames.entries()) {
     const html = path.join(out, `frame-${i + 1}.html`), png = path.join(out, `frame-${i + 1}.png`);
     writeFileSync(html, await frameHtml(f, i + 1));
-    execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1', '--window-size=1080,1920', '--virtual-time-budget=8000', `--screenshot=${png}`, 'file://' + html], { stdio: 'ignore' });
+    const gl = f.type === 'scene' ? ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] : ['--disable-gpu'];
+    execFileSync(CHROME, ['--headless=new', ...gl, '--hide-scrollbars', '--force-device-scale-factor=1', '--window-size=1080,1920', '--virtual-time-budget=8000', `--screenshot=${png}`, 'file://' + html], { stdio: 'ignore' });
     pngs.push(png);
 }
 const th = await Promise.all(pngs.map(p => sharp(p).resize(360, 640).toBuffer()));

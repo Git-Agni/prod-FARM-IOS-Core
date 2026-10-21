@@ -67,8 +67,10 @@
   "devDependencies": {
     "@types/node": "^26.2.0",
     "@types/pg": "^8.23.1",
+    "@types/three": "^0.170.0",
     "appium": "2.19.0",
     "drizzle-kit": "^0.31.10",
+    "three": "^0.170.0",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
   },
