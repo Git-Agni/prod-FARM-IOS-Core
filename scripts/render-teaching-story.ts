@@ -19,7 +19,7 @@ const out = path.resolve('.scheduler-data/story-assets/teaching', spec.slug); mk
 const pool = loadPhotoPool();
 
 const md = (s = '') => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[\[(.+?)\]\]/g, '<span class="box">$1</span>')
-    .replace(/\{\{(.+?)\}\}/g, '<span class="red">$1</span>').replace(/\(\((.+?)\)\)/g, '<span class="blue">$1</span>').replace(/\n/g, '<br>');
+    .replace(/\{\{(.+?)\}\}/g, '<span class="red">$1</span>').replace(/\(\((.+?)\)\)/g, '<span class="blue">$1</span>').replace(/__(.+?)__/g, '<span class="ul">$1</span>').replace(/\n/g, '<br>');
 async function photo(prefix: string, name: string, dim = 1) {
     const p = pool.find(x => x.sha256.startsWith(prefix)); if (!p) throw Error('No pool photo ' + prefix);
     const file = path.join(out, name + '.jpg');
@@ -38,9 +38,9 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@50
 .title{position:absolute;top:200px;left:80px;right:80px;font:600 64px/1.18 Inter;letter-spacing:-1.2px}
 .title b{font-weight:800}.center{text-align:center}
 .body{position:absolute;left:80px;right:300px;font:500 46px/1.3 Inter;color:#e9e9e9}.body b{color:#fff;font-weight:800}
-.pull{position:absolute;right:80px;bottom:330px;font:700 48px Inter;padding-bottom:10px;border-bottom:4px solid rgba(255,255,255,.85)}
+.pull{position:absolute;right:80px;bottom:330px;font:700 48px Inter;padding:10px 4px;border-bottom:4px solid rgba(255,255,255,.85);text-shadow:0 2px 14px rgba(0,0,0,.9)}
 .box{background:#E8231F;color:#fff;padding:0 14px;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-.red{color:#FF4D4D}.blue{color:#2780FF}
+.red{color:#FF4D4D}.blue{color:#2780FF}.ul{text-decoration:underline;text-decoration-color:#2780FF;text-decoration-thickness:6px;text-underline-offset:10px}
 .hook{position:absolute;top:180px;left:60px;right:60px;text-align:center;font:900 104px/1.02 Inter;letter-spacing:-3px;text-transform:uppercase}
 .bottom{position:absolute;bottom:300px;left:60px;right:60px;text-align:center;font:600 52px/1.25 Inter}
 .shot{position:absolute;left:50%;transform:translateX(-50%);background:#fff;border-radius:26px;padding:14px;box-shadow:0 0 0 4px #2780FF,0 0 60px rgba(39,128,255,.45),0 30px 80px rgba(0,0,0,.75)}
@@ -73,19 +73,19 @@ svg.lines{position:absolute;left:0;top:0;width:1080px}
 .chip{position:absolute;display:flex;align-items:center;gap:12px;font:700 32px Inter;background:rgba(20,20,24,.92);border:2px solid #2780FF;border-radius:999px;padding:12px 24px 12px 12px;white-space:nowrap}
 .chip .ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center}
 .items{position:absolute;top:1060px;left:80px;right:80px;display:flex;flex-direction:column;gap:26px}
-.item{display:flex;align-items:center;gap:26px;background:rgba(16,16,20,.9);border:2px solid rgba(39,128,255,.55);border-radius:24px;padding:26px 30px;font:700 46px Inter}
+.item{display:flex;align-items:center;gap:26px;background:rgba(16,16,20,.9);border:2px solid rgba(39,128,255,.55);border-radius:24px;padding:26px 30px;font:700 44px/1.25 Inter}.item b{color:#2780FF}
 .num{width:76px;height:76px;flex:none;border-radius:20px;background:#2780FF;display:flex;align-items:center;justify-content:center;font:900 44px Inter}
 .tag{position:absolute;font:800 32px Inter;color:#fff;background:#E8231F;padding:12px 20px;border-radius:10px;transform:rotate(-4deg);box-shadow:0 8px 24px rgba(0,0,0,.6)}
 .time{position:absolute;top:190px;left:80px;font:900 150px/1 Inter;letter-spacing:-5px}
 .time small{display:block;font:700 34px Inter;letter-spacing:2px;color:#2780FF;margin-top:14px;text-transform:uppercase}
-.yt{position:absolute;top:470px;left:90px;right:90px;background:#fff;border-radius:28px;padding:18px;box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.yt{position:absolute;top:520px;left:90px;right:90px;background:#fff;border-radius:28px;padding:18px;box-shadow:0 30px 80px rgba(0,0,0,.7)}
 .yt img{width:100%;border-radius:14px;display:block}.yt .bar{height:8px;background:#ddd;border-radius:4px;margin:16px 4px 0;position:relative}
 .yt .bar:after{content:'';position:absolute;left:0;top:0;bottom:0;width:22%;background:#E8231F;border-radius:4px}
 .yt .vt{font:700 30px Inter;color:#111;margin:16px 6px 4px}
 .reel{position:absolute;top:430px;left:50%;transform:translateX(-50%) rotate(-2deg);width:430px;border-radius:30px;overflow:hidden;box-shadow:0 0 0 4px #2780FF,0 30px 80px rgba(0,0,0,.75)}
 .reel img{display:block;width:100%}
-.reply{position:absolute;top:1230px;left:0;right:0;text-align:center;font:900 112px/1 Inter;letter-spacing:-2px}
-.reply .k{color:#2780FF}.send{position:absolute;top:1362px;left:0;right:0;text-align:center;font:500 46px Inter;color:#d0d0d0}
+.reply{position:absolute;top:1250px;left:0;right:0;text-align:center;font:900 112px/1 Inter;letter-spacing:-2px}
+.reply .k{color:#2780FF}.send{position:absolute;top:1390px;left:0;right:0;text-align:center;font:500 46px Inter;color:#d0d0d0}
 .arrow{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-events:none}`;
 
 const ICON: Record<string, string> = {
@@ -128,7 +128,7 @@ async function frameHtml(f: any, i: number) {
           <div style="position:absolute;top:${top + 330}px;left:60px;right:60px;display:flex;gap:24px">${cards}</div>`;
     }
     if (f.type === 'list') inner = `${await bgPhoto()}<div class="title center" style="top:230px;font-size:76px">${md(f.title)}</div>
-      <div class="items">${f.items.map((t: string, n: number) => `<div class="item"><div class="num">${n + 1}</div>${md(t)}</div>`).join('')}</div>`;
+      <div class="items" style="top:${f.pull ? 900 : 1060}px">${f.items.map((t: string, n: number) => `<div class="item"><div class="num">${n + 1}</div><span>${md(t)}</span></div>`).join('')}</div>`;
     if (f.type === 'proof') {
         const img = asset(f.image), m = await sharp(path.join(base, f.image)).metadata(), w = Math.min(920, f.width ?? 920), h = Math.round(w * m.height! / m.width!);
         const top = f.top ?? 640, ring = f.ring ? `<div class="ring" style="left:${80 + f.ring[0] * w - 20}px;top:${top + 14 + f.ring[1] * h - 16}px;width:${f.ring[2] * w + 40}px;height:${f.ring[3] * h + 32}px"></div>` : '';
@@ -140,25 +140,32 @@ async function frameHtml(f: any, i: number) {
     if (f.type === 'timeline') inner = `${await bgPhoto(.75)}<div class="time">${f.time}<small>${f.label}</small></div>
       <div class="title" style="top:440px">${md(f.title)}</div>
       ${f.image ? `<div class="shot" style="top:${f.imageTop ?? 900}px;width:${(f.imageWidth ?? 820) + 28}px"><img src="${asset(f.image)}" style="width:${f.imageWidth ?? 820}px"></div>` : ''}`;
-    if (f.type === 'image') inner = `${f.photo ? await bgPhoto(.5, 'full') : '<div class="grid"></div>'}<div class="title center" style="top:${f.titleTop ?? 230}px">${md(f.title)}</div>
-      <div class="shot" style="top:${f.top ?? 620}px;width:${(f.width ?? 880) + 28}px"><img src="${asset(f.image)}" style="width:${f.width ?? 880}px"></div>
+    if (f.type === 'image') {
+        const w = f.width ?? 880, top = f.top ?? 620, m = await sharp(path.join(base, f.image)).metadata(), h = Math.round(w * m.height! / m.width!);
+        const ring = f.ring ? `<div class="ring" style="left:${540 - (w + 28) / 2 + 14 + f.ring[0] * w - 20}px;top:${top + 14 + f.ring[1] * h - 16}px;width:${f.ring[2] * w + 40}px;height:${f.ring[3] * h + 32}px;border-radius:40px"></div>` : '';
+        inner = `${f.photo ? await bgPhoto(.5, 'full') : '<div class="grid"></div>'}<div class="title center" style="top:${f.titleTop ?? 230}px">${md(f.title)}</div>
+      <div class="shot" style="top:${top}px;width:${w + 28}px"><img src="${asset(f.image)}" style="width:${w}px"></div>${ring}
       ${f.body ? `<div class="bottom" style="bottom:${f.bodyBottom ?? 330}px">${md(f.body)}</div>` : ''}`;
+    }
     if (f.type === 'render') {
         const name = 'render' + i + '.jpg';
         await sharp(path.join(base, f.image)).resize(1080, 1920, { fit: 'cover' }).jpeg({ quality: 92 }).toFile(path.join(out, name));
         inner = `<div class="bg" style="background-image:url(${name})"></div>
           <div class="${f.hook ? 'hook' : 'title center'}" style="top:${f.titleTop ?? 200}px">${md(f.title)}</div>
           ${(f.labels ?? []).map((l: any) => `<div class="chip" style="top:${l.top}px;${l.left != null ? `left:${l.left}px` : `right:${l.right ?? 40}px`}">${l.icon ? icon(l.icon) : ''}${md(l.text)}</div>`).join('')}
-          ${f.bottom ? `<div class="bottom" style="bottom:${f.bottomAt ?? 300}px">${md(f.bottom)}</div>` : ''}`;
+          ${f.bottom ? `<div class="bottom" style="${f.subTop ? `top:${f.subTop}px;bottom:auto` : `bottom:${f.bottomAt ?? 300}px`};text-shadow:0 2px 16px rgba(0,0,0,.95)">${md(f.bottom)}</div>` : ''}`;
     }
     if (f.type === 'cta') {
         const card = f.card.kind === 'yt' ? `<div class="yt"><img src="${f.card.thumb}"><div class="bar"></div><div class="vt">${f.card.title}</div></div>`
             : f.card.kind === 'image' ? `<div class="shot" style="top:470px;width:${(f.card.width ?? 860) + 28}px"><img src="${asset(f.card.image)}" style="width:${f.card.width ?? 860}px"></div>`
             : `<div class="reel"><img src="${asset(f.card.image)}"></div>`;
-        inner = `<div class="grid"></div><div class="title center" style="top:220px">${md(f.title)}</div>${card}
-          <div class="reply">Reply <span class="k">"${spec.keyword}"</span></div><div class="send">${f.send ?? "and I'll send it to you"}</div>`;
+        const rsize = Math.min(112, Math.floor(1700 / (`Reply "${spec.keyword}"`.length + 1)));
+        inner = `<div class="grid"></div><div class="title center" style="top:200px;font-size:54px">${md(f.title)}</div>${card}
+          <div class="reply" style="font-size:${rsize}px;white-space:nowrap">Reply <span class="k">"${spec.keyword}"</span></div><div class="send">${f.send ?? "and I'll send it to you"}</div>`;
     }
     if (!inner) throw Error('Unknown frame type ' + f.type);
+    // Devin's open loop: every frame before the payoff ends on a pull line that earns the next tap.
+    if (f.pull && !['photo', 'orbit'].includes(f.type)) inner += `<div class="pull">${md(f.pull)}</div>`;
     return `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body><div class="stage">${inner}</div></body></html>`;
 }
 

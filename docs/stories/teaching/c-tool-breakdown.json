@@ -1,88 +1,56 @@
 {
  "slug": "c-tool-breakdown",
- "way": "Tool breakdown (kit reel to Story): the reel's own references, one frame per beat, reply for the setup guide",
- "keyword": "MIMIC",
+ "way": "Tool breakdown from our top reel (Harvey, 134K views) with 3D renders and a YouTube payoff",
+ "keyword": "OUTBOUND",
  "frames": [
   {
    "type": "render",
    "hook": true,
-   "image": "assets/gen/render1.png",
-   "title": "Copy the style of [[any video]]",
-   "titleTop": 220,
-   "bottom": "Not the footage. **The style** 👉",
-   "bottomAt": 330
+   "image": "assets/gen/render5.png",
+   "title": "This free AI agent [[finds your customers]]",
+   "titleTop": 200,
+   "bottom": "And it runs on your **Claude subscription** 👉",
+   "subTop": 700
+  },
+  {
+   "type": "render",
+   "image": "assets/gen/render6.png",
+   "title": "It finds local businesses,\n**reads their websites**\nand writes cold email about **something real**",
+   "titleTop": 200,
+   "pull": "But here's the safe part 👉"
+  },
+  {
+   "type": "render",
+   "image": "assets/gen/render7.png",
+   "title": "Nothing sends\n[[without your approval]]",
+   "titleTop": 240,
+   "pull": "And you decide who it targets 👉"
   },
   {
    "type": "image",
-   "title": "It's called **ReelMimic**. Free and open source.",
-   "titleTop": 230,
-   "image": "assets/rm-home-headline.png",
-   "top": 560,
-   "width": 900,
-   "body": "<span class=\"chip\" style=\"position:static;display:inline-flex;margin-top:30px\"><div class=\"ico\" style=\"background:#fff;padding:7px\"><img src=\"logo-github.svg\" style=\"width:100%;height:100%\"></div>★ 3,666 stars in three weeks</span>",
-   "bodyBottom": 760
-  },
-  {
-   "type": "render",
-   "image": "assets/gen/render2.png",
-   "title": "It breaks the video down",
-   "titleTop": 230,
-   "labels": [
-    {
-     "text": "Shots",
-     "top": 760,
-     "left": 60
-    },
-    {
-     "text": "Transitions",
-     "top": 985,
-     "right": 40
-    },
-    {
-     "text": "Colors",
-     "top": 1160,
-     "left": 60
-    },
-    {
-     "text": "Camera moves",
-     "top": 1390,
-     "right": 40
-    }
+   "title": "You pick the signals.\nLike **businesses with no website at all**",
+   "image": "assets/harvey-dashboard.png",
+   "top": 600,
+   "width": 920,
+   "body": "It's called **Harvey**. Free and open source.",
+   "bodyBottom": 460,
+   "pull": "Want outbound like this at scale? 👉",
+   "ring": [
+    0.02,
+    0.3,
+    0.6,
+    0.16
    ]
-  },
-  {
-   "type": "render",
-   "image": "assets/gen/render3.png",
-   "title": "Then up to **six AI agents** build it.\nAnd a **different agent reviews every shot**",
-   "titleTop": 220,
-   "labels": [
-    {
-     "text": "6 agents build",
-     "top": 780,
-     "left": 60
-    },
-    {
-     "text": "1 agent reviews",
-     "top": 1500,
-     "right": 40
-    }
-   ]
-  },
-  {
-   "type": "photo",
-   "photo": "d7725c69",
-   "title": "The edge isn't the footage anymore.\n**It's the style.**",
-   "body": "You don't brief an editor. **You show a reference.**",
-   "bodyTop": 470
   },
   {
    "type": "cta",
-   "title": "Want to set it up on your own Claude Code? 👇",
+   "title": "This video shows how we built WarriorBabe's\n**$500K+ outbound channel** in 90 days 👇",
    "card": {
-    "kind": "reel",
-    "image": "assets/reelmimic-cover.png"
+    "kind": "yt",
+    "thumb": "https://i.ytimg.com/vi/o0kJVSPdWBo/maxresdefault.jpg",
+    "title": "How We Built WarriorBabe's $500K+ Outbound Channel in 90 Days"
    },
-   "send": "and I'll send you the setup guide"
+   "send": "and I'll send you the video + the blueprint"
   }
  ]
 }

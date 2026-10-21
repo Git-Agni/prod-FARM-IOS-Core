@@ -1,14 +1,15 @@
 {
  "slug": "d-behind-scenes",
  "way": "Behind the scenes (Nik founder-day model): real timestamps from one reel's build log, ends on the system",
- "keyword": "MIMIC",
+ "keyword": "AUTOPILOT",
  "frames": [
   {
    "type": "timeline",
    "photo": "video:1e",
    "time": "11:37",
    "label": "PM · Monday",
-   "title": "My AI system starts\n**tonight's reel**"
+   "title": "My AI system starts\n**tonight's reel**",
+   "pull": "Watch what it does next 👉"
   },
   {
    "type": "timeline",
@@ -17,14 +18,16 @@
    "label": "AM",
    "title": "By now it has picked a free repo with\n[[3,666 stars in three weeks]]",
    "image": "assets/rm-home-headline.png",
-   "imageTop": 760
+   "imageTop": 760,
+   "pull": "Then it writes 👉"
   },
   {
    "type": "timeline",
    "photo": "d7725c69",
    "time": "12:13",
    "label": "AM",
-   "title": "Script locked.\n**156 words, 18 beats.** Every claim checked against the repo."
+   "title": "Script locked.\n**156 words, 18 beats.** Every claim checked against the repo.",
+   "pull": "Then it builds 👉"
   },
   {
    "type": "timeline",
@@ -34,23 +37,34 @@
    "title": "Reel rendered.\n**Built from that repo's own images.**",
    "image": "assets/reelmimic-cover.png",
    "imageTop": 760,
-   "imageWidth": 460
+   "imageWidth": 460,
+   "pull": "Then it posts 👉"
   },
   {
    "type": "timeline",
    "photo": "8bc5feef",
    "time": "1:02",
    "label": "PM · Tuesday",
-   "title": "Live on Instagram and Facebook.\n**Posted by my phone, not by me.**"
+   "title": "Live on Instagram and Facebook.\n**Posted by my phone, not by me.**",
+   "pull": "Here's the point 👉"
+  },
+  {
+   "type": "photo",
+   "photo": "d7725c69",
+   "title": "Your business shouldn't stop\n**when you put your phone down**",
+   "body": "Start with **one job** you do every day.\nGive it a schedule and a check.",
+   "bodyTop": 520,
+   "pull": "Here's how 👉"
   },
   {
    "type": "cta",
-   "title": "Want the free tool this reel was about? 👇",
+   "title": "This video shows you how 👇",
    "card": {
-    "kind": "reel",
-    "image": "assets/reelmimic-cover.png"
+    "kind": "yt",
+    "thumb": "https://i.ytimg.com/vi/hlD22ToA3RA/maxresdefault.jpg",
+    "title": "Your Business Shouldn't Stop When You Put Your Phone Down"
    },
-   "send": "and I'll send you the setup guide"
+   "send": "and I'll send you the video"
   }
  ]
 }

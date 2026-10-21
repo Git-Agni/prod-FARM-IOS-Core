@@ -1,36 +1,16 @@
 {
  "slug": "a-teach-handoff",
  "way": "Teach (Devin live model): one idea, one diagram that changes state, reply for the video",
- "keyword": "HANDOFF",
+ "keyword": "HUMANAI",
  "frames": [
   {
-   "type": "hook",
+   "type": "render",
+   "hook": true,
+   "image": "assets/gen/render4.png",
    "title": "Your AI and your setter [[don't talk]]",
-   "bottom": "And your leads are {{paying for it}} 👉",
-   "visual": {
-    "kind": "thread",
-    "contact": "New lead",
-    "items": [
-     {
-      "kind": "in",
-      "text": "Does this fit my work schedule?"
-     },
-     {
-      "kind": "out",
-      "text": "Yes! Our program fits any schedule"
-     },
-     {
-      "kind": "call",
-      "text": "Missed call",
-      "sub": "Sales team · 2 min later",
-      "missed": true
-     },
-     {
-      "kind": "out",
-      "text": "Hey, are you free tonight to talk about your schedule?"
-     }
-    ]
-   }
+   "titleTop": 200,
+   "bottom": "And your lead hears **3 different stories** 👉",
+   "subTop": 530
   },
   {
    "type": "photo",
@@ -44,7 +24,7 @@
    "photo": "d7725c69",
    "title": "Now **AI, setters and closers** all touch the same lead",
    "body": "Without shared context, each one starts **from zero**",
-   "pull": "So how do you fix it? 👉",
+   "pull": "So what breaks? 👉",
    "chips": [
     {
      "icon": "logo:assets/logo-ghl.png",
@@ -97,7 +77,8 @@
     }
    ],
    "centerLogo": "logo:assets/logo-typeform.png",
-   "centerSub": "Form filled"
+   "centerSub": "Form filled",
+   "pull": "Watch what happens next 👉"
   },
   {
    "type": "states",
@@ -129,7 +110,8 @@
     }
    ],
    "centerLogo": "logo:assets/logo-typeform.png",
-   "centerSub": "Form filled"
+   "centerSub": "Form filled",
+   "pull": "Looks fine, right? 👉"
   },
   {
    "type": "states",
@@ -162,17 +144,19 @@
     }
    ],
    "centerLogo": "logo:assets/logo-typeform.png",
-   "centerSub": "Form filled"
+   "centerSub": "Form filled",
+   "pull": "Here's the fix 👉"
   },
   {
    "type": "list",
    "photo": "990ce94d",
-   "title": "The **Human-AI Handoff**",
+   "title": "The fix: the **Human-AI Handoff**",
    "items": [
     "Shared context",
     "A clear owner",
     "A rule for when a person takes over"
-   ]
+   ],
+   "pull": "The full setup is in this video 👉"
   },
   {
    "type": "cta",
@@ -181,7 +165,8 @@
     "kind": "yt",
     "thumb": "https://i.ytimg.com/vi/oT6alCHNwKA/maxresdefault.jpg",
     "title": "How to Build a Sales Team AI Can't Replace"
-   }
+   },
+   "send": "and I'll send you the video"
   }
  ]
 }

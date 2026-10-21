@@ -46,3 +46,41 @@ Every sample passed the Story vision scorer (`src/publishing/story-score.ts`, Ge
   - 12:41 AM: v2 render created;
   - 1:02 PM Tuesday (2026-10-20): Phone Farm published receipt, Instagram and Facebook.
 - **Script facts:** 156 words and 18 beats, from the README.
+
+## Revision 3: reference review (2026-10-21)
+Antonio asked for one more review against the references, plus three requirements: open loops, real value, a link to YouTube, and topics drawn from our top-performing content.
+
+**Gaps found against Devin's live Story and Highlights:**
+1. **Open loops:** only A's first three frames ended on a pull line. Devin ends every frame before the payoff with one ("Not any more 👉", "So how do you adapt? 👉"). Every pre-payoff frame now has one.
+2. **Hook:** B's "CLIENT WINS DUMP" opened no question. B now opens on "One AI text system collected $114K in 15 days / Here's what else changed 👉".
+3. **Value:** B and D taught nothing. B gains "Why it works" (the speed-to-lead mechanism from the RESPOND caption). D gains a lesson frame ("Start with one job you do every day. Give it a schedule and a check.").
+4. **YouTube:** Devin's CTA always sends his long-form video. Every sequence now ends on a matched YouTube card:
+
+   | Sequence | Video |
+   |---|---|
+   | A | oT6alCHNwKA |
+   | B | Y8c4xIsxOXw, VShred $1.8M AI SMS |
+   | C | o0kJVSPdWBo, WarriorBabe $500K+ outbound |
+   | D | hlD22ToA3RA, "Your Business Shouldn't Stop When You Put Your Phone Down" |
+
+5. **Top content:** C was ReelMimic (2,316 views). It's now Harvey, our top reel: DenP4mcPjyj, 134,418 views, 5,962 saves, 2,985 shares, read from c2c-analytics `social_posts` on 2026-10-21.
+   - Its claims come from the hub's `artifacts/creative/2026-10-13-theromanknox-harvey-plush/claims.md`, plus a real Discovery-signals frame from the repo's `docs/dashboard.gif`.
+   - The ReelMimic version is kept as `c-tool-breakdown-reelmimic.json`.
+6. **A's hook:** the flat interface became a 3D render (render4: tangled lines from three channels to one phone), like Devin's tombstone hook.
+7. **Keyword clash:** HANDOFF is already live for a different guide (the CLI-Anything agent handoff). A now uses HUMANAI.
+
+**Keywords and DM rows:**
+- HUMANAI, SMS and AUTOPILOT are not in `dm_keyword_assets` yet.
+- OUTBOUND is live and sends the AI Outbound System blueprint.
+- Each CTA promises the video, so each row must send the YouTube link before a sequence runs. That goes in the cron setup.
+
+**Renders:** four more GPT Image 2.5 renders, render4 to render7, 11 credits. With revision 2's three, the total is 19.25 credits.
+
+**Layout fixes:**
+- CTA keyword sized to one line;
+- CTA title smaller and the card lower;
+- bold words in list rows stay inline;
+- pull lines no longer overlap the charts or lists;
+- render hooks put the subline under the headline.
+
+**Vision scores:** A 9.9, B 9.4, C 9.2, D 8.8. All pass.

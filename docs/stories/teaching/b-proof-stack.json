@@ -1,20 +1,14 @@
 {
  "slug": "b-proof-stack",
- "way": "Proof stack (Devin RESULTS model): one result per frame, boxed number, ringed proof, reply keyword at the end",
- "keyword": "RESPOND",
+ "way": "Proof stack (Devin RESULTS model) with open loops, a lesson and a YouTube payoff",
+ "keyword": "SMS",
  "frames": [
   {
-   "type": "image",
-   "title": "<span style=\"font:900 118px/1 Inter;letter-spacing:-4px\">CLIENT WINS<br><span class=\"box\" style=\"background:#2780FF\">DUMP</span></span><br><span style=\"font:600 40px Inter;color:#cfcfcf\">from the sales systems we install</span>",
-   "titleTop": 300,
-   "image": "assets/cash-2-5m-to-6-7m.png",
-   "top": 860,
-   "width": 760
-  },
-  {
    "type": "proof",
-   "title": "[[$114K cash collected]]\nin 15 days with AI SMS",
+   "title": "One AI text system collected\n[[$114K in 15 days]]",
    "image": "assets/ai-sms-114k.png",
+   "photo": "5d070570",
+   "width": 960,
    "top": 640,
    "ring": [
     0.77,
@@ -22,14 +16,14 @@
     0.21,
     0.5
    ],
-   "note": "Every new lead got a text in seconds,\nthen a setter call",
-   "photo": "5d070570",
-   "width": 960
+   "pull": "Here's what else changed 👉"
   },
   {
    "type": "proof",
    "title": "Show-up rate\n[[41% → 65%]]",
    "image": "assets/show-rate-41-to-65.png",
+   "photo": "37287de1",
+   "width": 960,
    "top": 640,
    "ring": [
     0.78,
@@ -38,40 +32,51 @@
     0.68
    ],
    "tag": "DEC → JAN",
-   "photo": "37287de1",
-   "width": 960
+   "pull": "And it didn't stop there 👉"
   },
   {
    "type": "proof",
    "title": "Close rate\n[[24% → 30%]]",
    "image": "assets/close-rate-24-to-30.png",
-   "top": 620,
+   "photo": "055f3170",
    "width": 900,
+   "top": 620,
    "ring": [
     0.74,
     0.62,
     0.24,
     0.36
    ],
-   "photo": "055f3170"
+   "pull": "And the refunds? 👉"
   },
   {
    "type": "proof",
    "title": "Refunds from 20% to\n[[under 10% in 90 days]]",
    "image": "assets/refunds-chart.png",
-   "top": 620,
-   "width": 900,
-   "photo": "aaae6275"
+   "photo": "aaae6275",
+   "width": 720,
+   "top": 600,
+   "pull": "So why does this work? 👉"
+  },
+  {
+   "type": "list",
+   "photo": "8bc5feef",
+   "title": "Why it works",
+   "items": [
+    "Answer every new lead in **minutes**",
+    "Setters, AI SMS and AI voice work **every lead together**"
+   ],
+   "pull": "The full build is on YouTube 👉"
   },
   {
    "type": "cta",
-   "title": "Want the speed-to-lead setup\nbehind these numbers? 👇",
+   "title": "This video shows how we built the\nAI SMS system behind **$1.8M** 👇",
    "card": {
-    "kind": "image",
-    "image": "assets/cash-2-5m-to-6-7m.png",
-    "width": 860
+    "kind": "yt",
+    "thumb": "https://i.ytimg.com/vi/Y8c4xIsxOXw/maxresdefault.jpg",
+    "title": "How VShred Collected $1.8M Through an AI SMS System"
    },
-   "send": "and I'll send you the setup"
+   "send": "and I'll send you the video"
   }
  ]
 }
