@@ -1,0 +1,131 @@
+{
+  "source": {
+    "account": "https://www.instagram.com/devinjatho/",
+    "scraped": "2026-10-21",
+    "method": "ScrapeCreators API: instagram list-user-2 (highlight albums) and list-user-5 (album items). Media and Instagram metadata (taken_at, media_type, video_duration, sticker fields) per frame in frames-meta.json; contact sheets sheet-*.jpg in this folder.",
+    "scope_limit": "Highlights only (5 albums, 59 frames, posted 2023-08-10 to 2026-05-11). The API exposes no live-Stories endpoint, so his current 24-hour Stories are not in this file. Frame text was read from the images by eye; 26 TESTIMONY videos were read from one still each, not transcribed.",
+    "sticker_metadata_found": "reel_mentions on 14 frames, one story_location (Dubai). No link, poll, question or quiz stickers are stored on any highlight frame; the one Ask Me Anything box (ARISTOCRAT 9) is part of the image."
+  },
+
+  "system": {
+    "summary": "Highlights work as a permanent sales page in five sections: who I am (ARISTOCRAT), proof from clients in their own voice (TESTIMONY), proof as numbers (RESULTS), the offer (JOIN NEXUS) and hiring (HIRING). Every designed frame ends in a reply keyword, so a Story reply becomes a DM conversation.",
+    "cta_model": "Reply-with-keyword, never a link sticker. Keywords seen: LAST TIME, NEXUS, VIRAL FLOW, EDITOR, SETTER. The keyword sits low in the frame with an arrow pointing down toward Instagram's reply bar.",
+    "brand_system": {
+      "ground": "near-black navy (#0E0B1F-ish) with a faint grid and soft purple glow, same on every designed frame",
+      "headline": "heavy uppercase sans, white, centred near the top (about y 280 to 420 of 1920)",
+      "key_value_marker": "the number or result in each headline sits in a red rectangle (e.g. [65K VIEWS], [$12K CONVERSION])",
+      "evidence": "real screenshots: Discord/Skool-style community messages with avatar, name, text and emoji reactions; Stripe 'Succeeded' payments; Instagram insight panels; reel thumbnails with play counts (e.g. '1.1M')",
+      "connector": "one red hand-drawn arrow from the claim or message to the number it proves",
+      "time_tags": "'AS OF TODAY' and 'BACK THEN' stamps for before and after",
+      "people": "every win names a real client (Ben, Robin, Ryan, Janek, SooWei, Gene, Katana, Alvin) with their face as the avatar"
+    }
+  },
+
+  "kit_mapping": {
+    "note": "How each Devin habit matches the Full Visual kit rules (artifacts/creative/2026-10-20-full-visual-bland-claude/.claude/skills/full-visual*).",
+    "rules": [
+      {"devin": "Headline names a real person and a number: 'RYAN HITTING 250K VIEWS IN JUST 48 HOURS'", "kit": "Hook test 1 and 3: a real named thing in the first four words, a number"},
+      {"devin": "One win per frame, same skeleton every time (name, result, time, screenshot, arrow)", "kit": "Repeated proof unit: your thing, what happened, the number, what it means; the last one escalates"},
+      {"devin": "Red box on the number", "kit": "One key word per caption block in the selection box"},
+      {"devin": "Real screenshots, never mock-ups", "kit": "Real material only; redraw only the parts the sentence needs"},
+      {"devin": "Arrow from claim to proof", "kit": "Every change belongs to a word: the static version is a visible link from claim to evidence"},
+      {"devin": "'BACK THEN' vs 'AS OF TODAY'", "kit": "A change of state happens to the object already on screen (before and after of one account)"},
+      {"devin": "Reply keyword every 3 to 4 frames", "kit": "CTA says exactly what arrives: comment KEYWORD and I'll send it"},
+      {"devin": "Same dark template on every proof frame", "kit": "One continuous thing per reel: the template is the thread that turns many wins into one sequence"}
+    ],
+    "differs_from_kit": [
+      "Stories are tapped, not heard: no voice clock, so sync becomes layout (headline, then evidence, then arrow, top to bottom).",
+      "Several screenshots per frame (up to 3) where the kit wants one focus; Devin keeps one hero screenshot big and the rest smaller."
+    ]
+  },
+
+  "sequence_types": [
+    {
+      "id": "results_proof_stack",
+      "highlight": "RESULTS",
+      "frames": 21,
+      "pattern": "Every frame is one client win on the dark template. Every 3 to 4 frames a CTA frame. One 'COMMUNITY WINS DUMP' title card opens a new run (frame 7). It ends on selfie frames that say why it works.",
+      "frame_template": {
+        "headline": "{CLIENT} {VERB} [red box: {RESULT}] {TIMEFRAME}",
+        "evidence": "1 to 3 real screenshots: the client's own message plus the metric (views, followers, payment)",
+        "arrow": "red, from the message or 'BACK THEN' card to the result number",
+        "cta_every_3_to_4": "REPLY WITH \"{KEYWORD}\" plus a curved dashed arrow down"
+      },
+      "frames_read": [
+        {"i": 1, "headline": "BEN'S [FIRST VIRAL] EDUCATIONAL VIDEO", "evidence": "insights panel 602,859 reach; reel 1.5M; message 'Hit a million views thanks @Devin'", "cta": null},
+        {"i": 2, "headline": "LITERALLY THE NEXT 3 DAYS, [BEN DID IT AGAIN]", "evidence": "insights panel; message 'Had to turn ads off because organic is too good'", "cta": "REPLY WITH \"LAST TIME\""},
+        {"i": 3, "headline": "AS OF TODAY / BACK THEN", "evidence": "same reel 100K then 408K; message 'Video just hit 100k views while only having 2k followers! Thanks Devin'", "cta": null},
+        {"i": 4, "headline": "ROBIN IMPLEMENTED ONE OF OUR [SCRIPTING METHODS] ... COUPLE DAYS LATER...", "evidence": "100k reel; message 'Closed 2 clients this week, one 4k and one 2k'", "cta": "REPLY WITH \"LAST TIME\""},
+        {"i": 5, "headline": "HE LIED, THIS VIDEO IS NOW AT 2 MILLION VIEWS", "evidence": "message 'My video is blowing up too over 700k views and 3k followers'; reel 1.9M", "cta": null},
+        {"i": 6, "headline": "[ATTENTION] IS MONEY", "evidence": "Stripe $8,500.00 succeeded; two US$4,250.00 succeeded; 'payment came in from a lead nurtured through reels'", "cta": "REPLY WITH \"LAST TIME\""},
+        {"i": 7, "headline": "COMMUNITY WINS DUMP, FROM MY PROGRAMS", "evidence": "collage of many win messages, title card", "cta": null},
+        {"i": 8, "headline": "JANEK HITTING [65K VIEWS] USING CONTENT STUDIO LITE", "evidence": "message 'My first small win'; reel 313K 'AS OF TODAY'", "cta": null},
+        {"i": 9, "headline": "SOOWEI'S [$12K CONVERSION] FROM REELS", "evidence": "'$12k cash from leads that came from this reel'; 'over 1000 inbounds and booked a ton of qualified calls'", "cta": null},
+        {"i": 10, "headline": "RYAN WITH [MILLION VIEWS AGAIN]", "evidence": "'Another Million view video thanks Devin'; reel 1.1M", "cta": null},
+        {"i": 11, "headline": "RYAN HITTING [250K VIEWS] IN JUST 48 HOURS", "evidence": "'Quickest video yet to quarter million, only 48 hours'; reel 250K", "cta": null},
+        {"i": 12, "headline": "GENE REACHING [20K VIEWS] FOR THE FIRST TIME", "evidence": "YouTube 21,523 views circled; 'Subscribe count of 2k and first video broke through 20k views'", "cta": null},
+        {"i": 13, "headline": "BEN HITTING [14K FOLLOWERS] IN JUST A MONTH", "evidence": "growth panel 14,463; 'thanks @Devin'", "cta": null},
+        {"i": 14, "headline": "KATANA HITTING [10K VIEWS] AGAIN", "evidence": "'Another 10k in the bank'; reel 118K; replies 'Congrats'", "cta": null},
+        {"i": 15, "headline": "THIS IS WHAT HAVING A STRONG [PERSONAL BRAND] LOOKS LIKE / [FIRST MILLION] VIEWED VIDEO", "evidence": "'From 30k to 100k in 12 weeks'; profile 117K followers; reel 1.6M", "cta": null},
+        {"i": 16, "headline": "(chat screenshot over a dim city photo)", "evidence": "client message about content quality and positive reinforcement; Devin reply 'you put in the work man, you deserve it'", "cta": "Reply with \"NEXUS\" For More Information"},
+        {"i": 17, "headline": "ANOTHER 100K [+ HIT 50K FOLLOWERS]", "evidence": "'Back in the 100k club'; reel 147K; 'Just hit 50k!' profile 50.2K", "cta": null},
+        {"i": 18, "headline": "ALVIN [KNOCKING THEM DOWN] BACK TO BACK", "evidence": "'Viral Machine'; 'New reel is at 100k view again'; reel thumbnails", "cta": "Reply with: \"NEXUS\""},
+        {"i": 19, "headline": "RYAN'S THIRD DAY IN VIRAL FLOW", "evidence": "DM thread: 'Just joined!', '100k views in 12 hours'; reel 576K", "cta": "REPLY WITH \"VIRAL FLOW\""},
+        {"i": 20, "headline": "content consumed before a sales call is the difference between a customer choosing [you] OR [your competitor]", "evidence": "selfie of Devin pointing; client win message overlaid", "cta": null},
+        {"i": 21, "headline": "all it takes is 7 hours a week, the right system, and a clear blueprint to follow", "evidence": "selfie of Devin; client message 'When I signed up Devin said this is like 3 clients for you ... 24k collected + 66k for the year'", "cta": null}
+      ]
+    },
+    {
+      "id": "client_video_testimonials",
+      "highlight": "TESTIMONY",
+      "frames": 26,
+      "pattern": "Raw client selfie videos (4 to 60 s, long ones split into 60 s chunks), captions burned in by the client or Devin, the client's @handle bottom right. No template, no graphics beyond captions; the proof is the person talking.",
+      "frame_template": {"media": "client video, 9:16", "caption": "word-group captions centre", "tag": "@clienthandle mention sticker"}
+    },
+    {
+      "id": "lifestyle_identity",
+      "highlight": "ARISTOCRAT",
+      "frames": 9,
+      "pattern": "Candid moments that show the life the business pays for (terrace view, studio shoot, his set, night city, first-class to Dubai, Dubai balcony, a lighter 'listen to the ping', speaking on stage, group yacht trip with an Ask Me Anything box). Text is one short lowercase serif line or none.",
+      "frame_template": {"media": "real photo or short video", "text": "one short line, small, lowercase italic serif", "stickers": "location, music, mention, question box"}
+    },
+    {
+      "id": "offer_card",
+      "highlight": "JOIN NEXUS",
+      "frames": 1,
+      "pattern": "One frame: his photo, verified handle, 'JOIN NEXUS.', a one-line promise ('Helping Online Business Owners Create Predictable & Profitable Content'), REPLY WITH \"NEXUS\" and a row of down arrows.",
+      "frame_template": {"media": "portrait photo, upper two thirds", "title": "program name, bold", "promise": "one line", "cta": "reply keyword pill with arrows"}
+    },
+    {
+      "id": "hiring_cards",
+      "highlight": "HIRING",
+      "frames": 2,
+      "pattern": "One frame per role: avatar, 'HIRING {ROLE}' in a role colour, 2 to 3 requirement pills, pay range, REPLY WITH \"{ROLE}\" in a box.",
+      "frame_template": {"title": "HIRING + role", "requirements": "white pills", "pay": "range", "cta": "reply keyword box"}
+    }
+  ],
+
+  "c2c_build_plan": {
+    "status": "proposal, waiting on Antonio",
+    "inputs_we_have": [
+      "7 proof cards from Antonio's own Highlights (docs/stories/proof-cards.json)",
+      "Mac Photos library: 22,071 items, 3,840 screenshots (client wins, Stripe, dashboards likely among them; not yet reviewed)",
+      "Comment and direct-DM keyword automation (GHL to n8n router ZLrzPqqMf96PoJje, dm_keyword_assets) that already replies to Instagram DMs",
+      "Headless-Chrome cover template from the kit (artifacts/creative/pipeline-tests-2026-10-20/kit-heygen/cover-harness2/cover.html)"
+    ],
+    "steps": [
+      "1. Wins inventory: pull candidate screenshots from the Photos library (Photos' own screenshot flag and its OCR search index, read locally), Antonio picks which are shareable; each win stored as {client, result, number, timeframe, screenshot, source, date}.",
+      "2. Results template: one HTML template on our brand (C2C dark #0A0A0A, #2780FF blue instead of his purple), headline with a highlighted number box, hero screenshot, red arrow, optional BACK THEN / AS OF TODAY, rendered at 1080x1920 in headless Chrome like the covers.",
+      "3. Sequence builder: proof_stack becomes 'one win per frame, a reply-keyword frame every 3 to 4', opened by a 'WINS DUMP' title card; keyword maps to an existing dm_keyword_assets row so a Story reply gets the resource.",
+      "4. Lifestyle frames stay (ARISTOCRAT model) with one short line, matched by the photo tags built on Oct 20.",
+      "5. Offer card for the C2C offer with its keyword.",
+      "6. Testimonials only if Antonio has client videos with permission.",
+      "7. Verify that an Instagram Story reply containing the keyword reaches the DM keyword router (not yet tested)."
+    ],
+    "open_questions": [
+      "Which client wins (names, numbers, screenshots) may be shown publicly? Client names were cleared on Oct 15; personal data of leads stays out.",
+      "Which keyword(s) and resources should the CTA frames use?",
+      "Does a Story reply trigger the same GHL DM keyword workflow as a direct DM?"
+    ]
+  }
+}
