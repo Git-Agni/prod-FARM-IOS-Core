@@ -10,8 +10,9 @@ const PROMPT = `This is frame 0 of a YouTube Short, the image viewers see before
 - style "thumbnail": heavy display lettering like a YouTube thumbnail: very bold, usually uppercase, large enough that one line spans most of the frame width, often on colored bars or with a strong shadow.
 - style "caption": ordinary sentence-case or lowercase text at subtitle or caption size, even if one word is highlighted or boxed. Most of the frame width is empty around it.
 - style "none": no headline text.
-Also give "readable" (true if it reads easily on a phone) and "headline" (the main text exactly as shown).
-Reply with JSON only: {"style":"thumbnail"|"caption"|"none","readable":true|false,"headline":"..."}`;
+Also give "readable" (true if it reads easily on a phone), "headline" (the main text exactly as shown) and "otherText"
+(every other prominent word on the frame: logo labels, chips, tags, numbers; not small body text inside screenshots).
+Reply with JSON only: {"style":"thumbnail"|"caption"|"none","readable":true|false,"headline":"...","otherText":"..."}`;
 
 const STOP = new Set(['the', 'and', 'for', 'with', 'your', 'you', 'can', 'now', 'this', 'that', 'are', 'its', 'how', 'not', 'free', 'into']);
 const terms = (s: string) => (s.toLowerCase().match(/[a-z0-9²]{3,}/g) ?? []).filter(w => !STOP.has(w));
@@ -28,7 +29,9 @@ export async function checkShortCover(videoPath: string, title: string): Promise
                     { type: 'text', text: PROMPT }, { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + img.toString('base64') } }] }] }) });
             const j = await r.json() as any; if (!r.ok) throw Error(j?.error?.message ?? 'HTTP ' + r.status);
             const t = String(j.choices?.[0]?.message?.content ?? ''), v = JSON.parse(t.slice(t.indexOf('{'), t.lastIndexOf('}') + 1));
-            const headline = String(v.headline ?? ''), want = terms(title), got = new Set(terms(headline));
+            // The subject can be named by the headline or by the cover's logo, chips and tags (the ECC cover names ECC in its logo
+            // and "71 agents" in a tag, while the headline says "free AI engineering team").
+            const headline = String(v.headline ?? ''), want = terms(title), got = new Set(terms(headline + ' ' + String(v.otherText ?? '')));
             const subjectMatch = want.some(w => got.has(w));
             const isCover = v.style === 'thumbnail', readable = v.readable === true, pass = isCover && readable && subjectMatch;
             const reason = pass ? 'cover passes' : !isCover ? 'frame 0 is not a cover' : !readable ? 'headline hard to read' : 'headline does not name the Short subject';
