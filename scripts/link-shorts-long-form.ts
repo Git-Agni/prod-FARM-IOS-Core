@@ -1,10 +1,11 @@
 /** Link each Short to the owned long-form video that matches its topic (src/publishing/youtube-longform.ts).
- * Usage: link-shorts-long-form.ts <id,id,...|--queued> [--apply]. --queued takes every unclaimed Short that is held,
+ * Usage: link-shorts-long-form.ts <id,id,...|--queued> [--apply]. An entry id=VIDEO_ID sets that long-form by hand
+ * (Oct 20: a reviewed pick beats a weak topic match). --queued takes every unclaimed Short that is held,
  * armed 10+ minutes out, or in review with no Upload claim. Database only; no phone input.
  * An armed release keeps its slot: its item_version moves with the item, like lane-slotter.ts.
  * The cover review keeps its frame-zero result and is rebound to the new link. */
 import {createDatabaseConnection} from '../src/database/client.js';
-import {chooseLongForm} from '../src/publishing/youtube-longform.js';
+import {chooseLongForm,longFormById} from '../src/publishing/youtube-longform.js';
 import {requestHash,validatePostingInput} from '../src/publishing/model.js';
 const [list]=process.argv.slice(2),apply=process.argv.includes('--apply');
 if(!list)throw Error('Usage: link-shorts-long-form.ts <id,id,...|--queued> [--apply]');
@@ -14,9 +15,11 @@ try{
  const rows=(await c.query(`SELECT i.*,r.state,r.share_claimed_at,r.run_at FROM scheduler.publishing_items i LEFT JOIN scheduler.publishing_releases r ON r.item_id=i.id
    WHERE i.input->'targets' @> '[{"platform":"youtube"}]' AND i.status IN ('held','needs_review') AND r.share_claimed_at IS NULL
    AND (r.item_id IS NULL OR r.state IN ('needs_review','cancelled') OR (r.state='armed' AND r.run_at>now()+interval '10 minutes'))
-   AND ($1::uuid[] IS NULL OR i.id=ANY($1::uuid[])) FOR UPDATE OF i`,[list==='--queued'?null:list.split(',')])).rows;
+   AND ($1::uuid[] IS NULL OR i.id=ANY($1::uuid[])) FOR UPDATE OF i`,[list==='--queued'?null:list.split(',').map(x=>x.split('=')[0])])).rows;
+ const manual=new Map(list==='--queued'?[]:list.split(',').filter(x=>x.includes('=')).map(x=>x.split('=') as [string,string]));
+ for(const [id,video] of manual)if(!longFormById(video))throw Error(`${id}: ${video} is not an owned long-form video`);
  for(const i of rows){
-  const pick=chooseLongForm(i.input),from=i.input.youtube?.publishing?.relatedVideoId;
+  const by=manual.get(i.id),pick=by?{video:longFormById(by)!,score:null,topics:['reviewed by hand']}:chooseLongForm(i.input),from=i.input.youtube?.publishing?.relatedVideoId;
   if(pick.video.id===from){console.log('keep  ',i.media.name.slice(0,40).padEnd(40),'->',pick.video.titles[0]);continue;}
   const input=validatePostingInput({...i.input,youtube:{...i.input.youtube,publishing:{...i.input.youtube.publishing,relatedVideoId:pick.video.id}}});
   const choice={at:new Date().toISOString(),from,to:pick.video.id,score:pick.score,topics:pick.topics};
