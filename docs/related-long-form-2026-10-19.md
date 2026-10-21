@@ -53,6 +53,12 @@ Worker restarted under the phone lock at 08:55 PT. The 10:00 PT post (cweekend, 
 ran the new driver with the default Reel: Instagram and Facebook receipts verified, Trial confirmed, and the Watch link
 opened the exact related Reel. Its topic matched no picker Reel, so this is not yet a topic-matched live link.
 
+After commit 0e11b3b widened the catalog to 38 choosable Reels, the worker was restarted under the phone lock at 11:07 PT.
+The 12:00 PT post (bland-claude-phone, https://www.instagram.com/reel/DevE3gDoNew/) linked the topic-matched Reel
+"AI phone agent" (https://www.instagram.com/reel/Dabc6rJDS7I/). Instagram and Facebook receipts were verified, Trial was
+confirmed, and the Watch link opened the exact related Reel. The catalog loads at worker start: restart the worker
+under the phone lock after every catalog change.
+
 Evidence (local, not committed): `docs/evidence/instagram-related-topics-2026-10-20/`.
 
 Scripts: `refresh-instagram-reels.ts` adds newly published Reels (headline from the opening frame, `inPicker` false);
