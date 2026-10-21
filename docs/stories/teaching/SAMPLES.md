@@ -118,3 +118,21 @@ The email draft card is labelled "Example". New brand icons came from simple-ico
 **Vision scores:** A 9.6, B 9.6, C 8.8, D 8.8. All pass.
 
 The GPT renders in `assets/gen/` are kept but no longer used.
+
+### Revision 4b: connectors (2026-10-21)
+Antonio: "refine the lines that are linking things together".
+
+Links are now soft curves in Devin's diagram style, with round dots at both ends. Each link attaches to the edges of the objects it joins: objects get an `id`, and links reference them by id. There are three states:
+
+| State | Look |
+|---|---|
+| Done | Solid accent line with a glow |
+| Pending | Grey dashes |
+| Broken | Red dashes with a gap and a red X badge |
+
+Layout changes so every line has room:
+- A: the tools sit farther from the phone.
+- C2: the Harvey dashboard links down to the email draft.
+- D: the steps form a wider zig-zag, with labels under each step.
+
+**Vision scores:** A 9.0, B 9.5, C 8.9, D 8.9. All pass.

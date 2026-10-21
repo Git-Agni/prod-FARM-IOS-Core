@@ -171,75 +171,43 @@
       "kind": "card",
       "img": "assets/harvey-dashboard.png",
       "size": [
-       3.3,
-       2.02,
+       2.9,
+       1.78,
        0.05
       ],
       "pos": [
-       -0.1,
-       2.1,
-       -0.8
+       -0.45,
+       2.6,
+       -0.4
       ],
       "rot": [
        -4,
        16,
        -2
       ],
-      "glow": 1
+      "glow": 1,
+      "id": "dash"
      },
      {
       "kind": "card",
       "img": "assets/card-email.png",
       "size": [
-       2.5,
-       1.78,
+       2.1,
+       1.5,
        0.05
       ],
       "pos": [
-       0.75,
-       0.75,
-       0.9
+       0.65,
+       0.5,
+       0.6
       ],
       "rot": [
        -6,
        -14,
        3
       ],
-      "glow": 0.95
-     },
-     {
-      "kind": "tile",
-      "img": "assets/si-gmail.svg",
-      "size": [
-       0.8,
-       0.8,
-       0.22
-      ],
-      "pos": [
-       1.4,
-       1.55,
-       0.6
-      ],
-      "rot": [
-       8,
-       -24,
-       8
-      ],
-      "fill": 0.66
-     },
-     {
-      "kind": "link",
-      "from": [
-       0.4,
-       1.4,
-       0.2
-      ],
-      "to": [
-       0.6,
-       1.3,
-       0.85
-      ],
-      "color": "#2780FF"
+      "glow": 0.95,
+      "id": "mail"
      },
      {
       "kind": "light",
@@ -250,6 +218,13 @@
       ],
       "color": "#2780FF",
       "power": 16
+     },
+     {
+      "kind": "link",
+      "from": "dash",
+      "to": "mail",
+      "state": "done",
+      "bend": -0.35
      }
     ]
    }
