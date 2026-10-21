@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-10-21T22:05:52.846364Z",
+  "display_name": "GPT Image 2.5",
+  "id": "10cfc599-0a43-4b03-b93f-5d4ffc2d6bc5",
+  "job_type": "gpt_image_2_5",
+  "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_357M5NvPxb6GhQvr9vztL8xC9I0/hf_20261021_220552_10cfc599-0a43-4b03-b93f-5d4ffc2d6bc5_min.webp",
+  "params": {
+    "aspect_ratio": "9:16",
+    "height": 2688,
+    "medias": [],
+    "model": "flare",
+    "prompt": "An exploded view of one video frame: a single glowing screen separated into four floating translucent glass layers stacked in depth, the first layer shows cut marks like scissors marks on a film strip, the second shows a soft crossfade gradient, the third a color palette of swatches, the fourth a small cinema camera on a dolly track, each layer edged in blue light. Premium 3D render, Octane style, glossy materials, dark charcoal studio background (#0A0A0A), electric blue (#2780FF) rim light with soft volumetric haze, subtle red accent light, shallow depth of field, cinematic, photoreal materials. No text, no letters, no logos, no people. Vertical composition: keep the top 30 percent of the frame empty dark space for a headline.",
+    "quality": "high",
+    "reference_elements": [],
+    "remove_bg": false,
+    "resolution": "2k",
+    "width": 1520
+  },
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_357M5NvPxb6GhQvr9vztL8xC9I0/hf_20261021_220552_10cfc599-0a43-4b03-b93f-5d4ffc2d6bc5.png",
+  "status": "completed"
+}

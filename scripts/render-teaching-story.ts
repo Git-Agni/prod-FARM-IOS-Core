@@ -2,7 +2,7 @@
  * day", modelled on Devin Jatho's live Story, docs/stories/reference/devinjatho, and built on the Full Visual kit rules:
  * real material only, interfaces redrawn in code, one object that changes state, a boxed key word, a CTA that names what
  * arrives). One brand system for every way of telling the story: dark #0A0A0A, blue #2780FF, red #E8231F, Inter.
- * Frame types: hook, photo, orbit, states, list, proof, timeline, image, cta. Text marks: **bold**, [[red box]], {{red}}, ((blue)).
+ * Frame types: hook, photo, orbit, states, list, proof, timeline, image, render (full-bleed 3D render), cta. Icons: built-in or logo:<path>. Text marks: **bold**, [[red box]], {{red}}, ((blue)).
  * Photos are Story-pool photos named by SHA-256 prefix; images are paths relative to docs/stories/teaching/.
  * Usage: render-teaching-story.ts docs/stories/teaching/<slug>.json  ->  .scheduler-data/story-assets/teaching/<slug>/
  * Renders files only: no phone, no upload, no Story plan. */
@@ -56,7 +56,7 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@50
 .callrow{display:flex;align-items:center;gap:16px;background:#1c1c1e;border-radius:22px;padding:16px 20px;margin:12px 0;font:600 28px Inter}
 .callrow .ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center}
 .callrow .miss{color:#FF453A}.callrow small{display:block;font:500 20px Inter;color:#8e8e93}
-.mini{position:relative;flex:1;border-radius:26px;background:#141418;border:3px solid #34343a;padding:22px 18px;display:flex;flex-direction:column;gap:12px;min-height:470px}
+.mini{position:relative;flex:1;border-radius:26px;background:rgba(20,20,24,.94);border:3px solid #34343a;padding:22px 18px;display:flex;flex-direction:column;gap:12px;min-height:560px}
 .mini .nm{font:800 32px Inter;text-align:center}.mini .act{font:600 26px/1.25 Inter;color:#cfcfcf;text-align:center}
 .mini.on{border-color:#2780FF;box-shadow:0 0 50px rgba(39,128,255,.35)}.mini.off{border-color:#E8231F}
 .mini .ui{background:#000;border-radius:18px;padding:14px;min-height:190px}
@@ -93,6 +93,9 @@ const ICON: Record<string, string> = {
     call: '<div class="ico" style="background:#34C759"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#fff" d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 013 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></div>',
     calendar: '<div class="ico" style="background:#fff;color:#E8231F;font:900 18px Inter;flex-direction:column;line-height:1"><span style="font-size:11px">WED</span>21</div>',
 };
+const logoTile = (rel: string, size = 48, wide = 1) => `<div class="ico" style="background:#fff;width:${Math.round(size * wide)}px;height:${size}px;padding:${Math.round(size * .14)}px;border-radius:${Math.round(size * .26)}px"><img src="${asset(rel)}" style="width:100%;height:100%;object-fit:contain"></div>`;
+const icon = (k: string, size = 48, wide = 1) => k?.startsWith('logo:') ? logoTile(k.slice(5), size, wide)
+    : ICON[k]?.replace('class="ico" style="', `class="ico" style="width:${size}px;height:${size}px;border-radius:${Math.round(size * .26)}px;`).replace(/width="(28|30)" height="(28|30)"/, `width="${Math.round(size * .6)}" height="${Math.round(size * .6)}"`) ?? '';
 function ui(kind: string, text = '') {
     if (kind === 'sms') return `<div class="ui"><div class="bub in">${text}</div><div class="bub out" style="font-size:19px">Yes! Our program fits any schedule</div></div>`;
     if (kind === 'call') return `<div class="ui"><div class="callrow">${ICON.call}<div>Outgoing call<small>${text}</small></div></div></div>`;
@@ -111,17 +114,17 @@ async function frameHtml(f: any, i: number) {
     }
     if (f.type === 'photo') inner = `${await bgPhoto()}<div class="title">${md(f.title)}</div><div class="body" style="top:${f.bodyTop ?? 420}px">${md(f.body)}</div>${f.pull ? `<div class="pull">${md(f.pull)}</div>` : ''}`;
     if (f.type === 'orbit') inner = `${await bgPhoto(.6)}<div class="orbit"></div>
-      ${f.chips.map((c: any) => `<div class="chip" style="right:${c.right}px;top:${c.top}px">${ICON[c.icon] ?? ''}${c.label}</div>`).join('')}
+      ${f.chips.map((c: any) => `<div class="chip" style="right:${c.right}px;top:${c.top}px">${icon(c.icon)}${c.label}</div>`).join('')}
       <div class="title">${md(f.title)}</div><div class="body" style="top:470px;right:360px">${md(f.body)}</div><div class="pull">${md(f.pull)}</div>`;
     if (f.type === 'states') {
         const color = f.state === 3 ? '#E8231F' : 'rgba(255,255,255,.55)', top = 560;
         const lines = [215, 540, 865].map(x => `<path d="M540 ${top + 200} C 540 ${top + 260}, ${x} ${top + 260}, ${x} ${top + 330}" stroke="${color}" stroke-width="4" stroke-dasharray="14 12" fill="none"/>`).join('');
-        const cards = f.cards.map((c: any) => `<div class="mini ${f.state === 2 ? 'on' : f.state === 3 ? 'off' : ''}"><div class="nm">${c.name}</div>${f.state >= 2 ? `${ui(c.ui, c.text)}<div class="act">${c.act}</div>` : '<div class="ui"></div>'}${f.state === 3 ? `<div class="stamp">${f.stamp}</div>` : ''}</div>`).join('');
-        inner = `<div class="bg" style="background-image:url(${await photo(f.photo, 'bg' + i, .22)});filter:blur(2px)"></div><div class="grid"></div>
+        const cards = f.cards.map((c: any) => `<div class="mini ${f.state === 2 ? 'on' : f.state === 3 ? 'off' : ''}"><div style="display:flex;justify-content:center;margin:6px 0 4px">${icon(c.icon, 120)}</div><div class="nm">${c.name}</div>${f.state >= 2 ? `${ui(c.ui, c.text)}<div class="act">${c.act}</div>` : `<div class="act">${c.waiting ?? 'Waiting'}</div>`}${f.state === 3 ? `<div class="stamp">${f.stamp}</div>` : ''}</div>`).join('');
+        inner = `<div class="bg" style="background-image:url(${await photo(f.photo, 'bg' + i, .12)});filter:blur(8px) saturate(.4)"></div><div class="grid"></div>
           <div class="title center" style="top:220px">${md(f.title)}</div>
           <svg class="lines" height="1000" viewBox="0 0 1080 1000">${lines}</svg>
           ${f.state === 1 ? `<div class="ask" style="top:${top - 70}px">${f.ask}</div>` : ''}
-          <div class="center-node" style="top:${top}px"><div class="av">L</div>${f.center}</div>
+          <div class="center-node" style="top:${top}px;width:300px">${f.centerLogo ? `<div style="display:flex;justify-content:center;margin-bottom:10px">${icon(f.centerLogo, 64, 3.6)}</div>` : ''}<div style="font:700 22px Inter;color:#9a9a9a">${f.centerSub ?? ''}</div>${f.center}</div>
           <div style="position:absolute;top:${top + 330}px;left:60px;right:60px;display:flex;gap:24px">${cards}</div>`;
     }
     if (f.type === 'list') inner = `${await bgPhoto()}<div class="title center" style="top:230px;font-size:76px">${md(f.title)}</div>
@@ -140,6 +143,14 @@ async function frameHtml(f: any, i: number) {
     if (f.type === 'image') inner = `${f.photo ? await bgPhoto(.5, 'full') : '<div class="grid"></div>'}<div class="title center" style="top:${f.titleTop ?? 230}px">${md(f.title)}</div>
       <div class="shot" style="top:${f.top ?? 620}px;width:${(f.width ?? 880) + 28}px"><img src="${asset(f.image)}" style="width:${f.width ?? 880}px"></div>
       ${f.body ? `<div class="bottom" style="bottom:${f.bodyBottom ?? 330}px">${md(f.body)}</div>` : ''}`;
+    if (f.type === 'render') {
+        const name = 'render' + i + '.jpg';
+        await sharp(path.join(base, f.image)).resize(1080, 1920, { fit: 'cover' }).jpeg({ quality: 92 }).toFile(path.join(out, name));
+        inner = `<div class="bg" style="background-image:url(${name})"></div>
+          <div class="${f.hook ? 'hook' : 'title center'}" style="top:${f.titleTop ?? 200}px">${md(f.title)}</div>
+          ${(f.labels ?? []).map((l: any) => `<div class="chip" style="top:${l.top}px;${l.left != null ? `left:${l.left}px` : `right:${l.right ?? 40}px`}">${l.icon ? icon(l.icon) : ''}${md(l.text)}</div>`).join('')}
+          ${f.bottom ? `<div class="bottom" style="bottom:${f.bottomAt ?? 300}px">${md(f.bottom)}</div>` : ''}`;
+    }
     if (f.type === 'cta') {
         const card = f.card.kind === 'yt' ? `<div class="yt"><img src="${f.card.thumb}"><div class="bar"></div><div class="vt">${f.card.title}</div></div>`
             : f.card.kind === 'image' ? `<div class="shot" style="top:470px;width:${(f.card.width ?? 860) + 28}px"><img src="${asset(f.card.image)}" style="width:${f.card.width ?? 860}px"></div>`
@@ -151,6 +162,7 @@ async function frameHtml(f: any, i: number) {
     return `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body><div class="stage">${inner}</div></body></html>`;
 }
 
+for (const f of ['assets/logo-github.svg']) try { asset(f); } catch { /* optional */ }
 const pngs: string[] = [];
 for (const [i, f] of spec.frames.entries()) {
     const html = path.join(out, `frame-${i + 1}.html`), png = path.join(out, `frame-${i + 1}.png`);

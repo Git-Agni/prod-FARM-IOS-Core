@@ -4,40 +4,69 @@
  "keyword": "MIMIC",
  "frames": [
   {
-   "type": "hook",
+   "type": "render",
+   "hook": true,
+   "image": "assets/gen/render1.png",
    "title": "Copy the style of [[any video]]",
+   "titleTop": 220,
    "bottom": "Not the footage. **The style** 👉",
-   "visual": {
-    "kind": "image",
-    "src": "assets/rm-home-headline.png",
-    "top": 700,
-    "width": 900
-   }
+   "bottomAt": 330
   },
   {
    "type": "image",
-   "title": "It's called **ReelMimic**. Free and open source.\n((Almost 3,700 stars in three weeks))",
-   "image": "assets/reelmimic-cover.png",
-   "top": 640,
-   "width": 520
+   "title": "It's called **ReelMimic**. Free and open source.",
+   "titleTop": 230,
+   "image": "assets/rm-home-headline.png",
+   "top": 560,
+   "width": 900,
+   "body": "<span class=\"chip\" style=\"position:static;display:inline-flex;margin-top:30px\"><div class=\"ico\" style=\"background:#fff;padding:7px\"><img src=\"logo-github.svg\" style=\"width:100%;height:100%\"></div>★ 3,666 stars in three weeks</span>",
+   "bodyBottom": 760
   },
   {
-   "type": "list",
-   "photo": "7b593bf4",
+   "type": "render",
+   "image": "assets/gen/render2.png",
    "title": "It breaks the video down",
-   "items": [
-    "Shots",
-    "Transitions",
-    "Colors",
-    "Camera moves"
+   "titleTop": 230,
+   "labels": [
+    {
+     "text": "Shots",
+     "top": 760,
+     "left": 60
+    },
+    {
+     "text": "Transitions",
+     "top": 985,
+     "right": 40
+    },
+    {
+     "text": "Colors",
+     "top": 1160,
+     "left": 60
+    },
+    {
+     "text": "Camera moves",
+     "top": 1390,
+     "right": 40
+    }
    ]
   },
   {
-   "type": "image",
+   "type": "render",
+   "image": "assets/gen/render3.png",
    "title": "Then up to **six AI agents** build it.\nAnd a **different agent reviews every shot**",
-   "image": "assets/rm-flow-agents.png",
-   "top": 640,
-   "width": 900
+   "titleTop": 220,
+   "labels": [
+    {
+     "text": "6 agents build",
+     "top": 780,
+     "left": 60
+    },
+    {
+     "text": "1 agent reviews",
+     "top": 1500,
+     "right": 40
+    }
+   ]
   },
   {
    "type": "photo",
