@@ -7,6 +7,7 @@ import {createDatabaseConnection} from '../src/database/client.js';
 import {requestHash,validatePostingInput} from '../src/publishing/model.js';
 import {publishingCadence as cadence,slotsFrom} from '../src/publishing/cadence.js';
 import {laneHours} from '../src/publishing/lanes.js';
+import {linkRelatedReel} from '../src/publishing/related-autolink.js';
 
 const apply=process.argv.includes('--apply'),minute=60000,hour=3600000;
 export const laneOf=(input:any)=>input.targets.some((x:any)=>x.platform==='youtube')?'youtube':input.targets.some((x:any)=>x.platform==='tiktok')?'tiktok':'instagram';
@@ -24,6 +25,16 @@ try{
  // Oct 17: this was now+30 min while posts more than 10 min out were movable, so the :22 Short (17 min out at the
  // hourly :05 run) was pushed an hour later every hour and never posted. Fill from the same 10-minute line.
  const from=now+10*minute;
+ // Oct 20: an armed Instagram post with no related Reel (armed before auto-linking, or by a path that skipped arm)
+ // gets its topic-matched Reel here. Same rule as moves: no Share claim, armed, 10+ minutes out.
+ const linked:any[]=[];
+ for(const r of rows.filter(r=>!fixed(r)&&r.status==='held')){
+  const link=await linkRelatedReel(r.input,r.media);if(!link)continue;
+  await c.query(`UPDATE scheduler.publishing_items SET input=$2,request_hash=$3,version=version+1,results=results||jsonb_build_object('relatedReel',$4::jsonb),updated_at=now() WHERE id=$1`,
+    [r.id,link.input,requestHash(link.input,r.media.sha256),JSON.stringify(link.choice)]);
+  await c.query(`UPDATE scheduler.publishing_releases SET item_version=item_version+1,updated_at=now() WHERE item_id=$1 AND state='armed' AND share_claimed_at IS NULL`,[r.id]);
+  r.input=link.input;linked.push({name:r.media.name,to:link.choice.to});
+ }
  for(const lane of ['instagram','tiktok','youtube'] as const){
   const mine=rows.filter(r=>laneOf(r.input)===lane);
   const taken=new Set(mine.filter(r=>fixed(r)&&(r.state!=='needs_review'||r.share_claimed_at)).map(slotOf));
@@ -45,6 +56,7 @@ try{
  await c.query(apply?'COMMIT':'ROLLBACK');
  const pt=(s:string)=>new Date(s).toLocaleString('en-US',{timeZone:cadence.timezone,weekday:'short',hour:'numeric',minute:'2-digit'});
  if(process.argv.includes('--verbose'))for(const m of moves)console.log(`${m.lane.padEnd(10)} ${pt(m.from).padEnd(14)} -> ${pt(m.to).padEnd(14)} ${m.name}`);
- console.log(JSON.stringify({moved:moves.length,applied:apply}));
+ if(process.argv.includes('--verbose'))for(const l of linked)console.log(`linked     ${l.name} -> ${l.to}`);
+ console.log(JSON.stringify({moved:moves.length,linked:linked.length,applied:apply}));
 }catch(e){await c.query('ROLLBACK').catch(()=>{});throw e;}
 finally{c.release();await db.close();}

@@ -32,6 +32,7 @@ import { fileURLToPath } from 'node:url';
 import type { PhoneFarmPlugin } from '../plugin.js';
 import { readiness, requestHash, validatePostingInput } from './model.js';
 import { PublishingStore, publicItem, type MediaFile } from './store.js';
+import { linkRelatedReel } from './related-autolink.js';
 import { ReleaseWorkerStatusStore } from './worker-health.js';
 
 export function createPublishingPlugin(): PhoneFarmPlugin {
@@ -304,7 +305,10 @@ export function createPublishingPlugin(): PhoneFarmPlugin {
                         preparedVideo = prepared.media;
                         results = { ...results, youtubeCover: prepared.receipt, sourceVideo: video };
                     }
-                    const saved = await store.create(input, requestHash(input, video.sha256, cover?.sha256), preparedVideo, cover, results);
+                    // Instagram posts get their topic-matched related Reel now, so the calendar shows it before arming.
+                    const linked = await linkRelatedReel(input, preparedVideo);
+                    if (linked) results = { ...results, relatedReel: linked.choice };
+                    const saved = await store.create(linked?.input ?? input, requestHash(linked?.input ?? input, video.sha256, cover?.sha256), preparedVideo, cover, results);
                     keep = !saved.replayed;
                     return reply.code(saved.replayed ? 200 : 201).send({ ...publicItem(saved.item), replayed: saved.replayed });
                 } catch (error) {

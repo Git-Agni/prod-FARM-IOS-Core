@@ -1,6 +1,7 @@
 import type { Pool } from 'pg';
 import { ReceiptVerificationError, releaseOnce, assertReceipts, assertReleaseTargets, type ReleaseDriver } from './release-policy.js';
-import { validatePostingInput } from './model.js';
+import { requestHash, validatePostingInput } from './model.js';
+import { linkRelatedReel, openingHeadline } from './related-autolink.js';
 import { ENGAGEMENT_SCHEMA } from './engage-task.js';
 import { publishingCadence } from './cadence.js';
 
@@ -15,7 +16,7 @@ const interruptedResult=`jsonb_build_object('error',CASE WHEN share_claimed_at I
 
 /** Durable, one-shot posting jobs. Only an explicitly armed job can run. */
 export class TimedReleaseStore {
-    constructor(private pool: Pool) {}
+    constructor(private pool: Pool, private headlineOf: (path: string) => Promise<string> = openingHeadline) {}
     async initialize() {
         await this.pool.query(`CREATE TABLE IF NOT EXISTS scheduler.publishing_releases (
             item_id uuid PRIMARY KEY REFERENCES scheduler.publishing_items(id),
@@ -45,6 +46,19 @@ export class TimedReleaseStore {
                 AND lower(ltrim(a->>'account','@'))=lower(ltrim(b->>'account','@'))) LIMIT 1`,
               [itemId,item.media.sha256,JSON.stringify(item.input.targets)]);
             if (duplicate.rowCount) throw new Error('This video already has a release for this account: '+duplicate.rows[0].id);
+            // Every Instagram post links its topic-matched Reel, whatever path created it (related-autolink.ts).
+            // The item's version moves with the change, and the release is armed at the new version. A post due within
+            // 10 minutes is left as it is.
+            let armVersion = version;
+            const linked = item.version === version && item.status === 'held'
+                && Date.parse(item.input.runAt) > Date.now() + 10*60_000 ? await linkRelatedReel(item.input, item.media, this.headlineOf) : undefined;
+            if (linked) {
+                const u = await c.query(`UPDATE scheduler.publishing_items SET input=$2,request_hash=$3,version=version+1,updated_at=now(),
+                  results=results||jsonb_build_object('relatedReel',$4::jsonb) WHERE id=$1 AND version=$5 AND status='held' RETURNING version`,
+                  [itemId,linked.input,requestHash(linked.input,item.media.sha256),JSON.stringify(linked.choice),version]);
+                if (!u.rowCount) throw new Error('Item changed, target time passed, or a release already exists');
+                armVersion = u.rows[0].version;
+            }
             const tiktok = item.input.targets.find((t:any)=>t.platform==='tiktok');
             if(tiktok) {
                 const account=tiktok.account.replace(/^@/,'').toLowerCase();
@@ -61,7 +75,7 @@ export class TimedReleaseStore {
             const r = await c.query(`INSERT INTO scheduler.publishing_releases(item_id,item_version,run_at,state)
               SELECT id,version,(input->>'runAt')::timestamptz,'armed' FROM scheduler.publishing_items
               WHERE id=$1 AND version=$2 AND status='held' AND (input->>'runAt')::timestamptz>now()
-              ON CONFLICT(item_id) DO NOTHING RETURNING item_id`,[itemId,version]);
+              ON CONFLICT(item_id) DO NOTHING RETURNING item_id`,[itemId,armVersion]);
             if (!r.rowCount) throw new Error('Item changed, target time passed, or a release already exists');
             await c.query('COMMIT');
         } catch(error) { await c.query('ROLLBACK'); throw error; }

@@ -8,7 +8,6 @@
 import {createDatabaseConnection} from '../src/database/client.js';
 import {requestHash,validatePostingInput} from '../src/publishing/model.js';
 import {TimedReleaseStore} from '../src/publishing/timed-release.js';
-import {reviewedRelatedReel} from '../src/publishing/instagram-related.js';
 import {randomInt} from 'node:crypto';
 import {mkdir,writeFile} from 'node:fs/promises';
 
@@ -33,8 +32,6 @@ try{
  const releases=new Map((await c.query('SELECT * FROM scheduler.publishing_releases FOR UPDATE')).rows.map(r=>[r.item_id,r]));
  // requeue-verified-unposted.ts records Graph proof that a claimed Share never reached Instagram or Facebook.
  const claimed=(i:any)=>{const r=releases.get(i.id);if(i.results?.verifiedNotPosted?.verified===true)return false;return !!r?.share_claimed_at||['published','running'].includes(r?.state)||i.status==='published';};
- // Antonio's rule: every Instagram post links another Reel. Default to the reviewed Reel when a post has none.
- const relatedRef=(await c.query(`SELECT input->'instagramRelatedReel' r FROM scheduler.publishing_items WHERE input->'instagramRelatedReel'->>'url'=$1 LIMIT 1`,[reviewedRelatedReel])).rows[0]?.r;
  const eligible:any[]=[];
  const keptArmed=items.filter(i=>inLane(i)&&releases.get(i.id)?.state==='armed'&&new Date(releases.get(i.id).run_at)>new Date());
  for(const i of items.filter(x=>['held','needs_review'].includes(x.status)&&inLane(x)&&!keptArmed.includes(x))){
@@ -96,8 +93,8 @@ try{
   const runAt=slotFor(group[0].media.sha256);
   for(const i of group){
    const prior=releases.get(i.id);
-   const linkReel=relatedRef&&i.input.targets.some((t:any)=>t.platform==='instagram')&&!i.input.instagramRelatedReel&&i.input.caption!==relatedRef.caption;
-   const input=validatePostingInput({...i.input,runAt,...(linkReel?{instagramRelatedReel:relatedRef}:{})});
+   // Antonio's rule: every Instagram post links another Reel. TimedReleaseStore.arm links the topic-matched one.
+   const input=validatePostingInput({...i.input,runAt});
    const attempts=(i.results?.autopilotBacklog?.attempts??0)+(prior&&prior.state!=='cancelled'?1:0);
    const note={at:new Date().toISOString(),attempts,priorRunAt:i.input.runAt,priorStatus:i.status,priorRelease:prior?{state:prior.state,run_at:prior.run_at,result:prior.result}:null,runAt};
    if(prior)await c.query('DELETE FROM scheduler.publishing_releases WHERE item_id=$1 AND share_claimed_at IS NULL',[i.id]);

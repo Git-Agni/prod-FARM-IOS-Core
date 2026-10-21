@@ -11,6 +11,7 @@ import { FacebookVerifier } from './facebook-verify.js';
 import { WdaApp, parseGalleryCell } from './wda-app.js';
 import {locateRelatedCover,locateRelatedCoverInCells,locateHeadlineInCells,reelByUrl,reviewedRelatedReel} from './instagram-related.js';
 import {metaReceipts} from './meta-receipts.js';
+import {assertRelatedReelInCatalog} from './related-autolink.js';
 
 const run = promisify(execFile);
 const FACEBOOK_ON = 'Antonio Revenue, Facebook · Public, On';
@@ -70,6 +71,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         this.fromCreateTrialReel = false;
         const ig = input.targets.find(t => t.platform === 'instagram');
         if (!ig) throw new Error('This release needs an Instagram target');
+        assertRelatedReelInCatalog(input);
         const facebook = input.targets.some(t => t.platform === 'facebook');
         if (facebook && input.facebookMode !== 'linked_from_instagram') throw new Error('Only native linked Facebook sharing is supported');
 
