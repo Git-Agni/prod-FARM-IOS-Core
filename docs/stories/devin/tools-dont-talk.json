@@ -98,31 +98,41 @@
    "body": "Your AI texts. A setter calls.\n**A closer books.**",
    "orbit": [
     {
-     "cx": 935,
+     "cx": 1010,
      "cy": 820,
      "rx": 300,
-     "ry": 120,
-     "rot": -22,
-     "front": [
-      20,
-      160
-     ],
+     "ry": 290,
+     "rot": -15,
      "arrows": [
-      60,
-      250
+      200,
+      280
+     ],
+     "front": [
+      120,
+      175
+     ]
+    },
+    {
+     "cx": 1040,
+     "cy": 760,
+     "rx": 380,
+     "ry": 140,
+     "rot": 30,
+     "arrows": [
+      190
      ]
     }
    ],
    "chips": [
     {
      "x": 700,
-     "y": 640,
+     "y": 540,
      "icon": "💬",
      "text": "AI text"
     },
     {
      "x": 640,
-     "y": 1010,
+     "y": 1060,
      "icon": "📞",
      "text": "Setter"
     }
