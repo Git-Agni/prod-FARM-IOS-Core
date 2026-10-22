@@ -16,7 +16,7 @@ const spec = JSON.parse(readFileSync(specPath, 'utf8'));
 const out = path.resolve('.scheduler-data/story-assets/devin', spec.slug); mkdirSync(out, { recursive: true });
 const pool = loadPhotoPool();
 // Measured palette (sampled from the originals).
-const C = { red: '#E03842', redText: '#F2434D', green: '#45E58A', mint: '#5EE8B0', orange: '#F8930D', teal: '#3DE99B', cyan: '#1EF5F5', stamp: '#D6272C', orbit: '#4FB8E6' };
+const C = { red: '#E03842', redText: '#F2434D', green: '#4DA3FF', mint: '#7CC4FF', orange: '#F8930D', teal: '#3DE99B', cyan: '#1EF5F5', stamp: '#D6272C', orbit: '#4FB8E6' };
 
 const md = (s = '') => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[\[(.+?)\]\]/g, '<span class="box">$1</span>')
     .replace(/\{\{(.+?)\}\}/g, `<span style="color:${C.redText}">$1</span>`).replace(/\(\((.+?)\)\)/g, `<span style="color:${C.green}">$1</span>`)
@@ -107,7 +107,9 @@ async function frameHtml(f: any, i: number) {
         // Bubbles sit on the orbit: a photo (b.img) like his avatars, or a glowing glyph (b.icon) for tools.
         const bubbles = (f.bubbles ?? []).map((b: any) => `<div style="position:absolute;left:${b.x - 50}px;top:${b.y - 50}px;width:100px;height:100px;border-radius:50%;border:5px solid ${b.ring};box-shadow:0 0 18px ${b.ring};${b.img ? `background:url(${asset(b.img)}) center/cover` : 'background:#0d0f12;display:flex;align-items:center;justify-content:center'}">${b.icon ? glyph(b.icon, b.ring, 50) : ''}</div>`).join('');
         const chips = (f.chips ?? []).map((c: any) => `<div class="chip" style="left:${c.x}px;top:${c.y}px">${c.icon ?? ''}${c.text}</div>`).join('');
-        inner = `<div class="bg" style="background-image:url(${bg});${spot}"></div>
+        // shift: move a pre-framed photo right/down so the subject sits where Devin sits; the gap stays black.
+        const shift = f.shift ? `background-size:1080px 1920px;background-repeat:no-repeat;background-position:${f.shift[0]}px ${f.shift[1]}px;-webkit-mask-image:linear-gradient(90deg,transparent ${f.shift[0]}px,#000 ${f.shift[0] + 320}px),linear-gradient(180deg,transparent ${f.shift[1]}px,#000 ${f.shift[1] + 260}px);-webkit-mask-composite:source-in;` : '';
+        inner = `<div class="bg" style="background-image:url(${bg});${shift}${spot}"></div>
           <div class="bg" style="background:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 45%,rgba(0,0,0,0) 70%)"></div>
           ${orbit}${bubbles}${chips}
           <div style="position:absolute;left:106px;top:${f.titleTop ?? 295}px;font:400 ${f.titleSize ?? 80}px/${f.titleLh ?? 94}px system-ui,-apple-system,sans-serif;letter-spacing:-1.4px">${md(f.title)}</div>

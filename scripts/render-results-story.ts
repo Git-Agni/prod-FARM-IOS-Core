@@ -15,7 +15,7 @@ const out = path.resolve('.scheduler-data/story-assets/devin', spec.slug); mkdir
 const RED = '#FF2A2A', BOX = '#E8232A';
 const F = 'system-ui,-apple-system,sans-serif';
 const md = (s = '') => s.replace(/\[\[(.+?)\]\]/g, `<span style="background:${BOX};padding:0 14px;margin:0 2px">$1</span>`)
-    .replace(/\{\{(.+?)\}\}/g, '<span style="background:linear-gradient(90deg,#8B5CF6,#C084FC);-webkit-background-clip:text;color:transparent">$1</span>').replace(/\n/g, '<br>');
+    .replace(/\{\{(.+?)\}\}/g, '<span style="background:linear-gradient(90deg,#2780FF,#7CC4FF);-webkit-background-clip:text;color:transparent">$1</span>').replace(/\n/g, '<br>');
 const asset = (rel: string) => { const n = path.basename(rel); copyFileSync(path.join(base, rel), path.join(out, n)); return n; };
 const size = async (rel: string) => { const m = await sharp(path.join(base, rel)).metadata(); return [m.width!, m.height!]; };
 
@@ -23,11 +23,11 @@ const size = async (rel: string) => { const m = await sharp(path.join(base, rel)
 async function background(f: any) {
     const collage = await Promise.all((spec.collage ?? []).map(async (rel: string, n: number) =>
         `<img src="${asset(rel)}" style="position:absolute;left:${(n % 3) * 380 - 60}px;top:${Math.floor(n / 3) * 520 + 120}px;width:420px;border-radius:18px;transform:rotate(${(n % 2 ? 4 : -5)}deg);opacity:${f.type === 'titlecard' ? .28 : .10};filter:blur(${f.type === 'titlecard' ? 1 : 3}px)">`));
-    const crystal = (x: number, y: number, s: number, r: number) => `<svg style="position:absolute;left:${x}px;top:${y}px;transform:rotate(${r}deg);filter:drop-shadow(0 0 24px rgba(139,92,246,.7))" width="${s}" height="${s * 1.3}" viewBox="0 0 100 130">
-      <defs><linearGradient id="g${x}${y}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C4B5FD"/><stop offset=".45" stop-color="#7C3AED"/><stop offset="1" stop-color="#2E1065"/></linearGradient></defs>
+    const crystal = (x: number, y: number, s: number, r: number) => `<svg style="position:absolute;left:${x}px;top:${y}px;transform:rotate(${r}deg);filter:drop-shadow(0 0 24px rgba(39,128,255,.7))" width="${s}" height="${s * 1.3}" viewBox="0 0 100 130">
+      <defs><linearGradient id="g${x}${y}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#BFDBFE"/><stop offset=".45" stop-color="#2780FF"/><stop offset="1" stop-color="#0B2A66"/></linearGradient></defs>
       <polygon points="50,0 100,40 78,130 22,130 0,40" fill="url(#g${x}${y})" opacity=".55"/><polygon points="50,0 78,130 50,95" fill="#fff" opacity=".12"/><polygon points="0,40 50,95 22,130" fill="#000" opacity=".25"/></svg>`;
     const crystals = (f.crystals ?? spec.crystals ?? []).map((c: number[]) => crystal(c[0]!, c[1]!, c[2]!, c[3]!)).join('');
-    return `<div style="position:absolute;inset:0;background:radial-gradient(ellipse 900px 1200px at 50% 45%,#16123A 0%,#0C0A22 55%,#050410 100%)"></div>
+    return `<div style="position:absolute;inset:0;background:radial-gradient(ellipse 900px 1200px at 50% 45%,#0E1A3A 0%,#081024 55%,#03060F 100%)"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/54px 54px,linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/54px 54px"></div>
       ${collage.join('')}${crystals}`;
 }
@@ -38,7 +38,7 @@ async function frameHtml(f: any) {
         const cards = await Promise.all(f.cards.map(async (c: any, n: number) => {
             const [w0, h0] = await size(c.img), w = c.w, h = Math.round(w * h0 / w0);
             const ring = c.ring ? `<div style="position:absolute;left:${16 + c.ring[0] * w - c.ring[2] * w / 2}px;top:${16 + c.ring[1] * h - c.ring[3] * h / 2}px;width:${c.ring[2] * w}px;height:${c.ring[3] * h}px;border:6px solid ${RED};border-radius:50%;transform:rotate(-6deg);box-shadow:0 0 14px rgba(255,42,42,.5)"></div>` : '';
-            return `<div style="position:absolute;left:${c.x}px;top:${c.y}px;padding:16px;border-radius:26px;background:#14122E;border:2px solid rgba(255,255,255,.09);box-shadow:0 30px 80px rgba(0,0,0,.65);transform:rotate(${c.rot ?? 0}deg)">
+            return `<div style="position:absolute;left:${c.x}px;top:${c.y}px;padding:16px;border-radius:26px;background:#0D1630;border:2px solid rgba(255,255,255,.09);box-shadow:0 30px 80px rgba(0,0,0,.65);transform:rotate(${c.rot ?? 0}deg)">
               <img src="${asset(c.img)}" style="display:block;width:${w}px;height:${h}px;border-radius:14px">${ring}</div>`;
         }));
         const arrows = (f.arrows ?? []).map((a: any) => `<path d="M${a.from[0]} ${a.from[1]} Q ${a.ctrl[0]} ${a.ctrl[1]} ${a.to[0]} ${a.to[1]}" fill="none" stroke="${RED}" stroke-width="6" stroke-linecap="round" marker-end="url(#ah)"/>`).join('');
@@ -49,14 +49,14 @@ async function frameHtml(f: any) {
     }
     if (f.type === 'titlecard') {
         inner += `<div style="position:absolute;left:0;right:0;top:${f.top ?? 640}px;text-align:center;font:900 132px/1 ${F};letter-spacing:-2px;text-transform:uppercase;text-shadow:0 6px 30px rgba(0,0,0,.6)">${md(f.title)}</div>
-          <div style="position:absolute;left:0;right:0;top:${(f.top ?? 640) + 300}px;text-align:center;font:600 40px/1 ${F};letter-spacing:4px;text-transform:uppercase;color:#E9E5FF">${f.sub ?? ''}</div>`;
+          <div style="position:absolute;left:0;right:0;top:${(f.top ?? 640) + 300}px;text-align:center;font:600 40px/1 ${F};letter-spacing:4px;text-transform:uppercase;color:#DCEBFF">${f.sub ?? ''}</div>`;
     }
     if (f.cta) inner += `<div style="position:absolute;left:0;right:0;top:${f.ctaTop ?? 1470}px;text-align:center;white-space:nowrap">
-        <span style="font:600 50px/1 ${F};letter-spacing:.5px">REPLY WITH </span><span style="font:900 italic 64px/1 ${F};background:linear-gradient(90deg,${f.ctaFrom ?? '#FF4FD8'},${f.ctaTo ?? '#A855F7'});-webkit-background-clip:text;color:transparent">“${spec.keyword}”</span></div>
-      <svg width="1080" height="1920" style="position:absolute;inset:0"><path d="M${f.ctaArrowX ?? 800} ${(f.ctaTop ?? 1470) + 80} C ${(f.ctaArrowX ?? 800) + 90} ${(f.ctaTop ?? 1470) + 150}, ${(f.ctaArrowX ?? 800) + 60} ${(f.ctaTop ?? 1470) + 230}, ${(f.ctaArrowX ?? 800) + 10} ${(f.ctaTop ?? 1470) + 260}" fill="none" stroke="${f.ctaTo ?? '#A855F7'}" stroke-width="5" stroke-dasharray="12 10" stroke-linecap="round"/>
-      <path d="M${(f.ctaArrowX ?? 800) - 8} ${(f.ctaTop ?? 1470) + 238} l 18 26 l 14 -30" fill="none" stroke="${f.ctaTo ?? '#A855F7'}" stroke-width="5" stroke-linecap="round"/></svg>
-      ${f.send ? `<div style="position:absolute;left:0;right:0;top:${(f.ctaTop ?? 1470) + 90}px;text-align:center;font:400 40px/1 ${F};color:#D9D4FF">${f.send}</div>` : ''}`;
-    return `<!doctype html><html><head><meta charset="utf-8"><style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;overflow:hidden;background:#08061A;color:#fff;font-family:${F};-webkit-font-smoothing:antialiased}</style></head><body><div style="position:relative;width:1080px;height:1920px;overflow:hidden">${inner}</div></body></html>`;
+        <span style="font:600 50px/1 ${F};letter-spacing:.5px">REPLY WITH </span><span style="font:900 italic 64px/1 ${F};background:linear-gradient(90deg,${f.ctaFrom ?? '#7CC4FF'},${f.ctaTo ?? '#2780FF'});-webkit-background-clip:text;color:transparent">“${spec.keyword}”</span></div>
+      <svg width="1080" height="1920" style="position:absolute;inset:0"><path d="M${f.ctaArrowX ?? 800} ${(f.ctaTop ?? 1470) + 80} C ${(f.ctaArrowX ?? 800) + 90} ${(f.ctaTop ?? 1470) + 150}, ${(f.ctaArrowX ?? 800) + 60} ${(f.ctaTop ?? 1470) + 230}, ${(f.ctaArrowX ?? 800) + 10} ${(f.ctaTop ?? 1470) + 260}" fill="none" stroke="${f.ctaTo ?? '#2780FF'}" stroke-width="5" stroke-dasharray="12 10" stroke-linecap="round"/>
+      <path d="M${(f.ctaArrowX ?? 800) - 8} ${(f.ctaTop ?? 1470) + 238} l 18 26 l 14 -30" fill="none" stroke="${f.ctaTo ?? '#2780FF'}" stroke-width="5" stroke-linecap="round"/></svg>
+      ${f.send ? `<div style="position:absolute;left:0;right:0;top:${(f.ctaTop ?? 1470) + 90}px;text-align:center;font:400 40px/1 ${F};color:#DCEBFF">${f.send}</div>` : ''}`;
+    return `<!doctype html><html><head><meta charset="utf-8"><style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;overflow:hidden;background:#03060F;color:#fff;font-family:${F};-webkit-font-smoothing:antialiased}</style></head><body><div style="position:relative;width:1080px;height:1920px;overflow:hidden">${inner}</div></body></html>`;
 }
 
 const pngs: string[] = [];

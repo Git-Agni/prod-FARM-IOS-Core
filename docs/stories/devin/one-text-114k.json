@@ -18,77 +18,57 @@
   },
   {
    "type": "person",
-   "photo": "8bc5feef",
-   "place": {
-    "face": [
-     0.53,
-     0.41,
-     0.18
-    ],
-    "at": [
-     850,
-     1040,
-     290
-    ]
-   },
-   "dim": 0.85,
+   "photo": "asset:assets/gen-antonio-f2b.png",
+   "dim": 1.0,
    "title": "Most teams still\ntext new leads\n**By hand**",
    "body": "Hours later, after\nthe lead already\n**moved on**",
    "orbit": [
     {
-     "cx": 850,
-     "cy": 1030,
-     "rx": 310,
-     "ry": 140,
+     "cx": 940,
+     "cy": 840,
+     "rx": 300,
+     "ry": 130,
      "rot": -28
     },
     {
-     "cx": 850,
-     "cy": 1060,
-     "rx": 280,
-     "ry": 115,
+     "cx": 940,
+     "cy": 870,
+     "rx": 270,
+     "ry": 105,
      "rot": 32
     }
    ],
    "bubbles": [
     {
-     "x": 800,
-     "y": 790,
+     "x": 760,
+     "y": 700,
      "img": "assets/logos/bubble-facebook.png",
      "ring": "#0866FF"
     },
     {
-     "x": 1000,
-     "y": 980,
+     "x": 1010,
+     "y": 800,
      "img": "assets/logos/bubble-instagram.png",
      "ring": "#E4405F"
     },
     {
-     "x": 640,
-     "y": 1200,
+     "x": 800,
+     "y": 1010,
      "img": "assets/logos/bubble-google.png",
      "ring": "#4285F4"
     }
    ],
    "pull": "Mine doesn't 👉",
-   "pullRight": 190
+   "pullRight": 190,
+   "shift": [
+    230,
+    150
+   ]
   },
   {
    "type": "person",
-   "photo": "video:fb",
-   "place": {
-    "face": [
-     0.4,
-     0.45,
-     0.18
-    ],
-    "at": [
-     840,
-     1000,
-     280
-    ]
-   },
-   "dim": 0.8,
+   "photo": "asset:assets/gen-antonio-f3.png",
+   "dim": 1.0,
    "titleSize": 74,
    "titleLh": 86,
    "titleTop": 330,
@@ -96,29 +76,33 @@
    "body": "Setters, AI SMS and AI voice\nwork **every lead together**",
    "orbit": [
     {
-     "cx": 840,
-     "cy": 990,
-     "rx": 290,
-     "ry": 125,
+     "cx": 935,
+     "cy": 840,
+     "rx": 280,
+     "ry": 120,
      "rot": -25
     }
    ],
    "chips": [
     {
-     "x": 690,
+     "x": 700,
      "y": 640,
      "icon": "💬",
      "text": "AI SMS"
     },
     {
-     "x": 520,
-     "y": 1040,
+     "x": 640,
+     "y": 1010,
      "icon": "📞",
      "text": "Setter"
     }
    ],
    "pull": "Here's what changed 👉",
-   "pullRight": 120
+   "pullRight": 120,
+   "shift": [
+    200,
+    240
+   ]
   },
   {
    "type": "tree",
@@ -231,5 +215,6 @@
    "videoTitle": "How VShred Collected $1.8M Through an AI SMS System",
    "send": "and I'll send it to you"
   }
- ]
+ ],
+ "generated_photos": "gen-antonio-f2b.png, gen-antonio-f3.png (GPT Image 2.5 from approved refs; f2 redone sleeves down per Antonio Oct 22)"
 }

@@ -18,65 +18,57 @@
   },
   {
    "type": "person",
-   "photo": "8bc5feef",
-   "dim": 0.85,
+   "photo": "asset:assets/gen-antonio-f2b.png",
+   "dim": 1.0,
    "title": "Sales used to run\non a 9 to 5\n**Business hours**",
    "body": "A lead came in at night\nand someone called them\nback the **next day**",
    "orbit": [
     {
-     "cx": 850,
-     "cy": 1030,
-     "rx": 310,
-     "ry": 140,
+     "cx": 940,
+     "cy": 840,
+     "rx": 300,
+     "ry": 130,
      "rot": -28
     },
     {
-     "cx": 850,
-     "cy": 1060,
-     "rx": 280,
-     "ry": 115,
+     "cx": 940,
+     "cy": 870,
+     "rx": 270,
+     "ry": 105,
      "rot": 32
     }
    ],
    "bubbles": [
     {
-     "x": 800,
-     "y": 790,
+     "x": 760,
+     "y": 700,
      "img": "assets/logos/bubble-facebook.png",
      "ring": "#0866FF"
     },
     {
-     "x": 1000,
-     "y": 980,
+     "x": 1010,
+     "y": 800,
      "img": "assets/logos/bubble-instagram.png",
      "ring": "#E4405F"
     },
     {
-     "x": 640,
-     "y": 1200,
+     "x": 800,
+     "y": 1010,
      "img": "assets/logos/bubble-google.png",
      "ring": "#4285F4"
     }
    ],
    "pull": "Not anymore 👉",
    "pullRight": 190,
-   "place": {
-    "face": [
-     0.53,
-     0.41,
-     0.18
-    ],
-    "at": [
-     850,
-     1040,
-     290
-    ]
-   }
+   "shift": [
+    230,
+    150
+   ]
   },
   {
    "type": "person",
-   "photo": "video:fb",
-   "dim": 0.8,
+   "photo": "asset:assets/gen-antonio-f3.png",
+   "dim": 1.0,
    "title": "Now we're in the era of\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>INSTANT REPLIES</span>",
    "titleSize": 74,
    "titleLh": 86,
@@ -84,41 +76,33 @@
    "body": "Leads buy from whoever\n**answers them first**",
    "orbit": [
     {
-     "cx": 840,
-     "cy": 990,
-     "rx": 290,
-     "ry": 125,
+     "cx": 935,
+     "cy": 840,
+     "rx": 280,
+     "ry": 120,
      "rot": -25
     }
    ],
    "chips": [
     {
-     "x": 690,
+     "x": 700,
      "y": 640,
      "icon": "💬",
      "text": "AI text"
     },
     {
-     "x": 520,
-     "y": 1040,
+     "x": 640,
+     "y": 1010,
      "icon": "📞",
      "text": "Call back"
     }
    ],
    "pull": "So how do you keep up 👉",
    "pullRight": 100,
-   "place": {
-    "face": [
-     0.4,
-     0.45,
-     0.18
-    ],
-    "at": [
-     840,
-     1000,
-     280
-    ]
-   }
+   "shift": [
+    200,
+    240
+   ]
   },
   {
    "type": "tree",
@@ -280,5 +264,6 @@
  "banned_photos": [
   "video:ff",
   "b8ad871c"
- ]
+ ],
+ "generated_photos": "gen-antonio-f2b.png, gen-antonio-f3.png (GPT Image 2.5 from approved refs; f2 redone sleeves down per Antonio Oct 22)"
 }

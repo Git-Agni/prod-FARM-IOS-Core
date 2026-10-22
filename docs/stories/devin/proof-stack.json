@@ -124,7 +124,9 @@
    ],
    "cta": true,
    "ctaTop": 1330,
-   "ctaArrowX": 820
+   "ctaArrowX": 820,
+   "ctaFrom": "#7CC4FF",
+   "ctaTo": "#2780FF"
   },
   {
    "type": "win",
@@ -195,8 +197,8 @@
    ],
    "cta": true,
    "ctaTop": 1420,
-   "ctaFrom": "#4ADE80",
-   "ctaTo": "#22D3EE",
+   "ctaFrom": "#7CC4FF",
+   "ctaTo": "#2780FF",
    "ctaArrowX": 820
   },
   {
@@ -261,8 +263,8 @@
    ],
    "cta": true,
    "ctaTop": 1400,
-   "ctaFrom": "#FF4FD8",
-   "ctaTo": "#A855F7",
+   "ctaFrom": "#7CC4FF",
+   "ctaTo": "#2780FF",
    "send": "and I'll send you the video",
    "ctaArrowX": 860
   }
