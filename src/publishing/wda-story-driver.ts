@@ -269,6 +269,9 @@ export class WdaStoryDriver extends InstagramRelease {
         const field = await this.waitFor('predicate string', '(name == "URL" OR label == "URL") AND visible == 1', 'Link URL field', 15_000);
         await this.request(`${this.session}/element/${field}/value`, { value: [url] });
         if (text) {
+            // Oct 21: Instagram now hides the text field behind "Customize sticker text".
+            const customize = '(name == "Customize sticker text" OR label == "Customize sticker text") AND visible == 1';
+            if (await this.visible('predicate string', customize)) await this.tapElement('predicate string', customize, 'Customize sticker text');
             const st = await this.waitFor('predicate string', '(name == "Sticker text" OR label == "Sticker text") AND visible == 1', 'Sticker text field', 8_000);
             await this.request(`${this.session}/element/${st}/click`, {});
             await this.request(`${this.session}/element/${st}/value`, { value: [text] });
