@@ -6,44 +6,44 @@
  "frames": [
   {
    "type": "life",
-   "photo": "2b20870f",
+   "photo": "asset:../gallery/antonio-09-boardwalk-sunset.jpg",
    "line": "some days the office has a better view",
    "y": 1250
   },
   {
    "type": "life",
-   "photo": "57971ae1",
+   "photo": "asset:../gallery/antonio-01-home-office-night.jpg",
    "line": "deep work mode",
    "y": 1320
   },
   {
    "type": "life",
-   "photo": "0cb060df",
+   "photo": "asset:../gallery/antonio-06-hotel-lobby-walk.jpg",
    "line": "the systems run, so i get to be out here",
    "y": 1380,
    "size": 54
   },
   {
    "type": "life",
-   "photo": "a19dab02",
+   "photo": "asset:../gallery/antonio-07-airport-lounge.jpg",
    "line": "on the road again ✈️",
    "y": 1200
   },
   {
    "type": "life",
-   "photo": "4744897d",
+   "photo": "asset:../gallery/antonio-21-mountain-viewpoint.jpg",
    "line": "grateful for days like this",
    "y": 1300
   },
   {
    "type": "life",
-   "photo": "bf25d4f8",
-   "line": "walk, think, build",
+   "photo": "asset:../gallery/antonio-23-restaurant-dinner.jpg",
+   "line": "dinner first. then back to building",
    "y": 1350
   },
   {
    "type": "ama",
-   "photo": "f6dcb47a",
+   "photo": "asset:../gallery/antonio-10-stage-talk.jpg",
    "avatar": "asset:assets/avatar.jpg",
    "question": "been building a lot lately...\nask me anything about AI + sales teams",
    "y": 560

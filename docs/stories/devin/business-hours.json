@@ -18,14 +18,14 @@
   },
   {
    "type": "person",
-   "photo": "asset:assets/gen-antonio-f2b.png",
-   "dim": 1.0,
+   "photo": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "dim": 0.9,
    "title": "Sales used to run\non a 9 to 5\n**Business hours**",
    "body": "A lead came in at night\nand someone called them\nback the **next day**",
    "orbit": [
     {
-     "cx": 985,
-     "cy": 890,
+     "cx": 942,
+     "cy": 1049,
      "rx": 270,
      "ry": 310,
      "rot": -10,
@@ -39,8 +39,8 @@
      ]
     },
     {
-     "cx": 1010,
-     "cy": 880,
+     "cx": 967,
+     "cy": 1039,
      "rx": 360,
      "ry": 150,
      "rot": 42,
@@ -82,15 +82,15 @@
    "pull": "Not anymore 👉",
    "pullRight": 190,
    "shift": [
-    230,
-    150
+    360,
+    616
    ],
-   "cutout": "assets/gen-antonio-f2b-mask.png"
+   "cutout": "../gallery/masks/antonio-03-rooftop-dusk-mask.png"
   },
   {
    "type": "person",
-   "photo": "asset:assets/gen-antonio-f3.png",
-   "dim": 1.0,
+   "photo": "asset:../gallery/antonio-02-podcast-studio.jpg",
+   "dim": 0.85,
    "title": "Now we're in the era of\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>INSTANT REPLIES</span>",
    "titleSize": 74,
    "titleLh": 86,
@@ -98,8 +98,8 @@
    "body": "Leads buy from whoever\n**answers them first**",
    "orbit": [
     {
-     "cx": 1010,
-     "cy": 820,
+     "cx": 956,
+     "cy": 985,
      "rx": 300,
      "ry": 290,
      "rot": -15,
@@ -113,8 +113,8 @@
      ]
     },
     {
-     "cx": 1040,
-     "cy": 760,
+     "cx": 986,
+     "cy": 925,
      "rx": 380,
      "ry": 140,
      "rot": 30,
@@ -125,14 +125,14 @@
    ],
    "chips": [
     {
-     "x": 700,
-     "y": 540,
+     "x": 646,
+     "y": 805,
      "icon": "💬",
      "text": "AI text"
     },
     {
-     "x": 640,
-     "y": 1060,
+     "x": 586,
+     "y": 1225,
      "icon": "📞",
      "text": "Call back"
     }
@@ -140,42 +140,42 @@
    "pull": "So how do you keep up 👉",
    "pullRight": 100,
    "shift": [
-    200,
-    240
+    405,
+    635
    ],
-   "cutout": "assets/gen-antonio-f3-mask.png"
+   "cutout": "../gallery/masks/antonio-02-podcast-studio-mask.png"
   },
   {
    "type": "tree",
    "state": 1,
-   "backdrop": "5d070570",
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
    "avatar": "asset:assets/avatar.jpg",
    "title": "Imagine you run ads and get\n3 leads after you clock out",
    "cards": [
     {
      "name": "9 PM Lead",
-     "photo": "video:16",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
      "icon": "form",
      "color": "#F8930D"
     },
     {
      "name": "11 PM Lead",
-     "photo": "1d5393f1",
+     "photo": "asset:../gallery/antonio-15-bedroom-late-night.jpg",
      "icon": "chat",
      "color": "#3DE99B"
     },
     {
      "name": "6 AM Lead",
-     "photo": "055f3170",
+     "photo": "asset:../gallery/antonio-16-kitchen-morning.jpg",
      "icon": "ring",
      "color": "#1EF5F5"
     }
    ],
    "backPlace": {
     "face": [
-     0.36,
-     0.36,
-     0.12
+     0.5,
+     0.375,
+     0.2
     ],
     "at": [
      540,
@@ -187,27 +187,27 @@
   {
    "type": "tree",
    "state": 2,
-   "backdrop": "5d070570",
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
    "avatar": "asset:assets/avatar.jpg",
    "title": "Each one wants a ((answer))\nright now",
    "cards": [
     {
      "name": "9 PM Lead",
-     "photo": "video:16",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
      "stat": "12h",
      "statLabel": "Waiting",
      "color": "#F8930D"
     },
     {
      "name": "11 PM Lead",
-     "photo": "1d5393f1",
+     "photo": "asset:../gallery/antonio-15-bedroom-late-night.jpg",
      "stat": "10h",
      "statLabel": "Waiting",
      "color": "#3DE99B"
     },
     {
      "name": "6 AM Lead",
-     "photo": "055f3170",
+     "photo": "asset:../gallery/antonio-16-kitchen-morning.jpg",
      "stat": "3h",
      "statLabel": "Waiting",
      "color": "#1EF5F5"
@@ -215,9 +215,9 @@
    ],
    "backPlace": {
     "face": [
-     0.36,
-     0.36,
-     0.12
+     0.5,
+     0.375,
+     0.2
     ],
     "at": [
      540,
@@ -229,14 +229,14 @@
   {
    "type": "tree",
    "state": 3,
-   "backdrop": "5d070570",
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
    "avatar": "asset:assets/avatar.jpg",
    "titleTop": 215,
    "title": "Which means {{2 of 3}} leads will\nbook with someone faster\n<span style='text-decoration:underline;text-decoration-color:#E03842;text-decoration-thickness:4px;text-underline-offset:18px'>before you even wake up</span>",
    "cards": [
     {
      "name": "9 PM Lead",
-     "photo": "video:16",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
      "stat": "12h",
      "statLabel": "Waiting",
      "color": "#F8930D",
@@ -244,7 +244,7 @@
     },
     {
      "name": "11 PM Lead",
-     "photo": "1d5393f1",
+     "photo": "asset:../gallery/antonio-15-bedroom-late-night.jpg",
      "stat": "10h",
      "statLabel": "Waiting",
      "color": "#3DE99B",
@@ -252,7 +252,7 @@
     },
     {
      "name": "6 AM Lead",
-     "photo": "055f3170",
+     "photo": "asset:../gallery/antonio-16-kitchen-morning.jpg",
      "stat": "3h",
      "statLabel": "Waiting",
      "color": "#1EF5F5"
@@ -260,9 +260,9 @@
    ],
    "backPlace": {
     "face": [
-     0.36,
-     0.36,
-     0.12
+     0.5,
+     0.375,
+     0.2
     ],
     "at": [
      540,
@@ -295,7 +295,7 @@
   },
   {
    "type": "cta",
-   "backdrop": "d7725c69",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
    "title": "This video shows you how to\nnever miss a lead again👇",
    "thumb": "assets/yt-autopilot.jpg",
    "videoTitle": "Your Business Shouldn't Stop When You Put Your Phone Down",
@@ -306,5 +306,5 @@
   "video:ff",
   "b8ad871c"
  ],
- "generated_photos": "gen-antonio-f2b.png, gen-antonio-f3.png (GPT Image 2.5 from approved refs; f2 redone sleeves down per Antonio Oct 22)"
+ "generated_photos": "gallery picks 03, 02, 13, 14, 15, 16, 17, 24, 05, 01 (docs/stories/gallery)"
 }

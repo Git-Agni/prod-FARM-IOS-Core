@@ -38,8 +38,9 @@ async function photo(key: string, name: string, o: { dim?: number; w?: number; h
 /** Put a person where Devin puts himself: the face (fx, fy as fractions of the photo, hf = head width / photo width)
  * lands at (x, y) with a head hp px wide, on black, optionally mirrored. Returns a 1080x1920 frame. */
 async function place(key: string, name: string, o: { face: [number, number, number]; at: [number, number, number]; flip?: boolean; dim?: number; sat?: number }) {
-    const p = pool.find(x => x.sha256.startsWith(key)); if (!p) throw Error('No pool photo ' + key);
-    let src = sharp(await photoBuffer(p.file, p.t), { failOn: 'none' }).rotate();
+    let src: sharp.Sharp;
+    if (key.startsWith('asset:')) src = sharp(path.join(base, key.slice(6)));
+    else { const p = pool.find(x => x.sha256.startsWith(key)); if (!p) throw Error('No pool photo ' + key); src = sharp(await photoBuffer(p.file, p.t), { failOn: 'none' }).rotate(); }
     if (o.flip) src = sharp(await src.flop().toBuffer());
     const m = await sharp(await src.clone().toBuffer()).metadata(), [fx0, fy, hf] = o.face, fx = o.flip ? 1 - fx0 : fx0, [x, y, hp] = o.at;
     const s = hp / (hf * m.width!), W = Math.round(m.width! * s), H = Math.round(m.height! * s);
