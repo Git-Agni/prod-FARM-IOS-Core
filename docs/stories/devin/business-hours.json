@@ -1,0 +1,243 @@
+{
+ "slug": "business-hours",
+ "keyword": "AUTOPILOT",
+ "model": "Devin Jatho live Story 2026-10-21 ('Social media is dead'), frame for frame",
+ "frames": [
+  {
+   "type": "cover",
+   "plate": "assets/plate-tombstone.png",
+   "title": "Business hours\nare [[DEAD]]",
+   "carve": [
+    "clock",
+    "nine5",
+    "phone",
+    "calendar"
+   ],
+   "cells": [
+    [
+     412,
+     818
+    ],
+    [
+     648,
+     818
+    ],
+    [
+     412,
+     1066
+    ],
+    [
+     648,
+     1066
+    ]
+   ],
+   "sub": "Your leads don't wait anymore, and\nit's reply fast or **be** {{left behind}} 👉",
+   "zoom": 1.12,
+   "fx": 0.49,
+   "fy": 0.32,
+   "titleTop": 232
+  },
+  {
+   "type": "person",
+   "photo": "df246eee",
+   "dim": 0.5,
+   "pos": "east",
+   "title": "Sales used to run\non a 9 to 5\n**Business hours**",
+   "body": "A lead came in at night\nand someone called them\nback the **next day**",
+   "orbit": [
+    {
+     "cx": 880,
+     "cy": 820,
+     "rx": 330,
+     "ry": 150,
+     "rot": -28
+    },
+    {
+     "cx": 880,
+     "cy": 860,
+     "rx": 300,
+     "ry": 120,
+     "rot": 32
+    }
+   ],
+   "bubbles": [
+    {
+     "x": 760,
+     "y": 660,
+     "icon": "clock",
+     "ring": "#3DE99B"
+    },
+    {
+     "x": 1000,
+     "y": 820,
+     "icon": "calendar",
+     "ring": "#E7E7E7"
+    },
+    {
+     "x": 700,
+     "y": 1110,
+     "icon": "phone",
+     "ring": "#4FB8E6"
+    }
+   ],
+   "pull": "Not anymore 👉",
+   "pullRight": 190
+  },
+  {
+   "type": "person",
+   "photo": "video:ff",
+   "dim": 0.55,
+   "pos": "east",
+   "title": "Now we're in the era of\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>INSTANT REPLIES</span>",
+   "titleSize": 74,
+   "titleLh": 86,
+   "titleTop": 330,
+   "body": "Leads buy from whoever\n**answers them first**",
+   "orbit": [
+    {
+     "cx": 960,
+     "cy": 900,
+     "rx": 300,
+     "ry": 130,
+     "rot": -25
+    }
+   ],
+   "chips": [
+    {
+     "x": 700,
+     "y": 600,
+     "icon": "💬",
+     "text": "AI text"
+    },
+    {
+     "x": 560,
+     "y": 1020,
+     "icon": "📞",
+     "text": "Call back"
+    }
+   ],
+   "pull": "So how do you keep up 👉",
+   "pullRight": 100
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "b8ad871c",
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Imagine you run ads and get\n3 leads after you clock out",
+   "cards": [
+    {
+     "name": "9 PM Lead",
+     "photo": "video:16",
+     "icon": "form",
+     "color": "#F8930D"
+    },
+    {
+     "name": "11 PM Lead",
+     "photo": "1d5393f1",
+     "icon": "chat",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "6 AM Lead",
+     "photo": "video:fb",
+     "icon": "ring",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "tree",
+   "state": 2,
+   "backdrop": "b8ad871c",
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Each one wants a ((answer))\nright now",
+   "cards": [
+    {
+     "name": "9 PM Lead",
+     "photo": "video:16",
+     "stat": "12h",
+     "statLabel": "Waiting",
+     "color": "#F8930D"
+    },
+    {
+     "name": "11 PM Lead",
+     "photo": "1d5393f1",
+     "stat": "10h",
+     "statLabel": "Waiting",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "6 AM Lead",
+     "photo": "video:fb",
+     "stat": "3h",
+     "statLabel": "Waiting",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "tree",
+   "state": 3,
+   "backdrop": "b8ad871c",
+   "avatar": "asset:assets/avatar.jpg",
+   "titleTop": 215,
+   "title": "Which means {{2 of 3}} leads will\nbook with someone faster\n<span style='text-decoration:underline;text-decoration-color:#E03842;text-decoration-thickness:4px;text-underline-offset:18px'>before you even wake up</span>",
+   "cards": [
+    {
+     "name": "9 PM Lead",
+     "photo": "video:16",
+     "stat": "12h",
+     "statLabel": "Waiting",
+     "color": "#F8930D",
+     "stamp": "GONE COLD"
+    },
+    {
+     "name": "11 PM Lead",
+     "photo": "1d5393f1",
+     "stat": "10h",
+     "statLabel": "Waiting",
+     "color": "#3DE99B",
+     "stamp": "GONE COLD"
+    },
+    {
+     "name": "6 AM Lead",
+     "photo": "video:fb",
+     "stat": "3h",
+     "statLabel": "Waiting",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "showcase",
+   "title": "So to win the <span style='text-decoration:underline;text-decoration-color:#4BC597;text-decoration-thickness:4px;text-underline-offset:16px'>leads you pay for</span>",
+   "line1": "Your AI should text back\n<<in minutes, day or night>>",
+   "line2": "And save you setters for **the real calls**",
+   "rows": [
+    {
+     "image": "assets/screen-sms.png",
+     "sides": [
+      "assets/reel-harvey-cover.jpg",
+      "assets/reel-phone-cover.jpg"
+     ]
+    },
+    {
+     "image": "assets/screen-call.png",
+     "sides": [
+      "assets/reel-hiring-cover.jpg",
+      "assets/reel-harvey-cover.jpg"
+     ]
+    }
+   ]
+  },
+  {
+   "type": "cta",
+   "backdrop": "8bc5feef",
+   "title": "This video shows you how to\nnever miss a lead again👇",
+   "thumb": "assets/yt-autopilot.jpg",
+   "videoTitle": "Your Business Shouldn't Stop When You Put Your Phone Down",
+   "send": "and I'll send it to you"
+  }
+ ]
+}
