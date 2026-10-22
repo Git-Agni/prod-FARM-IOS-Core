@@ -1,0 +1,98 @@
+[
+ {
+  "file": "antonio-01-home-office-night.jpg",
+  "scene": "home-office-night",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-02-podcast-studio.jpg",
+  "scene": "podcast-studio",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-03-rooftop-dusk.jpg",
+  "scene": "rooftop-dusk",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-04-cafe-window.jpg",
+  "scene": "cafe-window",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-05-whiteboard-strategy.jpg",
+  "scene": "whiteboard-strategy",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-06-hotel-lobby-walk.jpg",
+  "scene": "hotel-lobby-walk",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-07-airport-lounge.jpg",
+  "scene": "airport-lounge",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-08-sofa-evening.jpg",
+  "scene": "sofa-evening",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-09-boardwalk-sunset.jpg",
+  "scene": "boardwalk-sunset",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-10-stage-talk.jpg",
+  "scene": "stage-talk",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-11-sales-floor.jpg",
+  "scene": "sales-floor",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ },
+ {
+  "file": "antonio-12-car-parked.jpg",
+  "scene": "car-parked",
+  "model": "gpt_image_2_5",
+  "refs": "approved 360 turnaround (front, front-34-left, front-34-right, profile-left) + tattoo crop + v2 character sheet",
+  "rules": "left-forearm tattoo only, sleeves down, no jewelry, glasses",
+  "created": "2026-10-22"
+ }
+]
