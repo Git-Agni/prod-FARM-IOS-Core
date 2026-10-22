@@ -35,6 +35,22 @@ async function photo(key: string, name: string, o: { dim?: number; w?: number; h
     await img.modulate({ brightness: o.dim ?? 1, saturation: o.sat ?? 1 }).jpeg({ quality: 90 }).toFile(file);
     return name + '.jpg';
 }
+/** Put a person where Devin puts himself: the face (fx, fy as fractions of the photo, hf = head width / photo width)
+ * lands at (x, y) with a head hp px wide, on black, optionally mirrored. Returns a 1080x1920 frame. */
+async function place(key: string, name: string, o: { face: [number, number, number]; at: [number, number, number]; flip?: boolean; dim?: number; sat?: number }) {
+    const p = pool.find(x => x.sha256.startsWith(key)); if (!p) throw Error('No pool photo ' + key);
+    let src = sharp(await photoBuffer(p.file, p.t), { failOn: 'none' }).rotate();
+    if (o.flip) src = sharp(await src.flop().toBuffer());
+    const m = await sharp(await src.clone().toBuffer()).metadata(), [fx0, fy, hf] = o.face, fx = o.flip ? 1 - fx0 : fx0, [x, y, hp] = o.at;
+    const s = hp / (hf * m.width!), W = Math.round(m.width! * s), H = Math.round(m.height! * s);
+    const left = Math.round(x - fx * W), top = Math.round(y - fy * H);
+    const scaled = await src.resize(W, H).modulate({ brightness: o.dim ?? 1, saturation: o.sat ?? 1 }).toBuffer();
+    // Crop the part that falls inside the frame, then drop it onto black.
+    const cl = Math.max(0, -left), ct = Math.max(0, -top), cw = Math.min(W - cl, 1080 - Math.max(0, left)), ch = Math.min(H - ct, 1920 - Math.max(0, top));
+    const piece = await sharp(scaled).extract({ left: cl, top: ct, width: cw, height: ch }).toBuffer();
+    await sharp({ create: { width: 1080, height: 1920, channels: 3, background: '#000' } }).composite([{ input: piece, left: Math.max(0, left), top: Math.max(0, top) }]).jpeg({ quality: 90 }).toFile(path.join(out, name + '.jpg'));
+    return name + '.jpg';
+}
 const asset = (rel: string) => { const n = path.basename(rel); copyFileSync(path.join(base, rel), path.join(out, n)); return n; };
 const ICON: Record<string, string> = {
     clock: '<circle cx="50" cy="50" r="40" fill="none" stroke="#000" stroke-width="10"/><path d="M50 26v26l17 11" fill="none" stroke="#000" stroke-width="10" stroke-linecap="round"/>',
@@ -83,13 +99,15 @@ async function frameHtml(f: any, i: number) {
     }
     if (f.type === 'person') {
         // Layers: full-bleed photo graded dark, left text column, orbit rings + avatar bubbles or topic chips, pull line.
-        const bg = await photo(f.photo, 'bg' + i, { dim: f.dim ?? .55, pos: f.pos, sat: .85 });
+        const bg = f.place ? await place(f.photo, 'bg' + i, { ...f.place, dim: f.dim ?? .8, sat: .85 }) : await photo(f.photo, 'bg' + i, { dim: f.dim ?? .55, pos: f.pos, sat: .85 });
+        // His person frames: the subject is lit and the room falls to black around them (a soft spotlight on the face).
+        const spot = f.place ? `-webkit-mask-image:radial-gradient(ellipse ${f.spot?.[0] ?? 620}px ${f.spot?.[1] ?? 900}px at ${f.place.at[0]}px ${f.place.at[1] + 260}px,#000 40%,rgba(0,0,0,.35) 75%,rgba(0,0,0,.12) 100%)` : '';
         const orbit = f.orbit ? `<svg width="1080" height="1920" style="position:absolute;inset:0"><defs><marker id="ar" markerWidth="16" markerHeight="16" refX="8" refY="8" orient="auto"><path d="M2 3 L12 8 L2 13" fill="none" stroke="${C.orbit}" stroke-width="3"/></marker></defs>
             ${f.orbit.map((o: any) => `<ellipse cx="${o.cx}" cy="${o.cy}" rx="${o.rx}" ry="${o.ry}" transform="rotate(${o.rot} ${o.cx} ${o.cy})" fill="none" stroke="${C.orbit}" stroke-width="4" opacity=".95" style="filter:drop-shadow(0 0 6px ${C.orbit})"/>`).join('')}</svg>` : '';
         // Bubbles sit on the orbit: a photo (b.img) like his avatars, or a glowing glyph (b.icon) for tools.
         const bubbles = (f.bubbles ?? []).map((b: any) => `<div style="position:absolute;left:${b.x - 50}px;top:${b.y - 50}px;width:100px;height:100px;border-radius:50%;border:5px solid ${b.ring};box-shadow:0 0 18px ${b.ring};${b.img ? `background:url(${asset(b.img)}) center/cover` : 'background:#0d0f12;display:flex;align-items:center;justify-content:center'}">${b.icon ? glyph(b.icon, b.ring, 50) : ''}</div>`).join('');
         const chips = (f.chips ?? []).map((c: any) => `<div class="chip" style="left:${c.x}px;top:${c.y}px">${c.icon ?? ''}${c.text}</div>`).join('');
-        inner = `<div class="bg" style="background-image:url(${bg})"></div>
+        inner = `<div class="bg" style="background-image:url(${bg});${spot}"></div>
           <div class="bg" style="background:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 45%,rgba(0,0,0,0) 70%)"></div>
           ${orbit}${bubbles}${chips}
           <div style="position:absolute;left:106px;top:${f.titleTop ?? 295}px;font:400 ${f.titleSize ?? 80}px/${f.titleLh ?? 94}px system-ui,-apple-system,sans-serif;letter-spacing:-1.4px">${md(f.title)}</div>
@@ -97,7 +115,8 @@ async function frameHtml(f: any, i: number) {
     }
     if (f.type === 'tree') {
         // Layers: black, dim backdrop photo at the bottom, centered title, "You" node, dashed curves, three cards.
-        const back = await photo(f.backdrop, 'back' + i, { dim: .17, w: 1080, h: 1000, pos: 'centre', sat: .7 });
+        // His tree backdrop: himself, small at the bottom centre, under a heavy dark overlay; the top is pure black.
+        const back = f.backPlace ? await place(f.backdrop, 'back' + i, { ...f.backPlace, dim: .5, sat: .7 }) : await photo(f.backdrop, 'back' + i, { dim: .17, w: 1080, h: 1000, pos: 'centre', sat: .7 });
         const st = f.state ?? 1, xs = [232, 529, 826], top = 853, cw = 270, ch = 443;
         const dashColor = (n: number) => st === 3 && f.cards[n].stamp ? C.stamp : 'rgba(255,255,255,.92)';
         const curves = xs.map((x, n) => `<path d="M${529 + (n - 1) * 22} 731 C ${529 + (n - 1) * 60} 790, ${x} 760, ${x} ${top - 22}" fill="none" stroke="${dashColor(n)}" stroke-width="4" stroke-dasharray="16 12" stroke-linecap="round"/>`).join('');
@@ -111,7 +130,8 @@ async function frameHtml(f: any, i: number) {
               <div style="position:relative;height:${ch - 67}px;border-radius:14px;overflow:hidden;background:url(${img}) center/cover;outline:${red ? `3px solid ${C.stamp}` : 'none'}">${mid}</div>
               ${red ? `<div style="position:absolute;left:-26px;right:-26px;top:200px;transform:rotate(-8deg);background:${C.stamp};color:#fff;font:800 40px/1 system-ui,-apple-system,sans-serif;letter-spacing:.5px;text-align:center;padding:16px 0;box-shadow:0 8px 20px rgba(0,0,0,.45);clip-path:polygon(0 8%,3% 0,97% 4%,100% 0,98% 92%,100% 100%,2% 96%,0 100%)">${c.stamp}</div>` : ''}</div>`;
         }));
-        inner = `<div class="bg" style="top:auto;height:1000px;background-image:url(${back});-webkit-mask-image:linear-gradient(180deg,transparent 0%,transparent 25%,#000 70%)"></div>
+        inner = (f.backPlace ? `<div class="bg" style="background-image:url(${back});-webkit-mask-image:radial-gradient(ellipse 520px 420px at 540px ${f.backPlace.at[1] + 120}px,#000 30%,rgba(0,0,0,.5) 60%,transparent 100%)"></div>
+          <div class="bg" style="background:rgba(0,0,0,.45)"></div>` : `<div class="bg" style="top:auto;height:1000px;background-image:url(${back});-webkit-mask-image:linear-gradient(180deg,transparent 0%,transparent 25%,#000 70%)"></div>`) + `
           <div class="t" style="top:${f.titleTop ?? 270}px;font:500 62px/74px system-ui,-apple-system,sans-serif;letter-spacing:-.9px">${md(f.title)}</div>
           <div style="position:absolute;left:380px;top:493px;width:299px;height:238px;border-radius:36px;background:linear-gradient(180deg,#1d1d1f 0%,#0b0b0c 70%,#000 100%);border:2px solid rgba(255,255,255,.10)">
             <div style="text-align:center;font:500 40px/1 system-ui,-apple-system,sans-serif;margin-top:26px">${f.node ?? 'You'}</div>

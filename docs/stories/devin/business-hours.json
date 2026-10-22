@@ -5,32 +5,10 @@
  "frames": [
   {
    "type": "cover",
-   "plate": "assets/plate-tombstone.png",
+   "plate": "assets/plate-tombstone-carved.png",
    "title": "Business hours\nare [[DEAD]]",
-   "carve": [
-    "clock",
-    "nine5",
-    "phone",
-    "calendar"
-   ],
-   "cells": [
-    [
-     412,
-     818
-    ],
-    [
-     648,
-     818
-    ],
-    [
-     412,
-     1066
-    ],
-    [
-     648,
-     1066
-    ]
-   ],
+   "carve": [],
+   "cells": [],
    "sub": "Your leads don't wait anymore, and\nit's reply fast or **be** {{left behind}} 👉",
    "zoom": 1.12,
    "fx": 0.49,
@@ -39,55 +17,65 @@
   },
   {
    "type": "person",
-   "photo": "df246eee",
-   "dim": 0.5,
-   "pos": "east",
+   "photo": "8bc5feef",
+   "dim": 0.85,
    "title": "Sales used to run\non a 9 to 5\n**Business hours**",
    "body": "A lead came in at night\nand someone called them\nback the **next day**",
    "orbit": [
     {
-     "cx": 880,
-     "cy": 820,
-     "rx": 330,
-     "ry": 150,
+     "cx": 850,
+     "cy": 1030,
+     "rx": 310,
+     "ry": 140,
      "rot": -28
     },
     {
-     "cx": 880,
-     "cy": 860,
-     "rx": 300,
-     "ry": 120,
+     "cx": 850,
+     "cy": 1060,
+     "rx": 280,
+     "ry": 115,
      "rot": 32
     }
    ],
    "bubbles": [
     {
-     "x": 760,
-     "y": 660,
+     "x": 800,
+     "y": 790,
      "icon": "clock",
      "ring": "#3DE99B"
     },
     {
      "x": 1000,
-     "y": 820,
+     "y": 980,
      "icon": "calendar",
      "ring": "#E7E7E7"
     },
     {
-     "x": 700,
-     "y": 1110,
+     "x": 640,
+     "y": 1200,
      "icon": "phone",
      "ring": "#4FB8E6"
     }
    ],
    "pull": "Not anymore 👉",
-   "pullRight": 190
+   "pullRight": 190,
+   "place": {
+    "face": [
+     0.53,
+     0.41,
+     0.18
+    ],
+    "at": [
+     850,
+     1040,
+     290
+    ]
+   }
   },
   {
    "type": "person",
    "photo": "video:ff",
-   "dim": 0.55,
-   "pos": "east",
+   "dim": 0.8,
    "title": "Now we're in the era of\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>INSTANT REPLIES</span>",
    "titleSize": 74,
    "titleLh": 86,
@@ -95,34 +83,47 @@
    "body": "Leads buy from whoever\n**answers them first**",
    "orbit": [
     {
-     "cx": 960,
-     "cy": 900,
-     "rx": 300,
-     "ry": 130,
+     "cx": 840,
+     "cy": 990,
+     "rx": 290,
+     "ry": 125,
      "rot": -25
     }
    ],
    "chips": [
     {
-     "x": 700,
-     "y": 600,
+     "x": 690,
+     "y": 640,
      "icon": "💬",
      "text": "AI text"
     },
     {
-     "x": 560,
-     "y": 1020,
+     "x": 520,
+     "y": 1040,
      "icon": "📞",
      "text": "Call back"
     }
    ],
    "pull": "So how do you keep up 👉",
-   "pullRight": 100
+   "pullRight": 100,
+   "place": {
+    "face": [
+     0.27,
+     0.43,
+     0.36
+    ],
+    "at": [
+     840,
+     1000,
+     280
+    ],
+    "flip": true
+   }
   },
   {
    "type": "tree",
    "state": 1,
-   "backdrop": "b8ad871c",
+   "backdrop": "5d070570",
    "avatar": "asset:assets/avatar.jpg",
    "title": "Imagine you run ads and get\n3 leads after you clock out",
    "cards": [
@@ -144,12 +145,24 @@
      "icon": "ring",
      "color": "#1EF5F5"
     }
-   ]
+   ],
+   "backPlace": {
+    "face": [
+     0.36,
+     0.36,
+     0.12
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   }
   },
   {
    "type": "tree",
    "state": 2,
-   "backdrop": "b8ad871c",
+   "backdrop": "5d070570",
    "avatar": "asset:assets/avatar.jpg",
    "title": "Each one wants a ((answer))\nright now",
    "cards": [
@@ -174,12 +187,24 @@
      "statLabel": "Waiting",
      "color": "#1EF5F5"
     }
-   ]
+   ],
+   "backPlace": {
+    "face": [
+     0.36,
+     0.36,
+     0.12
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   }
   },
   {
    "type": "tree",
    "state": 3,
-   "backdrop": "b8ad871c",
+   "backdrop": "5d070570",
    "avatar": "asset:assets/avatar.jpg",
    "titleTop": 215,
    "title": "Which means {{2 of 3}} leads will\nbook with someone faster\n<span style='text-decoration:underline;text-decoration-color:#E03842;text-decoration-thickness:4px;text-underline-offset:18px'>before you even wake up</span>",
@@ -207,7 +232,19 @@
      "statLabel": "Waiting",
      "color": "#1EF5F5"
     }
-   ]
+   ],
+   "backPlace": {
+    "face": [
+     0.36,
+     0.36,
+     0.12
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   }
   },
   {
    "type": "showcase",
