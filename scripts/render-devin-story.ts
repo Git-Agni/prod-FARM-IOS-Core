@@ -122,12 +122,13 @@ async function frameHtml(f: any, i: number) {
         const curves = xs.map((x, n) => `<path d="M${529 + (n - 1) * 22} 731 C ${529 + (n - 1) * 60} 790, ${x} 760, ${x} ${top - 22}" fill="none" stroke="${dashColor(n)}" stroke-width="4" stroke-dasharray="16 12" stroke-linecap="round"/>`).join('');
         const cards = await Promise.all(f.cards.map(async (c: any, n: number) => {
             const dim = st === 3 && !c.stamp, red = st === 3 && c.stamp; // his stamped cards drop the number; the survivor fades
-            const img = await photo(c.photo, `card${i}-${n}`, { w: 248, h: 372, pos: c.pos, dim: st >= 2 ? .55 : .85 });
+            // His card photos are low-key: dark room, lit subject; darker still once a stat sits on top.
+            const img = await photo(c.photo, `card${i}-${n}`, { w: 248, h: 372, pos: c.pos, dim: st >= 2 ? .38 : .6, sat: .85 });
             const mid = red ? '' : st === 1 ? `<div style="position:absolute;left:0;right:0;top:${c.iconTop ?? 150}px;display:flex;justify-content:center">${glyph(c.icon, c.color, 92)}</div>`
                 : `<div style="position:absolute;left:0;right:0;top:118px;text-align:center"><div style="font:700 96px/1 system-ui,-apple-system,sans-serif;letter-spacing:-2px;color:${c.color};text-shadow:0 0 18px ${c.color}66">${c.stat}</div><div style="font:500 42px/1.2 system-ui,-apple-system,sans-serif;letter-spacing:-.5px;margin-top:4px">${c.statLabel}</div></div>`;
             return `<div style="position:absolute;left:${xs[n] - cw / 2}px;top:${top}px;width:${cw}px;height:${ch}px;border-radius:22px;background:${red ? '#F1C9CB' : '#E7E7E7'};padding:0 9px 9px;opacity:${dim ? .32 : 1};box-shadow:${red ? `0 0 0 3px ${C.stamp}55` : 'none'}">
               <div style="height:58px;font:500 31px/58px system-ui,-apple-system,sans-serif;letter-spacing:-.6px;color:#111;text-align:center;white-space:nowrap">${c.name}</div>
-              <div style="position:relative;height:${ch - 67}px;border-radius:14px;overflow:hidden;background:url(${img}) center/cover;outline:${red ? `3px solid ${C.stamp}` : 'none'}">${mid}</div>
+              <div style="position:relative;height:${ch - 67}px;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.1) 40%,rgba(0,0,0,.45)),url(${img}) center/cover;outline:${red ? `3px solid ${C.stamp}` : 'none'}">${mid}</div>
               ${red ? `<div style="position:absolute;left:-26px;right:-26px;top:200px;transform:rotate(-8deg);background:${C.stamp};color:#fff;font:800 40px/1 system-ui,-apple-system,sans-serif;letter-spacing:.5px;text-align:center;padding:16px 0;box-shadow:0 8px 20px rgba(0,0,0,.45);clip-path:polygon(0 8%,3% 0,97% 4%,100% 0,98% 92%,100% 100%,2% 96%,0 100%)">${c.stamp}</div>` : ''}</div>`;
         }));
         inner = (f.backPlace ? `<div class="bg" style="background-image:url(${back});-webkit-mask-image:radial-gradient(ellipse 520px 420px at 540px ${f.backPlace.at[1] + 120}px,#000 30%,rgba(0,0,0,.5) 60%,transparent 100%)"></div>

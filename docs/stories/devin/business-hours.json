@@ -5,15 +5,16 @@
  "frames": [
   {
    "type": "cover",
-   "plate": "assets/plate-tombstone-carved.png",
-   "title": "Business hours\nare [[DEAD]]",
+   "plate": "assets/plate-tombstone-logos.png",
+   "title": "Your ad leads\nare [[DEAD]]",
    "carve": [],
    "cells": [],
-   "sub": "Your leads don't wait anymore, and\nit's reply fast or **be** {{left behind}} 👉",
+   "sub": "Leads want a reply in minutes, and\nit's reply fast or **be** {{left behind}} 👉",
    "zoom": 1.12,
    "fx": 0.49,
    "fy": 0.32,
-   "titleTop": 232
+   "titleTop": 232,
+   "bright": 1.0
   },
   {
    "type": "person",
@@ -74,7 +75,7 @@
   },
   {
    "type": "person",
-   "photo": "video:ff",
+   "photo": "video:fb",
    "dim": 0.8,
    "title": "Now we're in the era of\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>INSTANT REPLIES</span>",
    "titleSize": 74,
@@ -108,16 +109,15 @@
    "pullRight": 100,
    "place": {
     "face": [
-     0.27,
-     0.43,
-     0.36
+     0.4,
+     0.45,
+     0.18
     ],
     "at": [
      840,
      1000,
      280
-    ],
-    "flip": true
+    ]
    }
   },
   {
@@ -141,7 +141,7 @@
     },
     {
      "name": "6 AM Lead",
-     "photo": "video:fb",
+     "photo": "055f3170",
      "icon": "ring",
      "color": "#1EF5F5"
     }
@@ -182,7 +182,7 @@
     },
     {
      "name": "6 AM Lead",
-     "photo": "video:fb",
+     "photo": "055f3170",
      "stat": "3h",
      "statLabel": "Waiting",
      "color": "#1EF5F5"
@@ -227,7 +227,7 @@
     },
     {
      "name": "6 AM Lead",
-     "photo": "video:fb",
+     "photo": "055f3170",
      "stat": "3h",
      "statLabel": "Waiting",
      "color": "#1EF5F5"
@@ -276,5 +276,9 @@
    "videoTitle": "Your Business Shouldn't Stop When You Put Your Phone Down",
    "send": "and I'll send it to you"
   }
+ ],
+ "banned_photos": [
+  "video:ff",
+  "b8ad871c"
  ]
 }
