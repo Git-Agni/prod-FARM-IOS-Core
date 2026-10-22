@@ -1,0 +1,52 @@
+{
+ "slug": "lifestyle",
+ "version": 3,
+ "model": "Devin ARISTOCRAT Highlight: real candid photos, one lowercase italic serif line, question box close",
+ "handle": "antoniorevenue",
+ "frames": [
+  {
+   "type": "life",
+   "photo": "2b20870f",
+   "line": "some days the office has a better view",
+   "y": 1250
+  },
+  {
+   "type": "life",
+   "photo": "57971ae1",
+   "line": "deep work mode",
+   "y": 1320
+  },
+  {
+   "type": "life",
+   "photo": "0cb060df",
+   "line": "the systems run, so i get to be out here",
+   "y": 1380,
+   "size": 54
+  },
+  {
+   "type": "life",
+   "photo": "a19dab02",
+   "line": "on the road again ✈️",
+   "y": 1200
+  },
+  {
+   "type": "life",
+   "photo": "4744897d",
+   "line": "grateful for days like this",
+   "y": 1300
+  },
+  {
+   "type": "life",
+   "photo": "bf25d4f8",
+   "line": "walk, think, build",
+   "y": 1350
+  },
+  {
+   "type": "ama",
+   "photo": "f6dcb47a",
+   "avatar": "asset:assets/avatar.jpg",
+   "question": "been building a lot lately...\nask me anything about AI + sales teams",
+   "y": 560
+  }
+ ]
+}
