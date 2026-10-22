@@ -1,0 +1,280 @@
+{
+ "slug": "tools-dont-talk",
+ "keyword": "HUMANAI",
+ "model": "Devin live Story structure; variation 2 (tools metaphor)",
+ "banned_photos": [
+  "video:ff",
+  "b8ad871c"
+ ],
+ "frames": [
+  {
+   "type": "cover",
+   "plate": "assets/plate-v2-tools.png",
+   "carve": [],
+   "cells": [],
+   "bright": 1.05,
+   "title": "Your tools\ndon't [[TALK]]",
+   "sub": "Your AI, setter and closer never\nshare notes, and **your lead** {{notices}} 👉"
+  },
+  {
+   "type": "person",
+   "photo": "8bc5feef",
+   "place": {
+    "face": [
+     0.53,
+     0.41,
+     0.18
+    ],
+    "at": [
+     850,
+     1040,
+     290
+    ]
+   },
+   "dim": 0.85,
+   "title": "Sales used to be\n**One person**",
+   "body": "One rep knew the\nwhole story of\n**every lead**",
+   "orbit": [
+    {
+     "cx": 850,
+     "cy": 1030,
+     "rx": 310,
+     "ry": 140,
+     "rot": -28
+    },
+    {
+     "cx": 850,
+     "cy": 1060,
+     "rx": 280,
+     "ry": 115,
+     "rot": 32
+    }
+   ],
+   "bubbles": [
+    {
+     "x": 800,
+     "y": 790,
+     "img": "assets/logos/bubble-facebook.png",
+     "ring": "#0866FF"
+    },
+    {
+     "x": 1000,
+     "y": 980,
+     "img": "assets/logos/bubble-instagram.png",
+     "ring": "#E4405F"
+    },
+    {
+     "x": 640,
+     "y": 1200,
+     "img": "assets/logos/bubble-google.png",
+     "ring": "#4285F4"
+    }
+   ],
+   "pull": "Not anymore 👉",
+   "pullRight": 190
+  },
+  {
+   "type": "person",
+   "photo": "video:fb",
+   "place": {
+    "face": [
+     0.4,
+     0.45,
+     0.18
+    ],
+    "at": [
+     840,
+     1000,
+     280
+    ]
+   },
+   "dim": 0.8,
+   "titleSize": 74,
+   "titleLh": 86,
+   "titleTop": 330,
+   "title": "Now we're in the era of\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>AI + HUMANS</span>",
+   "body": "Your AI texts. A setter calls.\n**A closer books.**",
+   "orbit": [
+    {
+     "cx": 840,
+     "cy": 990,
+     "rx": 290,
+     "ry": 125,
+     "rot": -25
+    }
+   ],
+   "chips": [
+    {
+     "x": 690,
+     "y": 640,
+     "icon": "💬",
+     "text": "AI text"
+    },
+    {
+     "x": 520,
+     "y": 1040,
+     "icon": "📞",
+     "text": "Setter"
+    }
+   ],
+   "pull": "So what breaks? 👉",
+   "pullRight": 120
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "5d070570",
+   "backPlace": {
+    "face": [
+     0.36,
+     0.36,
+     0.12
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Imagine one lead asks:\n**\"Does this fit my schedule?\"**",
+   "cards": [
+    {
+     "name": "AI Text",
+     "photo": "video:7b",
+     "icon": "chat",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Setter",
+     "photo": "1d5393f1",
+     "icon": "ring",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Closer",
+     "photo": "055f3170",
+     "icon": "calendar",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "tree",
+   "state": 2,
+   "backdrop": "5d070570",
+   "backPlace": {
+    "face": [
+     0.36,
+     0.36,
+     0.12
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Each one gives a ((different))\nanswer",
+   "cards": [
+    {
+     "name": "AI Text",
+     "photo": "video:7b",
+     "stat": "Yes",
+     "statLabel": "It fits",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Setter",
+     "photo": "1d5393f1",
+     "stat": "No",
+     "statLabel": "5 days a week",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Closer",
+     "photo": "055f3170",
+     "stat": "Hm?",
+     "statLabel": "Asks again",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "tree",
+   "state": 3,
+   "backdrop": "5d070570",
+   "backPlace": {
+    "face": [
+     0.36,
+     0.36,
+     0.12
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Which means your lead hears\n{{3 different stories}}\n<span style='text-decoration:underline;text-decoration-color:#E03842;text-decoration-thickness:4px;text-underline-offset:18px'>and stops trusting all of them</span>",
+   "cards": [
+    {
+     "name": "AI Text",
+     "photo": "video:7b",
+     "stat": "Yes",
+     "statLabel": "It fits",
+     "color": "#F8930D",
+     "stamp": "NO CONTEXT"
+    },
+    {
+     "name": "Setter",
+     "photo": "1d5393f1",
+     "stat": "No",
+     "statLabel": "5 days a week",
+     "color": "#3DE99B",
+     "stamp": "NO CONTEXT"
+    },
+    {
+     "name": "Closer",
+     "photo": "055f3170",
+     "stat": "Hm?",
+     "statLabel": "Asks again",
+     "color": "#1EF5F5"
+    }
+   ],
+   "titleTop": 215
+  },
+  {
+   "type": "showcase",
+   "title": "So to keep <span style='text-decoration:underline;text-decoration-color:#4BC597;text-decoration-thickness:4px;text-underline-offset:16px'>every lead you pay for</span>",
+   "line1": "Every rep should read\n<<the full conversation first>>",
+   "line2": "And give each lead **one clear owner**",
+   "rows": [
+    {
+     "image": "assets/screen-sms.png",
+     "sides": [
+      "assets/reel-harvey-cover.jpg",
+      "assets/reel-phone-cover.jpg"
+     ]
+    },
+    {
+     "image": "assets/screen-call.png",
+     "sides": [
+      "assets/reel-hiring-cover.jpg",
+      "assets/reel-harvey-cover.jpg"
+     ]
+    }
+   ]
+  },
+  {
+   "type": "cta",
+   "backdrop": "d7725c69",
+   "title": "This video shows you how to\nset up the handoff 👇",
+   "thumb": "assets/yt-oT6alCHNwKA.jpg",
+   "videoTitle": "How to Build a Sales Team AI Can't Replace",
+   "send": "and I'll send it to you"
+  }
+ ]
+}

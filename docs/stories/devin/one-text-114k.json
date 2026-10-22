@@ -1,0 +1,237 @@
+{
+ "slug": "one-text-114k",
+ "keyword": "SMS",
+ "model": "Devin live Story structure; variation 3 (proof-led, VShred client numbers)",
+ "banned_photos": [
+  "video:ff",
+  "b8ad871c"
+ ],
+ "frames": [
+  {
+   "type": "cover",
+   "plate": "assets/plate-v3-cash.png",
+   "carve": [],
+   "cells": [],
+   "bright": 1.05,
+   "title": "One text system\nmade [[$114K]]",
+   "sub": "In 15 days. And that wasn't\neven **the best** {{part}} 👉"
+  },
+  {
+   "type": "person",
+   "photo": "8bc5feef",
+   "place": {
+    "face": [
+     0.53,
+     0.41,
+     0.18
+    ],
+    "at": [
+     850,
+     1040,
+     290
+    ]
+   },
+   "dim": 0.85,
+   "title": "Most teams still\ntext new leads\n**By hand**",
+   "body": "Hours later, after\nthe lead already\n**moved on**",
+   "orbit": [
+    {
+     "cx": 850,
+     "cy": 1030,
+     "rx": 310,
+     "ry": 140,
+     "rot": -28
+    },
+    {
+     "cx": 850,
+     "cy": 1060,
+     "rx": 280,
+     "ry": 115,
+     "rot": 32
+    }
+   ],
+   "bubbles": [
+    {
+     "x": 800,
+     "y": 790,
+     "img": "assets/logos/bubble-facebook.png",
+     "ring": "#0866FF"
+    },
+    {
+     "x": 1000,
+     "y": 980,
+     "img": "assets/logos/bubble-instagram.png",
+     "ring": "#E4405F"
+    },
+    {
+     "x": 640,
+     "y": 1200,
+     "img": "assets/logos/bubble-google.png",
+     "ring": "#4285F4"
+    }
+   ],
+   "pull": "VShred didn't 👉",
+   "pullRight": 190
+  },
+  {
+   "type": "person",
+   "photo": "video:fb",
+   "place": {
+    "face": [
+     0.4,
+     0.45,
+     0.18
+    ],
+    "at": [
+     840,
+     1000,
+     280
+    ]
+   },
+   "dim": 0.8,
+   "titleSize": 74,
+   "titleLh": 86,
+   "titleTop": 330,
+   "title": "So we built them an\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>AI TEXT SYSTEM</span>",
+   "body": "Setters, AI SMS and AI voice\nwork **every lead together**",
+   "orbit": [
+    {
+     "cx": 840,
+     "cy": 990,
+     "rx": 290,
+     "ry": 125,
+     "rot": -25
+    }
+   ],
+   "chips": [
+    {
+     "x": 690,
+     "y": 640,
+     "icon": "💬",
+     "text": "AI SMS"
+    },
+    {
+     "x": 520,
+     "y": 1040,
+     "icon": "📞",
+     "text": "Setter"
+    }
+   ],
+   "pull": "Here's what changed 👉",
+   "pullRight": 120
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "5d070570",
+   "backPlace": {
+    "face": [
+     0.36,
+     0.36,
+     0.12
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar-vshred.png",
+   "title": "We tracked three numbers\nafter it went live",
+   "cards": [
+    {
+     "name": "Show-up rate",
+     "photo": "video:7b",
+     "icon": "calendar",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Close rate",
+     "photo": "1d5393f1",
+     "icon": "ring",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Refunds",
+     "photo": "055f3170",
+     "icon": "form",
+     "color": "#1EF5F5"
+    }
+   ],
+   "node": "VShred"
+  },
+  {
+   "type": "tree",
+   "state": 2,
+   "backdrop": "5d070570",
+   "backPlace": {
+    "face": [
+     0.36,
+     0.36,
+     0.12
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar-vshred.png",
+   "title": "Every one of them ((moved))",
+   "cards": [
+    {
+     "name": "Show-up rate",
+     "photo": "video:7b",
+     "stat": "65%",
+     "statLabel": "from 41%",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Close rate",
+     "photo": "1d5393f1",
+     "stat": "30%",
+     "statLabel": "from 24%",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Refunds",
+     "photo": "055f3170",
+     "stat": "<10%",
+     "statLabel": "from 20%",
+     "color": "#1EF5F5"
+    }
+   ],
+   "node": "VShred"
+  },
+  {
+   "type": "showcase",
+   "title": "So if your leads <span style='text-decoration:underline;text-decoration-color:#4BC597;text-decoration-thickness:4px;text-underline-offset:16px'>wait more than minutes</span>",
+   "line1": "Let AI text them first\n<<before they go cold>>",
+   "line2": "And let setters **work the replies**",
+   "rows": [
+    {
+     "image": "assets/screen-sms.png",
+     "sides": [
+      "assets/reel-harvey-cover.jpg",
+      "assets/reel-phone-cover.jpg"
+     ]
+    },
+    {
+     "image": "assets/screen-call.png",
+     "sides": [
+      "assets/reel-hiring-cover.jpg",
+      "assets/reel-harvey-cover.jpg"
+     ]
+    }
+   ]
+  },
+  {
+   "type": "cta",
+   "backdrop": "d7725c69",
+   "title": "This video shows how we built\nthe system behind **$1.8M** 👇",
+   "thumb": "assets/yt-Y8c4xIsxOXw.jpg",
+   "videoTitle": "How VShred Collected $1.8M Through an AI SMS System",
+   "send": "and I'll send it to you"
+  }
+ ]
+}

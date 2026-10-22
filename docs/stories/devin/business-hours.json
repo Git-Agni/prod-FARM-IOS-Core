@@ -10,9 +10,9 @@
    "carve": [],
    "cells": [],
    "sub": "Leads want a reply in minutes, and\nit's reply fast or **be** {{left behind}} 👉",
-   "zoom": 1.12,
+   "zoom": 1.15,
    "fx": 0.49,
-   "fy": 0.32,
+   "fy": 0.38,
    "titleTop": 232,
    "bright": 1.0
   },
@@ -42,20 +42,20 @@
     {
      "x": 800,
      "y": 790,
-     "icon": "clock",
-     "ring": "#3DE99B"
+     "img": "assets/logos/bubble-facebook.png",
+     "ring": "#0866FF"
     },
     {
      "x": 1000,
      "y": 980,
-     "icon": "calendar",
-     "ring": "#E7E7E7"
+     "img": "assets/logos/bubble-instagram.png",
+     "ring": "#E4405F"
     },
     {
      "x": 640,
      "y": 1200,
-     "icon": "phone",
-     "ring": "#4FB8E6"
+     "img": "assets/logos/bubble-google.png",
+     "ring": "#4285F4"
     }
    ],
    "pull": "Not anymore 👉",
@@ -270,7 +270,7 @@
   },
   {
    "type": "cta",
-   "backdrop": "8bc5feef",
+   "backdrop": "d7725c69",
    "title": "This video shows you how to\nnever miss a lead again👇",
    "thumb": "assets/yt-autopilot.jpg",
    "videoTitle": "Your Business Shouldn't Stop When You Put Your Phone Down",

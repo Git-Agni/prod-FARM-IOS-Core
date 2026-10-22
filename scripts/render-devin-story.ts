@@ -101,7 +101,7 @@ async function frameHtml(f: any, i: number) {
         // Layers: full-bleed photo graded dark, left text column, orbit rings + avatar bubbles or topic chips, pull line.
         const bg = f.place ? await place(f.photo, 'bg' + i, { ...f.place, dim: f.dim ?? .8, sat: .85 }) : await photo(f.photo, 'bg' + i, { dim: f.dim ?? .55, pos: f.pos, sat: .85 });
         // His person frames: the subject is lit and the room falls to black around them (a soft spotlight on the face).
-        const spot = f.place ? `-webkit-mask-image:radial-gradient(ellipse ${f.spot?.[0] ?? 620}px ${f.spot?.[1] ?? 900}px at ${f.place.at[0]}px ${f.place.at[1] + 260}px,#000 40%,rgba(0,0,0,.35) 75%,rgba(0,0,0,.12) 100%)` : '';
+        const spot = f.place ? `-webkit-mask-image:radial-gradient(ellipse ${f.spot?.[0] ?? 620}px ${f.spot?.[1] ?? 900}px at ${f.place.at[0]}px ${f.place.at[1] + 260}px,#000 40%,rgba(0,0,0,.55) 75%,rgba(0,0,0,${f.spotFloor ?? .3}) 100%)` : ''; // the room stays faintly visible, like his
         const orbit = f.orbit ? `<svg width="1080" height="1920" style="position:absolute;inset:0"><defs><marker id="ar" markerWidth="16" markerHeight="16" refX="8" refY="8" orient="auto"><path d="M2 3 L12 8 L2 13" fill="none" stroke="${C.orbit}" stroke-width="3"/></marker></defs>
             ${f.orbit.map((o: any) => `<ellipse cx="${o.cx}" cy="${o.cy}" rx="${o.rx}" ry="${o.ry}" transform="rotate(${o.rot} ${o.cx} ${o.cy})" fill="none" stroke="${C.orbit}" stroke-width="4" opacity=".95" style="filter:drop-shadow(0 0 6px ${C.orbit})"/>`).join('')}</svg>` : '';
         // Bubbles sit on the orbit: a photo (b.img) like his avatars, or a glowing glyph (b.icon) for tools.
@@ -157,7 +157,7 @@ async function frameHtml(f: any, i: number) {
     }
     if (f.type === 'cta') {
         // Layers: black with a dim warm photo bottom, title + 👇, white YouTube card with player chrome, Reply "KEYWORD".
-        const back = f.backdrop ? await photo(f.backdrop, 'back' + i, { dim: .3, w: 1080, h: 900, pos: 'centre', sat: .8 }) : '';
+        const back = f.backdrop ? await photo(f.backdrop, 'back' + i, { dim: .16, w: 1080, h: 900, pos: 'centre', sat: .5 }) : '';
         inner = `${back ? `<div class="bg" style="top:auto;height:900px;background-image:url(${back});-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 60%)"></div>` : ''}
           <div class="t" style="top:296px;font:600 58px/82px system-ui,-apple-system,sans-serif;letter-spacing:-1px">${md(f.title)}</div>
           <div style="position:absolute;left:90px;top:574px;width:900px;border-radius:36px;background:#fff;padding:27px 27px 26px">
