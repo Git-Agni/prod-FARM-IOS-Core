@@ -23,8 +23,8 @@ const db=createDatabaseConnection(),c=await db.pool.connect(),base='http://127.0
 const dirFrames=arg==='--dir'?(await readdir(path.resolve(process.argv[3]!))).filter(f=>/^frame-\d+\.png$/.test(f)).sort((a,b)=>parseInt(a.slice(6))-parseInt(b.slice(6))).map(f=>path.resolve(process.argv[3]!,f)):[];
 // About 75 s a frame (Oct 15 rehearsal) plus setup; the guard below must clear the whole run, not just its start.
 const needMinutes=Math.max(25,Math.ceil(dirFrames.length*80/60)+12);
-if(process.argv.includes('--wait'))while(await storyBlockedByVideo(db.pool,needMinutes)){console.log(new Date().toISOString(),`waiting for a ${needMinutes}-minute gap between posts`);await new Promise(r=>setTimeout(r,60_000));}
-const signal=AbortSignal.timeout(Math.max(15,needMinutes)*60_000);let locked=false,phone=PHONE;
+const wait=process.argv.includes('--wait');
+let signal=AbortSignal.timeout(Math.max(15,needMinutes)*60_000),locked=false,phone=PHONE;
 const root=path.resolve('.scheduler-data/publishing/story-rehearsals',new Date().toISOString().replace(/[:.]/g,'-'));
 try{
  let frames:NativeStoryFrame[];
@@ -46,8 +46,15 @@ try{
   const row=(await c.query('SELECT * FROM scheduler.story_sequences WHERE id=$1',[arg])).rows[0];if(!row)throw Error('Story plan not found');
   phone=row.device_udid;frames=await storyFramesFromPlan(row.draft);
  }
- if(await storyBlockedByVideo(db.pool,needMinutes))throw Error('A video release is due within 25 minutes; not rehearsed');
- locked=(await c.query('SELECT pg_try_advisory_lock(hashtextextended($1,0)) l',[phone])).rows[0].l;if(!locked)throw Error('Phone busy');
+ // --wait: hold until there is a long enough gap between posts AND the phone is free (a post can run past its slot).
+ for(;;){
+  const reason=await storyBlockedByVideo(db.pool,needMinutes)?`a video release falls inside the next ${needMinutes} minutes`
+   :(locked=(await c.query('SELECT pg_try_advisory_lock(hashtextextended($1,0)) l',[phone])).rows[0].l)?'':'the phone is busy';
+  if(!reason)break;
+  if(!wait)throw Error('Not rehearsed: '+reason);
+  console.log(new Date().toISOString(),'waiting:',reason);await new Promise(r=>setTimeout(r,60_000));
+ }
+ signal=AbortSignal.timeout(Math.max(15,needMinutes)*60_000); // the clock starts once the phone is ours
  const imports=new DirectMediaStore(db.pool);await imports.initialize();
  await new NativeMuteGuard(base,signal).prepare();
  const driver=new WdaStoryDriver(base,signal,imports,phone,root),started=Date.now();
