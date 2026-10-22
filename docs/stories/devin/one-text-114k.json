@@ -24,38 +24,59 @@
    "body": "Hours later, after\nthe lead already\n**moved on**",
    "orbit": [
     {
-     "cx": 940,
-     "cy": 840,
-     "rx": 300,
-     "ry": 130,
-     "rot": -28
+     "cx": 985,
+     "cy": 890,
+     "rx": 270,
+     "ry": 310,
+     "rot": -10,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      100,
+      160
+     ]
     },
     {
-     "cx": 940,
-     "cy": 870,
-     "rx": 270,
-     "ry": 105,
-     "rot": 32
+     "cx": 1010,
+     "cy": 880,
+     "rx": 360,
+     "ry": 150,
+     "rot": 42,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
     }
    ],
    "bubbles": [
     {
-     "x": 760,
-     "y": 700,
      "img": "assets/logos/bubble-facebook.png",
-     "ring": "#0866FF"
+     "ring": "#0866FF",
+     "on": [
+      0,
+      222
+     ]
     },
     {
-     "x": 1010,
-     "y": 800,
      "img": "assets/logos/bubble-instagram.png",
-     "ring": "#E4405F"
+     "ring": "#E4405F",
+     "on": [
+      1,
+      232
+     ]
     },
     {
-     "x": 800,
-     "y": 1010,
      "img": "assets/logos/bubble-google.png",
-     "ring": "#4285F4"
+     "ring": "#4285F4",
+     "on": [
+      0,
+      148
+     ]
     }
    ],
    "pull": "Mine doesn't 👉",
@@ -63,7 +84,8 @@
    "shift": [
     230,
     150
-   ]
+   ],
+   "cutout": "assets/gen-antonio-f2b-mask.png"
   },
   {
    "type": "person",
@@ -77,10 +99,18 @@
    "orbit": [
     {
      "cx": 935,
-     "cy": 840,
-     "rx": 280,
+     "cy": 820,
+     "rx": 300,
      "ry": 120,
-     "rot": -25
+     "rot": -22,
+     "front": [
+      20,
+      160
+     ],
+     "arrows": [
+      60,
+      250
+     ]
     }
    ],
    "chips": [
@@ -102,7 +132,8 @@
    "shift": [
     200,
     240
-   ]
+   ],
+   "cutout": "assets/gen-antonio-f3-mask.png"
   },
   {
    "type": "tree",

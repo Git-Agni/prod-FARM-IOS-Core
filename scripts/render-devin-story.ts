@@ -102,16 +102,38 @@ async function frameHtml(f: any, i: number) {
         const bg = f.place ? await place(f.photo, 'bg' + i, { ...f.place, dim: f.dim ?? .8, sat: .85 }) : await photo(f.photo, 'bg' + i, { dim: f.dim ?? .55, pos: f.pos, sat: .85 });
         // His person frames: the subject is lit and the room falls to black around them (a soft spotlight on the face).
         const spot = f.place ? `-webkit-mask-image:radial-gradient(ellipse ${f.spot?.[0] ?? 620}px ${f.spot?.[1] ?? 900}px at ${f.place.at[0]}px ${f.place.at[1] + 260}px,#000 40%,rgba(0,0,0,.55) 75%,rgba(0,0,0,${f.spotFloor ?? .3}) 100%)` : ''; // the room stays faintly visible, like his
-        const orbit = f.orbit ? `<svg width="1080" height="1920" style="position:absolute;inset:0"><defs><marker id="ar" markerWidth="16" markerHeight="16" refX="8" refY="8" orient="auto"><path d="M2 3 L12 8 L2 13" fill="none" stroke="${C.orbit}" stroke-width="3"/></marker></defs>
-            ${f.orbit.map((o: any) => `<ellipse cx="${o.cx}" cy="${o.cy}" rx="${o.rx}" ry="${o.ry}" transform="rotate(${o.rot} ${o.cx} ${o.cy})" fill="none" stroke="${C.orbit}" stroke-width="4" opacity=".95" style="filter:drop-shadow(0 0 6px ${C.orbit})"/>`).join('')}</svg>` : '';
-        // Bubbles sit on the orbit: a photo (b.img) like his avatars, or a glowing glyph (b.icon) for tools.
-        const bubbles = (f.bubbles ?? []).map((b: any) => `<div style="position:absolute;left:${b.x - 50}px;top:${b.y - 50}px;width:100px;height:100px;border-radius:50%;border:5px solid ${b.ring};box-shadow:0 0 18px ${b.ring};${b.img ? `background:url(${asset(b.img)}) center/cover` : 'background:#0d0f12;display:flex;align-items:center;justify-content:center'}">${b.icon ? glyph(b.icon, b.ring, 50) : ''}</div>`).join('');
+        // Devin's orbit (frame 2, zoomed): big thin glowing arcs around the head. The far side runs BEHIND the head (a cutout of
+        // the subject sits on top of it); one arc crosses IN FRONT of the face; small chevrons show motion; bubbles sit on the
+        // ring inside a dark halo. Orbit: {cx,cy,rx,ry,rot,front:[t0,t1] degrees,arrows:[t...]}.
+        const pt = (o: any, deg: number) => { const t = deg * Math.PI / 180, r = o.rot * Math.PI / 180, x = o.rx * Math.cos(t), y = o.ry * Math.sin(t);
+            return [o.cx + x * Math.cos(r) - y * Math.sin(r), o.cy + x * Math.sin(r) + y * Math.cos(r)] as [number, number]; };
+        const arc = (o: any, a: number, b: number) => { let d = ''; for (let k = 0; k <= 60; k++) { const [x, y] = pt(o, a + (b - a) * k / 60); d += (k ? ' L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); } return d; };
+        const ringStyle = `fill="none" stroke="${C.orbit}" stroke-width="4.5" stroke-linecap="round" style="filter:drop-shadow(0 0 7px ${C.orbit}) drop-shadow(0 0 2px ${C.orbit})"`;
+        const chevrons = (o: any) => (o.arrows ?? []).map((a: number) => { const [x, y] = pt(o, a), [x2, y2] = pt(o, a + 1), ang = Math.atan2(y2 - y, x2 - x) * 180 / Math.PI;
+            return `<path d="M-9 -8 L3 0 L-9 8" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang.toFixed(1)})" ${ringStyle}/>`; }).join('');
+        const orbits = f.orbit ?? [];
+        const back = orbits.length ? `<svg width="1080" height="1920" style="position:absolute;inset:0">${orbits.map((o: any) => `<path d="${arc(o, 0, 360)}" ${ringStyle} opacity=".95"/>${chevrons(o)}`).join('')}</svg>` : '';
+        const front = orbits.some((o: any) => o.front) ? `<svg width="1080" height="1920" style="position:absolute;inset:0">${orbits.filter((o: any) => o.front).map((o: any) => `<path d="${arc(o, o.front[0], o.front[1])}" ${ringStyle}/>`).join('')}</svg>` : '';
+        // The subject cutout: same photo, same shift, alpha from the Apple Vision mask (scripts/tools/subject-mask.swift).
+        let cutout = '';
+        if (f.cutout) {
+            const W = 1080, H = 1920, name = 'cut' + i + '.png';
+            const src = f.photo.startsWith('asset:') ? path.join(base, f.photo.slice(6)) : '';
+            const rgb = await sharp(src).resize(W, H, { fit: 'cover' }).modulate({ brightness: f.dim ?? 1, saturation: .85 }).removeAlpha().toBuffer();
+            const alpha = await sharp(path.join(base, f.cutout)).resize(W, H, { fit: 'cover' }).greyscale().toColourspace('b-w').raw().toBuffer();
+            await sharp(rgb).joinChannel(alpha, { raw: { width: W, height: H, channels: 1 } }).png().toFile(path.join(out, name));
+            cutout = `<div class="bg" style="background-image:url(${name});background-size:1080px 1920px;background-repeat:no-repeat;background-position:${f.shift?.[0] ?? 0}px ${f.shift?.[1] ?? 0}px"></div>`;
+        }
+        const onRing = (b: any) => b.on ? pt(orbits[b.on[0]], b.on[1]) : [b.x, b.y];
+        // Bubbles sit on the orbit: a photo or logo (b.img) like his avatars, or a glowing glyph (b.icon) for tools.
+        const bubbles = (f.bubbles ?? []).map((b: any) => { const [x, y] = onRing(b);
+            return `<div style="position:absolute;left:${x - 50}px;top:${y - 50}px;width:100px;height:100px;border-radius:50%;border:5px solid ${b.ring};box-shadow:0 0 0 14px rgba(0,0,0,.55),0 0 34px 16px rgba(0,0,0,.65),0 0 16px ${b.ring};${b.img ? `background:url(${asset(b.img)}) center/cover` : 'background:#0d0f12;display:flex;align-items:center;justify-content:center'}">${b.icon ? glyph(b.icon, b.ring, 50) : ''}</div>`; }).join('');
         const chips = (f.chips ?? []).map((c: any) => `<div class="chip" style="left:${c.x}px;top:${c.y}px">${c.icon ?? ''}${c.text}</div>`).join('');
         // shift: move a pre-framed photo right/down so the subject sits where Devin sits; the gap stays black.
         const shift = f.shift ? `background-size:1080px 1920px;background-repeat:no-repeat;background-position:${f.shift[0]}px ${f.shift[1]}px;-webkit-mask-image:linear-gradient(90deg,transparent ${f.shift[0]}px,#000 ${f.shift[0] + 320}px),linear-gradient(180deg,transparent ${f.shift[1]}px,#000 ${f.shift[1] + 260}px);-webkit-mask-composite:source-in;` : '';
         inner = `<div class="bg" style="background-image:url(${bg});${shift}${spot}"></div>
           <div class="bg" style="background:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 45%,rgba(0,0,0,0) 70%)"></div>
-          ${orbit}${bubbles}${chips}
+          ${back}${cutout}${front}${bubbles}${chips}
           <div style="position:absolute;left:106px;top:${f.titleTop ?? 295}px;font:400 ${f.titleSize ?? 80}px/${f.titleLh ?? 94}px system-ui,-apple-system,sans-serif;letter-spacing:-1.4px">${md(f.title)}</div>
           <div style="position:absolute;left:106px;top:${f.bodyTop ?? 765}px;font:400 56px/66px system-ui,-apple-system,sans-serif;letter-spacing:-.6px">${md(f.body)}</div>${pull}`;
     }
