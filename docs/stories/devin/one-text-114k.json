@@ -1,7 +1,7 @@
 {
  "slug": "one-text-114k",
  "keyword": "SMS",
- "model": "Devin live Story structure; variation 3 (proof-led, VShred client numbers)",
+ "model": "Devin live Story structure; variation 3 (proof-led). $114K/15 days is Antonio's own AI SDR (Results Library #3); show-up/close/refund numbers are client work from his Highlights, not attributed to a named client.",
  "banned_photos": [
   "video:ff",
   "b8ad871c"
@@ -13,7 +13,7 @@
    "carve": [],
    "cells": [],
    "bright": 1.05,
-   "title": "One text system\nmade [[$114K]]",
+   "title": "My AI text system\nmade [[$114K]]",
    "sub": "In 15 days. And that wasn't\neven **the best** {{part}} 👉"
   },
   {
@@ -70,7 +70,7 @@
      "ring": "#4285F4"
     }
    ],
-   "pull": "VShred didn't 👉",
+   "pull": "Mine doesn't 👉",
    "pullRight": 190
   },
   {
@@ -92,7 +92,7 @@
    "titleSize": 74,
    "titleLh": 86,
    "titleTop": 330,
-   "title": "So we built them an\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>AI TEXT SYSTEM</span>",
+   "title": "So I built an\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>AI TEXT SYSTEM</span>",
    "body": "Setters, AI SMS and AI voice\nwork **every lead together**",
    "orbit": [
     {
@@ -136,8 +136,8 @@
      110
     ]
    },
-   "avatar": "asset:assets/avatar-vshred.png",
-   "title": "We tracked three numbers\nafter it went live",
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Then we put it to work\nfor our clients",
    "cards": [
     {
      "name": "Show-up rate",
@@ -157,8 +157,7 @@
      "icon": "form",
      "color": "#1EF5F5"
     }
-   ],
-   "node": "VShred"
+   ]
   },
   {
    "type": "tree",
@@ -176,8 +175,8 @@
      110
     ]
    },
-   "avatar": "asset:assets/avatar-vshred.png",
-   "title": "Every one of them ((moved))",
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Three numbers ((moved))",
    "cards": [
     {
      "name": "Show-up rate",
@@ -200,8 +199,7 @@
      "statLabel": "from 20%",
      "color": "#1EF5F5"
     }
-   ],
-   "node": "VShred"
+   ]
   },
   {
    "type": "showcase",
