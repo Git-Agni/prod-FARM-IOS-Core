@@ -8,38 +8,100 @@
    "type": "life",
    "photo": "asset:../gallery/antonio-09-boardwalk-sunset.jpg",
    "line": "some days the office has a better view",
-   "y": 1250
+   "y": 1440,
+   "mask": "../gallery/masks/antonio-09-boardwalk-sunset-mask.png",
+   "behind": {
+    "text": "view",
+    "y": 190,
+    "size": 230,
+    "align": "right",
+    "right": 100
+   },
+   "pill": {
+    "text": "☀️ golden hour",
+    "x": 70,
+    "y": 1560,
+    "rot": -4
+   }
   },
   {
    "type": "life",
    "photo": "asset:../gallery/antonio-01-home-office-night.jpg",
    "line": "deep work mode",
-   "y": 1320
+   "y": 1500,
+   "box": true,
+   "size": 48,
+   "inset": {
+    "photo": "asset:../gallery/antonio-05-whiteboard-strategy.jpg",
+    "x": 640,
+    "y": 1020,
+    "w": 340,
+    "rot": 7,
+    "focus": "center 20%"
+   }
   },
   {
    "type": "life",
    "photo": "asset:../gallery/antonio-06-hotel-lobby-walk.jpg",
    "line": "the systems run, so i get to be out here",
-   "y": 1380,
-   "size": 54
+   "y": 1420,
+   "size": 46,
+   "box": true,
+   "boxRot": 2,
+   "pill": {
+    "text": "🚶 between calls",
+    "x": 70,
+    "y": 250,
+    "rot": -4
+   }
   },
   {
    "type": "life",
    "photo": "asset:../gallery/antonio-07-airport-lounge.jpg",
    "line": "on the road again ✈️",
-   "y": 1200
+   "y": 1620,
+   "pill": {
+    "text": "✈️ boarding soon",
+    "x": 620,
+    "y": 250,
+    "rot": 4
+   },
+   "inset": {
+    "photo": "asset:../gallery/antonio-16-kitchen-morning.jpg",
+    "x": 80,
+    "y": 1180,
+    "w": 300,
+    "rot": -8,
+    "focus": "center 25%"
+   }
   },
   {
    "type": "life",
    "photo": "asset:../gallery/antonio-21-mountain-viewpoint.jpg",
-   "line": "grateful for days like this",
-   "y": 1300
+   "line": "for days like this",
+   "y": 1500,
+   "mask": "../gallery/masks/antonio-21-mountain-viewpoint-mask.png",
+   "behind": {
+    "text": "grateful",
+    "y": 175,
+    "size": 210
+   }
   },
   {
    "type": "life",
    "photo": "asset:../gallery/antonio-23-restaurant-dinner.jpg",
    "line": "dinner first. then back to building",
-   "y": 1350
+   "y": 1450,
+   "box": true,
+   "size": 48,
+   "inset": {
+    "photo": "asset:../gallery/antonio-01-home-office-night.jpg",
+    "x": 650,
+    "y": 420,
+    "w": 340,
+    "rot": 6,
+    "focus": "center 25%"
+   }
   },
   {
    "type": "ama",

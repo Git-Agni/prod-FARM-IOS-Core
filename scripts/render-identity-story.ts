@@ -6,7 +6,7 @@
  * Frame types: life, ama, offer. Photos: pool SHA prefix or asset:<path>.
  * Usage: render-identity-story.ts docs/stories/devin/<slug>.json -> .scheduler-data/story-assets/devin/<slug>/ */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { loadPhotoPool, photoBuffer } from '../src/publishing/story-lifestyle.js';
@@ -33,9 +33,29 @@ async function frameHtml(f: any, i: number) {
     let inner = '';
     if (f.type === 'life') {
         // His lifestyle frames: the photo is the content; the words are one quiet line, lowercase italic serif.
+        // Composition layers (Oct 22, Antonio: every frame is an edit, never photo plus caption):
+        //   grade: top and bottom fades; behind: a big word between the photo and a cutout of Antonio (needs mask);
+        //   box: the line in a white caption box, like his speaking frame; inset: a tilted framed second photo;
+        //   pill: a small glass sticker.
         const bg = await photo(f.photo, 'bg' + i, { pos: f.pos, dim: f.dim });
+        let cut = '';
+        if (f.mask) {
+            const rgb = await sharp(path.join(out, bg)).removeAlpha().toBuffer();
+            const alpha = await sharp(path.join(base, f.mask)).resize(1080, 1920).extractChannel(0).toBuffer();
+            await sharp(rgb).joinChannel(alpha).png().toFile(path.join(out, 'cut' + i + '.png'));
+            cut = `<div style="position:absolute;inset:0;background:url(cut${i}.png) center/cover"></div>`;
+        }
+        const behind = f.behind ? `<div style="position:absolute;left:${f.behind.left ?? 0}px;right:${f.behind.right ?? 0}px;top:${f.behind.y}px;text-align:${f.behind.align ?? 'center'};font:italic 400 ${f.behind.size ?? 220}px/.9 ${SERIF};letter-spacing:-4px;color:${f.behind.color ?? 'rgba(255,255,255,.92)'};text-shadow:0 10px 40px rgba(0,0,0,.35)">${f.behind.text}</div>` : '';
+        const inset = f.inset ? `<div style="position:absolute;left:${f.inset.x}px;top:${f.inset.y}px;width:${f.inset.w}px;height:${Math.round(f.inset.w * 1.25)}px;padding:12px 12px 0;background:#fff;border-radius:6px;transform:rotate(${f.inset.rot ?? -6}deg);box-shadow:0 24px 60px rgba(0,0,0,.55)">
+            <div style="width:100%;height:calc(100% - 12px);background:url(${await photo(f.inset.photo, 'in' + i, { pos: f.inset.pos ?? 'attention' })}) ${f.inset.focus ?? 'center 30%'}/cover;border-radius:3px"></div></div>` : '';
+        const pill = f.pill ? `<div style="position:absolute;left:${f.pill.x ?? 60}px;top:${f.pill.y ?? 240}px;padding:14px 26px;border-radius:40px;background:rgba(10,14,24,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,.28);font:600 34px ${F};color:#fff;transform:rotate(${f.pill.rot ?? -3}deg);box-shadow:0 10px 30px rgba(0,0,0,.25)">${f.pill.text}</div>` : '';
+        const line = f.box
+            ? `<div style="position:absolute;left:0;right:0;top:${f.y ?? 1180}px;text-align:center"><span style="display:inline-block;max-width:860px;padding:22px 34px;border-radius:22px;background:#fff;color:#111;font:500 ${f.size ?? 50}px/1.25 ${F};box-shadow:0 18px 50px rgba(0,0,0,.4);transform:rotate(${f.boxRot ?? -2}deg)">${f.line}</span></div>`
+            : `<div style="position:absolute;left:0;right:0;top:${f.y ?? 1180}px;text-align:center;font:italic 400 ${f.size ?? 58}px/1.2 ${SERIF};color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.65),0 0 2px rgba(0,0,0,.5)">${f.line}</div>`;
         inner = `<div style="position:absolute;inset:0;background:url(${bg}) center/cover"></div>
-          <div style="position:absolute;left:0;right:0;top:${f.y ?? 1180}px;text-align:center;font:italic 400 ${f.size ?? 58}px/1.2 ${SERIF};color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.65),0 0 2px rgba(0,0,0,.5)">${f.line}</div>
+          ${behind}${cut}
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 58%,rgba(0,0,0,.55) 100%)"></div>
+          ${inset}${pill}${line}
           ${f.location ? `<div style="position:absolute;left:44px;top:230px;display:flex;align-items:center;gap:8px;padding:10px 20px 10px 14px;border-radius:14px;background:rgba(255,255,255,.88);color:${BLUE};font:700 32px ${F}"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6a2.5 2.5 0 010 5.5z" fill="${BLUE}"/></svg>${f.location}</div>` : ''}`;
     }
     if (f.type === 'ama') {
@@ -68,7 +88,12 @@ const pngs: string[] = [];
 for (const [i, f] of spec.frames.entries()) {
     const html = path.join(out, `frame-${i + 1}.html`), png = path.join(out, `frame-${i + 1}.png`);
     writeFileSync(html, await frameHtml(f, i + 1));
-    execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1', '--window-size=1080,1920', '--virtual-time-budget=5000', `--screenshot=${png}`, 'file://' + html], { stdio: 'ignore' });
+    // Headless Chrome on this Mac sometimes exits 2 after writing the screenshot; a fresh file counts as success.
+    const t0 = Date.now();
+    for (let n = 1; ; n++) {
+        try { execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1', '--window-size=1080,1920', '--virtual-time-budget=5000', `--screenshot=${png}`, 'file://' + html], { stdio: 'ignore' }); break; }
+        catch (e) { if (existsSync(png) && statSync(png).mtimeMs >= t0) break; if (n >= 4) throw e; }
+    }
     pngs.push(png);
 }
 const th = await Promise.all(pngs.map(p => sharp(p).resize(360, 640).toBuffer()));
