@@ -83,8 +83,19 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         await this.start('com.burbn.instagram');
         await this.requireProfileForNewComposer();
         await this.tapElement('accessibility id', 'profile-tab', 'Profile tab');
-        const account = (await this.read('accessibility id', 'user-switch-title-button', 'label', 'active account')).replace(/^@/, '');
-        if (account !== ig.account.replace(/^@/, '')) throw new Error(`Active Instagram account is ${account}, expected ${ig.account}`);
+        const expected = ig.account.replace(/^@/, '');
+        let account = (await this.read('accessibility id', 'user-switch-title-button', 'label', 'active account')).replace(/^@/, '');
+        if (account !== expected) {
+            // Oct 22: the app was left on @antoniomonteiroai and two releases failed. Switch to the target account
+            // through the native switcher, then read it again; fail only when it is still wrong. Nothing is posted here.
+            this.evidence.accountSwitchedFrom = account;
+            await this.tapElement('accessibility id', 'user-switch-title-button', 'account switcher');
+            await this.tapElement('predicate string', `label BEGINSWITH 'INSTAGRAM profile, ${expected}'`, `${expected} in the account switcher`);
+            await new Promise(r => setTimeout(r, 3000));
+            await this.tapElement('accessibility id', 'profile-tab', 'Profile tab');
+            account = (await this.read('accessibility id', 'user-switch-title-button', 'label', 'active account')).replace(/^@/, '');
+        }
+        if (account !== expected) throw new Error(`Active Instagram account is ${account}, expected ${ig.account}`);
 
         if(!this.imports)throw Error('A persistent native import journal is required');
         const imported={value:await this.imports.ensure(input.deviceUdid,media,this.base,this.signal)};
