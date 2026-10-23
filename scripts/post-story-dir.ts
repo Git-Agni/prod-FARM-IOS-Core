@@ -17,7 +17,11 @@ import {storyBlockedByVideo} from '../src/publishing/wda-stories.js';
 import type {NativeStoryFrame} from '../src/publishing/mirroring-stories.js';
 
 const dir=path.resolve(process.argv[2]??''),PHONE='00008130-000229EE1AA0001C',base='http://127.0.0.1:8100';
-if(!process.argv.includes('--confirm'))throw Error('Usage: post-story-dir.ts FOLDER --confirm [--wait] [--link URL]');
+if(!process.argv.includes('--confirm'))throw Error('Usage: post-story-dir.ts FOLDER --confirm [--wait] [--link URL] [--not-before HH:MM]');
+// --not-before HH:MM (Mac local time, Pacific): the daily Story routine builds early and posts at its slot, not before.
+const notBefore=process.argv.includes('--not-before')?process.argv[process.argv.indexOf('--not-before')+1]!:undefined;
+if(notBefore&&!/^\d{2}:\d{2}$/.test(notBefore))throw Error('--not-before takes HH:MM');
+const tooEarly=()=>{if(!notBefore)return false;const [h,m]=notBefore.split(':').map(Number),t=new Date();t.setHours(h!,m!,0,0);return Date.now()<t.getTime();};
 const link=process.argv.includes('--link')?process.argv[process.argv.indexOf('--link')+1]:undefined;
 const files=(await readdir(dir)).filter(f=>/^frame-\d+\.png$/.test(f)).sort((a,b)=>parseInt(a.slice(6))-parseInt(b.slice(6)));
 if(!files.length)throw Error('No frame-N.png files in '+dir);
@@ -28,7 +32,7 @@ const db=createDatabaseConnection(),c=await db.pool.connect();let locked=false,d
 const receipts:any[]=[];
 try{
  for(;;){
-  const reason=await storyBlockedByVideo(db.pool,needMinutes)?`a video release falls inside the next ${needMinutes} minutes`
+  const reason=tooEarly()?`waiting for ${notBefore}`:await storyBlockedByVideo(db.pool,needMinutes)?`a video release falls inside the next ${needMinutes} minutes`
    :(locked=(await c.query('SELECT pg_try_advisory_lock(hashtextextended($1,0)) l',[PHONE])).rows[0].l)?'':'the phone is busy';
   if(!reason)break;
   if(!process.argv.includes('--wait'))throw Error('Not posted: '+reason);
