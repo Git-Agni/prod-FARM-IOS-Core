@@ -1,0 +1,190 @@
+{
+ "slug": "top-reel-harvey",
+ "keyword": "HARVEY",
+ "version": 7,
+ "model": "Best reels (Oct 23): the reel cover with its real play count and stickers, what it does, the proof screens, why it worked (social_posts metrics on Oct 23), Reel CTA plus the native Reel link sticker. Facts from the reel caption DenP4mcPjyj.",
+ "link": "https://www.instagram.com/reel/DenP4mcPjyj/",
+ "frames": [
+  {
+   "type": "cardcover",
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "dim": 0.55,
+   "titleTop": 170,
+   "titleSize": 96,
+   "title": "[[5,962]] people\nsaved this reel",
+   "card": {
+    "kind": "reel",
+    "image": "../teaching/assets/reel-harvey-cover.jpg",
+    "views": "134K",
+    "w": 460,
+    "y": 540,
+    "rot": -5
+   },
+   "stickers": [
+    {
+     "text": "3,070 comments",
+     "x": 610,
+     "y": 700,
+     "rot": 7,
+     "size": 46
+    },
+    {
+     "text": "2,985 shares",
+     "bg": "#2780FF",
+     "color": "#fff",
+     "x": 70,
+     "y": 1170,
+     "rot": -7,
+     "size": 50
+    }
+   ],
+   "sub": "Here's why it took off 👉",
+   "subTop": 1590
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "dim": 0.9,
+   "orbit": [
+    {
+     "cx": 942,
+     "cy": 1049,
+     "rx": 270,
+     "ry": 310,
+     "rot": -10,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      100,
+      160
+     ]
+    },
+    {
+     "cx": 967,
+     "cy": 1039,
+     "rx": 360,
+     "ry": 150,
+     "rot": 42,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
+    }
+   ],
+   "shift": [
+    360,
+    616
+   ],
+   "cutout": "../gallery/masks/antonio-03-rooftop-dusk-mask.png",
+   "title": "It's a free AI agent\nthat does **outbound**",
+   "body": "Finds local buisnesses\nand reads their **sites**",
+   "bubbles": [
+    {
+     "img": "assets/logos/bubble-gmail.png",
+     "ring": "#EA4335",
+     "on": [
+      0,
+      222
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-claude.png",
+     "ring": "#D97757",
+     "on": [
+      1,
+      232
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-github.png",
+     "ring": "#FFFFFF",
+     "on": [
+      0,
+      148
+     ]
+    }
+   ],
+   "pull": "Then it writes 👉",
+   "pullRight": 190
+  },
+  {
+   "type": "showcase",
+   "title": "Each email says something **real**",
+   "line1": "It checks <<their business>> first,\nthen writes the email",
+   "line2": "And **nothing sends** without your OK",
+   "rows": [
+    {
+     "image": "../teaching/assets/harvey-dashboard.png",
+     "bg": "#fff",
+     "sides": [
+      "../teaching/assets/reel-hiring-cover.jpg",
+      "../teaching/assets/reel-phone-cover.jpg"
+     ],
+     "wide": true,
+     "rot": 2
+    },
+    {
+     "image": "../teaching/assets/card-email.png",
+     "bg": "#fff",
+     "sides": [
+      "../teaching/assets/reel-phone-cover.jpg",
+      "../teaching/assets/reel-hiring-cover.jpg"
+     ],
+     "wide": true,
+     "rot": -2
+    }
+   ]
+  },
+  {
+   "type": "stats",
+   "backdrop": "asset:../gallery/antonio-17-headset-calls.jpg",
+   "title": "Why people ((saved)) it",
+   "gridTop": 560,
+   "tiles": [
+    {
+     "n": "134K",
+     "label": "views",
+     "color": "#4DA3FF"
+    },
+    {
+     "n": "5,962",
+     "label": "saves",
+     "color": "#3DE99B"
+    },
+    {
+     "n": "2,985",
+     "label": "shares",
+     "color": "#F8930D"
+    },
+    {
+     "n": "3,070",
+     "label": "comments",
+     "color": "#1EF5F5"
+    }
+   ],
+   "lesson": "It's free, and it runs on your\n**Claude Code plan**, not an API bill",
+   "lessonTop": 1200,
+   "pull": "Watch it here 👉",
+   "pullRight": 160,
+   "pullBottom": 300
+  },
+  {
+   "type": "cta",
+   "card": "reel",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "titleTop": 250,
+   "title": "Watch the reel 👇",
+   "thumb": "../teaching/assets/reel-harvey-cover.jpg",
+   "views": "134K",
+   "cardTop": 380,
+   "replyTop": 1290,
+   "send": "and I'll send you the repo + setup guide"
+  }
+ ],
+ "generated_photos": "gallery 13, 03, 17, 01"
+}

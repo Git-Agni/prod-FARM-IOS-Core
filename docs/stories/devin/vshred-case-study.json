@@ -1,0 +1,174 @@
+{
+ "slug": "vshred-case-study",
+ "keyword": "SMS",
+ "version": 5,
+ "model": "Case study (Oct 23): one client, before, where leads stopped, the mechanism, the felt number, the lesson, YouTube CTA. Facts from the YouTube video Y8c4xIsxOXw launch posts (Aug 18 report: customers booked through V Shred's AI SMS calendars paid over $1.8M; the sales team still handled the calls; applied, cancelled, no-show paths; the Next-Step Loop; a reply isn't a booking).",
+ "frames": [
+  {
+   "type": "cover",
+   "plate": "assets/plate-v3-cash.png",
+   "carve": [],
+   "cells": [],
+   "bright": 1.0,
+   "logos": [
+    {
+     "img": "assets/logos/vshred-white.svg",
+     "x": 300,
+     "y": 250,
+     "w": 480
+    }
+   ],
+   "titleTop": 420,
+   "titleSize": 96,
+   "title": "Collected [[$1.8M]]\nfrom AI texts",
+   "sub": "The sales team still\nhandled **the calls** 👉"
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "dim": 0.9,
+   "orbit": [
+    {
+     "cx": 942,
+     "cy": 1049,
+     "rx": 270,
+     "ry": 310,
+     "rot": -10,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      100,
+      160
+     ]
+    },
+    {
+     "cx": 967,
+     "cy": 1039,
+     "rx": 360,
+     "ry": 150,
+     "rot": 42,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
+    }
+   ],
+   "shift": [
+    360,
+    616
+   ],
+   "cutout": "../gallery/masks/antonio-03-rooftop-dusk-mask.png",
+   "title": "Their leads\nweren't **dead**",
+   "body": "They just **stopped**\nat diffrent steps",
+   "chips": [
+    {
+     "x": 600,
+     "y": 760,
+     "icon": "📝",
+     "text": "Applied"
+    },
+    {
+     "x": 640,
+     "y": 1290,
+     "icon": "📅",
+     "text": "Cancelled"
+    }
+   ],
+   "bubbles": [],
+   "pull": "Here's where 👉",
+   "pullRight": 190
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar-vshred.png",
+   "node": "V Shred",
+   "title": "Three places leads ((stopped))",
+   "cards": [
+    {
+     "name": "Applied",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+     "icon": "form",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Cancelled",
+     "photo": "asset:../gallery/antonio-15-bedroom-late-night.jpg",
+     "icon": "calendar",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "No-show",
+     "photo": "asset:../gallery/antonio-16-kitchen-morning.jpg",
+     "icon": "phone",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "loop",
+   "backdrop": "asset:../gallery/antonio-05-whiteboard-strategy.jpg",
+   "face": "asset:../gallery/antonio-02-podcast-studio.jpg",
+   "title": "So we built the\n**Next-Step Loop**",
+   "nodes": [
+    "Find where\nthey **stopped**",
+    "Give each text\n**one clear job**",
+    "Check the call\nis **really booked**"
+   ],
+   "pull": "Then this happened 👉",
+   "pullRight": 150,
+   "pullBottom": 250
+  },
+  {
+   "type": "stats",
+   "backdrop": "asset:../gallery/antonio-17-headset-calls.jpg",
+   "title": "By the Aug 18 report",
+   "cols": 1,
+   "gridTop": 560,
+   "tileH": 250,
+   "tiles": [
+    {
+     "n": "$1.8M+",
+     "label": "paid by customers the AI texts booked",
+     "color": "#4DA3FF",
+     "size": 120
+    },
+    {
+     "n": "The sales team",
+     "label": "still handled the sales calls",
+     "color": "#3DE99B",
+     "size": 76
+    }
+   ],
+   "lesson": "A reply isn't a booking.\n**Check the calendar** before\nyou confirm the call",
+   "lessonTop": 1180
+  },
+  {
+   "type": "cta",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "title": "The full V Shred breakdown\nis in this video 👇",
+   "thumb": "assets/yt-Y8c4xIsxOXw.jpg",
+   "videoTitle": "How VShred Collected $1.8M Through an AI SMS System",
+   "send": "and I'll send it to you"
+  }
+ ],
+ "generated_photos": "gallery 03, 13, 14, 15, 16, 05, 02, 17, 01"
+}

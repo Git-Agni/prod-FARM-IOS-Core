@@ -3,9 +3,12 @@
  * measured from his 8 originals (docs/stories/reference/devinjatho/live-2026-10-21/orig, 480x853, scaled x2.25) and
  * written up in docs/stories/devin/layer-spec.md. Font: SF Pro (system), the face his Stories use.
  * Frame types: cover, person, tree, showcase, cta. Marks: **bold**, [[red box]], {{red}}, ((green)), <<mint>>, __underline__.
+ * Oct 23 models (case study, YouTube video, best reels) add: cardcover (a tilted YouTube or Reel card with stickers),
+ * loop (a 3-step cycle around a cutout), steps (a chapter rail with timestamps), stats (metric tiles and a lesson),
+ * and cta with card "reel" (the reel cover with its view count instead of the YouTube player).
  * Usage: render-devin-story.ts docs/stories/devin/<slug>.json -> .scheduler-data/story-assets/devin/<slug>/frame-N.png */
 import { execFileSync } from 'node:child_process';
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { loadPhotoPool, photoBuffer } from '../src/publishing/story-lifestyle.js';
@@ -64,6 +67,24 @@ const ICON: Record<string, string> = {
 };
 const glyph = (k: string, color: string, size: number) => `<svg width="${size}" height="${size}" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 10px ${color}) drop-shadow(0 0 2px ${color})"><g style="fill:${color};stroke:${color}">${ICON[k]!.replace(/#000/g, color)}</g></svg>`;
 
+/** The white YouTube card with player chrome (his CTA card), drawn 900 wide and zoomed to w. */
+const ytCard = (thumb: string, title: string, time?: string, w = 900) => `<div style="zoom:${(w / 900).toFixed(3)};width:900px;border-radius:36px;background:#fff;padding:27px 27px 26px">
+  <div style="position:relative;border-radius:16px;overflow:hidden;height:470px;background:url(${thumb}) center/cover">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:96px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.75))"></div>
+    <div style="position:absolute;left:24px;right:24px;bottom:66px;height:6px;background:rgba(255,255,255,.35);border-radius:3px"><div style="width:10%;height:100%;background:#f00;border-radius:3px"></div><div style="position:absolute;left:9%;top:-6px;width:18px;height:18px;border-radius:50%;background:#f00"></div></div>
+    <div style="position:absolute;left:28px;bottom:16px;display:flex;gap:30px;align-items:center;font:500 26px system-ui,-apple-system,sans-serif;color:#fff">
+      <svg width="30" height="30" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg><svg width="30" height="30" viewBox="0 0 24 24"><path d="M5 4l10 8-10 8zM17 4h3v16h-3z" fill="#fff"/></svg><span>${time ?? '1:14 / 16:42'}</span></div>
+    <div style="position:absolute;right:28px;bottom:16px;display:flex;gap:28px">${['M4 6h16v12H4z', 'M3 12a9 9 0 1018 0 9 9 0 10-18 0', 'M4 4h6v2H6v4H4zM20 20h-6v-2h4v-4h2z'].map(d => `<svg width="30" height="30" viewBox="0 0 24 24"><path d="${d}" fill="none" stroke="#fff" stroke-width="2.2"/></svg>`).join('')}</div></div>
+  <div style="font:700 32px/1.25 system-ui,-apple-system,sans-serif;color:#111;margin-top:22px;letter-spacing:-.4px">${title}</div></div>`;
+/** A Reel in a phone-shaped card: the cover, the Reels mark, and the play count bottom left like the profile grid. */
+const reelCard = (img: string, views: string | undefined, w = 440) => { const h = Math.round(w * 16 / 9);
+    return `<div style="position:relative;width:${w}px;height:${h}px;border-radius:${Math.round(w * .07)}px;overflow:hidden;background:#111 url(${img}) center/cover;border:5px solid rgba(255,255,255,.9)">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.7))"></div>
+    <svg style="position:absolute;right:${Math.round(w * .05)}px;top:${Math.round(w * .05)}px" width="${Math.round(w * .1)}" height="${Math.round(w * .1)}" viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="none" stroke="#fff" stroke-width="2"/><path d="M2.5 8h19M9 2.5l3 5.5M15 2.5l3 5.5" stroke="#fff" stroke-width="2"/><path d="M10 11.5v6l5-3z" fill="#fff"/></svg>
+    ${views ? `<div style="position:absolute;left:${Math.round(w * .06)}px;bottom:${Math.round(w * .05)}px;display:flex;align-items:center;gap:10px;font:700 ${Math.round(w * .095)}px/1 system-ui,-apple-system,sans-serif;text-shadow:0 2px 8px rgba(0,0,0,.6)"><svg width="${Math.round(w * .08)}" height="${Math.round(w * .08)}" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg>${views}</div>` : ''}</div>`; };
+/** Stickers: tilted labels on top of a card ({text, x, y, rot, bg, color, size, strike}). */
+const stickers = (list: any[] = []) => list.map(s => `<div style="position:absolute;left:${s.x}px;top:${s.y}px;transform:rotate(${s.rot ?? -6}deg);background:${s.bg ?? '#fff'};color:${s.color ?? '#111'};font:800 ${s.size ?? 46}px/1 system-ui,-apple-system,sans-serif;letter-spacing:-.5px;padding:16px 24px;border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.6);white-space:nowrap">${s.strike ? `<span style="text-decoration:line-through;text-decoration-thickness:6px;text-decoration-color:${C.red}">${s.text}</span>` : md(s.text)}</div>`).join('');
+
 const CSS = `*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 body{font-family:system-ui,-apple-system,"SF Pro Display","Helvetica Neue",sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
 .stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#000}.bg{position:absolute;inset:0;background-size:cover;background-position:center}
@@ -95,7 +116,8 @@ async function frameHtml(f: any, i: number) {
             <feFlood flood-color="#fff" flood-opacity=".45"/><feComposite in2="s2" operator="in" result="hi"/>
             <feMerge><feMergeNode in="fill"/><feMergeNode in="shadow"/><feMergeNode in="hi"/></feMerge></filter></defs>${cells}</svg>
           <div class="bg" style="background:linear-gradient(180deg,rgba(0,0,0,0) 72%,rgba(0,0,0,.72) 84%,rgba(0,0,0,.92) 100%)"></div>
-          <div class="t" style="top:${f.titleTop ?? 230}px;font:700 115px/139px system-ui,-apple-system,sans-serif;letter-spacing:-1.5px;text-transform:uppercase;text-shadow:0 4px 24px rgba(0,0,0,.35)">${md(f.title)}</div>
+          ${(f.logos ?? []).map((l: any) => `<img src="${asset(l.img)}" style="position:absolute;left:${l.x}px;top:${l.y}px;width:${l.w}px;${l.screen ? 'mix-blend-mode:screen;' : ''}transform:rotate(${l.rot ?? 0}deg);filter:drop-shadow(0 8px 24px rgba(0,0,0,.7))">`).join('')}
+          <div class="t" style="top:${f.titleTop ?? 230}px;font:700 ${f.titleSize ?? 115}px/${Math.round((f.titleSize ?? 115) * 1.21)}px system-ui,-apple-system,sans-serif;letter-spacing:-1.5px;text-transform:uppercase;text-shadow:0 4px 24px rgba(0,0,0,.35)">${md(f.title)}</div>
           <div class="t" style="top:${f.subTop ?? 1626}px;font:500 62px/77px system-ui,-apple-system,sans-serif;letter-spacing:-.8px;text-shadow:0 2px 14px rgba(0,0,0,.6)">${md(f.sub)}</div>`;
     }
     if (f.type === 'person') {
@@ -169,9 +191,13 @@ async function frameHtml(f: any, i: number) {
         const row = async (r: any, y: number) => {
             // His side cards are other real posts, blurred and dimmed behind the sharp centre one.
             const main = asset(r.image), sides = await Promise.all((r.sides ?? [r.image, r.image]).map((s: string, k: number) => photo('asset:' + s, `side${i}-${y}-${k}`, { w: 288, h: 481, dim: .4 })));
+            // wide: a landscape screenshot fills the row on a white card; the side posts peek out tilted behind it.
+            if (r.wide) return `<div style="position:absolute;left:40px;top:${y + 60}px;width:300px;height:400px;border-radius:22px;background:url(${sides[0]}) center/cover;filter:blur(5px);opacity:.6;transform:rotate(-6deg)"></div>
+              <div style="position:absolute;left:740px;top:${y + 60}px;width:300px;height:400px;border-radius:22px;background:url(${sides[1]}) center/cover;filter:blur(5px);opacity:.6;transform:rotate(6deg)"></div>
+              <div style="position:absolute;left:110px;top:${y + 10}px;width:860px;height:460px;border-radius:24px;background:${r.bg ?? '#fff'} url(${main}) center/contain no-repeat;border:3px solid rgba(255,255,255,.85);box-shadow:0 20px 50px rgba(0,0,0,.8);transform:rotate(${r.rot ?? 0}deg)"></div>`;
             return `<div style="position:absolute;left:170px;top:${y + 40}px;width:260px;height:420px;border-radius:22px;background:url(${sides[0]}) center/cover;filter:blur(5px);opacity:.75"></div>
               <div style="position:absolute;left:650px;top:${y + 40}px;width:260px;height:420px;border-radius:22px;background:url(${sides[1]}) center/cover;filter:blur(5px);opacity:.75"></div>
-              <div style="position:absolute;left:396px;top:${y}px;width:288px;height:481px;border-radius:24px;background:#111 url(${main}) center/cover;border:3px solid rgba(255,255,255,.85);box-shadow:0 20px 50px rgba(0,0,0,.8)"></div>`;
+              <div style="position:absolute;left:396px;top:${y}px;width:288px;height:481px;border-radius:24px;background:${r.bg ?? '#111'} url(${main}) center/${r.fit ?? 'cover'} no-repeat;border:3px solid rgba(255,255,255,.85);box-shadow:0 20px 50px rgba(0,0,0,.8)"></div>`;
         };
         inner = `<div class="t" style="top:225px;font:500 64px/1 system-ui,-apple-system,sans-serif;letter-spacing:-1.2px">${md(f.title)}</div>
           <div style="position:absolute;left:127px;top:380px;font:400 54px/68px system-ui,-apple-system,sans-serif;letter-spacing:-.7px">${md(f.line1)}</div>
@@ -182,19 +208,76 @@ async function frameHtml(f: any, i: number) {
     }
     if (f.type === 'cta') {
         // Layers: black with a dim warm photo bottom, title + 👇, white YouTube card with player chrome, Reply "KEYWORD".
+        // card "reel": the reel cover in a phone-shaped card with its view count, and a sticker per metric.
         const back = f.backdrop ? await photo(f.backdrop, 'back' + i, { dim: .16, w: 1080, h: 900, pos: 'centre', sat: .5 }) : '';
+        const card = f.card === 'reel'
+            ? `<div style="position:absolute;left:${540 - 220}px;top:${f.cardTop ?? 430}px;transform:rotate(${f.cardRot ?? -3}deg)">${reelCard(asset(f.thumb), f.views, 440)}</div>${stickers(f.stickers)}`
+            : `<div style="position:absolute;left:90px;top:574px">${ytCard(asset(f.thumb), f.videoTitle, f.time)}</div>`;
         inner = `${back ? `<div class="bg" style="top:auto;height:900px;background-image:url(${back});-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 60%)"></div>` : ''}
-          <div class="t" style="top:296px;font:600 58px/82px system-ui,-apple-system,sans-serif;letter-spacing:-1px">${md(f.title)}</div>
-          <div style="position:absolute;left:90px;top:574px;width:900px;border-radius:36px;background:#fff;padding:27px 27px 26px">
-            <div style="position:relative;border-radius:16px;overflow:hidden;height:470px;background:url(${asset(f.thumb)}) center/cover">
-              <div style="position:absolute;left:0;right:0;bottom:0;height:96px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.75))"></div>
-              <div style="position:absolute;left:24px;right:24px;bottom:66px;height:6px;background:rgba(255,255,255,.35);border-radius:3px"><div style="width:10%;height:100%;background:#f00;border-radius:3px"></div><div style="position:absolute;left:9%;top:-6px;width:18px;height:18px;border-radius:50%;background:#f00"></div></div>
-              <div style="position:absolute;left:28px;bottom:16px;display:flex;gap:30px;align-items:center;font:500 26px system-ui,-apple-system,sans-serif;color:#fff">
-                <svg width="30" height="30" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#fff"/></svg><svg width="30" height="30" viewBox="0 0 24 24"><path d="M5 4l10 8-10 8zM17 4h3v16h-3z" fill="#fff"/></svg><span>${f.time ?? '1:14 / 16:42'}</span></div>
-              <div style="position:absolute;right:28px;bottom:16px;display:flex;gap:28px">${['M4 6h16v12H4z', 'M3 12a9 9 0 1018 0 9 9 0 10-18 0', 'M4 4h6v2H6v4H4zM20 20h-6v-2h4v-4h2z'].map(d => `<svg width="30" height="30" viewBox="0 0 24 24"><path d="${d}" fill="none" stroke="#fff" stroke-width="2.2"/></svg>`).join('')}</div></div>
-            <div style="font:700 32px/1.25 system-ui,-apple-system,sans-serif;color:#111;margin-top:22px;letter-spacing:-.4px">${f.videoTitle}</div></div>
-          <div class="t" style="top:1318px;font:700 116px/1 system-ui,-apple-system,sans-serif;letter-spacing:-3px;white-space:nowrap">Reply <span style="color:${C.green}">“${spec.keyword}”</span></div>
-          <div class="t" style="top:1462px;font:400 44px/1 system-ui,-apple-system,sans-serif;letter-spacing:-.4px">${f.send ?? "and I'll send it to you"}</div>`;
+          <div class="t" style="top:${f.titleTop ?? 296}px;font:600 58px/82px system-ui,-apple-system,sans-serif;letter-spacing:-1px">${md(f.title)}</div>
+          ${card}
+          <div class="t" style="top:${f.replyTop ?? 1318}px;font:700 116px/1 system-ui,-apple-system,sans-serif;letter-spacing:-3px;white-space:nowrap">Reply <span style="color:${C.green}">“${spec.keyword}”</span></div>
+          <div class="t" style="top:${(f.replyTop ?? 1318) + 144}px;font:400 44px/1 system-ui,-apple-system,sans-serif;letter-spacing:-.4px">${f.send ?? "and I'll send it to you"}</div>`;
+    }
+    if (f.type === 'cardcover') {
+        // Layers: blurred dim photo, top fade, uppercase headline, a tilted YouTube or Reel card with a blue glow, stickers
+        // (a struck-out price, a metric), bottom fade, sub line with the pull.
+        const back = await photo(f.backdrop, 'back' + i, { dim: f.dim ?? .45, sat: .8 });
+        const c = f.card, w = c.w ?? (c.kind === 'reel' ? 470 : 900);
+        const body = c.kind === 'reel' ? reelCard(asset(c.image), c.views, w) : ytCard(asset(c.image), c.title, c.time, w);
+        inner = `<div class="bg" style="background-image:url(${back});filter:blur(${f.blur ?? 5}px);transform:scale(1.04)"></div>
+          <div class="bg" style="background:linear-gradient(180deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.35) 26%,rgba(0,0,0,.2) 55%,rgba(0,0,0,.85) 80%,#000 100%)"></div>
+          <div style="position:absolute;left:${c.x ?? Math.round(540 - w / 2)}px;top:${c.y ?? 640}px;transform:rotate(${c.rot ?? -4}deg);filter:drop-shadow(0 0 60px rgba(39,128,255,.55)) drop-shadow(0 30px 40px rgba(0,0,0,.8))">${body}</div>
+          ${stickers(f.stickers)}
+          <div class="t" style="top:${f.titleTop ?? 200}px;font:700 ${f.titleSize ?? 100}px/${Math.round((f.titleSize ?? 100) * 1.2)}px system-ui,-apple-system,sans-serif;letter-spacing:-1.5px;text-transform:uppercase;text-shadow:0 4px 24px rgba(0,0,0,.6)">${md(f.title)}</div>
+          <div class="t" style="top:${f.subTop ?? 1560}px;font:500 60px/76px system-ui,-apple-system,sans-serif;letter-spacing:-.8px;text-shadow:0 2px 14px rgba(0,0,0,.6)">${md(f.sub)}</div>`;
+    }
+    if (f.type === 'loop') {
+        // Layers: blurred dark photo, title, a glowing ring with chevrons, Antonio in a round portrait at the centre with a
+        // halo, three glass steps on the ring (numbered), pull line. The ring runs behind the steps and in front of the halo.
+        const back = await photo(f.backdrop, 'back' + i, { dim: .3, sat: .7 });
+        const face = await photo(f.face, 'face' + i, { w: 420, h: 420, pos: f.facePos ?? 'attention' });
+        const [cx, cy, r] = f.ring ?? [540, 1100, 400], fs = f.faceSize ?? 300;
+        const angs = [-90, 30, 150], P = (a: number) => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)];
+        const ringStyle = `fill="none" stroke="${C.orbit}" stroke-width="5" stroke-linecap="round" style="filter:drop-shadow(0 0 8px ${C.orbit})"`;
+        const chev = [-30, 90, 210].map(a => { const [x, y] = P(a); return `<path d="M-12 -11 L4 0 L-12 11" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a + 90})" ${ringStyle}/>`; }).join('');
+        const nodes = f.nodes.map((n: any, k: number) => { const [x, y] = P(angs[k]!);
+            return `<div style="position:absolute;left:${x - 190}px;top:${y - 62}px;width:380px;min-height:124px;display:flex;align-items:center;gap:20px;padding:18px 26px;border-radius:30px;background:rgba(18,22,34,.86);border:2px solid rgba(124,196,255,.45);box-shadow:0 18px 40px rgba(0,0,0,.7),0 0 24px rgba(39,128,255,.35)">
+              <div style="flex:none;width:62px;height:62px;border-radius:50%;background:${C.green};color:#000;font:800 36px/62px system-ui,-apple-system,sans-serif;text-align:center">${k + 1}</div>
+              <div style="font:500 38px/46px system-ui,-apple-system,sans-serif;letter-spacing:-.5px">${md(n)}</div></div>`; }).join('');
+        inner = `<div class="bg" style="background-image:url(${back});filter:blur(8px);transform:scale(1.05)"></div>
+          <div class="bg" style="background:radial-gradient(ellipse 600px 600px at ${cx}px ${cy}px,rgba(10,30,70,.55),rgba(0,0,0,.85) 70%)"></div>
+          <div style="position:absolute;left:${cx - fs / 2}px;top:${cy - fs / 2}px;width:${fs}px;height:${fs}px;border-radius:50%;background:url(${face}) center/cover;border:6px solid #fff;box-shadow:0 0 0 22px rgba(0,0,0,.5),0 0 90px 30px rgba(39,128,255,.45)"></div>
+          <svg width="1080" height="1920" style="position:absolute;inset:0"><circle cx="${cx}" cy="${cy}" r="${r}" ${ringStyle}/>${chev}</svg>${nodes}
+          <div class="t" style="top:${f.titleTop ?? 250}px;font:400 76px/90px system-ui,-apple-system,sans-serif;letter-spacing:-1.4px">${md(f.title)}</div>${pull}`;
+    }
+    if (f.type === 'steps') {
+        // Layers: dim photo bottom, title, a small tilted YouTube thumbnail, a red chapter rail with dots, white timestamp
+        // chips like YouTube chapters, one step a row, lesson line.
+        const back = f.backdrop ? await photo(f.backdrop, 'back' + i, { dim: .22, w: 1080, h: 1000, pos: 'centre', sat: .6 }) : '';
+        const top = f.railTop ?? 640, gap = f.gap ?? 210, n = f.steps.length;
+        const rows = f.steps.map((s: any, k: number) => `<div style="position:absolute;left:150px;top:${top + k * gap - 17}px;width:34px;height:34px;border-radius:50%;background:#FF0033;box-shadow:0 0 0 8px rgba(255,0,51,.25),0 0 22px #FF0033"></div>
+            <div style="position:absolute;left:230px;top:${top + k * gap - 36}px;padding:10px 18px;border-radius:10px;background:#fff;color:#111;font:700 34px/1 system-ui,-apple-system,sans-serif;font-variant-numeric:tabular-nums">${s.t}</div>
+            <div style="position:absolute;left:230px;right:80px;top:${top + k * gap + 30}px;font:400 52px/62px system-ui,-apple-system,sans-serif;letter-spacing:-.6px">${md(s.text)}</div>`).join('');
+        inner = `${back ? `<div class="bg" style="top:auto;height:1000px;background-image:url(${back});-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 65%)"></div>` : ''}
+          ${f.thumb ? `<div style="position:absolute;right:70px;top:${f.thumbTop ?? 300}px;width:330px;height:186px;border-radius:16px;background:url(${asset(f.thumb)}) center/cover;border:4px solid #fff;transform:rotate(5deg);box-shadow:0 20px 40px rgba(0,0,0,.8),0 0 40px rgba(255,0,51,.35)"></div>` : ''}
+          <div style="position:absolute;left:106px;right:${f.thumb ? 440 : 106}px;top:${f.titleTop ?? 280}px;font:400 72px/86px system-ui,-apple-system,sans-serif;letter-spacing:-1.3px">${md(f.title)}</div>
+          <div style="position:absolute;left:164px;top:${top}px;width:6px;height:${(n - 1) * gap}px;background:linear-gradient(180deg,#FF0033,rgba(255,0,51,.35))"></div>${rows}
+          ${f.lesson ? `<div class="t" style="top:${f.lessonTop ?? top + n * gap + 20}px;font:600 50px/64px system-ui,-apple-system,sans-serif;letter-spacing:-.6px">${md(f.lesson)}</div>` : ''}${pull}`;
+    }
+    if (f.type === 'stats') {
+        // Layers: dim photo bottom, title, metric tiles (big glowing number, label) on dark glass with a coloured top edge,
+        // an optional small reel or YouTube card, lesson line and pull.
+        const back = f.backdrop ? await photo(f.backdrop, 'back' + i, { dim: .22, w: 1080, h: 1000, pos: 'centre', sat: .6 }) : '';
+        const cols = f.cols ?? 2, tw = cols === 1 ? 860 : 420, th = f.tileH ?? 270, top = f.gridTop ?? 620;
+        const tiles = f.tiles.map((t: any, k: number) => { const x = cols === 1 ? 110 : 110 + (k % 2) * 440, y = top + Math.floor(k / cols) * (th + 24);
+            return `<div style="position:absolute;left:${x}px;top:${y}px;width:${tw}px;height:${th}px;border-radius:28px;background:rgba(16,20,30,.88);border:2px solid rgba(255,255,255,.08);border-top:6px solid ${t.color ?? C.green};box-shadow:0 20px 50px rgba(0,0,0,.7);text-align:${cols === 1 ? 'left' : 'center'};padding:${cols === 1 ? '40px 48px' : '46px 10px 0'}">
+              <div style="font:700 ${t.size ?? 104}px/1 system-ui,-apple-system,sans-serif;letter-spacing:-3px;color:${t.color ?? C.green};text-shadow:0 0 26px ${t.color ?? C.green}66">${t.n}</div>
+              <div style="font:500 38px/46px system-ui,-apple-system,sans-serif;margin-top:20px;color:#E6E6E6">${md(t.label)}</div></div>`; }).join('');
+        inner = `${back ? `<div class="bg" style="top:auto;height:1000px;background-image:url(${back});-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 65%)"></div><div class="bg" style="background:rgba(0,0,0,.25)"></div>` : ''}
+          <div class="t" style="top:${f.titleTop ?? 300}px;font:400 74px/88px system-ui,-apple-system,sans-serif;letter-spacing:-1.3px">${md(f.title)}</div>
+          ${f.sticker ? stickers([f.sticker]) : ''}${tiles}
+          ${f.lesson ? `<div class="t" style="top:${f.lessonTop ?? 1330}px;font:600 54px/68px system-ui,-apple-system,sans-serif;letter-spacing:-.6px">${md(f.lesson)}</div>` : ''}${pull}`;
     }
     if (!inner) throw Error('Unknown frame type ' + f.type);
     return `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body><div class="stage">${inner}</div></body></html>`;
@@ -204,7 +287,12 @@ const pngs: string[] = [];
 for (const [i, f] of spec.frames.entries()) {
     const html = path.join(out, `frame-${i + 1}.html`), png = path.join(out, `frame-${i + 1}.png`);
     writeFileSync(html, await frameHtml(f, i + 1));
-    execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1', '--window-size=1080,1920', '--virtual-time-budget=6000', `--screenshot=${png}`, 'file://' + html], { stdio: 'ignore' });
+    // Headless Chrome on this Mac sometimes exits 2 after writing the screenshot; a fresh file counts as success.
+    const t0 = Date.now();
+    for (let n = 1; ; n++) {
+        try { execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1', '--window-size=1080,1920', '--virtual-time-budget=6000', `--screenshot=${png}`, 'file://' + html], { stdio: 'ignore' }); break; }
+        catch (e) { if (existsSync(png) && statSync(png).mtimeMs >= t0) break; if (n >= 4) throw e; }
+    }
     pngs.push(png);
 }
 const th = await Promise.all(pngs.map(p => sharp(p).resize(360, 640).toBuffer()));
