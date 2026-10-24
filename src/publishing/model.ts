@@ -37,6 +37,13 @@ export function validatePostingInput(value: unknown): PostingInput {
     const youtubeRequested = Array.isArray(p.targets) && p.targets.some((t: any) => t?.platform === 'youtube');
     const captionLimit = youtubeRequested ? 5000 : 2200;
     if ((p.caption as string).length > captionLimit) throw new Error(`Caption must be ${captionLimit.toLocaleString('en-US')} characters or fewer`);
+    // Oct 23 (Antonio): every Instagram, Facebook and TikTok caption is Harvey-sized (the Harvey reel caption was 384
+    // characters: hook, one short line, Comment KEYWORD, hashtags). Facebook's Reel checklist flags over 400 (Oct 22).
+    if (!youtubeRequested) {
+        const caption = (p.caption as string).trim(), tags = caption.match(/#[\p{L}\p{N}_]+/gu) ?? [];
+        if (caption.length > 400) throw new Error(`Caption is ${caption.length} characters; keep it at 400 or fewer (Harvey size)`);
+        if (tags.length < 1 || tags.length > 5) throw new Error(`Caption has ${tags.length} hashtags; use 1 to 5`);
+    }
     if (!/(Z|[+-]\d{2}:\d{2})$/.test(p.runAt as string) || !Number.isFinite(Date.parse(p.runAt as string))) throw new Error('runAt must include a UTC offset or Z');
     try { new Intl.DateTimeFormat('en', { timeZone: p.timezone as string }); } catch { throw new Error('Use a valid IANA timezone'); }
     if (!Array.isArray(p.targets) || p.targets.length < 1 || p.targets.length > 3) throw new Error('Choose one to three platforms');
