@@ -4,6 +4,8 @@
  * The block counts as lifted when a Reel shared after the newest empty one has a caption.
  * Usage: caption-block-monitor.ts [--repair]
  *   --repair: only when the block is lifted, writes the pairs file and runs repair-instagram-captions.ts --apply on it.
+ *   --fixture FILE: use saved media JSON instead of the live account. --dry-run: repair stops at the Edit screen and cancels.
+ *   --first-only: repair only the first matched Reel.
  * Prints one JSON status line. Never posts. */
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -17,7 +19,11 @@ f=m.fields("c2c-monorepo","Meta Marketing API — Antonio Monteiro (C2C ads + le
 print(json.dumps({"meta":f.get("token") or f.get("credential"),"page":str(f.get("page antonio revenue","")).split()[0]}))`], { encoding: 'utf8', timeout: 60_000 }));
 const g = async (p: string, q: Record<string, string>) => (await (await fetch(`https://graph.facebook.com/v21.0/${p}?${new URLSearchParams(q)}`, { signal: AbortSignal.timeout(30_000) })).json()) as any;
 const page = await g(s.page, { fields: 'access_token,instagram_business_account', access_token: s.meta });
-const media: any[] = ((await g(page.instagram_business_account.id + '/media', { fields: 'id,caption,timestamp,permalink', limit: '50', access_token: page.access_token })).data ?? [])
+// --fixture <file.json>: test the detection and repair chain on saved media instead of the live account.
+const fixtureAt = process.argv.indexOf('--fixture');
+const live: any[] = fixtureAt > 0 ? JSON.parse((await import('node:fs')).readFileSync(process.argv[fixtureAt + 1]!, 'utf8'))
+    : (await g(page.instagram_business_account.id + '/media', { fields: 'id,caption,timestamp,permalink', limit: '50', access_token: page.access_token })).data ?? [];
+const media: any[] = live
     .filter((m: any) => Date.parse(m.timestamp) >= SINCE).sort((a: any, b: any) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
 const empty = media.filter(m => !(m.caption ?? '').trim());
 const lastEmpty = empty.at(-1);
@@ -42,5 +48,7 @@ writeFileSync(`${dir}/latest.json`, JSON.stringify({ ...status, pairs }, null, 2
 console.log(JSON.stringify(status));
 if (process.argv.includes('--repair') && lifted && pairs.length) {
     writeFileSync(`${dir}/pairs.json`, JSON.stringify(pairs, null, 2));
-    execFileSync('node', ['--env-file-if-exists=.env', '--import', 'tsx', 'scripts/repair-instagram-captions.ts', `${dir}/pairs.json`, '--apply'], { stdio: 'inherit', timeout: 60 * 60_000 });
+    const limit = process.argv.includes('--first-only') ? pairs.slice(0, 1) : pairs;   // --first-only: chain test on one Reel
+    writeFileSync(`${dir}/pairs.json`, JSON.stringify(limit, null, 2));
+    execFileSync('node', ['--env-file-if-exists=.env', '--import', 'tsx', 'scripts/repair-instagram-captions.ts', `${dir}/pairs.json`, ...(process.argv.includes('--dry-run') ? [] : ['--apply'])], { stdio: 'inherit', timeout: 60 * 60_000 });
 }
