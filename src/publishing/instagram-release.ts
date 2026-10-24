@@ -1,7 +1,8 @@
 import type {DirectMediaStore} from './direct-media.js';
 import { exactOwnReelCaption, ownReelViewer, visibleNativeNodes } from './native-xml.js';
 import type {CommentResult} from './post-comments.js';
-import { readFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -156,6 +157,23 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         return this.completeSettings(input,media,imported,seconds,account,cellLabel);
     }
 
+    /** Scroll the composer back to the caption, read it, and retype it once if Instagram dropped it. */
+    async ensureCaptionBeforeShare(caption: string): Promise<'kept' | 'restored'> {
+        for (let n = 0; n < 4 && !await this.visible('accessibility id', 'caption-cell-text-view'); n++) {
+            await this.assertInputApp();
+            await this.request(this.session + '/wda/dragfromtoforduration', { fromX: 215, fromY: 300, toX: 215, toY: 780, duration: 0.3 });
+            await this.sleep(500);
+        }
+        if (await this.read('accessibility id', 'caption-cell-text-view', 'value', 'caption before Share') === caption) return 'kept';
+        const id = await this.waitFor('accessibility id', 'caption-cell-text-view', 'caption field');
+        await this.request(`${this.session}/element/${id}/clear`, {}).catch(() => undefined);
+        await this.request(`${this.session}/element/${id}/value`, { value: [caption] });
+        if (await this.visible('accessibility id', 'OK')) await this.tapElement('accessibility id', 'OK', 'caption OK');
+        await this.sleep(800);
+        if (await this.read('accessibility id', 'caption-cell-text-view', 'value', 'restored caption') !== caption) throw new Error('Caption was empty before Share and could not be restored; nothing was shared');
+        return 'restored';
+    }
+
     async completeSettings(input:PostingInput,media:ReleaseMedia,imported:{localIdentifier:string;albumName:string},seconds:number,account:string,cellLabel:string):Promise<ReleaseEvidence>{
         this.input=input;
         const facebook=input.targets.some(t=>t.platform==='facebook');
@@ -193,9 +211,13 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         await this.tapElement('accessibility id', 'BackButton', 'back to composer');
         if (facebook !== facebookOn) throw new Error(facebook ? 'Antonio Revenue Facebook sharing is not on' : 'Facebook sharing is on but this item has no Facebook target');
 
+        // Oct 23 (Antonio: "none of the posts are going out with captions"): eight Reels from 12 PM to 7 PM shared
+        // with an empty caption although the caption read back right after typing. A later composer step now clears it,
+        // so read the caption again just before Share and type it back once when it is missing or different.
+        const captionBeforeShare = await this.ensureCaptionBeforeShare(input.caption);
         const shareLabel = await this.read('accessibility id', 'share-sheet-share-button', 'label', 'Share button');
         if (shareLabel !== 'Share') throw new Error(`Unexpected final button: ${shareLabel}`);
-        this.evidence = { account, importedMediaId: imported.localIdentifier, galleryCell: cellLabel, seconds, cover, aiLabel: false, facebookOn, checkedAt: new Date().toISOString() };
+        this.evidence = { account, importedMediaId: imported.localIdentifier, galleryCell: cellLabel, seconds, cover, aiLabel: false, facebookOn, captionBeforeShare, checkedAt: new Date().toISOString() };
         return { exactMedia: true, videoFrameCover: true, caption: true, account: true, automaticPromotion, linkedFacebook: facebookOn, ...(trialEntry?{trialEntry}:{}), ...(relatedReel?{relatedReel}:{}) };
     }
 
@@ -450,6 +472,15 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         this.sharedAt = Date.now();
         const r = await this.raw(`${this.session}/element/${id}/click`, {});
         if (!r.ok || r.body.value?.error) throw new Error(`Share tap result is uncertain: ${r.body.value?.error ?? r.status}`);
+        // Oct 23 diagnosis of empty captions: keep what the phone showed just after Share. Read-only; no taps.
+        for (const wait of [1500, 6000]) {
+            await this.sleep(wait);
+            try {
+                const png = (await this.request('/screenshot')).value as string;
+                const dir = path.resolve('.scheduler-data/share-shots'); await mkdir(dir, { recursive: true });
+                await writeFile(path.join(dir, `${new Date(this.sharedAt).toISOString().replace(/[:.]/g, '-')}-${wait}.png`), Buffer.from(png, 'base64'));
+            } catch { /* evidence only */ }
+        }
     }
 
     /** Close known Instagram promo sheets (e.g. Meta Verified) that cover the tab bar. Never taps the promo action. */

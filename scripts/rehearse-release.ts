@@ -25,6 +25,7 @@ try{
  const started=Date.now();
  const evidence=await driver.preflight(item.input,item.media);
  console.log(`REHEARSAL PASSED ${platforms.join('+')} in ${Math.round((Date.now()-started)/1000)} s; stopped before submit.`);
+ if(driver?.evidence?.captionBeforeShare)console.log("caption before Share: "+driver.evidence.captionBeforeShare);
  console.log(JSON.stringify(evidence).slice(0,600));
 }catch(e:any){
  console.log('REHEARSAL STOPPED:',e.message);
