@@ -221,7 +221,8 @@ export function createPublishingPlugin(): PhoneFarmPlugin {
             // Re-arm a post that stopped before Share (missed window, failed preflight). Never one with a Share attempt.
             ctx.app.post(`${base}/items/:id/rearm`,async(req,reply)=>{
                 const id=(req.params as any).id;if(!/^[0-9a-f-]{36}$/.test(id))return reply.code(400).send({error:'Invalid item ID'});
-                const r=await ctx.scheduler.connection.pool.query(`UPDATE scheduler.publishing_releases SET state='armed',result='{}'::jsonb,run_at=now()+interval '3 days',updated_at=now()
+                const r=await ctx.scheduler.connection.pool.query(`UPDATE scheduler.publishing_releases r SET state='armed',result='{}'::jsonb,run_at=now()+interval '3 days',updated_at=now(),
+                    item_version=(SELECT version FROM scheduler.publishing_items WHERE id=r.item_id)
                     WHERE item_id=$1 AND state='needs_review' AND share_claimed_at IS NULL RETURNING item_id`,[id]);
                 if(!r.rowCount)return reply.code(409).send({error:'Only a needs-review post with no Share attempt can be re-armed'});
                 // The lane slotter moves it into the next free slot in its lane.
