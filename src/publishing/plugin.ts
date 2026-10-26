@@ -1,4 +1,6 @@
 import{captureDirectStoryDraft,directStoryStatus,directStoryFingerprint}from'./wda-stories.js';
+import {join} from 'node:path';
+import {promisify} from 'node:util';
 import {directPublicationStatus} from './direct-policy.js';
 import {nativeDriverStatus,withSupervisorReason} from './driver-health.js';
 import {requestWdaService} from '../devices/wda-service-client.js';
@@ -199,6 +201,34 @@ export function createPublishingPlugin(): PhoneFarmPlugin {
                 `SELECT item_id, item_version, run_at, state, share_claimed_at, result, updated_at FROM scheduler.publishing_releases ORDER BY run_at DESC LIMIT 500`)).rows }));
             ctx.app.get(`${base}/engagements`, async () => ({ engagements: (await ctx.scheduler.connection.pool.query(
                 `SELECT claim_key, action, post_url, status, result, execution_id, created_at, updated_at FROM scheduler.engagement_actions ORDER BY updated_at DESC LIMIT 500`)).rows }));
+            // Oct 26 health strip: everything Antonio needs to run the Phone Farm without asking Claude.
+            ctx.app.get(`${base}/health`,async()=>{
+                const pool=ctx.scheduler.connection.pool,root=process.cwd();
+                let captions:any=null;
+                try{captions=JSON.parse(await readFile(join(root,'.scheduler-data/caption-block/latest.json'),'utf8'));delete captions.pairs;}catch{/* monitor has not run */}
+                const lanes=laneHours();
+                const armed=(await pool.query(`SELECT CASE WHEN i.input->'targets' @> '[{"platform":"youtube"}]' THEN 'youtube' WHEN i.input->'targets' @> '[{"platform":"tiktok"}]' THEN 'tiktok' ELSE 'instagram' END lane, count(*)::int n
+                    FROM scheduler.publishing_releases r JOIN scheduler.publishing_items i ON i.id=r.item_id
+                    WHERE r.state='armed' AND r.run_at BETWEEN now() AND now()+interval '24 hours' GROUP BY 1`)).rows;
+                const supply=(['instagram','tiktok','youtube'] as const).map(lane=>({lane,armed24h:armed.find((r:any)=>r.lane===lane)?.n??0,target:lanes[lane].length}));
+                const pins=(await pool.query(`SELECT status, count(*)::int n FROM scheduler.engagement_actions WHERE updated_at>now()-interval '72 hours' GROUP BY 1`)).rows;
+                const rearmable=(await pool.query(`SELECT count(*)::int n FROM scheduler.publishing_releases WHERE state='needs_review' AND share_claimed_at IS NULL AND run_at>now()-interval '7 days'`)).rows[0].n;
+                let services:{name:string;running:boolean}[]=[];
+                try{services=(await promisify(execFile)('launchctl',['list'])).stdout.split('\n').filter(l=>l.includes('ai.clicktoclose.phone-farm.'))
+                    .map(l=>{const [pid,,label]=l.trim().split(/\s+/);return {name:label!.replace('ai.clicktoclose.phone-farm.',''),running:pid!=='-'};});}catch{/* not on macOS */}
+                return {checkedAt:new Date().toISOString(),captions,supply,pins,rearmable,services};
+            });
+            // Re-arm a post that stopped before Share (missed window, failed preflight). Never one with a Share attempt.
+            ctx.app.post(`${base}/items/:id/rearm`,async(req,reply)=>{
+                const id=(req.params as any).id;if(!/^[0-9a-f-]{36}$/.test(id))return reply.code(400).send({error:'Invalid item ID'});
+                const r=await ctx.scheduler.connection.pool.query(`UPDATE scheduler.publishing_releases SET state='armed',result='{}'::jsonb,run_at=now()+interval '3 days',updated_at=now()
+                    WHERE item_id=$1 AND state='needs_review' AND share_claimed_at IS NULL RETURNING item_id`,[id]);
+                if(!r.rowCount)return reply.code(409).send({error:'Only a needs-review post with no Share attempt can be re-armed'});
+                // The lane slotter moves it into the next free slot in its lane.
+                await promisify(execFile)(process.execPath,['--env-file-if-exists=.env','--import','tsx','scripts/lane-slotter.ts','--apply'],{cwd:process.cwd(),timeout:120_000});
+                const after=(await ctx.scheduler.connection.pool.query(`SELECT run_at,state FROM scheduler.publishing_releases WHERE item_id=$1`,[id])).rows[0];
+                return {itemId:id,state:after.state,runAt:after.run_at};
+            });
             ctx.app.get(`${base}/capabilities`,async()=>{
                 const mirrorMode=phoneControlMode()==='mirroring';
                 const a=await automation.status();
@@ -211,8 +241,9 @@ export function createPublishingPlugin(): PhoneFarmPlugin {
                 const directStories=mirrorMode?null:await directStoryStatus(ctx.scheduler.connection.pool);
                 const directReady=direct.enabled&&directPhones.some(d=>d.ready);
                 const directPlatforms=Object.fromEntries(Object.entries(readiness).map(([platform,capability])=>[platform,{
-                    ...capability,ready:platform==='tiktok'&&directReady,
-                    reason:platform==='youtube'?capability.reason:platform==='instagram'||platform==='facebook'?'A prepared IG/Facebook pilot passed linking and separate receipts. Fresh scheduled preparation still needs verification.':!direct.enabled?direct.reason:!directReady?(directPhones[0]?.reason??'No enabled iPhone is registered.'):capability.reason,
+                    // Oct 26: all four lanes post live on timed releases with native receipts; "not ready" was old pilot text.
+                    ...capability,ready:directReady,
+                    reason:!direct.enabled?direct.reason:!directReady?(directPhones[0]?.reason??'No enabled iPhone is registered.'):platform==='youtube'?'Live: armed Shorts upload natively at their time and are checked on the public feed.':platform==='instagram'||platform==='facebook'?'Live: armed Trial Reels post natively with linked Facebook sharing, then a Graph receipt check.':capability.reason,
                 }]));
                 const ready=(group:string)=>mirrorMode&&a.foregroundAllowed&&control?.controlReady===true&&verifiedPhoneMute(audio)&&a.flows[group]?.qualified===true;
                 return {version:1,mode:'timed_release',controlMode:phoneControlMode(),...(mirrorMode?{audio,automation:a}:{direct:{...direct,phones:directPhones}}),

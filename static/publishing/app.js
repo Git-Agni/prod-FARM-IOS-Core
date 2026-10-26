@@ -152,9 +152,10 @@ import {contentGroups} from './groups.mjs';
         state.loading = true;
         updateClock();
         try {
-            const [items, releases, engagements, caps, cadence, automation] = await Promise.all([
-                fetchAllItems(), optional(`${API}/releases`), optional(`${API}/engagements`), optional(`${API}/capabilities`), optional(`${API}/cadence`), optional(`${API}/automation`),
+            const [items, releases, engagements, caps, cadence, automation, health] = await Promise.all([
+                fetchAllItems(), optional(`${API}/releases`), optional(`${API}/engagements`), optional(`${API}/capabilities`), optional(`${API}/cadence`), optional(`${API}/automation`), optional(`${API}/health`),
             ]);
+            state.health = health.ok ? health.data : null;
             state.items = items;
             if (releases.ok) state.releases = new Map((releases.data.releases || []).map((r) => [r.item_id, r]));
             if (engagements.ok) state.engagements = engagements.data.engagements || [];
@@ -574,6 +575,29 @@ import {contentGroups} from './groups.mjs';
             h('span', { text: `${state.error}. ${state.loaded ? `Showing data from ${stampFormat.format(state.loadedAt)}. ` : ''}Retrying every 30 seconds.` })));
     }
 
+    // Oct 26 health strip: live captions, next-24 h supply per lane, comment pins, Mac services.
+    function renderHealth() {
+        const el = $('health'); if (!el) return;
+        const hl = state.health;
+        if (!hl) { el.replaceChildren(); return; }
+        const tile = (label, value, sub, bad) => h('div', { class: `stat${bad ? ' is-alert' : ''}` },
+            h('div', { class: 'stat-label', text: label }), h('div', { class: 'stat-value', text: String(value) }), h('div', { class: 'stat-sub', text: sub }));
+        const c = hl.captions;
+        const capBad = c && !c.lifted && c.emptySinceBlock > 0;
+        const capTile = tile('Instagram captions', !c ? 'Unknown' : capBad ? 'Blocked' : 'OK',
+            !c ? 'Caption check has not run yet' : capBad ? `${c.emptySinceBlock} Reels posted empty; newest ${whenFormat.format(new Date(c.newestEmpty))}. Checked ${whenFormat.format(new Date(c.checkedAt))}` : `Checked ${whenFormat.format(new Date(c.checkedAt))}`, capBad);
+        const names = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'Shorts' };
+        const short = hl.supply.filter(s => s.armed24h < s.target);
+        const supplyTile = tile('Armed next 24 h', hl.supply.map(s => `${names[s.lane]} ${s.armed24h}/${s.target}`).join(' · '),
+            short.length ? `Short: ${short.map(s => names[s.lane]).join(', ')}. Add or arm videos.` : 'Every lane is full', short.some(s => s.armed24h === 0));
+        const n = (st) => (hl.pins.find(p => p.status === st) || {}).n || 0;
+        const pinBad = n('failed_before_action') + n('uncertain_review');
+        const pinTile = tile('Comment pins (72 h)', `${n('done')} done`, pinBad ? `${pinBad} failed or need review` : 'No failures', pinBad > n('done'));
+        const down = hl.services.filter(s => !s.running && ['worker', 'web', 'wda', 'appium', 'tunnel', 'awake'].includes(s.name));
+        const svcTile = tile('Mac services', down.length ? `${down.length} down` : 'All running', down.length ? down.map(s => s.name).join(', ') : `${hl.services.filter(s => s.running).length} running`, down.length > 0);
+        const rearmTile = tile('Can be re-armed', hl.rearmable, hl.rearmable ? 'Stopped before Share. Use Re-arm on the post.' : 'Nothing stopped before Share', false);
+        el.replaceChildren(capTile, supplyTile, pinTile, svcTile, rearmTile);
+    }
     function renderSummary() {
         const el = $('summary');
         const today = todayKey();
@@ -734,6 +758,11 @@ import {contentGroups} from './groups.mjs';
                 h('button',{type:'button',class:'btn btn-small',onclick:()=>openItem(m.item.id)},m.st.label,' · ',Number.isFinite(m.runAt)?whenFormat.format(m.runAt):'No time'),
                 m.st.note?h('small',{class:'destination-note',text:m.st.note}):null,
                 m.st.error?h('small',{class:'destination-note bad',text:m.st.error}):null,
+                m.st.key==='review'&&m.st.note!=='Share was attempted'?h('button',{type:'button',class:'btn btn-small',onclick:async(e)=>{
+                    e.stopPropagation();const b=e.currentTarget;b.disabled=true;b.textContent='Re-arming…';
+                    try{const r=await postJson(`${API}/items/${encodeURIComponent(m.item.id)}/rearm`,{});b.textContent=`Re-armed for ${whenFormat.format(new Date(r.runAt))}`;await refresh();}
+                    catch(err){b.disabled=false;b.textContent='Re-arm failed: '+(err.message||err);}
+                }},'Re-arm'):null,
                 h('details',{},h('summary',{text:'Checks and next steps'}),h('ul',{class:'checks'},m.checks.filter(c=>!['facebook','facebookComment'].includes(c.key)||platform==='facebook').map(checkPill)))
             )) : h('span',{text:'No destination prepared'}));
         }));
@@ -817,6 +846,7 @@ import {contentGroups} from './groups.mjs';
         renderCaps();
         renderError();
         renderSummary();
+        renderHealth();
         renderTabs();
         renderRange();
         renderStories();
