@@ -19,7 +19,9 @@ f=m.fields("c2c-monorepo","Meta Marketing API — Antonio Monteiro (C2C ads + le
 print(json.dumps(f.get("token") or f.get("credential")))`], { encoding: 'utf8', timeout: 60_000 }));
 const g = async (path: string, method = 'GET', q: Record<string, string> = {}) => {
     const body = new URLSearchParams(q);
-    const res = method === 'GET' ? await fetch(`${V}${path}?${body}`) : await fetch(V + path, { method, body });
+    // GETs retry once after 20 s: a Meta connect timeout (Oct 26 23:23) crashed the whole run. POSTs never retry.
+    const get = () => fetch(`${V}${path}?${body}`);
+    const res = method === 'GET' ? await get().catch(() => new Promise(z => setTimeout(z, 20_000)).then(get)) : await fetch(V + path, { method, body });
     return res.json() as Promise<any>;
 };
 const pageToken: string = (await g(PAGE, 'GET', { fields: 'access_token', access_token: token })).access_token;
