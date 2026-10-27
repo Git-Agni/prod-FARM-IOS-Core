@@ -225,6 +225,8 @@ export function createPublishingPlugin(): PhoneFarmPlugin {
                     item_version=(SELECT version FROM scheduler.publishing_items WHERE id=r.item_id)
                     WHERE item_id=$1 AND state='needs_review' AND share_claimed_at IS NULL RETURNING item_id`,[id]);
                 if(!r.rowCount)return reply.code(409).send({error:'Only a needs-review post with no Share attempt can be re-armed'});
+                // The release loop only picks up held items, so the item leaves needs_review too.
+                await ctx.scheduler.connection.pool.query(`UPDATE scheduler.publishing_items SET status='held' WHERE id=$1 AND status='needs_review'`,[id]);
                 // The lane slotter moves it into the next free slot in its lane.
                 await promisify(execFile)(process.execPath,['--env-file-if-exists=.env','--import','tsx','scripts/lane-slotter.ts','--apply'],{cwd:process.cwd(),timeout:120_000});
                 const after=(await ctx.scheduler.connection.pool.query(`SELECT run_at,state FROM scheduler.publishing_releases WHERE item_id=$1`,[id])).rows[0];
