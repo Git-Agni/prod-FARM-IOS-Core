@@ -6,7 +6,10 @@ import sharp from 'sharp';
 import { scoreStory } from '../src/publishing/story-score.js';
 
 const [slug, ref] = process.argv.slice(2) as [string, string];
-const dir = path.resolve('.scheduler-data/story-assets/devin', slug);
+// Teaching-renderer sequences (render-teaching-story.ts) live in story-assets/teaching/<slug>/; the daily routine rotates
+// design families (tools/story-daily/variety_check.mjs in the C2C hub), so score those too.
+const devinDir = path.resolve('.scheduler-data/story-assets/devin', slug);
+const dir = existsSync(devinDir) ? devinDir : path.resolve('.scheduler-data/story-assets/teaching', slug);
 const ours = readdirSync(dir).filter(f => /^frame-\d+\.png$/.test(f)).sort((a, b) => parseInt(a.slice(6)) - parseInt(b.slice(6))).map(f => path.join(dir, f));
 const row = async (files: string[]) => Promise.all(files.map(f => sharp(f).resize(270, 480, { fit: 'cover' }).toBuffer()));
 const top = ref.endsWith('.jpg') ? [await sharp(path.resolve(ref)).resize({ width: Math.max(ours.length, 1) * 280 }).toBuffer()]
@@ -17,7 +20,7 @@ const W = Math.max(bottom.length, ref.endsWith('.jpg') ? 1 : top.length) * 280;
 await sharp({ create: { width: W, height: topH + 500, channels: 3, background: '#111' } })
     .composite([...top.map((b, i) => ({ input: b, left: i * 280, top: 0 })), ...bottom.map((b, i) => ({ input: b, left: i * 280, top: topH + 20 }))])
     .jpeg({ quality: 86 }).toFile(path.join(dir, 'compare.jpg'));
-const spec = JSON.parse(readFileSync(path.resolve('docs/stories/devin', slug + '.json'), 'utf8'));
+const spec = JSON.parse(readFileSync(path.resolve(dir === devinDir ? 'docs/stories/devin' : 'docs/stories/teaching', slug + '.json'), 'utf8'));
 const frames = ours.slice(0, 10).map(f => readFileSync(f));
 if (frames.length >= 3) {
     const s = await scoreStory(frames, spec.title ?? slug);
