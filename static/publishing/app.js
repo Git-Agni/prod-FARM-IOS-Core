@@ -640,6 +640,8 @@ import {contentGroups} from './groups.mjs';
             stat('Needs review', reviewToday, reviewAll.length > reviewToday ? `+${reviewAll.length - reviewToday} on other days` : reviewToday ? 'Check the phone first' : 'Nothing to check', { alert: reviewAll.length > 0 }),
             nextTile,
         );
+        // The side menu (static/shell/sidebar.js) shows these same numbers on every page.
+        window.dispatchEvent(new CustomEvent('pf:counts', { detail: { today: todays.length, review: reviewAll.length, held: live.filter((m) => m.st.key === 'held' && m.runAt > now).length } }));
     }
 
     function renderTabs() {

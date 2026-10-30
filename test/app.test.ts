@@ -59,7 +59,7 @@ test('a configured auth provider adds a Log out link to the nav', async (context
     for (const url of ['/', '/tasks', '/devices/register']) {
         const res = await inject(app, { method: 'GET', url });
         assert.equal(res.statusCode, 200, url);
-        assert.match(res.body, /href="\/auth\/logout"[^>]*>Log out</, url);
+        assert.match(res.body, /href="\/auth\/logout"[^>]*>(?:<svg[^]*?<\/svg>)?<span class="pf-nav-label">Log out</, url);
         assert.doesNotMatch(res.body, /__AUTH_NAV__/, url);
         assert.match(res.body, /\/assets\/styles\.css\?v=[\w-]+/, url);
     }
@@ -88,7 +88,7 @@ test('a plugin can contribute nav links and register its own routes', async (con
     for (const url of ['/', '/tasks', '/devices/register']) {
         const res = await inject(app, { method: 'GET', url });
         assert.equal(res.statusCode, 200, url);
-        assert.match(res.body, /href="\/stats"[^>]*>Stats</, url);
+        assert.match(res.body, /href="\/stats"[^>]*>(?:<svg[^]*?<\/svg>)?<span class="pf-nav-label">Stats</, url);
         assert.doesNotMatch(res.body, /__PLUGIN_NAV__/, url);
     }
 

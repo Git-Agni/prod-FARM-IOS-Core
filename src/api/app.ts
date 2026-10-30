@@ -21,6 +21,7 @@ import { type RemoteAction } from '../devices/wda-remote.js';
 import { requestWdaService } from '../devices/wda-service-client.js';
 import type { DeviceConnectionStatus } from '../devices/connection-manager.js';
 import type { AuthProvider, PluginNavLink } from '../plugin.js';
+import { injectShell, shellAssets } from './sidebar.js';
 import type { PluginRegistry } from '../registry.js';
 import type { CreateTaskInput, JsonObject, ScheduleTiming } from '../types.js';
 import { ScheduleTransitionError, type SchedulerRepository } from '../scheduler/repository.js';
@@ -158,6 +159,18 @@ export async function createApp(options: CreateAppOptions): Promise<FastifyInsta
         .map((link) => `<a class="button secondary" href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`)
         .join('');
     const renderPage = (title: string, body: string) => page(title, body, logoutPath, navLinks);
+
+    // Every full HTML page gets the left side menu (src/api/sidebar.ts).
+    app.get('/shell/sidebar.css', async (_request, reply) => reply.type('text/css').header('cache-control', 'public, max-age=31536000, immutable').send(shellAssets.css));
+    app.get('/shell/sidebar.js', async (_request, reply) => reply.type('text/javascript').header('cache-control', 'public, max-age=31536000, immutable').send(shellAssets.js));
+    app.addHook('onSend', async (request, reply, payload) => {
+        const type = reply.getHeader('content-type');
+        if (typeof type !== 'string' || !type.includes('text/html') || reply.statusCode >= 300) return payload;
+        if (typeof payload !== 'string' && !Buffer.isBuffer(payload)) return payload;
+        const urlPath = request.url.split('?')[0] ?? request.url;
+        if (options.authProvider?.isPublicPath(urlPath)) return payload;
+        return injectShell(payload.toString(), urlPath, navLinks, logoutPath);
+    });
     const assetHash = (body: string) => crypto.createHash('sha1').update(body).digest('base64url').slice(0, 10);
 
     let themed: LoadedDashboardTheme | null = null;
