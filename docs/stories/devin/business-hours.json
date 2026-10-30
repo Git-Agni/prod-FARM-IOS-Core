@@ -59,7 +59,7 @@
      "ring": "#0866FF",
      "on": [
       0,
-      222
+      198
      ]
     },
     {
@@ -299,6 +299,7 @@
    "title": "This video shows you how to\nnever miss a lead again👇",
    "thumb": "assets/yt-autopilot.jpg",
    "videoTitle": "Your Business Shouldn't Stop When You Put Your Phone Down",
+   "time": "0:50 / 8:18",
    "send": "and I'll send it to you"
   }
  ],
