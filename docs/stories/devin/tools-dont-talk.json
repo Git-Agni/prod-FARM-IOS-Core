@@ -125,8 +125,8 @@
    ],
    "chips": [
     {
-     "x": 646,
-     "y": 805,
+     "x": 700,
+     "y": 915,
      "icon": "💬",
      "text": "AI text"
     },
@@ -299,6 +299,7 @@
    "title": "This video shows you how to\nset up the handoff 👇",
    "thumb": "assets/yt-oT6alCHNwKA.jpg",
    "videoTitle": "How to Build a Sales Team AI Can't Replace",
+   "time": "0:50 / 6:36",
    "send": "and I'll send it to you"
   }
  ],
