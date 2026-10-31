@@ -13,9 +13,9 @@ import { WdaApp, parseGalleryCell } from './wda-app.js';
 import {locateRelatedCover,locateRelatedCoverInCells,locateHeadlineInCells,reelByUrl,reviewedRelatedReel} from './instagram-related.js';
 import {metaReceipts} from './meta-receipts.js';
 import {assertRelatedReelInCatalog} from './related-autolink.js';
+import {DEFAULT_INSTAGRAM_ACCOUNT,isSecondaryAccount,postingAccountFor} from './posting-accounts.js';
 
 const run = promisify(execFile);
-const FACEBOOK_ON = 'Antonio Revenue, Facebook · Public, On';
 const q = (s: string) => s.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
 export interface ReleaseMedia { path: string; name: string; mimeType: string; sha256: string }
@@ -53,6 +53,13 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
                 await this.tapPoint(215, 130); await this.sleep(700);
             }
         } catch { /* best effort; Home below still runs */ }
+        // Oct 30: after a release for another account, leave the app on @antoniorevenue again (Stories, comments and
+        // the next release expect it). Runs on success and failure; a failed switch stops here for review.
+        let switchBack: unknown;
+        if (this.input && isSecondaryAccount(this.input)) {
+            try { await this.switchInstagramAccount(DEFAULT_INSTAGRAM_ACCOUNT); }
+            catch (e) { switchBack = e; }
+        }
         // Cleanup must still run when the posting signal was cancelled.
         const response = await fetch(this.base + '/wda/homescreen', {
             method: 'POST', headers: {'content-type':'application/json'}, body:'{}',
@@ -60,6 +67,23 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         });
         const result = await response.json() as any;
         if (!response.ok || result.value?.error) throw new Error('Could not leave the Reel; check the phone');
+        if (switchBack) throw new Error(`Instagram was not switched back to @${DEFAULT_INSTAGRAM_ACCOUNT}: ${switchBack instanceof Error ? switchBack.message : String(switchBack)}`);
+    }
+    /** Make `expected` the active Instagram account through the native switcher and read it back. Nothing is posted.
+     * Oct 22: the app was left on @antoniomonteiroai and two releases failed; preflight now switches before checking. */
+    async switchInstagramAccount(expected: string, launch = true): Promise<string> {
+        if (launch) { await this.start('com.burbn.instagram'); await this.sleep(1500); await this.tapElement('accessibility id', 'profile-tab', 'Profile tab'); }
+        let account = (await this.read('accessibility id', 'user-switch-title-button', 'label', 'active account')).replace(/^@/, '');
+        if (account !== expected) {
+            this.evidence.accountSwitchedFrom = account;
+            await this.tapElement('accessibility id', 'user-switch-title-button', 'account switcher');
+            await this.tapElement('predicate string', `label BEGINSWITH 'INSTAGRAM profile, ${expected}'`, `${expected} in the account switcher`);
+            await new Promise(r => setTimeout(r, 3000));
+            await this.tapElement('accessibility id', 'profile-tab', 'Profile tab');
+            account = (await this.read('accessibility id', 'user-switch-title-button', 'label', 'active account')).replace(/^@/, '');
+        }
+        if (account !== expected) throw new Error(`Active Instagram account is ${account}, expected ${expected}`);
+        return account;
     }
     protected input?: PostingInput;
     protected mediaPath?: string;
@@ -72,6 +96,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         this.fromCreateTrialReel = false;
         const ig = input.targets.find(t => t.platform === 'instagram');
         if (!ig) throw new Error('This release needs an Instagram target');
+        postingAccountFor(input);
         assertRelatedReelInCatalog(input);
         const facebook = input.targets.some(t => t.platform === 'facebook');
         if (facebook && input.facebookMode !== 'linked_from_instagram') throw new Error('Only native linked Facebook sharing is supported');
@@ -85,18 +110,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         await this.requireProfileForNewComposer();
         await this.tapElement('accessibility id', 'profile-tab', 'Profile tab');
         const expected = ig.account.replace(/^@/, '');
-        let account = (await this.read('accessibility id', 'user-switch-title-button', 'label', 'active account')).replace(/^@/, '');
-        if (account !== expected) {
-            // Oct 22: the app was left on @antoniomonteiroai and two releases failed. Switch to the target account
-            // through the native switcher, then read it again; fail only when it is still wrong. Nothing is posted here.
-            this.evidence.accountSwitchedFrom = account;
-            await this.tapElement('accessibility id', 'user-switch-title-button', 'account switcher');
-            await this.tapElement('predicate string', `label BEGINSWITH 'INSTAGRAM profile, ${expected}'`, `${expected} in the account switcher`);
-            await new Promise(r => setTimeout(r, 3000));
-            await this.tapElement('accessibility id', 'profile-tab', 'Profile tab');
-            account = (await this.read('accessibility id', 'user-switch-title-button', 'label', 'active account')).replace(/^@/, '');
-        }
-        if (account !== expected) throw new Error(`Active Instagram account is ${account}, expected ${ig.account}`);
+        const account = await this.switchInstagramAccount(expected, false);
 
         if(!this.imports)throw Error('A persistent native import journal is required');
         const imported={value:await this.imports.ensure(input.deviceUdid,media,this.base,this.signal)};
@@ -108,6 +122,8 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
             await this.openTrialReelsGrid();
             await this.tapElement('predicate string', 'type == "XCUIElementTypeButton" AND label == "Create trial reel" AND visible == 1', 'Create trial reel');
             this.fromCreateTrialReel = true;
+            await this.sleep(1200);
+            await this.dismissTrialIntro();
         } else {
             await this.tapElement('accessibility id', 'profile-add-button', 'Create button');
             await this.tapElement('accessibility id', 'creation-reel', 'Create Reel');
@@ -207,9 +223,13 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         }
 
         await this.tapElement('predicate string', 'type == "XCUIElementTypeCell" AND name BEGINSWITH "Also share on…," AND visible == 1', 'Also share on');
-        const facebookOn = !!(await this.visible('predicate string', `label == "${FACEBOOK_ON}" AND visible == 1`));
+        const page = postingAccountFor(input);
+        const facebookOn = !!(await this.visible('predicate string', `label == "${page.facebookComposerLabel}" AND visible == 1`));
+        // Name what the phone showed, so a new account's row can be mapped without guessing (Oct 30).
+        const facebookRows = facebook === facebookOn ? [] : [...new Set(visibleNativeNodes((await this.request(this.session + '/source')).value)
+            .map(n => n.label).filter(l => /Facebook/.test(l ?? '')))].slice(0, 6);
         await this.tapElement('accessibility id', 'BackButton', 'back to composer');
-        if (facebook !== facebookOn) throw new Error(facebook ? 'Antonio Revenue Facebook sharing is not on' : 'Facebook sharing is on but this item has no Facebook target');
+        if (facebook !== facebookOn) throw new Error((facebook ? `${page.facebookComposerLabel.split(',')[0]} Facebook sharing is not on` : 'Facebook sharing is on but this item has no Facebook target') + (facebookRows.length ? `; rows: ${facebookRows.join(' | ')}` : ''));
 
         // Oct 23 (Antonio: "none of the posts are going out with captions"): eight Reels from 12 PM to 7 PM shared
         // with an empty caption although the caption read back right after typing. A later composer step now clears it,
@@ -517,9 +537,10 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
                 const shared = !!(await this.visible('predicate string', 'label == "Shared to Facebook"'));
                 const ai = !!(await this.visible('predicate string', 'label == "AI content"'));
                 await this.tapElement('predicate string', 'label == "Dismiss" AND visible == 1', 'close More');
-                receipts.instagram = { verified: true, evidence: `Matching Trial Reel on @antoniorevenue starts "${prefix}"; native label "This reel is a trial reel."${ai ? '; AI content label' : ''}` };
+                receipts.instagram = { verified: true, evidence: `Matching Trial Reel on @${postingAccountFor(input).instagram} starts "${prefix}"; native label "This reel is a trial reel."${ai ? '; AI content label' : ''}` };
                 if (input.targets.some(t => t.platform === 'facebook')) {
                     if (!shared) throw new Error('Instagram has not confirmed linked Facebook sharing yet');
+                    if (!postingAccountFor(input).facebookAppCheck) throw new Error('Facebook Page has no in-app check; waiting for its Graph receipt');
                     try {
                         // Confirm Facebook inside this run. Linked sharing can take a minute to appear on the Page,
                         // so look again up to three times, 60 seconds apart, before leaving it for a later check.
@@ -550,7 +571,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         const facebook = input.targets.some(t => t.platform === 'facebook'), deadline = Date.now() + waitMs;
         let found: Awaited<ReturnType<typeof metaReceipts>> = {};
         for (;;) {
-            try { found = await metaReceipts(input.caption, this.sharedAt ? this.sharedAt - 10 * 60_000 : 0); } catch { return undefined; }
+            try { found = await metaReceipts(input.caption, this.sharedAt ? this.sharedAt - 10 * 60_000 : 0, postingAccountFor(input)); } catch { return undefined; }
             if (found.instagram && (!facebook || found.facebook || found.facebookMissingCaption)) break;
             if (Date.now() >= deadline) return undefined;
             await this.sleep(20_000);
@@ -560,6 +581,8 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         if (input.instagramTrial && found.instagram!.sharedToFeed !== false)
             throw new ReceiptVerificationError(`Instagram posted, but not as a Trial Reel (is_shared_to_feed ${found.instagram!.sharedToFeed}); review ${found.instagram!.url}`, receipts);
         if (input.instagramTrial) receipts.instagram!.evidence += '; Trial confirmed (is_shared_to_feed false)';
+        if (facebook && !found.facebook && !postingAccountFor(input).facebookAppCheck)
+            throw new ReceiptVerificationError('Instagram verified; the Facebook Page has no in-app check, so its Graph receipt needs review', receipts);
         if (facebook) receipts.facebook = found.facebook ?? await new FacebookVerifier(this.base, this.signal).verifyPost(input, false, this.mediaPath ? { mediaPath: this.mediaPath } : false);
         // Best effort: open the new Reel so the in-run first comment can be pinned. If this fails, the comment job retries later.
         try {
@@ -577,6 +600,16 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         return this.verify(60_000);
     }
 
+    /** Oct 30: a first Trial Reel on @antoniomonteiroai shows one-time intro sheets ("Trial reels need more time to get
+     * views", "Take a chance and try it anyway with trial reels"). Tap only their "Got it"; nothing else changes. */
+    private async dismissTrialIntro() {
+        for (let n = 0; n < 2; n++) {
+            const intro = await this.visible('predicate string', '(label == "Trial reels need more time to get views" OR label BEGINSWITH "Take a chance and try it anyway") AND visible == 1');
+            if (!intro) return;
+            await this.tapElement('predicate string', 'type == "XCUIElementTypeButton" AND label == "Got it" AND visible == 1', 'Got it on the Trial reels intro');
+            await this.sleep(1000);
+        }
+    }
     private async openTrialReelsGrid() {
         // Close a leftover own-comment context menu before looking for the profile tab.
         const labels=visibleNativeNodes((await this.request(this.session+'/source')).value).map(n=>n.label);
@@ -622,9 +655,16 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
                 await this.swipeUp();await this.sleep(1000);rows=await cells();
                 entry=rows.find(n=>n.name==='open-drafts'||n.label==='Drafts and trial reels');
             }
-            if(!entry||entry.y<100||entry.y+entry.height>850)throw new Error('The Drafts and trials entry is not safely visible');
-            await this.tapPoint(entry.x+entry.width/2,entry.y+entry.height/2);
-            await this.sleep(800);rows=await cells();trial=rows.find(n=>n.label==='Trial reels');
+            // Oct 30: a profile with few Reels cannot scroll, so its first tile stays partly under the tab bar
+            // (@antoniomonteiroai: y 635 to 889). Tap the middle of the part that is clear of the tab bar.
+            const clearBottom=entry?Math.min(entry.y+entry.height,840):0;
+            if(!entry||entry.y<100||clearBottom-entry.y<120)throw new Error('The Drafts and trials entry is not safely visible');
+            await this.tapPoint(entry.x+entry.width/2,(entry.y+clearBottom)/2);
+            await this.sleep(800);
+            // Oct 30: the first visit on @antoniomonteiroai shows "Trial reels need more time to get views" over the
+            // page. Acknowledge only that sheet; it changes no setting.
+            await this.dismissTrialIntro();
+            rows=await cells();trial=rows.find(n=>n.label==='Trial reels');
             // Oct 10 21:35: the Drafts tile now opens the Trial reels page directly (title "Trial reels", Create trial reel button).
             const title=visibleNativeNodes((await this.request(this.session+'/source')).value)
                 .find(n=>n.type==='XCUIElementTypeStaticText'&&n.label==='Trial reels'&&n.y<120);
@@ -640,7 +680,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
      * Falls back to the Trial grid when the link is unknown or the caption does not match. */
     private async openByLink(url?: string): Promise<boolean> {
         if (!/^http:\/\/127\.0\.0\.1:/.test(this.base)) return false; // unit tests use fake hosts
-        try { url ??= (await metaReceipts(this.input!.caption, this.sharedAt ? this.sharedAt - 10 * 60_000 : 0)).instagram?.url; } catch { return false; }
+        try { url ??= (await metaReceipts(this.input!.caption, this.sharedAt ? this.sharedAt - 10 * 60_000 : 0, postingAccountFor(this.input!))).instagram?.url; } catch { return false; }
         if (!url || !/^https:\/\/www\.instagram\.com\/reel\//.test(url)) return false;
         await this.request(this.session + '/url', { url });
         await this.waitForOwnReelViewer().catch(() => undefined);

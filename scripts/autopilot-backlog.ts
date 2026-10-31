@@ -8,6 +8,7 @@
 import {createDatabaseConnection} from '../src/database/client.js';
 import {requestHash,validatePostingInput} from '../src/publishing/model.js';
 import {TimedReleaseStore} from '../src/publishing/timed-release.js';
+import {isSecondaryAccount} from '../src/publishing/posting-accounts.js';
 import {randomInt} from 'node:crypto';
 import {mkdir,writeFile} from 'node:fs/promises';
 
@@ -15,7 +16,8 @@ const apply=process.argv.includes('--apply');
 const lane=process.argv.find(v=>v.startsWith('--lane='))?.split('=')[1]??'social';
 if(!['social','youtube'].includes(lane))throw Error('--lane must be social or youtube');
 const minute=lane==='youtube'?52:22,maxAttempts=3;
-const inLane=(i:any)=>i.input.targets.some((t:any)=>t.platform==='youtube')===(lane==='youtube');
+// Oct 30: @antoniomonteiroai items are armed at their own times; this hourly re-armer only manages @antoniorevenue.
+const inLane=(i:any)=>i.input.targets.some((t:any)=>t.platform==='youtube')===(lane==='youtube')&&!isSecondaryAccount(i.input);
 const phone='00008130-000229EE1AA0001C';
 const account=(v:string)=>v.replace(/^@/,'').toLowerCase();
 const db=createDatabaseConnection(),c=await db.pool.connect();

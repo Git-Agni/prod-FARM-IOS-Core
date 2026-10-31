@@ -8,6 +8,7 @@ import {requestHash,validatePostingInput} from '../src/publishing/model.js';
 import {publishingCadence as cadence,slotsFrom} from '../src/publishing/cadence.js';
 import {laneHours} from '../src/publishing/lanes.js';
 import {linkRelatedReel} from '../src/publishing/related-autolink.js';
+import {isSecondaryAccount} from '../src/publishing/posting-accounts.js';
 
 const apply=process.argv.includes('--apply'),minute=60000,hour=3600000;
 export const laneOf=(input:any)=>input.targets.some((x:any)=>x.platform==='youtube')?'youtube':input.targets.some((x:any)=>x.platform==='tiktok')?'tiktok':'instagram';
@@ -18,7 +19,10 @@ try{
  // No phone lock (Oct 15 20:05: a busy phone made the hourly run skip). Row locks below serialize with the worker,
  // and only armed posts with no Share claim, due 10+ minutes out, ever move.
  const rows=(await c.query(`SELECT i.*,r.run_at,r.state,r.share_claimed_at FROM scheduler.publishing_items i JOIN scheduler.publishing_releases r ON r.item_id=i.id
-   WHERE r.state<>'cancelled' FOR UPDATE OF i,r`)).rows;
+   WHERE r.state<>'cancelled' FOR UPDATE OF i,r`)).rows
+   // Oct 30: @antoniomonteiroai posts keep the times they were armed at (their own lane) and never take or move
+   // @antoniorevenue slots.
+   .filter((r:any)=>!isSecondaryAccount(r.input));
  const now=Date.now(),t=(r:any)=>new Date(r.run_at).getTime();
  const fixed=(r:any)=>r.state!=='armed'||!!r.share_claimed_at||t(r)<now+10*minute;
  const slotOf=(r:any)=>Math.round((t(r)-(laneOf(r.input)==='youtube'?cadence.youtubeOffsetMinutes*minute:0))/hour)*hour;

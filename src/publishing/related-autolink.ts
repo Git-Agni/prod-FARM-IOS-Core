@@ -2,6 +2,7 @@ import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {validatePostingInput, type PostingInput} from './model.js';
 import {chooseRelatedReel, coverHeadline, relatedReelInput, reelByUrl} from './instagram-related.js';
+import {isSecondaryAccount} from './posting-accounts.js';
 
 const run = promisify(execFile);
 
@@ -17,7 +18,8 @@ export async function openingHeadline(path: string) {
  * unreadable opening frame (the media check stops that post anyway), or a pick that is this same video. */
 export async function linkRelatedReel(input: PostingInput, media: {path: string; sha256: string},
     headlineOf: (path: string) => Promise<string> = openingHeadline) {
-    if (input.instagramRelatedReel || !input.targets.some(t => t.platform === 'instagram')) return undefined;
+    // The Reel catalog is @antoniorevenue's; other accounts get no automatic related Reel (Oct 30).
+    if (input.instagramRelatedReel || !input.targets.some(t => t.platform === 'instagram') || isSecondaryAccount(input)) return undefined;
     let headline: string;
     try { headline = await headlineOf(media.path); } catch { return undefined; }
     const pick = chooseRelatedReel({caption: input.caption, sha256: media.sha256, headline});
