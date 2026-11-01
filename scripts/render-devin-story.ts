@@ -212,6 +212,7 @@ async function frameHtml(f: any, i: number) {
         const back = f.backdrop ? await photo(f.backdrop, 'back' + i, { dim: .16, w: 1080, h: 900, pos: 'centre', sat: .5 }) : '';
         const card = f.card === 'reel'
             ? `<div style="position:absolute;left:${540 - 220}px;top:${f.cardTop ?? 430}px;transform:rotate(${f.cardRot ?? -3}deg)">${reelCard(asset(f.thumb), f.views, 440)}</div>${stickers(f.stickers)}`
+            : f.card === 'none' ? ''
             : `<div style="position:absolute;left:90px;top:574px">${ytCard(asset(f.thumb), f.videoTitle, f.time)}</div>`;
         inner = `${back ? `<div class="bg" style="top:auto;height:900px;background-image:url(${back});-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 60%)"></div>` : ''}
           <div class="t" style="top:${f.titleTop ?? 296}px;font:600 58px/82px system-ui,-apple-system,sans-serif;letter-spacing:-1px">${md(f.title)}</div>
