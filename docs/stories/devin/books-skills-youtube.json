@@ -1,0 +1,184 @@
+{
+ "slug": "books-skills-youtube",
+ "keyword": "BOOKS",
+ "version": 6,
+ "model": "YouTube video (Nov 2): five business books turned into skills. Facts from JpMP5nbqcFU title, description and chapters (read Nov 1 2026): Claude opened Buy Back Your Time and cited the chapter; Breakthrough Advertising used on real VShred calls; chapters 1:30, 1:52, 2:12, 2:23; 6:29 long.",
+ "frames": [
+  {
+   "type": "cardcover",
+   "backdrop": "asset:../gallery/antonio-08-sofa-evening.jpg",
+   "dim": 0.5,
+   "titleTop": 180,
+   "titleSize": 100,
+   "title": "5 books turned\ninto [[skills]]",
+   "card": {
+    "kind": "yt",
+    "image": "assets/yt-JpMP5nbqcFU.jpg",
+    "title": "I Turned 5 Business Books Into Skills for Claude + Codex",
+    "time": "0:32 / 6:29",
+    "w": 860,
+    "y": 690,
+    "rot": -4
+   },
+   "stickers": [
+    {
+     "text": "5 BOOKS",
+     "bg": "#F8930D",
+     "color": "#fff",
+     "x": 90,
+     "y": 590,
+     "rot": -7,
+     "size": 64
+    },
+    {
+     "text": "AUTO",
+     "bg": "#2780FF",
+     "color": "#fff",
+     "x": 90,
+     "y": 1330,
+     "rot": 8,
+     "size": 72
+    }
+   ],
+   "sub": "Claude now opens the\n**right book** on its own 👉",
+   "subTop": 1540
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-02-podcast-studio.jpg",
+   "dim": 0.85,
+   "orbit": [
+    {
+     "cx": 956,
+     "cy": 985,
+     "rx": 300,
+     "ry": 290,
+     "rot": -15,
+     "arrows": [
+      200,
+      280
+     ],
+     "front": [
+      120,
+      175
+     ]
+    },
+    {
+     "cx": 986,
+     "cy": 925,
+     "rx": 380,
+     "ry": 140,
+     "rot": 30,
+     "arrows": [
+      190
+     ]
+    }
+   ],
+   "shift": [
+    405,
+    635
+   ],
+   "cutout": "../gallery/masks/antonio-02-podcast-studio-mask.png",
+   "title": "Your AI knows\nthe book. It doesnt\n**use** it",
+   "body": "So you get the same\n**generic** answer",
+   "bubbles": [
+    {
+     "img": "assets/logos/bubble-claude.png",
+     "ring": "#D97757",
+     "on": [
+      0,
+      222
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-github.png",
+     "ring": "#FFFFFF",
+     "on": [
+      1,
+      250
+     ]
+    }
+   ],
+   "pull": "Here's the fix 👉",
+   "pullRight": 120
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "asset:../gallery/antonio-11-sales-floor.jpg",
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/logos/bubble-claude.png",
+   "node": "Claude",
+   "title": "A skill is an ((SOP)) for your AI",
+   "cards": [
+    {
+     "name": "Buy Back Your Time",
+     "photo": "asset:../gallery/antonio-05-whiteboard-strategy.jpg",
+     "icon": "form",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Breakthrough Ads",
+     "photo": "asset:../gallery/antonio-17-headset-calls.jpg",
+     "icon": "phone",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "+3 more books",
+     "photo": "asset:../gallery/antonio-24-team-meeting.jpg",
+     "icon": "chat",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "steps",
+   "backdrop": "asset:../gallery/antonio-16-kitchen-morning.jpg",
+   "thumb": "assets/yt-JpMP5nbqcFU.jpg",
+   "title": "Then I built it\nin **4 steps**",
+   "railTop": 680,
+   "gap": 200,
+   "steps": [
+    {
+     "t": "01:30",
+     "text": "Capture a book from **Kindle**"
+    },
+    {
+     "t": "01:52",
+     "text": "Check what you **captured**"
+    },
+    {
+     "t": "02:12",
+     "text": "One shared **library**"
+    },
+    {
+     "t": "02:23",
+     "text": "Set the **triggers**"
+    }
+   ],
+   "lesson": "Same books. Diffrent\nanswers. **Yours** 👉",
+   "lessonTop": 1480
+  },
+  {
+   "type": "cta",
+   "backdrop": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "title": "Watch me build it\nstep by step 👇",
+   "thumb": "assets/yt-JpMP5nbqcFU.jpg",
+   "videoTitle": "I Turned 5 Business Books Into Skills for Claude + Codex",
+   "time": "0:32 / 6:29",
+   "send": "and I'll send the setup"
+  }
+ ],
+ "generated_photos": "gallery 08, 02, 11, 05, 17, 24, 16, 03"
+}
