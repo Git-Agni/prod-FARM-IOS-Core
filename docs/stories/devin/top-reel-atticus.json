@@ -1,0 +1,178 @@
+{
+ "slug": "top-reel-atticus",
+ "keyword": "ATTICUS",
+ "version": 1,
+ "model": "Best reel (Nov 2): the @antoniorevenue reel with the most saves that has a live keyword, read from social_posts on Nov 2 (De5Q9YKhSis, ATTICUS). Facts from its caption and the ATTICUS DM asset (dm_keyword_assets 383).",
+ "link": "https://www.instagram.com/reel/De5Q9YKhSis/",
+ "frames": [
+  {
+   "type": "cardcover",
+   "backdrop": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+   "dim": 0.55,
+   "titleTop": 170,
+   "titleSize": 96,
+   "title": "[[2,417]] people\nsaved this reel",
+   "card": {
+    "kind": "reel",
+    "image": "assets/reel-atticus-cover.jpg",
+    "views": "45K",
+    "w": 460,
+    "y": 540,
+    "rot": -5
+   },
+   "stickers": [
+    {
+     "text": "787 comments",
+     "x": 610,
+     "y": 700,
+     "rot": 7,
+     "size": 46
+    },
+    {
+     "text": "1,073 shares",
+     "bg": "#2780FF",
+     "color": "#fff",
+     "x": 70,
+     "y": 1170,
+     "rot": -7,
+     "size": 50
+    }
+   ],
+   "sub": "Here's why it took off 👉",
+   "subTop": 1590
+  },
+  {
+   "type": "steps",
+   "backdrop": "asset:../gallery/antonio-16-kitchen-morning.jpg",
+   "thumb": "assets/reel-atticus-cover.jpg",
+   "title": "Talk to your Mac in\n**3 steps**",
+   "railTop": 680,
+   "gap": 200,
+   "steps": [
+    {
+     "t": "01",
+     "text": "Hold **control + option + space**"
+    },
+    {
+     "t": "02",
+     "text": "Say what you **need**"
+    },
+    {
+     "t": "03",
+     "text": "Let go and it **runs**"
+    }
+   ],
+   "lesson": "It's like **Jarvis**, but free 👉",
+   "lessonTop": 1480
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "dim": 0.9,
+   "orbit": [
+    {
+     "cx": 942,
+     "cy": 1049,
+     "rx": 270,
+     "ry": 310,
+     "rot": -10,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      100,
+      160
+     ]
+    },
+    {
+     "cx": 967,
+     "cy": 1039,
+     "rx": 360,
+     "ry": 150,
+     "rot": 42,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
+    }
+   ],
+   "shift": [
+    360,
+    616
+   ],
+   "cutout": "../gallery/masks/antonio-03-rooftop-dusk-mask.png",
+   "title": "It's **Jarvis** for\nyour Mac",
+   "body": "You talk, it **clicks**\nand opens your apps",
+   "bubbles": [
+    {
+     "img": "assets/logos/bubble-claude.png",
+     "ring": "#D97757",
+     "on": [
+      1,
+      232
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-github.png",
+     "ring": "#FFFFFF",
+     "on": [
+      0,
+      148
+     ]
+    }
+   ],
+   "pull": "Why people saved it 👉",
+   "pullRight": 190
+  },
+  {
+   "type": "stats",
+   "backdrop": "asset:../gallery/antonio-11-sales-floor.jpg",
+   "title": "Why people ((saved)) it",
+   "gridTop": 560,
+   "tiles": [
+    {
+     "n": "45K",
+     "label": "views",
+     "color": "#4DA3FF"
+    },
+    {
+     "n": "2,417",
+     "label": "saves",
+     "color": "#3DE99B"
+    },
+    {
+     "n": "1,073",
+     "label": "shares",
+     "color": "#F8930D"
+    },
+    {
+     "n": "787",
+     "label": "comments",
+     "color": "#1EF5F5"
+    }
+   ],
+   "lesson": "It's free, and it runs on your\n**Claude plan**, no API key",
+   "lessonTop": 1200,
+   "pull": "Watch it here 👉",
+   "pullRight": 160,
+   "pullBottom": 300
+  },
+  {
+   "type": "cta",
+   "card": "reel",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "titleTop": 250,
+   "title": "Watch the reel 👇",
+   "thumb": "assets/reel-atticus-cover.jpg",
+   "views": "45K",
+   "cardTop": 380,
+   "replyTop": 1290,
+   "send": "and I'll send you the install guide"
+  }
+ ],
+ "generated_photos": "gallery 14, 03, 16, 11, 01"
+}
