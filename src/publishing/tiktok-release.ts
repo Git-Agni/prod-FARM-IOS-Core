@@ -135,8 +135,8 @@ export class TikTokRelease extends WdaApp implements ReleaseDriver {
         await this.tapElement('accessibility id','Create','Create');
         await this.tapElement('accessibility id','recordPageUploadButton','Upload');
         await this.tapElement('accessibility id','Recents','Album list');
-        await this.revealAlbum(albumName);
-        const album=await this.rect('accessibility id',albumName,'Dedicated video album');
+        const album=await this.revealAlbum(albumName);
+        await this.assertInputApp();
         await this.tapPoint(album.x+album.width/2,album.y+album.height/2);
         await this.sleep(500);
         const header=await this.rect('accessibility id',albumName,'Selected album');
@@ -156,23 +156,36 @@ export class TikTokRelease extends WdaApp implements ReleaseDriver {
         this.prepared=true;
         return {exactMedia:true,videoFrameCover:true,caption:true,account:true,automaticPromotion:false,linkedFacebook:false};
     }
-    /** Ask iOS to reveal the exact saved album once, then verify its visible bounds. */
+    /** Ask iOS to reveal the exact saved album once, then return the visible bounds of that one row.
+     * Nov 1-3: three releases stopped with 2 or 3 albums of the same name. The WDA import always creates a new album, and
+     * YouTube re-imports a video older than 6 h under the same PF-<sha12> name, so a video posted to Shorts first has copies.
+     * Every copy holds one asset imported from the hash-checked file, so the copies are the same video: take the topmost
+     * row. Any other name with more than one row, or more copies than re-imports can explain, still stops. */
     private async revealAlbum(albumName:string) {
         await this.depth(60); // Album rows sit below the shallow profile snapshot.
         // Allow the picker to finish loading without repeating navigation or importing again.
         let rows:any[]=[];
         for(let read=0;read<3;read++){
             rows=(await this.request(this.session+'/elements',{using:'accessibility id',value:albumName})).value ?? [];
-            if(rows.length>1)throw new Error(`Dedicated upload album is ambiguous: ${albumName} (${rows.length} matches)`);
-            if(rows.length===1)break;
+            if(rows.length)break;
             if(read<2)await this.sleep(500);
         }
         if(rows.length===0)throw new Error(`Dedicated upload album is missing: ${albumName} (0 matches after 3 reads; import not repeated)`);
-        const id=this.id(rows[0]);
+        // Elements that share one rectangle belong to the same row; only separate rows are separate albums.
+        const albums=new Map<string,{id:string;x:number;y:number}>();
+        for(const row of rows){
+            const id=this.id(row),r=(await this.request(`${this.session}/element/${id}/rect`)).value;
+            const key=[r.x,r.y,r.width,r.height].join(',');
+            if(!albums.has(key))albums.set(key,{id,x:r.x,y:r.y});
+        }
+        if(albums.size>1&&(!/^PF-[a-f0-9]{12}$/.test(albumName)||albums.size>5))
+            throw new Error(`Dedicated upload album is ambiguous: ${albumName} (${albums.size} matches)`);
+        const id=[...albums.values()].sort((a,b)=>a.y-b.y||a.x-b.x)[0]!.id;
         if(!(await this.request(`${this.session}/element/${id}/displayed`)).value)
             await this.request(`${this.session}/wda/element/${id}/scrollTo`,{},30_000);
-        const rect=await this.rect('accessibility id',albumName,'Dedicated video album');
+        const rect=(await this.request(`${this.session}/element/${id}/rect`)).value as {x:number;y:number;width:number;height:number};
         if(rect.y<=115 || rect.y+rect.height>=830)throw new Error('Dedicated upload album is outside the visible list');
+        return rect;
     }
     /** A caption ending in hashtags leaves TikTok's full-screen editor and suggestion list open, which hides Edit cover
      * (Oct 7 14:25). Never tap its back arrow: it leaves the composer (Oct 7 15:24). Hide the keyboard, then swipe the
@@ -321,12 +334,12 @@ export class TikTokRelease extends WdaApp implements ReleaseDriver {
         // Oct 8 06:47: the first frame came before the sheet finished opening; the failure frame shows Comments 0.
         for(let read=0;read<3&&!emptyComments(screen.words);read++){await this.sleep(700);screen=await this.screen();}
         if(!emptyComments(screen.words))throw new Error('Expected empty comments before first comment');
-        if(!locateComment(screen.words,text,1450,1850)){
+        if(!locateComment(screen.words,text,1450,1850,{draftCursor:true})){
             if(!screen.words.some(w=>w.y>1450&&w.y<1850&&/^comment/.test(w.text))&&!(await draftWords(screen.image)).some(w=>/^comment\.{3}$/.test(w.text)))throw new Error('TikTok comment draft is not empty or unreadable');
             await this.request(this.session+'/wda/keys',{value:[text]});
         }
         screen=await this.screen();
-        if(!locateComment(screen.words,text,1400,1850))throw new Error('TikTok comment text readback failed');
+        if(!locateComment(screen.words,text,1400,1850,{draftCursor:true}))throw new Error('TikTok comment text readback failed');
         const send=await this.waitFor('accessibility id','Send','Comment Send');
         await claim();
         await this.request(`${this.session}/element/${send}/click`,{}); // exactly one submit request

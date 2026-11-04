@@ -36,6 +36,29 @@ test('OCR requires every comment word in order and inside the comment area',asyn
  assert.equal(locateComment(words,'Which tool would you try first?',1600,1800),null);
 });
 
+test('draft readback ignores the text cursor after the final punctuation only',async()=>{
+ const {locateComment}=await import('../src/publishing/comment-ocr.js');
+ const at=(line:string)=>line.split(' ').map((text,i)=>({text,x:215+i*100,y:1557,width:80,height:33}));
+ const text='What is the first publication you would pitch?';
+ // Nov 3 22:13 failure frame: OCR read the blinking cursor as a trailing "l".
+ assert.ok(locateComment(at('What is the first publication you would pitch?l'),text,1400,1850,{draftCursor:true}));
+ assert.ok(locateComment(at('What is the first publication you would pitch?|'),text,1400,1850,{draftCursor:true}));
+ // A posted comment has no cursor, so the receipt stays exact.
+ assert.equal(locateComment(at('What is the first publication you would pitch?l'),text,1400,1850),null);
+ // Only one glyph, only after the comment's own closing punctuation, never a changed word.
+ assert.equal(locateComment(at('What is the first publication you would pitch?ll'),text,1400,1850,{draftCursor:true}),null);
+ assert.equal(locateComment(at('What is the first publication you would pitchl'),text,1400,1850,{draftCursor:true}),null);
+ assert.equal(locateComment(at('Ship it firstl'),'Ship it first',1400,1850,{draftCursor:true}),null);
+ assert.equal(locateComment(at('What is the first publication you would pitch?'),text,1400,1850,{draftCursor:true})?.length,8);
+});
+
+test('OCR reads a lone bar as a capital I inside the comment',async()=>{
+ const {locateComment}=await import('../src/publishing/comment-ocr.js');
+ const words='Comment EFFECTS and | will DM you the setup'.split(' ').map((text,i)=>({text,x:170+i*100,y:1500,width:80,height:35}));
+ assert.ok(locateComment(words,'Comment EFFECTS and I will DM you the setup',1400,1800));
+ assert.equal(locateComment(words,'Comment EFFECTS and we will DM you the setup',1400,1800),null);
+});
+
 test('TikTok comments submit once, verify the author and report no Pin honestly',async()=>{
  const {TikTokRelease}=await import('../src/publishing/tiktok-release.js');
  const d=new TikTokRelease('http://unused',new AbortController().signal) as any;

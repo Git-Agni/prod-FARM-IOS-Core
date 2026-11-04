@@ -62,20 +62,40 @@ test('TikTok reveals the exact offscreen album once without blind page swipes',a
  const {TikTokRelease}=await import('../src/publishing/tiktok-release.js');
  const driver=new TikTokRelease('http://unused',new AbortController().signal) as any;
  driver.session='/session/test';driver.depth=async()=>{};const calls:string[]=[];
- driver.request=async(route:string)=>{calls.push(route);return {value:route.endsWith('/elements')?[{ELEMENT:'exact-album'}]:false};};
- driver.rect=async()=>({x:100,y:660,width:310,height:18});
- await driver.revealAlbum('PF-reviewed-hash');
+ driver.request=async(route:string)=>{calls.push(route);return {value:route.endsWith('/elements')?[{ELEMENT:'exact-album'}]:route.endsWith('/rect')?{x:100,y:660,width:310,height:18}:false};};
+ assert.deepEqual(await driver.revealAlbum('PF-reviewed-hash'),{x:100,y:660,width:310,height:18});
  assert.equal(calls.filter(r=>r.endsWith('/scrollTo')).length,1);
  assert.ok(calls.includes('/session/test/wda/element/exact-album/scrollTo'));
 });
 test('TikTok stops on ambiguous albums or unsafe album bounds',async()=>{
  const {TikTokRelease}=await import('../src/publishing/tiktok-release.js');
  const driver=new TikTokRelease('http://unused',new AbortController().signal) as any;
- driver.depth=async()=>{};driver.request=async()=>({value:[{ELEMENT:'one'},{ELEMENT:'two'}]});
- await assert.rejects(driver.revealAlbum('PF-hash'),/ambiguous/);
- driver.request=async(route:string)=>({value:route.endsWith('/elements')?[{ELEMENT:'one'}]:true});
- driver.rect=async()=>({x:100,y:900,width:310,height:18});
+ const rows=(n:number,bounds:(id:string)=>any)=>async(route:string)=>({value:route.endsWith('/elements')?Array.from({length:n},(_,i)=>({ELEMENT:'row'+i})):route.endsWith('/rect')?bounds(route.split('/').at(-2)!):true});
+ driver.depth=async()=>{};driver.session='/session/test';
+ // A name the import store did not make cannot have identical copies.
+ driver.request=rows(2,id=>({x:100,y:id==='row0'?300:400,width:310,height:18}));
+ await assert.rejects(driver.revealAlbum('PF-hash'),/ambiguous: PF-hash \(2 matches\)/);
+ // More copies than re-imports can explain.
+ driver.request=rows(6,id=>({x:100,y:300+Number(id.slice(3))*60,width:310,height:18}));
+ await assert.rejects(driver.revealAlbum('PF-0123456789ab'),/ambiguous: PF-0123456789ab \(6 matches\)/);
+ driver.request=rows(1,()=>({x:100,y:900,width:310,height:18}));
  await assert.rejects(driver.revealAlbum('PF-hash'),/outside/);
+});
+test('TikTok picks the topmost of identical PF albums and taps only that row',async()=>{
+ const {TikTokRelease}=await import('../src/publishing/tiktok-release.js');
+ const d=new TikTokRelease('http://unused',new AbortController().signal) as any;
+ d.session='/session/test';d.depth=async()=>{};const scrolled:string[]=[];
+ // Nov 1 20:00: three albums named PF-f6dedf84f77c. Two elements on one row share a rectangle and count once.
+ const bounds:any={a:{x:100,y:520,width:310,height:18},b:{x:100,y:340,width:310,height:18},c:{x:100,y:340,width:310,height:18},d:{x:100,y:700,width:310,height:18}};
+ d.request=async(route:string)=>{
+  if(route.endsWith('/elements'))return {value:['a','b','c','d'].map(ELEMENT=>({ELEMENT}))};
+  const id=route.split('/').at(-2)!;
+  if(route.endsWith('/rect'))return {value:bounds[id]};
+  if(route.endsWith('/displayed'))return {value:false};
+  scrolled.push(route);return {value:null};
+ };
+ assert.deepEqual(await d.revealAlbum('PF-f6dedf84f77c'),bounds.b);
+ assert.deepEqual(scrolled,['/session/test/wda/element/b/scrollTo']);
 });
 
 test('TikTok comment navigation taps the exact matched bounds once and stops on an uncertain viewer',async()=>{
@@ -105,10 +125,10 @@ test('TikTok waits for an album to appear using reads only, then reveals it once
  d.sleep=async()=>{waits++};
  d.request=async(route:string)=>{
   if(route.endsWith('/elements'))return {value:++reads<3?[]:[{ELEMENT:'album'}]};
+  if(route.endsWith('/rect'))return {value:{x:100,y:660,width:310,height:18}};
   if(route.endsWith('/displayed'))return {value:false};
   assert.ok(route.endsWith('/scrollTo'));scrolls++;return {value:null};
  };
- d.rect=async()=>({x:100,y:660,width:310,height:18});
  await d.revealAlbum('PF-reviewed');assert.equal(reads,3);assert.equal(waits,2);assert.equal(scrolls,1);
 });
 
@@ -118,6 +138,6 @@ test('TikTok missing and ambiguous albums stop without any input or import',asyn
  let reads=0;d.depth=async()=>{};d.sleep=async()=>{};
  d.request=async(route:string)=>{assert.ok(route.endsWith('/elements'));reads++;return {value:[]};};
  await assert.rejects(d.revealAlbum('PF-reviewed'),/missing: PF-reviewed .*0 matches after 3 reads/);assert.equal(reads,3);
- reads=0;d.request=async(route:string)=>{assert.ok(route.endsWith('/elements'));reads++;return {value:[{ELEMENT:'a'},{ELEMENT:'b'}]};};
+ reads=0;d.request=async(route:string)=>{if(route.endsWith('/rect'))return {value:{x:100,y:route.includes('/a/')?300:400,width:310,height:18}};assert.ok(route.endsWith('/elements'));reads++;return {value:[{ELEMENT:'a'},{ELEMENT:'b'}]};};
  await assert.rejects(d.revealAlbum('PF-reviewed'),/ambiguous: PF-reviewed .*2 matches/);assert.equal(reads,1);
 });
