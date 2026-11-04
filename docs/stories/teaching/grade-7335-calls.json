@@ -1,0 +1,14 @@
+{
+  "slug": "grade-7335-calls",
+  "way": "Teach (branded 3D teaching family): AI graded 7,335 real sales calls with fixed questions, two big numbers, one lesson, YouTube payoff",
+  "keyword": "GRADE",
+  "frames": [
+    {"type": "orbit", "photo": "d7725c69", "title": "AI graded\n[[7,335 sales calls]]", "body": "Took **10.5 minutes**.\nCost **$4.86**.", "pull": "Here's what it found 👉",
+     "chips": [{"icon": "call", "label": "7,335 calls", "right": 470, "top": 640}, {"icon": "sms", "label": "19 questions", "right": 60, "top": 850}, {"icon": "calendar", "label": "1 report", "right": 320, "top": 1230}]},
+    {"type": "list", "photo": "37287de1", "title": "It asked **19 yes or no questions** on every call", "items": ["Did the closer ask for the sale?", "Did the closer give a reason to start today?", "Did the closer mention a guarantee?"], "pull": "Then plain code counted the answers 👉"},
+    {"type": "timeline", "photo": "990ce94d", "time": "87%", "label": "of buyers paid", "title": "When the closer booked the next call with **a day and a time**", "pull": "Now the other ending 👉"},
+    {"type": "timeline", "photo": "aaae6275", "time": "4%", "label": "of buyers paid", "title": "When the call ended with\n**\"lets talk later\"**", "pull": "So what do you do with that? 👉"},
+    {"type": "list", "photo": "d7725c69", "title": "Try it on **one problem** this week", "items": ["Pull the calls behind it", "Write 10 to 20 questions with fixed answers", "Let code count the results"], "pull": "I show the whole setup in this video 👉"},
+    {"type": "cta", "title": "This video shows how we graded all 7,335 calls 👇", "card": {"kind": "yt", "thumb": "https://i.ytimg.com/vi/DWREa1sv_Ho/maxresdefault.jpg", "title": "How I Use Jev AI Inside Businesses Doing $7M a Month"}, "send": "and I'll send you the 19 questions we use"}
+  ]
+}
