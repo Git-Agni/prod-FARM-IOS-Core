@@ -52,6 +52,17 @@ test('draft readback ignores the text cursor after the final punctuation only',a
  assert.equal(locateComment(at('What is the first publication you would pitch?'),text,1400,1850,{draftCursor:true})?.length,8);
 });
 
+test('OCR reads a capital I before a lowercase letter as l, with or without the draft cursor',async()=>{
+ const {locateComment}=await import('../src/publishing/comment-ocr.js');
+ const at=(line:string)=>line.split(' ').map((text,i)=>({text,x:215+i*100,y:1557,width:80,height:33}));
+ const text='Which would save you more time: Docs, Sheets or Slides?';
+ // Nov 4 14:13 failure frame for item a2f0e360.
+ assert.ok(locateComment(at('Which would save you more time: Docs, Sheets or SIides?|'),text,1400,1850,{draftCursor:true}));
+ assert.ok(locateComment(at('Comment ACP and I will DM you the adapter Iink.'),'Comment ACP and I will DM you the adapter link.',1400,1850));
+ assert.equal(locateComment(at('Which would save you more time: Docs, Sheets or Sides?'),text,1400,1850,{draftCursor:true}),null);
+ assert.ok(locateComment(at('It works'),'It works',1400,1850));
+});
+
 test('OCR reads a lone bar as a capital I inside the comment',async()=>{
  const {locateComment}=await import('../src/publishing/comment-ocr.js');
  const words='Comment EFFECTS and | will DM you the setup'.split(' ').map((text,i)=>({text,x:170+i*100,y:1500,width:80,height:35}));

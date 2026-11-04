@@ -10,11 +10,13 @@ export function locateComment(words:ScreenWord[],text:string,minY:number,maxY:nu
  const last=text.trim().split(/\s+/).at(-1)??'';
  const cursorAfter=options.draftCursor&&/[?.!]$/.test(last)?last:undefined;
  // A lone "|" is OCR's reading of a capital I ("and | will DM you", Nov 1 and 2); token() would drop it as empty.
- const read=(w:ScreenWord)=>w.text==='|'?{...w,text:'I'}:cursorAfter&&w.text.length===cursorAfter.length+1&&w.text.startsWith(cursorAfter)&&/[l|I]$/.test(w.text)?{...w,text:cursorAfter}:w;
+ // OCR also reads a lowercase l before a lowercase letter as a capital I ("SIides", Nov 4 14:13; "Iink", Oct 29).
+ const lower=(s:string)=>s.replace(/I(?=[a-z])/g,'l');
+ const read=(w:ScreenWord)=>w.text==='|'?{...w,text:'I'}:cursorAfter&&w.text.length===cursorAfter.length+1&&lower(w.text).startsWith(lower(cursorAfter))&&/[l|I]$/.test(w.text)?{...w,text:cursorAfter}:w;
  const candidates=words.map(read).filter(w=>w.y>=minY&&w.y<=maxY&&w.x>=150&&token(w.text));
  for(let i=0;i<=candidates.length-expected.length;i++) {
   // OCR reads a capital I after A as a lowercase l, also inside words ("Al-built", Oct 7): read "Al" not followed by a lowercase letter as "AI".
-  if(expected.every((t,n)=>token(candidates[i+n].text)===t || token(candidates[i+n].text.replace(/Al(?![a-z])/g,'AI'))===t))return candidates.slice(i,i+expected.length);
+  if(expected.every((t,n)=>token(candidates[i+n].text)===t || token(candidates[i+n].text.replace(/Al(?![a-z])/g,'AI'))===t || token(lower(candidates[i+n].text))===t))return candidates.slice(i,i+expected.length);
  }
  // Oct 11 21:27 (iOS 27): OCR merged "your team?" into "yourteam?|". Compare the same letters with spacing removed;
  // the full text must still appear in order, contiguously, within the region.
