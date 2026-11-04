@@ -159,8 +159,10 @@ export class TikTokRelease extends WdaApp implements ReleaseDriver {
     /** Ask iOS to reveal the exact saved album once, then return the visible bounds of that one row.
      * Nov 1-3: three releases stopped with 2 or 3 albums of the same name. The WDA import always creates a new album, and
      * YouTube re-imports a video older than 6 h under the same PF-<sha12> name, so a video posted to Shorts first has copies.
-     * Every copy holds one asset imported from the hash-checked file, so the copies are the same video: take the topmost
-     * row. Any other name with more than one row, or more copies than re-imports can explain, still stops. */
+     * Every copy holds one asset imported from the hash-checked file, so the copies are the same video. Nov 4 phone check:
+     * each copy is its own album cell with a "1" count, and off-screen titles all report one placeholder rectangle
+     * (0,121,310,18), so rows are counted from the screen tree, not from rectangles. Take the first match in tree order,
+     * the topmost cell. Any other name, more than 5 copies, or a copy that is not a one-item album still stops. */
     private async revealAlbum(albumName:string) {
         await this.depth(60); // Album rows sit below the shallow profile snapshot.
         // Allow the picker to finish loading without repeating navigation or importing again.
@@ -171,16 +173,14 @@ export class TikTokRelease extends WdaApp implements ReleaseDriver {
             if(read<2)await this.sleep(500);
         }
         if(rows.length===0)throw new Error(`Dedicated upload album is missing: ${albumName} (0 matches after 3 reads; import not repeated)`);
-        // Elements that share one rectangle belong to the same row; only separate rows are separate albums.
-        const albums=new Map<string,{id:string;x:number;y:number}>();
-        for(const row of rows){
-            const id=this.id(row),r=(await this.request(`${this.session}/element/${id}/rect`)).value;
-            const key=[r.x,r.y,r.width,r.height].join(',');
-            if(!albums.has(key))albums.set(key,{id,x:r.x,y:r.y});
+        if(rows.length>1){
+            const xml=/^PF-[a-f0-9]{12}$/.test(albumName)&&rows.length<=5?String((await this.request(this.session+'/source')).value):'';
+            const cells=xml.split('<XCUIElementTypeCell ').slice(1).map(c=>c.split('</XCUIElementTypeCell>')[0]!).filter(c=>c.includes(`name="${albumName}"`));
+            const counts=cells.map(c=>/<XCUIElementTypeStaticText [^>]*label="(\d+)"[^>]*index="1"/.exec(c)?.[1]);
+            if(cells.length!==rows.length||counts.some(n=>n!=='1'))
+                throw new Error(`Dedicated upload album is ambiguous: ${albumName} (${rows.length} matches)`);
         }
-        if(albums.size>1&&(!/^PF-[a-f0-9]{12}$/.test(albumName)||albums.size>5))
-            throw new Error(`Dedicated upload album is ambiguous: ${albumName} (${albums.size} matches)`);
-        const id=[...albums.values()].sort((a,b)=>a.y-b.y||a.x-b.x)[0]!.id;
+        const id=this.id(rows[0]);
         if(!(await this.request(`${this.session}/element/${id}/displayed`)).value)
             await this.request(`${this.session}/wda/element/${id}/scrollTo`,{},30_000);
         const rect=(await this.request(`${this.session}/element/${id}/rect`)).value as {x:number;y:number;width:number;height:number};

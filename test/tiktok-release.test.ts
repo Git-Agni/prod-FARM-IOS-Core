@@ -67,35 +67,41 @@ test('TikTok reveals the exact offscreen album once without blind page swipes',a
  assert.equal(calls.filter(r=>r.endsWith('/scrollTo')).length,1);
  assert.ok(calls.includes('/session/test/wda/element/exact-album/scrollTo'));
 });
-test('TikTok stops on ambiguous albums or unsafe album bounds',async()=>{
- const {TikTokRelease}=await import('../src/publishing/tiktok-release.js');
- const driver=new TikTokRelease('http://unused',new AbortController().signal) as any;
- const rows=(n:number,bounds:(id:string)=>any)=>async(route:string)=>({value:route.endsWith('/elements')?Array.from({length:n},(_,i)=>({ELEMENT:'row'+i})):route.endsWith('/rect')?bounds(route.split('/').at(-2)!):true});
- driver.depth=async()=>{};driver.session='/session/test';
- // A name the import store did not make cannot have identical copies.
- driver.request=rows(2,id=>({x:100,y:id==='row0'?300:400,width:310,height:18}));
- await assert.rejects(driver.revealAlbum('PF-hash'),/ambiguous: PF-hash \(2 matches\)/);
- // More copies than re-imports can explain.
- driver.request=rows(6,id=>({x:100,y:300+Number(id.slice(3))*60,width:310,height:18}));
- await assert.rejects(driver.revealAlbum('PF-0123456789ab'),/ambiguous: PF-0123456789ab \(6 matches\)/);
- driver.request=rows(1,()=>({x:100,y:900,width:310,height:18}));
- await assert.rejects(driver.revealAlbum('PF-hash'),/outside/);
-});
-test('TikTok picks the topmost of identical PF albums and taps only that row',async()=>{
+// Nov 4 phone check of the TikTok album list: each copy is its own cell with a "1" count; off-screen titles share a placeholder rect.
+const albumCell=(name:string,count:string,y:number)=>`<XCUIElementTypeCell type="XCUIElementTypeCell" visible="false" x="0" y="${y}" width="430" height="88" index="1"><XCUIElementTypeStaticText type="XCUIElementTypeStaticText" value="${name}" name="${name}" label="${name}" visible="false" x="0" y="121" width="310" height="18" index="0"/><XCUIElementTypeStaticText type="XCUIElementTypeStaticText" value="${count}" name="${count}" label="${count}" visible="false" x="0" y="121" width="310" height="16" index="1"/></XCUIElementTypeCell>`;
+const albumList=(cells:string[])=>({rows:cells.length,source:'<XCUIElementTypeTable>'+cells.join('')+'</XCUIElementTypeTable>'});
+const albumDriver=async(name:string,list:{rows:number;source:string},rect={x:100,y:400,width:310,height:18})=>{
  const {TikTokRelease}=await import('../src/publishing/tiktok-release.js');
  const d=new TikTokRelease('http://unused',new AbortController().signal) as any;
- d.session='/session/test';d.depth=async()=>{};const scrolled:string[]=[];
- // Nov 1 20:00: three albums named PF-f6dedf84f77c. Two elements on one row share a rectangle and count once.
- const bounds:any={a:{x:100,y:520,width:310,height:18},b:{x:100,y:340,width:310,height:18},c:{x:100,y:340,width:310,height:18},d:{x:100,y:700,width:310,height:18}};
- d.request=async(route:string)=>{
-  if(route.endsWith('/elements'))return {value:['a','b','c','d'].map(ELEMENT=>({ELEMENT}))};
-  const id=route.split('/').at(-2)!;
-  if(route.endsWith('/rect'))return {value:bounds[id]};
+ d.session='/session/test';d.depth=async()=>{};d.sleep=async()=>{};d.calls=[] as string[];
+ d.request=async(route:string)=>{d.calls.push(route);
+  if(route.endsWith('/elements'))return {value:Array.from({length:list.rows},(_,i)=>({ELEMENT:'title'+i}))};
+  if(route.endsWith('/source'))return {value:list.source};
   if(route.endsWith('/displayed'))return {value:false};
-  scrolled.push(route);return {value:null};
+  if(route.endsWith('/rect'))return {value:rect};
+  return {value:null};
  };
- assert.deepEqual(await d.revealAlbum('PF-f6dedf84f77c'),bounds.b);
- assert.deepEqual(scrolled,['/session/test/wda/element/b/scrollTo']);
+ return d;
+};
+test('TikTok picks the first of identical one-item PF albums and scrolls only to that row',async()=>{
+ const name='PF-f6dedf84f77c';
+ const d=await albumDriver(name,albumList([albumCell(name,'1',10241),albumCell(name,'1',19041),albumCell(name,'1',20449)]));
+ assert.deepEqual(await d.revealAlbum(name),{x:100,y:400,width:310,height:18});
+ assert.deepEqual(d.calls.filter((r:string)=>r.endsWith('/scrollTo')),['/session/test/wda/element/title0/scrollTo']);
+});
+test('TikTok stops on albums it cannot prove are identical one-item copies',async()=>{
+ const name='PF-f6dedf84f77c';
+ // A copy holding more than one item.
+ await assert.rejects((await albumDriver(name,albumList([albumCell(name,'1',100),albumCell(name,'2',200)]))).revealAlbum(name),/ambiguous: PF-f6dedf84f77c \(2 matches\)/);
+ // Title matches that are not one album cell each.
+ await assert.rejects((await albumDriver(name,{rows:2,source:albumList([albumCell(name,'1',100)]).source})).revealAlbum(name),/ambiguous/);
+ // More copies than re-imports can explain, and names the import store did not make.
+ await assert.rejects((await albumDriver(name,albumList(Array.from({length:6},(_,i)=>albumCell(name,'1',100*i))))).revealAlbum(name),/ambiguous: .*6 matches/);
+ const other=await albumDriver('PF-hash',albumList([albumCell('PF-hash','1',100),albumCell('PF-hash','1',200)]));
+ await assert.rejects(other.revealAlbum('PF-hash'),/ambiguous: PF-hash \(2 matches\)/);
+ assert.equal(other.calls.some((r:string)=>r.endsWith('/source')||r.endsWith('/scrollTo')),false);
+ // A single album outside the visible list still stops.
+ await assert.rejects((await albumDriver('PF-hash',albumList([albumCell('PF-hash','1',100)]),{x:100,y:900,width:310,height:18})).revealAlbum('PF-hash'),/outside/);
 });
 
 test('TikTok comment navigation taps the exact matched bounds once and stops on an uncertain viewer',async()=>{
