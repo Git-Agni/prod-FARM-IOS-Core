@@ -58,6 +58,19 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
         }
         if (busy) void health.touch().catch(() => undefined);
     }, 30_000);
+    // Nov 5: a 03:19 PT network drop left dead clients checked out. The pool stayed full, every release from 08:00 PT
+    // failed in 40 s with "timeout exceeded when trying to connect", and nothing restarted the worker for 9 hours.
+    // Probe the pool every minute; three failed probes in a row while it is full means it is wedged: exit for launchd.
+    let poolFailures = 0;
+    const poolProbe = setInterval(() => {
+        pool.query('SELECT 1').then(() => { poolFailures = 0; }).catch((error: Error) => {
+            const full = pool.totalCount >= ((pool as any).options?.max ?? 10) && pool.idleCount === 0;
+            poolFailures = full ? poolFailures + 1 : 0;
+            console.error(new Date().toISOString(), `database pool probe failed (${poolFailures}/3, total ${pool.totalCount}, idle ${pool.idleCount}, waiting ${pool.waitingCount}):`, error.message);
+            if (poolFailures >= 3) { console.error(new Date().toISOString(), 'database pool is wedged; exiting so launchd restarts the worker'); process.exit(1); }
+        });
+    }, 60_000);
+    poolProbe.unref();
     const tick = async () => {
         if (busy) return;
         busy = true; progress();
@@ -222,5 +235,5 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
     let pending = tick();
     const timer = setInterval(() => { if (!busy) pending = tick(); }, 20_000);
     await pending;
-    return { async close() { clearInterval(timer); clearInterval(watchdog); controller.abort(); await pending; } };
+    return { async close() { clearInterval(timer); clearInterval(watchdog); clearInterval(poolProbe); controller.abort(); await pending; } };
 }
