@@ -15,7 +15,7 @@ api=$(curl -s -m 8 "$API/api/publishing/capabilities" 2>/dev/null)
 if [ -z "$api" ]; then
   status="critical"; notes="API down (launchd KeepAlive should be restarting web)"
   echo "{\"at\":\"$now_iso\",\"status\":\"$status\",\"notes\":\"$notes\"}" >> "$OUT"
-  [ "${WATCHDOG_SMS_DRY_RUN:-0}" = 1 ] && echo "SMS DRY RUN: Phone Farm API is down" || osascript -e 'tell application "Messages" to send "Phone Farm: posting is blocked. The Phone Farm API is down at 127.0.0.1:3000." to participant "+18054335835" of account id "DA3257E0-CF8D-47B9-BDEB-B762ABAAE922"' >/dev/null 2>&1
+  [ "${WATCHDOG_SMS_DRY_RUN:-0}" = 1 ] && echo "SMS DRY RUN: Phone Farm API is down" || osascript -e 'tell application "Messages" to send "Phone Farm: posting is blocked. The Phone Farm API is down at 127.0.0.1:3000." to participant "+18054335835" of account id "35252375-F9B5-4D85-8B97-0CC7AA4CB64E"' >/dev/null 2>&1
   printf '# Watchdog %s\n\nCRITICAL: Phone Farm API is down. launchd should be restarting the web service; check `launchctl list | grep phone-farm`.\n' "$now_iso" > "$LATEST"
   exit 1
 fi
@@ -41,7 +41,7 @@ def notify(urgent, now):
     text = ('Phone Farm: posting is blocked.\n- ' + '\n- '.join(u[:180] for u in urgent)) if key else 'Phone Farm: recovered. Posting checks are clear again.'
     if os.environ.get('WATCHDOG_SMS_DRY_RUN') == '1': print('SMS DRY RUN:', text)
     else:
-        script = 'on run argv\ntell application "Messages" to send (item 1 of argv) to participant "+18054335835" of account id "DA3257E0-CF8D-47B9-BDEB-B762ABAAE922"\nend run'
+        script = 'on run argv\ntell application "Messages" to send (item 1 of argv) to participant "+18054335835" of account id "35252375-F9B5-4D85-8B97-0CC7AA4CB64E"\nend run'
         r = subprocess.run(['osascript', '-e', script, text], capture_output=True, text=True, timeout=30)
         if r.returncode: print('SMS failed:', r.stderr.strip()[:200]); return
     json.dump({'key': key, 'at': now.isoformat()}, open(NOTIFY_STATE, 'w'))
