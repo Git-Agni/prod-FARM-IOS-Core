@@ -72,3 +72,46 @@ is held because its Instagram and TikTok items are armed but not yet posted.
   check found no matching Trial Reel. `requeue-verified-unposted.ts` checks claims only after 24 hours, which is
   about 11:02 and 13:02 PT on Oct 19. Their Shorts wait for that result.
 - The capabilities `youtube` field still reads `preparation_only` in WDA mode. It should report the reviewed-Short rule.
+
+## Follow-up at 13:06 PT: ajs and orca
+
+VERIFIED posted. `requeue-verified-unposted.ts` (dry run, 13:06 PT) found the caption for both Instagram/Facebook items
+and kept them out of the re-queue. A Graph read then confirmed one match each. Both were created after the Share claim,
+both have the exact full caption, and both are Trial Reels (`is_shared_to_feed: false`). The receipt check had missed
+them because "The Trial reels menu is not safely visible". No re-queue ran and no second Share was tapped.
+
+| Item | Platform | Share claimed (PT) | Posted (PT) | Receipt |
+|---|---|---|---|---|
+| 209d708b (ajs, HIRING) | Instagram Trial | Sun Oct 18 11:02 | Sun Oct 18 12:03 | https://www.instagram.com/reel/DepR5BpoA27/ |
+| 209d708b (ajs) | Facebook | | Sun Oct 18 12:03 | https://www.facebook.com/reel/1792319398377886/ |
+| 7a988dca (orca, FLEET) | Instagram Trial | Sun Oct 18 13:02 | Sun Oct 18 13:53 | https://www.instagram.com/reel/Depfon3yFHZ/ |
+| 7a988dca (orca) | Facebook | | Sun Oct 18 13:53 | https://www.facebook.com/reel/1767043441199328/ |
+
+Both items moved from `needs_review` to `published` with these receipts in `results.release.receipts` (guarded update,
+only rows still in `needs_review`). Evidence: `docs/evidence/youtube-arming-2026-10-19/ig-fb-ajs-orca-receipts.json`.
+The TikTok siblings were already published (ec3d7a16, 470ca8f6).
+
+Shorts:
+
+1. `link-shorts-long-form.ts` linked both to the reviewed long-form `DWREa1sv_Ho`.
+2. Frame zero checked by eye on both files. ajs: "HIS AI WROTE 69 APPLICATIONS / THEN HE GOT HIRED". orca:
+   "5 CODING AGENTS ONE TASK / PICK THE WINNER". Both have logos, a readable headline, a clear face with the mouth
+   closed, and nothing clipped. Recorded with `record-shorts-cover-review.ts claude-frame0-oct19`.
+3. `autopilot-backlog.ts --lane=youtube --every-hours=2 --no-shift --apply` armed 2. `lane-slotter.ts --apply` moved 17.
+
+Readback, `GET http://127.0.0.1:3000/api/publishing/releases` at 13:08 PT:
+
+| Item | State | Run at (PT) |
+|---|---|---|
+| a9235090 (ajs Short) | armed | Mon Oct 19 16:22 |
+| a5c76f88 (orca Short) | armed | Mon Oct 19 19:22 |
+| 209d708b (ajs IG/FB) | published | Sun Oct 18 11:00 slot |
+| 7a988dca (orca IG/FB) | published | Sun Oct 18 13:00 slot |
+
+The slotter re-spaced the earlier armed Shorts. YouTube lane now: 16:22 ajs, 17:22 f7f42b6d, 18:22 d406f21d,
+19:22 orca, 20:22 76876e65, 21:22 35b7c005, 22:22 205ddd40, 23:22 7a043873, then Tue Oct 20 07:22 d828a49e,
+08:22 792511c9, 09:22 18336f1f, 10:22 8e63fd91, 11:22 1249ca3a, 12:22 adee9f48, 13:22 afb93e10, 14:22 24e95d86,
+15:22 c70367e8.
+
+Still open: the receipt check misses Trial Reels when the Trial menu is not visible. The Graph check (24 hours later)
+caught it. The yt1019 Short still needs a frame-zero review once its IG and TikTok items post.

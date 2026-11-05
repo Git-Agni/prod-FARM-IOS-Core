@@ -32,3 +32,17 @@ test('the Attributes row is found by its whole "AI use, Tags" line, not a lone T
  assert.equal(metadataRowMatches([...title,...row],'AI use, Tags').length,1);
  assert.equal(metadataRowMatches(row,'Community').length,0);
 });
+test('OCR album rows map O and l back to hex and keep only exact PF names',async()=>{const{ocrAlbumRows}=await import('../src/publishing/youtube-release.js');
+ const rows=ocrAlbumRows([{text:'Recents',y:418,height:35},{text:'PF-003cd93dbabe',y:1713,height:36},{text:'PF-01e36aaf7fcO',y:2673,height:58},{text:'PF-0lE3',y:10,height:10}]);
+ assert.deepEqual(rows.map(r=>r.name),['PF-003cd93dbabe','PF-01e36aaf7fc0']);assert.equal(rows[0]!.y,1731);});
+
+test('Recents match needs the reviewed length and import minute (Oct 30)', async () => {
+    const {recentsVideoMatches}=await import('../src/publishing/youtube-release.js');
+    const xml=(await import('node:fs')).readFileSync(new URL('./fixtures/youtube-recents-2026-10-30.xml',import.meta.url),'utf8');
+    const at=new Date('2026-10-30T21:22:29.388Z');
+    const hits=recentsVideoMatches(xml,50,at);
+    assert.equal(hits.length,1);assert.match(hits[0]!.value,/^50 seconds, created October 30, 2026 at 14:22/);
+    assert.equal(recentsVideoMatches(xml,47,at).length,0,'a 47 s video at 14:22 is not ours');
+    assert.equal(recentsVideoMatches(xml,50,new Date('2026-10-30T21:30:00Z')).length,0,'wrong minute');
+    assert.equal(recentsVideoMatches(xml,72,new Date('2026-10-30T18:22:10Z')).length,1,'11:22 1:12 video');
+});

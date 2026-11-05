@@ -62,15 +62,21 @@ try{
         for(const slot of slotsFrom(now-24*60*minute,lanes[p],1).map(s=>s+off).filter(s=>s>=now-24*60*minute&&s<=now-40*minute)){
             const rows=await booked(p,slot);
             if(rows.some(r=>r.state==='published'))continue;
-            missed.push({at:pt(slot),why:rows.length?`${rows[0].n} is ${rows[0].state}${rows[0].e?' ('+String(rows[0].e).slice(0,120)+')':''}`:'no video was booked'});
+            // Oct 25: a post that waited or failed here and was then moved to a later slot left this slot looking unbooked.
+            const moved=rows.length?undefined:(await db.pool.query(`SELECT i.media->>'name' n,i.results->'autopilotBacklog'->'priorRelease'->'result'->>'error' e FROM scheduler.publishing_items i
+              WHERE (i.results->'autopilotBacklog'->>'priorRunAt')::timestamptz BETWEEN $1 AND $2 AND i.input->'targets' @> $3::jsonb LIMIT 1`,
+              [new Date(slot-5*minute),new Date(slot+5*minute),JSON.stringify([{platform:p}])])).rows[0];
+            missed.push({at:pt(slot),why:rows.length?`${rows[0].n} is ${rows[0].state}${rows[0].e?' ('+String(rows[0].e).slice(0,120)+')':''}`
+              :moved?`${moved.n} was booked, then moved to a later slot (${moved.e?String(moved.e).slice(0,100):'it had not started'})`:'no video was booked'});
         }
         // Facebook rides on the Instagram item, so count its own verified receipt.
+        // Oct 25: count by Share time; a receipt recorded later (caption-block catch-up) is not a new post.
         const published=Number((await db.pool.query(`SELECT count(*) c FROM scheduler.publishing_releases r JOIN scheduler.publishing_items i ON i.id=r.item_id
-          WHERE r.state='published' AND r.updated_at>now()-interval '24 hours' AND i.input->'targets' @> $1::jsonb`,[JSON.stringify([{platform:p}])])).rows[0].c);
+          WHERE r.state='published' AND coalesce(r.share_claimed_at,r.updated_at)>now()-interval '24 hours' AND i.input->'targets' @> $1::jsonb`,[JSON.stringify([{platform:p}])])).rows[0].c);
         lanesOut[p]={hours:lanes[p],next,published24h:published,missed};
     }
     const facebook24h=Number((await db.pool.query(`SELECT count(*) c FROM scheduler.publishing_releases r JOIN scheduler.publishing_items i ON i.id=r.item_id
-      WHERE r.state='published' AND r.updated_at>now()-interval '24 hours' AND (i.results->'release'->'receipts'->'facebook'->>'verified')::boolean`)).rows[0].c);
+      WHERE r.state='published' AND coalesce(r.share_claimed_at,r.updated_at)>now()-interval '24 hours' AND (i.results->'release'->'receipts'->'facebook'->>'verified')::boolean`)).rows[0].c);
     const queue=(await db.pool.query(`SELECT state,count(*)::int c FROM scheduler.publishing_releases WHERE state IN('armed','running','needs_review') GROUP BY 1`)).rows;
     const report={at:pt(now),problems,agents:agentRows,
         worker:worker?{lastTick:pt(worker.last_tick),minutesAgo:workerAge,mode:worker.control_mode,state:worker.state,blockers:worker.blockers}:null,

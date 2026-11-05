@@ -1,4 +1,5 @@
 import {hasPreparedTrialEvidence} from './native-xml.js';
+import {assertInstagramWritesAllowed} from './instagram-write-hold.js';
 import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 import {InstagramRelease,type ReleaseMedia} from './instagram-release.js';
@@ -28,6 +29,7 @@ export class PreparedInstagramRelease extends InstagramRelease {
  private readyToShare=false;
  constructor(base:string,signal:AbortSignal,private item:any){super(base,signal);}
  override async preflight(input:PostingInput,mediaValue:unknown):Promise<ReleaseEvidence>{
+  if(this.base.startsWith('http://127.0.0.1:'))await assertInstagramWritesAllowed();
   const proof=this.item.results.preparedNative as PreparedInstagramProof;
   assertPreparedInstagram(this.item,proof);
   const media=mediaValue as ReleaseMedia;
@@ -50,6 +52,7 @@ export class PreparedInstagramRelease extends InstagramRelease {
   this.input=input;this.readyToShare=true;return proof.evidence;
  }
  override async shareOnce(){
+  if(this.base.startsWith('http://127.0.0.1:'))await assertInstagramWritesAllowed();
   if(!this.readyToShare)throw Error('A fresh prepared preflight is required');
   this.readyToShare=false;
   const r=await this.rect('accessibility id','share-sheet-share-button','Final Share');

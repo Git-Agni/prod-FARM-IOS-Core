@@ -35,12 +35,16 @@ try{
  // requeue-verified-unposted.ts records Graph proof that a claimed Share never reached Instagram or Facebook.
  const claimed=(i:any)=>{const r=releases.get(i.id);if(i.results?.verifiedNotPosted?.verified===true)return false;return !!r?.share_claimed_at||['published','running'].includes(r?.state)||i.status==='published';};
  const eligible:any[]=[];
- const keptArmed=items.filter(i=>inLane(i)&&releases.get(i.id)?.state==='armed'&&new Date(releases.get(i.id).run_at)>new Date());
+ // Oct 25: a 9:00 TikTok waiting behind the 9:00 Instagram post (phone busy to 9:09) was taken for missed and moved to
+ // the next day, so its slot went out empty (same at 13:00). The worker still admits an armed post up to 45 minutes
+ // late (insidePostingWindow), so it stays the worker's until then.
+ const keptArmed=items.filter(i=>inLane(i)&&releases.get(i.id)?.state==='armed'&&new Date(releases.get(i.id).run_at).getTime()>Date.now()-45*60000);
  for(const i of items.filter(x=>['held','needs_review'].includes(x.status)&&inLane(x)&&!keptArmed.includes(x))){
   const r=releases.get(i.id),platforms=i.input.targets.map((t:any)=>t.platform);
   const review=i.results?.directYouTubeReview;
   let reason='';
-  if(claimed(i)||Object.keys(i.results?.release?.receipts??{}).length)reason='Share was claimed or a receipt exists; check the account before any retry';
+  if(i.results?.metaTrialPilot)reason='Meta Trial pilot requires review; never requeue its upload';
+  else if(claimed(i)||Object.keys(i.results?.release?.receipts??{}).length)reason='Share was claimed or a receipt exists; check the account before any retry';
   else if(r&&!['armed','needs_review','cancelled'].includes(r.state))reason='Release is '+r.state;
   else if(i.results?.preparedNative)reason='Prepared composer item; re-prepare before arming';
   else if(i.results?.hourlyRecoveryExclusion||i.results?.externalYouTubeDelivery)reason='Duplicate check or earlier delivery recorded';

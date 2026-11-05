@@ -31,6 +31,7 @@ export class TimedReleaseStore {
             await c.query('BEGIN');
             const item = (await c.query('SELECT * FROM scheduler.publishing_items WHERE id=$1',[itemId])).rows[0];
             if (!item) throw new Error('Calendar item not found');
+            if (item.results?.metaTrialPilot) throw new Error('Meta Trial pilot requires review; keep its publication claim intact');
             validatePostingInput(item.input);
             assertReleaseTargets(item.input,options);
             if (/https?:\/\/|www\./i.test(item.input.caption)) throw new Error('Remove URLs from the public caption');

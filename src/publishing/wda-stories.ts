@@ -86,6 +86,7 @@ async function approveUnderStandingApproval(pool:Pool,jobId:string,revision:stri
  if(!(await directStoryStatus(pool)).qualified)await store.requestPilot(jobId).catch(()=>undefined);
 }
 export async function runDirectStories(pool:Pool,signal:AbortSignal){
+ if(await (await import('./instagram-write-hold.js')).instagramWriteHold())return;
  const s=await directStoryStatus(pool),store=new NativeStoryStore(pool);
  // An approval belongs to the code that captured it. Fail loudly instead of leaving the job armed forever.
  await pool.query(`UPDATE scheduler.mirroring_story_jobs SET state='needs_review',result=result||'{"error":"Story code changed after approval. Capture and approve the drafts again."}'::jsonb

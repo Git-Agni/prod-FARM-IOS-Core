@@ -20,6 +20,12 @@ export function isFullYouTubeTrim(value:string,durationSeconds:number){
 
 /** Oct 19: OCR reads the capital I of "AITools" and "AIAgents" as a lowercase l ("AlTools"); six Shorts stopped at the tag
  * check with every chip typed correctly. Compare tags with I, l, 1 and | folded together. */
+/** Oct 29: PF album names read from the "Select album" screenshot. OCR mixes up O/o and 0, and l/I/i/| and 1 (seen
+ * "PF-01e36aaf7fcO"); album names are hex, so map those back and keep only exact PF-<12 hex> rows. */
+export function ocrAlbumRows(words:{text:string,y:number,height:number}[]){
+ return words.map(w=>({name:w.text.replace(/^PF[-–—~]/i,'PF-').replace(/^(PF-)(.*)$/,(_,p,h:string)=>p+h.replace(/[oO]/g,'0').replace(/[lIi|]/g,'1').toLowerCase()),y:w.y+w.height/2}))
+  .filter(r=>/^PF-[0-9a-f]{12}$/.test(r.name));
+}
 export const ocrTagKey=(value:string)=>value.toLowerCase().replace(/[il1|]/g,'i');
 export function nativeTagsMatch(expected:string[],seen:string[]){const keys=new Set(seen.map(ocrTagKey));return expected.every(tag=>keys.has(ocrTagKey(tag)));}
 /** Oct 19 07:25: a title with the word "Tags" ("Walmart's Price Tags Now...") made the Tags row ambiguous. Row labels sit in
@@ -42,27 +48,90 @@ export function galleryDurationSeconds(value:string){
  if(!m||(m[1]===undefined&&m[2]===undefined))return NaN;
  return Number(m[1]??0)*60+Number(m[2]??0);
 }
+/** Oct 30: opening YouTube's album menu freezes its accessibility tree (9,240 bytes, every depth and timeout), so the
+ * gallery after an album pick cannot be read. The default Recents grid stays readable and each Video cell's value names
+ * its length and import minute ("50 seconds, created October 30, 2026 at 14:22"). Match both: length within 1 s and the
+ * import minute (Pacific) within 1 minute of the direct_media_imports record. Returns every visible matching cell. */
+export function recentsVideoMatches(xml:string,durationSeconds:number,importedAt:Date){
+ const minute=(d:Date)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(d).map(x=>[x.type,x.value]));
+  return `${p.month} ${Number(p.day)}, ${p.year} ${p.hour}:${p.minute}`;};
+ const wanted=new Set([-60_000,0,60_000].map(o=>minute(new Date(importedAt.getTime()+o))));
+ const out:{x:number;y:number;width:number;height:number;value:string}[]=[];
+ for(const tag of xml.matchAll(/<XCUIElementTypeCell\b[^>]*>/g)){
+  const a=Object.fromEntries([...tag[0].matchAll(/([\w-]+)="([^"]*)"/g)].map(m=>[m[1],m[2]]));
+  if(a.name!=='Video'||a.visible!=='true'||!a.value)continue;
+  const m=/created (\w+ \d+, \d{4}) at (\d{1,2}):(\d{2})(?:\s*([AP]M))?/.exec(a.value);if(!m)continue;
+  let h=Number(m[2]);if(m[4]==='PM'&&h<12)h+=12;if(m[4]==='AM'&&h===12)h=0;
+  const at=`${m[1]} ${String(h).padStart(2,'0')}:${m[3]}`;
+  if(!wanted.has(at)||Math.abs(galleryDurationSeconds(a.value)-durationSeconds)>1)continue;
+  out.push({x:Number(a.x),y:Number(a.y),width:Number(a.width),height:Number(a.height),value:a.value});
+ }
+ return out;
+}
 export class YouTubeRelease extends PreparedYouTubeRelease {
  constructor(base:string,signal:AbortSignal,private saved:any,private imports:DirectMediaStore){super(base,signal,saved);}
+ private foregroundRecoveries=0;
+ /** Oct 30: the 20:22 and 08:22 Shorts lost YouTube to the home screen about 6 minutes in, before any Next or Upload, with
+  * no crash report. Before Upload nothing is posted, so bring YouTube back (twice at most) and keep going; log which app
+  * took the foreground and save the screen so the cause shows next time. After this.ready (Upload stage) it still stops. */
+ protected override async assertInputApp(){
+  if(!this.ready&&this.foregroundRecoveries<2){
+   const active=(await this.request(this.session+'/wda/activeAppInfo')).value;
+   if(active?.bundleId!==this.expectedBundleId){
+    this.foregroundRecoveries++;
+    const evidence=await this.captureFailure('youtube-left-foreground').catch(()=>'');
+    console.log(new Date().toISOString(),'YouTube left the foreground before Upload; active app',active?.bundleId,'evidence',evidence,'recovery',this.foregroundRecoveries);
+    await this.request(this.session+'/wda/apps/activate',{bundleId:this.expectedBundleId});await this.sleep(3000);
+   }
+  }
+  return super.assertInputApp();
+ }
  private async nodes(){return visibleNativeNodes(String((await this.request(this.session+'/source')).value));}
  private async selectAlbum(name:string){
   let last='';
   // One PF album per upload (Oct 8: 60+). Scroll until found or the list stops moving.
-  for(let pass=0;pass<40;pass++){
+  // Oct 25: 377 PF albums, about 5 rows per drag. 40 drags stopped near PF-7f, so every Short whose album sorts later
+  // (PF-cd, PF-e0, PF-e4, PF-e8) failed from Oct 22. 250 drags reach about 1,200 albums; a stalled list still stops early.
+  const maxPasses=250;
+  for(let pass=0;pass<maxPasses;pass++){
    // The list renders after the album-list tap; wait for it once instead of reading too early.
-   if(pass===0)await this.waitFor('predicate string','name == "id.creation.photolibrary.album.cell" AND visible == 1','Native album list',10_000);
+   // Oct 29 14:22-18:22: YouTube's full-page "Select album" list stopped appearing in the accessibility tree (probe:
+   // same 9,240-byte tree at 15/60/120 s snapshot timeouts). Fall back to reading the PF names by OCR.
+   if(pass===0&&!await this.waitFor('predicate string','name == "id.creation.photolibrary.album.cell" AND visible == 1','Native album list',10_000).then(()=>true,()=>false))return this.selectAlbumByOcr(name);
    else if(!(await this.nodes()).some(n=>n.name==='id.creation.photolibrary.album.cell'))throw Error('Native album list changed');
    const rows=(await this.request(this.session+'/elements',{using:'predicate string',value:'type == "XCUIElementTypeCell" AND label == "'+name+'" AND visible == 1'})).value;
    if(rows.length>1)throw Error('YouTube source album is ambiguous');
    if(rows.length===1){const r=(await this.request(this.session+'/element/'+this.id(rows[0])+'/rect')).value;
     if(r.y>=90&&r.y+r.height<=850){await this.tapPoint(r.x+r.width/2,r.y+r.height/2);return;}
     // Found but near an edge (many PF albums): nudge it toward the middle, then look again. Never tap off-screen.
-    if(pass===39)throw Error('YouTube source album is outside the visible list');
+    if(pass===maxPasses-1)throw Error('YouTube source album is outside the visible list');
     await this.assertInputApp();await this.request(this.session+'/wda/dragfromtoforduration',{fromX:215,fromY:r.y<90?300:700,toX:215,toY:r.y<90?600:400,duration:.4});await this.sleep(600);continue;}
    const current=(await this.nodes()).filter(n=>n.type==='XCUIElementTypeCell'&&n.name==='id.creation.photolibrary.album.cell').map(n=>n.label).join('|');
-   if(!current||current===last||pass===39)throw Error('YouTube source album was not reached; import was not repeated');last=current;
+   if(!current||current===last||pass===maxPasses-1)throw Error('YouTube source album was not reached; import was not repeated');last=current;
    await this.assertInputApp();await this.request(this.session+'/wda/dragfromtoforduration',{fromX:215,fromY:780,toX:215,toY:250,duration:.4});await this.sleep(500);
   }
+ }
+ /** Album rows by OCR when the native list is not exposed. Only taps one exact PF match; completeGallery then checks the
+  * selected album through the native gallery title, so a wrong tap stops before any video is chosen. */
+ private async selectAlbumByOcr(name:string){
+  let last='';
+  for(let pass=0;pass<250;pass++){
+   const png=Buffer.from((await this.request('/screenshot')).value,'base64'),m=await sharp(png).metadata();
+   if(m.width!==1290||m.height!==2796)throw Error('YouTube album screen size changed');
+   const rows=ocrAlbumRows(await recognizeWords(png));
+   const hit=rows.filter(r=>r.name===name);
+   if(hit.length>1)throw Error('YouTube source album is ambiguous (OCR rows at y '+hit.map(r=>Math.round(r.y/3)).join(', ')+')');
+   if(hit.length===1){const y=hit[0]!.y/3;
+    if(y>=110&&y<=850){await this.tapPoint(215,y);return;}
+    await this.assertInputApp();await this.request(this.session+'/wda/dragfromtoforduration',{fromX:215,fromY:y<110?300:700,toX:215,toY:y<110?600:400,duration:.4});await this.sleep(600);continue;}
+   const current=rows.map(r=>r.name).join('|');
+   if(current===last)throw Error('YouTube source album was not reached; import was not repeated');last=current;
+   // Names sort ascending. Scroll back up only when every visible PF name is past the target.
+   const up=rows.length>0&&rows.every(r=>r.name>name),far=rows.length>0&&Math.abs(parseInt(rows[0]!.name.slice(3,5),16)-parseInt(name.slice(3,5),16))>2;
+   await this.assertInputApp();
+   await this.request(this.session+'/wda/dragfromtoforduration',up?{fromX:215,fromY:250,toX:215,toY:780,duration:.4}:{fromX:215,fromY:780,toX:215,toY:250,duration:far?.15:.4});await this.sleep(far?900:500);
+  }
+  throw Error('YouTube source album is outside the visible list');
  }
  /** OCR only locates a visible row. Full metadata values are checked through native fields. */
  private async metadataRow(phrase:string){
@@ -112,7 +181,9 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
   const {width=1290}=await sharp(shot).metadata(),scale=width/430;
   // Each read misses different chips (verified on the 12:56 frame); a tag counts when any read finds it.
   const area=()=>sharp(shot).extract({left:0,top:Math.round(130*scale),width,height:Math.round(420*scale)});
-  const reads=await Promise.all([area().resize({width:width*2}),area().negate({alpha:false}).grayscale().resize({width:width*2}),area().negate({alpha:false}).grayscale()]
+  // Oct 29 09:33: every read above missed the middle "aitools" chip; a threshold read and a 3x negative read find it.
+  const reads=await Promise.all([area().resize({width:width*2}),area().negate({alpha:false}).grayscale().resize({width:width*2}),area().negate({alpha:false}).grayscale(),
+   area().grayscale().threshold(90).negate({alpha:false}),area().negate({alpha:false}).grayscale().resize({width:width*3})]
    .map(async img=>recognizeWords(await img.png().toBuffer())));
   if(!nativeTagsMatch(input.youtube!.publishing!.tags,[...words.filter(w=>w.y<1700),...reads.flat()].map(w=>w.text)))throw Error('Native YouTube tags did not match');
   await this.tapElement('accessibility id','id.elements.components.metadata_editor.app_bar.back_button','Back to details');
@@ -142,11 +213,19 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
   // Oct 11 02:52: YouTube now closes after each job (no picture-in-picture), so a cold launch can stay black past 20 s.
   // Wait for its tab bar or an open composer, read-only, before any tap.
   for(const end=Date.now()+45_000;Date.now()<end&&!await this.visible('accessibility id','id.ui.pivotbar.FElibrary.button')&&!await this.visible('accessibility id','id.metadata_editor.upload_button')&&!await this.visible('accessibility id','id.creation.editor.button.next');)await this.sleep(1500);
+  // Oct 29 07:22: the 07:22 Short failed on a black cold launch that never drew its tab bar in 45 s. Nothing rendered, so
+  // close YouTube once and wait again (exitApp closes it after every job anyway; its sign-in and drafts are kept).
+  if(!await this.visible('accessibility id','id.ui.pivotbar.FElibrary.button')&&!await this.visible('accessibility id','id.metadata_editor.upload_button')&&!await this.visible('accessibility id','id.creation.editor.button.next')&&!(await this.nodes()).some(n=>n.name?.startsWith('id.'))){
+   await this.request(this.session+'/wda/apps/terminate',{bundleId:'com.google.ios.youtube'}).catch(()=>undefined);await this.sleep(2000);await this.start('com.google.ios.youtube');
+   for(const end=Date.now()+45_000;Date.now()<end&&!await this.visible('accessibility id','id.ui.pivotbar.FElibrary.button')&&!await this.visible('accessibility id','id.metadata_editor.upload_button')&&!await this.visible('accessibility id','id.creation.editor.button.next');)await this.sleep(1500);
+  }
   if(await this.visible('accessibility id','id.metadata_editor.upload_button')||await this.visible('accessibility id','id.creation.editor.button.next')||await this.visible('accessibility id','id.creation.photolibrary.picker.button.show_album_list')||(await this.nodes()).some(n=>n.name==='id.creation.photolibrary.album.cell'))throw Error('An existing YouTube composer needs review; it was not overwritten');
   await this.tapElement('accessibility id','id.ui.pivotbar.FElibrary.button','You');
   if(await this.visible('accessibility id','View channel'))await this.tapElement('accessibility id','View channel','Owned channel');
   await this.waitFor('accessibility id','@'+input.targets[0]!.account.replace(/^@/,''),'Reviewed YouTube channel');
   if(!(await this.nodes()).some(n=>n.name==='@'+input.targets[0]!.account.replace(/^@/,'')))throw Error('YouTube account is not the reviewed channel');
+  // Oct 30: 08:22 and 11:22 Shorts for Oct 31 were imported Oct 25, far below Recents' first screens. Re-import if older than 6 h.
+  await this.imports.forgetIfOlder(input.deviceUdid,media.sha256,6*3600_000);
   const imported=await this.imports.ensure(input.deviceUdid,media,this.base,this.signal);
   await this.tapElement('accessibility id','id.ui.pivotbar.FEuploads.button','Create');
   // A saved draft triggers "Continue your draft video?". Start over keeps that draft and opens a new Short.
@@ -156,8 +235,27 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
    await this.sleep(1000);
   }
   await this.tapElement('accessibility id','id.creation.camera.button.segment_import','Choose saved video');
-  await this.tapElement('accessibility id','id.creation.photolibrary.picker.button.show_album_list','Album list');
-  return this.completeGallery(input,media,imported.albumName,probe.durationSeconds);
+  return this.selectFromRecents(input,media,(imported as {createdAt?:Date}).createdAt,probe.durationSeconds);
+ }
+ /** Oct 30: pick the reviewed video in the Recents grid (see recentsVideoMatches); never opens the album menu. */
+ private async selectFromRecents(input:PostingInput,media:ReleaseMedia,importedAt:Date|undefined,durationSeconds:number):Promise<ReleaseEvidence>{
+  if(!importedAt)throw Error('Import time is missing; Recents selection needs it');
+  await this.waitFor('predicate string','name == "id.creation.gallery.title.create" AND label == "Recents"','Recents gallery',15_000);
+  let last='';
+  for(let n=0;n<40;n++){
+   const xml=String((await this.request(this.session+'/source')).value),hits=recentsVideoMatches(xml,durationSeconds,importedAt);
+   if(hits.length>1)throw Error('Recents has more than one matching video; no selection');
+   const hit=hits[0];
+   if(hit&&hit.y>=110&&hit.y+hit.height<=850){await this.tapPoint(hit.x+hit.width/2,hit.y+hit.height/2);await this.sleep(1500);return this.completeSelectedVideo(input,media,'Recents');}
+   // Attribute order varies (YouTube writes value before name), so read each Cell tag whole. Count photo cells too:
+   // Oct 30 17:22, a screen of Story photos between videos read as an empty grid and stopped the search early.
+   const seen=[...xml.matchAll(/<XCUIElementTypeCell\b[^>]*>/g)].map(m=>m[0]).filter(t=>/ name="(Video|Photo ?)"/.test(t)).map(t=>/ value="([^"]*)"/.exec(t)?.[1]??'').join('|');
+   if(!seen&&n<5){await this.sleep(1500);continue;} // the grid can still be drawing
+   if(!hit&&(seen===last||!seen))throw Error('Reviewed video was not found in Recents; no selection');last=seen;
+   await this.assertInputApp();
+   await this.request(this.session+'/wda/dragfromtoforduration',hit?{fromX:215,fromY:hit.y<110?300:700,toX:215,toY:hit.y<110?600:400,duration:.4}:{fromX:215,fromY:780,toX:215,toY:250,duration:.4});await this.sleep(700);
+  }
+  throw Error('Reviewed video was not reached in Recents; no selection');
  }
  /** Resume only an attended, source-bound gallery checkpoint, never an uncertain upload. */
  protected async completeGallery(input:PostingInput,media:ReleaseMedia,albumName:string,durationSeconds:number):Promise<ReleaseEvidence>{
@@ -181,10 +279,11 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
   await this.tapElement('predicate string','type == "XCUIElementTypeCell" AND name == "Video" AND visible == 1','Reviewed video');
   return this.completeSelectedVideo(input,media);
  }
- protected async completeSelectedVideo(input:PostingInput,media:ReleaseMedia):Promise<ReleaseEvidence>{
+ protected async completeSelectedVideo(input:PostingInput,media:ReleaseMedia,gallery='PF-'+media.sha256.slice(0,12)):Promise<ReleaseEvidence>{
   this.ready=false;this.input=input;
-  if(await this.read('accessibility id','id.creation.gallery.title.create','label','Source album')!=='PF-'+media.sha256.slice(0,12))throw Error('Selected YouTube source album changed');
+  if(await this.read('accessibility id','id.creation.gallery.title.create','label','Source album')!==gallery)throw Error('Selected YouTube source album changed');
   if(!await this.visible('accessibility id','id.creation.thumbnail_belt.cell'))throw Error('No source-bound selection');
+  if(((await this.request(this.session+'/elements',{using:'accessibility id',value:'id.creation.thumbnail_belt.cell'})).value??[]).length!==1)throw Error('More than one video is selected; no Next');
   await this.tapElement('accessibility id','id.creation.gallery.next.button','Gallery Next');
   return this.completeTrimmedVideo(input,media);
  }

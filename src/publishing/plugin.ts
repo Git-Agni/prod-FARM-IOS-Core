@@ -36,6 +36,7 @@ import { readiness, requestHash, validatePostingInput } from './model.js';
 import { PublishingStore, publicItem, type MediaFile } from './store.js';
 import { linkRelatedReel } from './related-autolink.js';
 import { ReleaseWorkerStatusStore } from './worker-health.js';
+import { instagramWriteHold } from './instagram-write-hold.js';
 
 export function createPublishingPlugin(): PhoneFarmPlugin {
     return {
@@ -216,7 +217,7 @@ export function createPublishingPlugin(): PhoneFarmPlugin {
                 let services:{name:string;running:boolean}[]=[];
                 try{services=(await promisify(execFile)('launchctl',['list'])).stdout.split('\n').filter(l=>l.includes('ai.clicktoclose.phone-farm.'))
                     .map(l=>{const [pid,,label]=l.trim().split(/\s+/);return {name:label!.replace('ai.clicktoclose.phone-farm.',''),running:pid!=='-'};});}catch{/* not on macOS */}
-                return {checkedAt:new Date().toISOString(),captions,supply,pins,rearmable,services};
+                return {checkedAt:new Date().toISOString(),instagramWriteHold:await instagramWriteHold(),captions,supply,pins,rearmable,services};
             });
             // Re-arm a post that stopped before Share (missed window, failed preflight). Never one with a Share attempt.
             ctx.app.post(`${base}/items/:id/rearm`,async(req,reply)=>{
@@ -234,6 +235,7 @@ export function createPublishingPlugin(): PhoneFarmPlugin {
             });
             ctx.app.get(`${base}/capabilities`,async()=>{
                 const mirrorMode=phoneControlMode()==='mirroring';
+                const writeHold=await instagramWriteHold();
                 const a=await automation.status();
                 const audio=mirrorMode?await phoneAudioStatus():null;
                 const control=mirrorMode?await mirroringStatus():null;
@@ -245,16 +247,16 @@ export function createPublishingPlugin(): PhoneFarmPlugin {
                 const directReady=direct.enabled&&directPhones.some(d=>d.ready);
                 const directPlatforms=Object.fromEntries(Object.entries(readiness).map(([platform,capability])=>[platform,{
                     // Oct 26: all four lanes post live on timed releases with native receipts; "not ready" was old pilot text.
-                    ...capability,ready:directReady,
-                    reason:!direct.enabled?direct.reason:!directReady?(directPhones[0]?.reason??'No enabled iPhone is registered.'):platform==='youtube'?'Live: armed Shorts upload natively at their time and are checked on the public feed.':platform==='instagram'||platform==='facebook'?'Live: armed Trial Reels post natively with linked Facebook sharing, then a Graph receipt check.':capability.reason,
+                    ...capability,ready:directReady&&!(writeHold&&['instagram','facebook'].includes(platform)),
+                    reason:writeHold&&['instagram','facebook'].includes(platform)?'Instagram writes are on hold: '+writeHold.reason:!direct.enabled?direct.reason:!directReady?(directPhones[0]?.reason??'No enabled iPhone is registered.'):platform==='youtube'?'Live: armed Shorts upload natively at their time and are checked on the public feed.':platform==='instagram'||platform==='facebook'?'Live: armed Trial Reels post natively with linked Facebook sharing, then a Graph receipt check.':capability.reason,
                 }]));
-                const ready=(group:string)=>mirrorMode&&a.foregroundAllowed&&control?.controlReady===true&&verifiedPhoneMute(audio)&&a.flows[group]?.qualified===true;
-                return {version:1,mode:'timed_release',controlMode:phoneControlMode(),...(mirrorMode?{audio,automation:a}:{direct:{...direct,phones:directPhones}}),
+                const ready=(group:string)=>!(writeHold&&['instagram_facebook','stories'].includes(group))&&mirrorMode&&a.foregroundAllowed&&control?.controlReady===true&&verifiedPhoneMute(audio)&&a.flows[group]?.qualified===true;
+                return {version:1,mode:'timed_release',instagramWriteHold:writeHold,controlMode:phoneControlMode(),...(mirrorMode?{audio,automation:a}:{direct:{...direct,phones:directPhones}}),
                     platforms:mirrorMode?Object.fromEntries(Object.entries(readiness).map(([platform,capability])=>[platform,{...capability,codeImplemented:true,layoutAvailable:a.flows[platform==='instagram'||platform==='facebook'?'instagram_facebook':platform]?.layoutAvailable===true,ready:ready(platform==='instagram'||platform==='facebook'?'instagram_facebook':platform),reason:!a.foregroundAllowed?a.reason:'A current native layout and worker pilot receipt are required.'}])):directPlatforms,
                     comments:Object.fromEntries(['instagram','facebook','tiktok'].map(platform=>[platform,{post:ready(platform==='tiktok'?'tiktok':'instagram_facebook')&&a.comments[platform]?.qualified===true,pin:platform!=='tiktok'&&ready('instagram_facebook')&&a.comments[platform]?.qualified===true,reason:a.comments[platform]?.qualified?'Native worker comment receipt verified.':'Native comment layouts and worker receipts still need tests.'}])),
                     publicationEnabled:mirrorMode?['instagram_facebook','tiktok','youtube','stories'].some(ready):directReady,
                     releaseRequiresArming:true,instagramPreviewAvailable:!mirrorMode,youtube:ready('youtube')?'native_release':'preparation_only',
-                    storyPublicationEnabled:mirrorMode?ready('stories'):directStories?.qualified===true,stories:directStories,quickTimeRequired:false,
+                    storyPublicationEnabled:!writeHold&&(mirrorMode?ready('stories'):directStories?.qualified===true),stories:directStories,quickTimeRequired:false,
                     facebookPolicy:'Use native linked sharing when requested. Never silently create a separate Facebook upload.',
                     instructions:'Upload reviewed content to the calendar. Held items do not publish. Keep requestId stable when retrying the same upload.'};
             });

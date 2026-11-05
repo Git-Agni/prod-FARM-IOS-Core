@@ -13,6 +13,11 @@ export class DirectMediaStore {
  async forgetMissingAlbum(device:string,sha256:string){
   return (await this.pool.query("DELETE FROM scheduler.direct_media_imports WHERE device_udid=$1 AND sha256=$2 AND state='imported'",[device,sha256])).rowCount===1;
  }
+ /** Oct 30: YouTube picks from Recents (newest first), so an import days old sits under hundreds of photos. Forget an
+  * import older than maxAgeMs so ensure() sends a fresh copy that lands at the top. The old copy stays in Photos. */
+ async forgetIfOlder(device:string,sha256:string,maxAgeMs:number){
+  return (await this.pool.query("DELETE FROM scheduler.direct_media_imports WHERE device_udid=$1 AND sha256=$2 AND state='imported' AND created_at<now()-make_interval(secs=>$3)",[device,sha256,maxAgeMs/1000])).rowCount===1;
+ }
  async ensure(device:string,media:ReleaseMedia,base:string,signal:AbortSignal){
   const bytes=await readFile(media.path);
   if(createHash('sha256').update(bytes).digest('hex')!==media.sha256)throw Error('Source video hash changed');
@@ -22,14 +27,15 @@ export class DirectMediaStore {
   if(!claim.rowCount){
    const existing=(await this.pool.query('SELECT * FROM scheduler.direct_media_imports WHERE device_udid=$1 AND sha256=$2',[device,media.sha256])).rows[0];
    if(existing?.state!=='imported'||!existing.receipt?.localIdentifier)throw Error('A prior import needs review; no second import was sent');
-   return existing.receipt as {albumName:string;localIdentifier:string};
+   return {...existing.receipt,createdAt:new Date(existing.created_at)} as {albumName:string;localIdentifier:string;createdAt:Date};
   }
   try{
    const response=await fetch(base+'/wda/import-media',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:media.name,mimeType:media.mimeType,data:bytes.toString('base64'),albumName:album}),signal});
    const value=(await response.json() as any).value;
    if(!response.ok||value?.albumName!==album||!value?.localIdentifier)throw Error('Native import receipt is missing');
    await this.pool.query("UPDATE scheduler.direct_media_imports SET state='imported',receipt=$3 WHERE device_udid=$1 AND sha256=$2",[device,media.sha256,JSON.stringify(value)]);
-   return value as {albumName:string;localIdentifier:string};
+   const at=(await this.pool.query('SELECT created_at FROM scheduler.direct_media_imports WHERE device_udid=$1 AND sha256=$2',[device,media.sha256])).rows[0]?.created_at;
+   return {...value,createdAt:new Date(at??Date.now())} as {albumName:string;localIdentifier:string;createdAt:Date};
   }catch(error){await this.pool.query("UPDATE scheduler.direct_media_imports SET state='uncertain' WHERE device_udid=$1 AND sha256=$2",[device,media.sha256]);throw error;}
  }
 }

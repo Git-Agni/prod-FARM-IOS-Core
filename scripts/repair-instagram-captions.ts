@@ -7,8 +7,10 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createDatabaseConnection } from '../src/database/client.js';
 import { InstagramRelease } from '../src/publishing/instagram-release.js';
 import { metaReceipts, normalizeText } from '../src/publishing/meta-receipts.js';
+import { assertInstagramWritesAllowed } from '../src/publishing/instagram-write-hold.js';
 
 const PHONE = '00008130-000229EE1AA0001C', BASE = 'http://127.0.0.1:8100', apply = process.argv.includes('--apply');
+if (apply) await assertInstagramWritesAllowed();
 const pairs: { url: string; itemId: string }[] = JSON.parse(readFileSync(process.argv[2]!, 'utf8'));
 const out = '.scheduler-data/caption-repair/' + new Date().toISOString().replace(/[:.]/g, '-'); mkdirSync(out, { recursive: true });
 const db = createDatabaseConnection(), c = await db.pool.connect();

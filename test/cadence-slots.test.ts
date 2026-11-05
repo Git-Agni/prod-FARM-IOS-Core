@@ -3,22 +3,18 @@ import assert from 'node:assert/strict';
 import {slotsFrom,publishingCadence as c} from '../src/publishing/cadence.js';
 
 const pt=(ms:number)=>new Date(ms).toLocaleString('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',hour12:false,day:'numeric'});
-test('Hourly slots run 07 to 23 PT across the Nov 1 clock change',()=>{
-    const slots=slotsFrom(Date.parse('2026-10-31T07:00:00Z'),c.instagramHours,2);
-    const day=(d:string)=>slots.map(pt).filter(x=>x.startsWith(d+','));
-    for(const d of ['31','1']){
-        assert.equal(day(d)[0],`${d}, 07`);
-        assert.equal(day(d).at(-1),`${d}, 23`);
-        assert.equal(day(d).length,17);
+// Oct 29 evening, Antonio: 5 a day at 08, 11, 14, 17, 20 PT. Nov 3: Instagram goes to 7 a day, every 2 hours 08 to 20 PT.
+test('Instagram posts every 2 hours 08 to 20 PT, TikTok and Shorts at 08, 11, 14, 17 and 20 PT, across the Nov 1 clock change',()=>{
+    const ig=slotsFrom(Date.parse('2026-10-31T07:00:00Z'),c.instagramHours,2).slice(0,14);
+    assert.deepEqual(ig.map(pt),['31, 08','31, 10','31, 12','31, 14','31, 16','31, 18','31, 20','1, 08','1, 10','1, 12','1, 14','1, 16','1, 18','1, 20']);
+    for(const hours of [c.tiktokHours,c.youtubeHours]){
+        const slots=slotsFrom(Date.parse('2026-10-31T07:00:00Z'),hours,2).slice(0,10);
+        assert.deepEqual(slots.map(pt),['31, 08','31, 11','31, 14','31, 17','31, 20','1, 08','1, 11','1, 14','1, 17','1, 20']);
     }
 });
-test('17 hourly Instagram slots a day, 4 TikTok and 4 Shorts',()=>{
+test('7 Instagram slots a day, 5 TikTok and 5 Shorts',()=>{
     const day=Date.parse('2026-10-16T07:00:00Z');
-    assert.equal(slotsFrom(day,c.instagramHours,0).length,17);
-    assert.equal(slotsFrom(day,c.tiktokHours,0).length,4);
-    assert.equal(slotsFrom(day,c.youtubeHours,0).length,4);
-});
-test('TikTok and Shorts land on 9, 13, 17 and 21 PT across the Nov 1 clock change',()=>{
-    const slots=slotsFrom(Date.parse('2026-10-31T07:00:00Z'),c.tiktokHours,2).slice(0,8);
-    assert.deepEqual(slots.map(pt),['31, 09','31, 13','31, 17','31, 21','1, 09','1, 13','1, 17','1, 21']);
+    assert.equal(slotsFrom(day,c.instagramHours,0).length,7);
+    assert.equal(slotsFrom(day,c.tiktokHours,0).length,5);
+    assert.equal(slotsFrom(day,c.youtubeHours,0).length,5);
 });

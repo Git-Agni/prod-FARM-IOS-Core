@@ -1,7 +1,10 @@
 import { CronExpressionParser } from 'cron-parser';
 
-const hourly = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] as const;
-const fourADay = [9, 13, 17, 21] as const;
+// Antonio, Oct 29 evening PT: 5 videos a day on every platform while @antoniorevenue is being limited (was 10 that
+// morning). Nov 3: reach recovered, so Instagram goes to 7 a day; TikTok and YouTube stay at 5.
+// Keep .scheduler-data/lane-hours.json equal to these lists.
+const fiveADay = [8, 11, 14, 17, 20] as const;
+const sevenADay = [8, 10, 12, 14, 16, 18, 20] as const;
 
 /** Antonio's cadence: one video every 2 hours from Oct 11 16:45 (every 3 hours from Oct 7, hourly from Oct 5). Target times, not publication approval. */
 export const publishingCadence = {
@@ -18,7 +21,7 @@ export const publishingCadence = {
     // (17 a day); TikTok and YouTube Shorts stay at 4 a day (9, 13, 17, 21). Keep the calendar-page override
     // (.scheduler-data/lane-hours.json) equal to these lists. scripts/lane-slotter.ts owns every armed post's time,
     // one lane per platform; a Short posts 22 minutes after its slot so it never collides with the Instagram post.
-    instagramHours: hourly, tiktokHours: fourADay, youtubeHours: fourADay, youtubeOffsetMinutes: 22,
+    instagramHours: sevenADay, tiktokHours: fiveADay, youtubeHours: fiveADay, youtubeOffsetMinutes: 22,
 } as const;
 
 export function upcomingVideoSlots(now = new Date(), count = 72): Date[] {

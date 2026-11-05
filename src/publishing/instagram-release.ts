@@ -13,6 +13,7 @@ import { WdaApp, parseGalleryCell } from './wda-app.js';
 import {locateRelatedCover,locateRelatedCoverInCells,locateHeadlineInCells,reelByUrl,reviewedRelatedReel} from './instagram-related.js';
 import {metaReceipts} from './meta-receipts.js';
 import {assertRelatedReelInCatalog} from './related-autolink.js';
+import {assertInstagramWritesAllowed} from './instagram-write-hold.js';
 import {DEFAULT_INSTAGRAM_ACCOUNT,isSecondaryAccount,postingAccountFor} from './posting-accounts.js';
 
 const run = promisify(execFile);
@@ -90,6 +91,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
     evidence: Record<string, unknown> = {};
 
     async preflight(input: PostingInput, mediaValue: unknown): Promise<ReleaseEvidence> {
+        if (this.base.startsWith('http://127.0.0.1:')) await assertInstagramWritesAllowed();
         const media = mediaValue as ReleaseMedia;
         this.input = input;
         this.mediaPath = media.path;
@@ -119,11 +121,24 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         if (input.instagramTrial) {
             // Oct 10 (Antonio): the share screen no longer offers the Trial switch. Trial Reels start from
             // Profile > Reels > Trial reels > "Create trial reel", which opens the same New reel gallery.
-            await this.openTrialReelsGrid();
-            await this.tapElement('predicate string', 'type == "XCUIElementTypeButton" AND label == "Create trial reel" AND visible == 1', 'Create trial reel');
-            this.fromCreateTrialReel = true;
-            await this.sleep(1200);
-            await this.dismissTrialIntro();
+            // Nov 3: @antoniomonteiroai has no trial reels yet, so its Drafts tile opens "Reels drafts" (no Trial entry).
+            // Its share screen does show the Trial switch, so a secondary account starts from Create instead.
+            let createRoute = false;
+            try { await this.openTrialReelsGrid(); }
+            catch (e) {
+                if (!isSecondaryAccount(input) || !/Drafts and trials entry is not safely visible|Trial reels menu is not safely visible/.test(String((e as Error).message))) throw e;
+                createRoute = true;
+            }
+            if (createRoute) {
+                if (await this.visible('accessibility id', 'cancel-button')) { await this.tapElement('accessibility id', 'cancel-button', 'Close Reels drafts'); await this.sleep(1200); }
+                await this.tapElement('accessibility id', 'profile-add-button', 'Create button');
+                await this.tapElement('accessibility id', 'creation-reel', 'Create Reel');
+            } else {
+                await this.tapElement('predicate string', 'type == "XCUIElementTypeButton" AND label == "Create trial reel" AND visible == 1', 'Create trial reel');
+                this.fromCreateTrialReel = true;
+                await this.sleep(1200);
+                await this.dismissTrialIntro();
+            }
         } else {
             await this.tapElement('accessibility id', 'profile-add-button', 'Create button');
             await this.tapElement('accessibility id', 'creation-reel', 'Create Reel');
@@ -162,6 +177,16 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
             break;
         }
         await this.tapElement('accessibility id', 'sundial-right-chevron-next-button', 'editor Next', 30_000);
+        // Nov 3: after a Facebook link change the share screen opens under a one-time "Now people can see your
+        // engagement across apps" notice. Its OK only acknowledges it; Manage settings is never tapped.
+        for (let n = 0; n < 6; n++) {
+            if (await this.visible('predicate string', 'label == "Now people can see your engagement across apps" AND visible == 1')) {
+                await this.tapElement('predicate string', 'type == "XCUIElementTypeButton" AND label == "OK" AND visible == 1', 'OK on the cross-app engagement notice');
+                await this.sleep(1000); break;
+            }
+            if (await this.visible('accessibility id', 'caption-cell-text-view')) break;
+            await this.sleep(1000);
+        }
 
         await this.waitFor('accessibility id', 'caption-cell-text-view', 'caption field', 30_000);
         const captionId = await this.waitFor('accessibility id', 'caption-cell-text-view', 'caption field');
@@ -173,6 +198,26 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         return this.completeSettings(input,media,imported,seconds,account,cellLabel);
     }
 
+    /** The filled caption text, whether or not the composer reports the cell as displayed. Oct 28: once the
+     * composer scrolls down to the Trial row, the caption cell sits faded under the "New reel" title and WDA marks
+     * it displayed=false, but the full text stays on the element's label (failure dump
+     * 2026-10-29T01-05-15-810Z-0f2a9679.xml). Equality with the prepared caption is still required before Share. */
+    private async captionText(): Promise<string> {
+        const id = await this.visible('accessibility id', 'caption-cell-text-view');
+        if (id) {
+            const r = await this.raw(`${this.session}/element/${id}/attribute/value`);
+            if (r.ok && !r.body.value?.error && r.body.value) return String(r.body.value);
+        }
+        const rows = (await this.request(this.session + '/elements', { using: 'accessibility id', value: 'caption-cell-text-view' })).value ?? [];
+        for (const row of rows) {
+            for (const attr of ['value', 'label']) {
+                const r = await this.raw(`${this.session}/element/${this.id(row)}/attribute/${attr}`);
+                if (r.ok && !r.body.value?.error && r.body.value) return String(r.body.value);
+            }
+        }
+        return '';
+    }
+
     /** Scroll the composer back to the caption, read it, and retype it once if Instagram dropped it. */
     async ensureCaptionBeforeShare(caption: string): Promise<'kept' | 'restored'> {
         for (let n = 0; n < 4 && !await this.visible('accessibility id', 'caption-cell-text-view'); n++) {
@@ -180,13 +225,13 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
             await this.request(this.session + '/wda/dragfromtoforduration', { fromX: 215, fromY: 300, toX: 215, toY: 780, duration: 0.3 });
             await this.sleep(500);
         }
-        if (await this.read('accessibility id', 'caption-cell-text-view', 'value', 'caption before Share') === caption) return 'kept';
+        if (await this.captionText() === caption) return 'kept';
         const id = await this.waitFor('accessibility id', 'caption-cell-text-view', 'caption field');
         await this.request(`${this.session}/element/${id}/clear`, {}).catch(() => undefined);
         await this.request(`${this.session}/element/${id}/value`, { value: [caption] });
         if (await this.visible('accessibility id', 'OK')) await this.tapElement('accessibility id', 'OK', 'caption OK');
         await this.sleep(800);
-        if (await this.read('accessibility id', 'caption-cell-text-view', 'value', 'restored caption') !== caption) throw new Error('Caption was empty before Share and could not be restored; nothing was shared');
+        if (await this.captionText() !== caption) throw new Error('Caption was empty before Share and could not be restored; nothing was shared');
         return 'restored';
     }
 
@@ -218,6 +263,8 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         // Oct 11 (Antonio): Trial is unavailable, post regular Reels. With Trial off, a missing switch already means regular.
         if (!input.instagramTrial && !await this.visible('accessibility id', 'trial-switch')) { /* regular Reel */ }
         else {
+            // Nov 3: on @antoniomonteiroai the Trial row sits below the fold of the share screen; scroll to it.
+            for (let n = 0; n < 2 && isSecondaryAccount(input) && !(await this.visible('accessibility id', 'trial-switch')); n++) { await this.swipeUp(); await this.sleep(1000); }
             await this.ensureSwitch('Trial', input.instagramTrial, () => this.tapElement('accessibility id', 'trial-switch', 'Trial switch'));
             if (input.instagramTrial) { automaticPromotion = await this.ensureAutomaticPromotion(); trialEntry = 'share_switch'; }
         }
@@ -486,6 +533,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
     }
 
     async shareOnce(): Promise<void> {
+        if (this.base.startsWith('http://127.0.0.1:')) await assertInstagramWritesAllowed();
         // Exactly one tap. Callers claim the release before this and never call it twice.
         const id = await this.waitFor('accessibility id', 'share-sheet-share-button', 'Share button');
         await this.assertInputApp();
@@ -678,7 +726,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
     }
     /** Open the new Reel straight from its Graph permalink (verified Oct 7 14:42: lands on the owned Reel with its Watch button).
      * Falls back to the Trial grid when the link is unknown or the caption does not match. */
-    private async openByLink(url?: string): Promise<boolean> {
+    protected async openByLink(url?: string): Promise<boolean> {
         if (!/^http:\/\/127\.0\.0\.1:/.test(this.base)) return false; // unit tests use fake hosts
         try { url ??= (await metaReceipts(this.input!.caption, this.sharedAt ? this.sharedAt - 10 * 60_000 : 0, postingAccountFor(this.input!))).instagram?.url; } catch { return false; }
         if (!url || !/^https:\/\/www\.instagram\.com\/reel\//.test(url)) return false;
@@ -688,7 +736,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         return this.hasExactCaption();
     }
 
-    private async openMatchingTrialReel(prefix: string) {
+    protected async openMatchingTrialReel(prefix: string) {
         await this.openTrialReelsGrid();
         // A delayed upload may no longer be first. Inspect recent visible reels without reposting.
         for (let index = 0; index < 3; index++) {
@@ -728,6 +776,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
 
     /** Independent comment recovery after a verified post. Never calls Share. */
     async commentOnPost(input:PostingInput,text:string,claim:()=>Promise<void>,existingOnly=false):Promise<CommentResult>{
+        if (this.base.startsWith('http://127.0.0.1:')) await assertInstagramWritesAllowed();
         this.input=input;
         await this.start('com.burbn.instagram');
         if(!await this.hasExactCaption()&&!await this.openByLink())await this.openMatchingTrialReel(input.caption.slice(0,30));
@@ -766,6 +815,7 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
     }
     /** Post the approved first comment on the open reel, then pin it. Runs once, after the release is published. */
     async commentAndPin(text: string, claim: () => Promise<void>, existingOnly=false): Promise<{ status: string }> {
+        if (this.base.startsWith('http://127.0.0.1:')) await assertInstagramWritesAllowed();
         await this.tapElement('predicate string', 'name == "comment-button" AND visible == 1', 'Comments');
         await this.sleep(1500); // Read positions after the comments sheet finishes moving.
         const own = async () => visibleNativeNodes((await this.request(this.session+'/source')).value)

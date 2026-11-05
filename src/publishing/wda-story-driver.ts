@@ -6,6 +6,7 @@ import type { DirectMediaStore } from './direct-media.js';
 import { InstagramRelease } from './instagram-release.js';
 import type { NativeStoryFrame } from './mirroring-stories.js';
 import { liveStories, newStory, type LiveStory, type StoryState } from './story-receipts.js';
+import { assertInstagramWritesAllowed } from './instagram-write-hold.js';
 
 /** Music Antonio approved for the NORA Story (Oct 1), added in Instagram's "music only" style (no sticker). */
 export const STORY_TRACK = { title: 'Stardust (Instrumental), Royalty Free', artist: 'Giulio Cercato', search: 'Stardust Giulio Cercato' } as const;
@@ -302,6 +303,7 @@ export class WdaStoryDriver extends InstagramRelease {
 
     /** Exactly one tap on the sheet's Share. The caller claims the frame first and never calls this twice. */
     private async shareStoryOnce() {
+        if ((this.base ?? '').startsWith('http://127.0.0.1:')) await assertInstagramWritesAllowed();
         if (!this.sheetReady || this.shareAttempted) throw new Error('Story Share is not ready or was already attempted');
         this.shareAttempted = true; this.sheetReady = false;
         const id = await this.waitFor('predicate string', 'type == "XCUIElementTypeButton" AND name == "Share" AND visible == 1', 'Story Share');
@@ -342,6 +344,7 @@ export class WdaStoryDriver extends InstagramRelease {
 
     /** Build, claim, one Share, then Graph receipts on both destinations. */
     async publishFrame(frame: NativeStoryFrame, claim: () => Promise<void>, receiptWaitMs = 4 * 60_000): Promise<StoryFrameReceipts> {
+        if ((this.base ?? '').startsWith('http://127.0.0.1:')) await assertInstagramWritesAllowed();
         const label = frame.sourceSha256.slice(0, 12);
         let claimed = false;
         try {

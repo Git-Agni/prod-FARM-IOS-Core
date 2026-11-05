@@ -28,6 +28,7 @@ import path from 'node:path';
 import { ReleaseWorkerStatusStore } from './worker-health.js';
 import { mirroringStatus } from '../devices/mirroring/controller.js';
 import { phoneAudioStatus, verifiedPhoneMute } from '../devices/mirroring/audio.js';
+import { instagramWriteHold } from './instagram-write-hold.js';
 
 /** Oct 19: one tick waited forever on an exhausted database pool and posting stopped for five hours. No single step
  * (a 25-minute release, a 15-minute Story run, an 8-minute receipt or comment check) may go this long without progress.
@@ -124,8 +125,11 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
                 return;
             }
             // All-armed mode also admits the last two days of releases for receipt and comment follow-up.
-            const allowed = directReleaseAllArmed() ? (await pool.query(`SELECT item_id::text id FROM scheduler.publishing_releases
+            let allowed = directReleaseAllArmed() ? (await pool.query(`SELECT item_id::text id FROM scheduler.publishing_releases
                 WHERE state IN ('armed','running') OR run_at>now()-interval '48 hours'`)).rows.map((r:any)=>r.id as string) : directReleaseIds();
+            // Preserve armed Instagram items while Meta restricts writes. Other platform queues keep running.
+            if (await instagramWriteHold()) allowed = (await pool.query(`SELECT id FROM scheduler.publishing_items WHERE id=ANY($1::uuid[])
+                AND NOT (input->'targets' @> '[{"platform":"instagram"}]')`, [allowed])).rows.map((r:any) => r.id as string);
             if (!allowed.length) { await health.tick({controlMode:'wda',state:'blocked',blockers:['Direct posting is paused. No calendar items are selected.']}); return; }
             const devices = (await loadRegisteredDevices()).filter(d => !d.disabled);
             const states = await Promise.all(devices.map(async d =>

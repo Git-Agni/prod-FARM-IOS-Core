@@ -1,5 +1,6 @@
 import {visibleNativeNodes} from './native-xml.js';
 import { assertEngageControl, predicateLiteral, type EngagePayload } from './engage-model.js';
+import { assertInstagramWritesAllowed } from './instagram-write-hold.js';
 
 // Controls mapped on the iPhone 15 Pro Max, Instagram build of 2026-09-29 (read-only walk, nothing shared):
 // the reel URL opens the viewer ("Reel by antoniorevenue."), comment-button opens the sheet, send-button opens the
@@ -42,6 +43,7 @@ export class InstagramEngage {
     }
 
     async open(payload: EngagePayload) {
+        if (this.base.startsWith('http://127.0.0.1:')) await assertInstagramWritesAllowed();
         const started = await this.request('/session', { capabilities: { alwaysMatch: { bundleId: 'com.burbn.instagram' } } });
         this.session = `/session/${started.sessionId}`;
         await this.request(this.session + '/url', { url: payload.postUrl });
