@@ -88,7 +88,8 @@ for r in rel.get('releases', []):
     t = datetime.datetime.fromisoformat(r['run_at'].replace('Z', '+00:00'))
     if now - datetime.timedelta(minutes=75) <= t <= now + datetime.timedelta(minutes=5):
         if r['state'] == 'published': pubs.append(f"{r['item_id'][:8]} {t.astimezone(PT).strftime('%H:%M')}")
-        elif r['state'] != 'running':
+        # Nov 6: a slot due in the next minutes was flagged as failed. Armed only counts as missed 10 min after its time.
+        elif r['state'] != 'running' and not (r['state'] == 'armed' and t > now - datetime.timedelta(minutes=10)):
             err = (r.get('result') or {}).get('error', '')[:110]
             fails.append(f"{r['item_id'][:8]} {r['state']} {t.astimezone(PT).strftime('%H:%M')} {err}")
     if r['state'] == 'armed' and now <= t <= now + datetime.timedelta(hours=3):
