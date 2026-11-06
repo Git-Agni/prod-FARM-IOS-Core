@@ -11,7 +11,11 @@ API="http://127.0.0.1:3000"
 now_iso=$(python3 -c "import datetime;print(datetime.datetime.now(datetime.timezone.utc).isoformat())")
 
 status="ok"; notes=""
-api=$(curl -s -m 8 "$API/api/publishing/capabilities" 2>/dev/null)
+# Nov 5: capabilities probes the phone live and took over 8 s while a release held it, so two healthy runs texted
+# "API down". Call it down only when capabilities fails twice (30 s each) and the phone-free releases route fails too.
+api=$(curl -s -m 30 "$API/api/publishing/capabilities" 2>/dev/null)
+[ -z "$api" ] && sleep 20 && api=$(curl -s -m 30 "$API/api/publishing/capabilities" 2>/dev/null)
+[ -z "$api" ] && curl -s -f -o /dev/null -m 30 "$API/api/publishing/releases" && api="slow"
 if [ -z "$api" ]; then
   status="critical"; notes="API down (launchd KeepAlive should be restarting web)"
   echo "{\"at\":\"$now_iso\",\"status\":\"$status\",\"notes\":\"$notes\"}" >> "$OUT"
@@ -45,7 +49,7 @@ def notify(urgent, now):
         r = subprocess.run(['osascript', '-e', script, text], capture_output=True, text=True, timeout=30)
         if r.returncode: print('SMS failed:', r.stderr.strip()[:200]); return
     json.dump({'key': key, 'at': now.isoformat()}, open(NOTIFY_STATE, 'w'))
-cap = get('/api/publishing/capabilities')
+cap = get('/api/publishing/capabilities', 30)
 rel = get('/api/publishing/releases', 15)
 lines, alerts = [], []
 
