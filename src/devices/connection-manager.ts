@@ -259,6 +259,8 @@ export class DeviceConnectionManager implements DeviceConnections {
         for (const line of lines) {
             const state = parseSupervisorMessage(line);
             if (!state) continue;
+            // Nov 6: WDA restarted several times an hour with no record of why. Log each state change with its time.
+            console.log(new Date().toISOString(), 'wda-state', runtime.status.udid?.slice(0, 8) ?? '', state.state, state.message);
             if (state.state === 'error') runtime.status.retryCount += 1;
             if (state.state === 'ready') runtime.status.retryCount = 0;
             this.update(runtime, state.state, state.message);
