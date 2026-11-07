@@ -692,8 +692,9 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         if(!tab)throw new Error('The labeled profile Reels tab is not safely visible');
         await this.tapPoint(tab.x+tab.width/2,tab.y+tab.height/2);
         await this.sleep(1000);rows=await cells();
-        // Wait for the new tab data without tapping the tab again.
-        for(let read=0;read<4&&!rows.some(n=>n.label==='Trial reels'||n.name==='open-drafts'||n.label==='Drafts and trial reels');read++){
+        // Wait for the new tab data without tapping the tab again. Nov 6 16:00 PT: the Reels grid was still empty
+        // tiles after 5 s and the 4 PM post stopped before Share, so read for up to 15 s.
+        for(let read=0;read<15&&!rows.some(n=>n.label==='Trial reels'||n.name==='open-drafts'||n.label==='Drafts and trial reels');read++){
             await this.sleep(1000);rows=await cells();
         }
         let trial=rows.find(n=>n.label==='Trial reels');
