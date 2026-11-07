@@ -50,13 +50,17 @@ def notify(urgent, now):
         if r.returncode: print('SMS failed:', r.stderr.strip()[:200]); return
     json.dump({'key': key, 'at': now.isoformat()}, open(NOTIFY_STATE, 'w'))
 cap = get('/api/publishing/capabilities', 30)
-rel = get('/api/publishing/releases', 15)
+rel = get('/api/publishing/releases', 30)
 lines, alerts = [], []
 
 hold = cap.get('instagramWriteHold')
 if hold: alerts.append(f"IG WRITE HOLD LATCHED: {hold.get('reason','')[:120]} (not cleared by watchdog; Antonio's call)")
 plats = cap.get('platforms', {})
-for p in ('instagram', 'tiktok', 'youtube'):
+# Nov 6: while a release held the phone both reads timed out and logged "NOT ready: ?" on every lane. A timed-out read
+# is "API slow", not a readiness failure; the next run reads again.
+slow = [k for k, v in (('capabilities', cap), ('releases', rel)) if '__error' in v]
+if slow: lines.append('API slow, skipped: ' + ', '.join(slow))
+for p in ('instagram', 'tiktok', 'youtube') if '__error' not in cap else ():
     if not plats.get(p, {}).get('ready'): alerts.append(f"{p} NOT ready: {plats.get(p,{}).get('reason','?')[:100]}")
 # Oct 30 (Antonio: "Yes, add it"): after the 14:47 Mac restart WDA stopped with "automatic retries stopped" and stayed
 # down until a manual reconnect at 16:18. When that state shows and no release is running, send ONE reconnect through
