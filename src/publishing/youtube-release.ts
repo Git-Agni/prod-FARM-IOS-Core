@@ -152,7 +152,12 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
  /** iOS 27 (Oct 10 12:12): full-screen OCR no longer reads the small "AI use / No" row. Crop the row from its
   * element rect, enlarge it, and read it alone. No answer other than "No" counts as saved. */
  private async aiUseIsNo(){
-  const row=(await this.nodes()).find(n=>n.name==='id.elements.components.metadata_editor.altered_content_picker'&&n.label==='AI use');
+  // Nov 6 16:40 PT: after choosing No the row label reads "AI use, No", so an exact "AI use" match found no row and
+  // a saved No failed the check. Read the value from the label when it carries one; OCR stays the fallback.
+  const rows=(await this.nodes()).filter(n=>n.name==='id.elements.components.metadata_editor.altered_content_picker'&&/^AI use(,|$)/.test(n.label??''));
+  if(rows.some(n=>n.label==='AI use, Yes'))return false;
+  if(rows.some(n=>n.label==='AI use, No'))return true;
+  const row=rows.find(n=>n.label==='AI use');
   if(!row)return false;
   const shot=Buffer.from((await this.request('/screenshot')).value,'base64'),width=(await sharp(shot).metadata()).width!,scale=width/430;
   const crop=await sharp(shot).extract({left:0,top:Math.round(row.y*scale),width,height:Math.round(row.height*scale)}).resize({width:width*2}).png().toBuffer();
@@ -165,7 +170,7 @@ export class YouTubeRelease extends PreparedYouTubeRelease {
   if(!await this.visible('accessibility id','Attributes'))await this.metadataRow('AI use, Tags');await this.waitFor('accessibility id','Attributes','Native Attributes');
   let words:Awaited<ReturnType<typeof recognizeWords>>;
   if(!await this.aiUseIsNo()){
-   await this.tapElement('predicate string','name == "id.elements.components.metadata_editor.altered_content_picker" AND label == "AI use" AND visible == 1','AI use');
+   await this.tapElement('predicate string','name == "id.elements.components.metadata_editor.altered_content_picker" AND label BEGINSWITH "AI use" AND visible == 1','AI use');
    await this.tapElement('accessibility id','No','AI use No');
    await this.tapElement('accessibility id','id.elements.components.metadata_editor.app_bar.back_button','Back to Attributes');
    // Oct 8 11:30: the first frame after Back came before the screen settled; the saved frame reads No. Re-read it.
