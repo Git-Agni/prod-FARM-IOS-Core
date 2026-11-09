@@ -1,0 +1,61 @@
+<!doctype html><html><head><meta charset="utf-8"><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=block');
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;overflow:hidden;background:#0A0A0A;font-family:Inter,sans-serif;color:#fff}
+.stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#0A0A0A}
+.grid{position:absolute;inset:0;background:radial-gradient(ellipse 800px 600px at 50% 900px,rgba(39,128,255,.18),rgba(39,128,255,0) 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/54px 54px,linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px) 0 0/54px 54px}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.92) 0%,rgba(10,10,10,.55) 38%,rgba(10,10,10,.1) 60%,rgba(10,10,10,.7) 100%)}
+.shade.full{background:linear-gradient(180deg,rgba(10,10,10,.9) 0%,rgba(10,10,10,.7) 45%,rgba(10,10,10,.82) 100%)}
+.title{position:absolute;top:200px;left:80px;right:80px;font:600 64px/1.18 Inter;letter-spacing:-1.2px}
+.title b{font-weight:800}.center{text-align:center}
+.body{position:absolute;left:80px;right:300px;font:500 46px/1.3 Inter;color:#e9e9e9}.body b{color:#fff;font-weight:800}
+.pull{position:absolute;right:80px;bottom:330px;font:700 48px Inter;padding:10px 4px;border-bottom:4px solid rgba(255,255,255,.85);text-shadow:0 2px 14px rgba(0,0,0,.9)}
+.box{background:#E8231F;color:#fff;padding:0 14px;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.red{color:#FF4D4D}.blue{color:#2780FF}.ul{text-decoration:underline;text-decoration-color:#2780FF;text-decoration-thickness:6px;text-underline-offset:10px}
+.hook{position:absolute;top:180px;left:60px;right:60px;text-align:center;font:900 104px/1.02 Inter;letter-spacing:-3px;text-transform:uppercase}
+.bottom{position:absolute;bottom:300px;left:60px;right:60px;text-align:center;font:600 52px/1.25 Inter}
+.shot{position:absolute;left:50%;transform:translateX(-50%);background:#fff;border-radius:26px;padding:14px;box-shadow:0 0 0 4px #2780FF,0 0 60px rgba(39,128,255,.45),0 30px 80px rgba(0,0,0,.75)}
+.shot img{display:block;border-radius:14px;max-width:100%}
+.ring{position:absolute;border:9px solid #FF2D2D;border-radius:50%;transform:rotate(-4deg)}
+/* redrawn interfaces */
+.phone{position:absolute;left:50%;transform:translateX(-50%) rotate(-3deg);width:600px;border-radius:72px;background:#000;border:14px solid #2a2a2e;box-shadow:0 0 0 2px #444,0 40px 90px rgba(0,0,0,.8),0 0 120px rgba(39,128,255,.25);padding:74px 26px 40px;overflow:hidden}
+.notch{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:170px;height:36px;border-radius:20px;background:#111}
+.thread-h{text-align:center;font:700 26px Inter;color:#fff;margin-bottom:18px}.thread-h small{display:block;font:500 20px Inter;color:#8e8e93}
+.bub{font:500 30px/1.32 -apple-system,Inter;padding:16px 24px;border-radius:30px;max-width:440px;margin:10px 0;width:fit-content}
+.bub.in{background:#26262a;color:#fff;border-bottom-left-radius:8px}.bub.out{background:#2780FF;color:#fff;margin-left:auto;border-bottom-right-radius:8px}
+.sys{text-align:center;font:600 22px Inter;color:#8e8e93;margin:16px 0 6px}
+.callrow{display:flex;align-items:center;gap:16px;background:#1c1c1e;border-radius:22px;padding:16px 20px;margin:12px 0;font:600 28px Inter}
+.callrow .ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+.callrow .miss{color:#FF453A}.callrow small{display:block;font:500 20px Inter;color:#8e8e93}
+.mini{position:relative;flex:1;border-radius:26px;background:rgba(20,20,24,.94);border:3px solid #34343a;padding:22px 18px;display:flex;flex-direction:column;gap:12px;min-height:560px}
+.mini .nm{font:800 32px Inter;text-align:center}.mini .act{font:600 26px/1.25 Inter;color:#cfcfcf;text-align:center}
+.mini.on{border-color:#2780FF;box-shadow:0 0 50px rgba(39,128,255,.35)}.mini.off{border-color:#E8231F}
+.mini .ui{background:#000;border-radius:18px;padding:14px;min-height:190px}
+.mini .ui .bub{font-size:21px;padding:10px 14px;border-radius:18px;max-width:none}
+.mini .ui .callrow{font-size:20px;padding:10px 12px;margin:0}.mini .ui .callrow .ico{width:38px;height:38px;border-radius:10px}
+.cal{border-radius:12px;overflow:hidden;font:600 20px Inter}.cal .hd{background:#E8231F;color:#fff;padding:6px 10px;font-weight:800}
+.cal .slot{background:#1c1c1e;padding:10px;border-left:6px solid #2780FF;margin-top:8px;border-radius:8px}
+.stamp{position:absolute;top:210px;left:50%;transform:translateX(-50%) rotate(-12deg);font:900 30px Inter;color:#fff;background:#E8231F;padding:10px 16px;border-radius:8px;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.center-node{position:absolute;left:50%;transform:translateX(-50%);width:200px;border-radius:36px;background:#16161a;border:3px solid #3a3a40;padding:18px;text-align:center;font:800 32px Inter}
+.center-node .av{width:96px;height:96px;border-radius:50%;margin:0 auto 10px;background:#2780FF;display:flex;align-items:center;justify-content:center;font:900 44px Inter}
+.ask{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font:700 28px Inter;background:#fff;color:#111;padding:12px 20px;border-radius:18px}
+svg.lines{position:absolute;left:0;top:0;width:1080px}
+.orbit{position:absolute;right:-120px;top:560px;width:760px;height:760px;border-radius:50%;border:3px solid rgba(39,128,255,.7);box-shadow:0 0 40px rgba(39,128,255,.35)}
+.chip{position:absolute;display:flex;align-items:center;gap:12px;font:700 32px Inter;background:rgba(20,20,24,.92);border:2px solid #2780FF;border-radius:999px;padding:12px 24px 12px 12px;white-space:nowrap}
+.chip .ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+.items{position:absolute;top:1060px;left:80px;right:80px;display:flex;flex-direction:column;gap:26px}
+.item{display:flex;align-items:center;gap:26px;background:rgba(16,16,20,.9);border:2px solid rgba(39,128,255,.55);border-radius:24px;padding:26px 30px;font:700 44px/1.25 Inter}.item b{color:#2780FF}
+.num{width:76px;height:76px;flex:none;border-radius:20px;background:#2780FF;display:flex;align-items:center;justify-content:center;font:900 44px Inter}
+.tag{position:absolute;font:800 32px Inter;color:#fff;background:#E8231F;padding:12px 20px;border-radius:10px;transform:rotate(-4deg);box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.time{position:absolute;top:190px;left:80px;font:900 150px/1 Inter;letter-spacing:-5px}
+.time small{display:block;font:700 34px Inter;letter-spacing:2px;color:#2780FF;margin-top:14px;text-transform:uppercase}
+.yt{position:absolute;top:520px;left:90px;right:90px;background:#fff;border-radius:28px;padding:18px;box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.yt img{width:100%;border-radius:14px;display:block}.yt .bar{height:8px;background:#ddd;border-radius:4px;margin:16px 4px 0;position:relative}
+.yt .bar:after{content:'';position:absolute;left:0;top:0;bottom:0;width:22%;background:#E8231F;border-radius:4px}
+.yt .vt{font:700 30px Inter;color:#111;margin:16px 6px 4px}
+.reel{position:absolute;top:430px;left:50%;transform:translateX(-50%) rotate(-2deg);width:430px;border-radius:30px;overflow:hidden;box-shadow:0 0 0 4px #2780FF,0 30px 80px rgba(0,0,0,.75)}
+.reel img{display:block;width:100%}.plays{position:absolute;left:22px;bottom:20px;font:800 34px Inter;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.reply{position:absolute;top:1250px;left:0;right:0;text-align:center;font:900 112px/1 Inter;letter-spacing:-2px}
+.reply .k{color:#2780FF}.send{position:absolute;top:1390px;left:0;right:0;text-align:center;font:500 46px Inter;color:#d0d0d0}
+.arrow{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-events:none}</style></head><body><div class="stage"><div class="bg" style="background-image:url(bg3.jpg)"></div><div class="shade "></div><div class="time">40%<small>added zero value</small></div>
+      <div class="title" style="top:440px">We audited every step.<br><b>40% of the sales activities</b> did nothing for the customer</div>
+      <div class="pull">So we cut them befor we automated anything 👉</div></div></body></html>
