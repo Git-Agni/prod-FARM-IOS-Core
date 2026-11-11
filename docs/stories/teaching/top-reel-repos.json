@@ -1,0 +1,168 @@
+{
+  "slug": "top-reel-repos",
+  "way": "Best reel (branded 3D teaching family, Nov 11 pre-build, built Nov 10 PT night): the @antoniorevenue reel with the most saves in the last 30 days that has a caption and a live keyword and was not used in 60 days, read from social_posts on 2026-11-10 PT (DfF7bG0SyH8, 4,369 saves, 51,357 views, keyword REPOS). De4uosXIUw8 (more saves) has no caption or keyword; DenP4mcPjyj used Oct 27; De5Q9YKhSis used Nov 3. Group counts and repo names from dm_keyword_assets id 422 (REPOS, active, DM sends clicktoclose.ai/lm/repos, the 40 Claude repos list). Cover: the reel's own cover (clone-kit/claude-40-repos/cover/cover.png). Logos: simple-icons Claude, GitHub SVG.",
+  "keyword": "REPOS",
+  "link": "https://www.instagram.com/reel/DfF7bG0SyH8/",
+  "frames": [
+    {
+      "type": "scene",
+      "hook": true,
+      "photo": "d7725c69",
+      "dim": 0.35,
+      "blur": 5,
+      "title": "[[4,369]] people\nsaved this reel",
+      "titleTop": 170,
+      "bottom": "Here's what's inside 👉",
+      "bottomAt": 230,
+      "scene": {
+        "camera": {
+          "pos": [
+            0,
+            1.7,
+            14
+          ],
+          "look": [
+            0,
+            1.9,
+            0
+          ],
+          "fov": 34
+        },
+        "floorY": -0.9,
+        "accent": "#D97757",
+        "objects": [
+          {
+            "kind": "card",
+            "id": "reel",
+            "img": "assets/reel-repos-cover.jpg",
+            "size": [
+              1.9,
+              3.38,
+              0.05
+            ],
+            "pos": [
+              0,
+              1.75,
+              0
+            ],
+            "rot": [
+              -3,
+              -14,
+              3
+            ],
+            "glow": 1
+          },
+          {
+            "kind": "tile",
+            "id": "cl",
+            "img": "assets/si-claude.svg",
+            "size": [
+              1.15,
+              1.15,
+              0.28
+            ],
+            "pos": [
+              -1.75,
+              0.35,
+              1.1
+            ],
+            "rot": [
+              6,
+              24,
+              -6
+            ],
+            "fill": 0.66
+          },
+          {
+            "kind": "tile",
+            "id": "gh",
+            "img": "assets/si-github.svg",
+            "size": [
+              1.0,
+              1.0,
+              0.26
+            ],
+            "pos": [
+              1.8,
+              3.1,
+              0.8
+            ],
+            "rot": [
+              8,
+              -24,
+              8
+            ],
+            "fill": 0.66
+          },
+          {
+            "kind": "light",
+            "pos": [
+              0,
+              1.6,
+              3
+            ],
+            "color": "#D97757",
+            "power": 20
+          }
+        ]
+      }
+    },
+    {
+      "type": "list",
+      "photo": "37287de1",
+      "title": "40 free Claude repos\nin **5 groups**",
+      "items": [
+        "**Harness** and **Skills**: 8 each",
+        "**Memory**: 7 repos",
+        "**Tools**: 10 repos",
+        "**Token savers**: 7 repos"
+      ],
+      "pull": "Heres who made some 👉"
+    },
+    {
+      "type": "orbit",
+      "photo": "aaae6275",
+      "title": "Some come straight from\n**Anthropic and GitHub**",
+      "body": "Free and **open source**",
+      "pull": "But dont install them all 👉",
+      "chips": [
+        {
+          "icon": "logo:assets/si-claude.svg",
+          "label": "anthropics/skills",
+          "right": 300,
+          "top": 660
+        },
+        {
+          "icon": "logo:assets/si-claude.svg",
+          "label": "claude-plugins-official",
+          "right": 60,
+          "top": 900
+        },
+        {
+          "icon": "logo:assets/logo-github.svg",
+          "label": "github-mcp-server",
+          "right": 260,
+          "top": 1200
+        }
+      ]
+    },
+    {
+      "type": "timeline",
+      "photo": "990ce94d",
+      "time": "5",
+      "label": "repos to start with",
+      "title": "Pick **one per group**, not all 40.\nMost install from a terminal or as a **Claude Code plugin**",
+      "pull": "Want the full list? 👉"
+    },
+    {
+      "type": "cta",
+      "title": "All 40 links, sorted into\n**5 groups** 👇",
+      "card": {
+        "kind": "reel",
+        "image": "assets/reel-repos-cover.jpg",
+        "views": "51K"
+      },
+      "send": "and I'll send you all 40 links"
+    }
+  ]
+}
