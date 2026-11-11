@@ -6,6 +6,11 @@ test('TikTok receipt matches the full published caption, not a draft or prefix',
  assert.equal(matchesTikTokPost('First paragraph. Comment OTHER. #video. Video. 0 views.',caption),false);
  assert.equal(matchesTikTokPost('Drafts: '+caption,caption),false);
  assert.equal(matchesTikTokPost('First paragraph. Video. 0 views.',caption),false);
+ // Nov 11: TikTok capitalized #smallbusiness in the grid label of a live post. Only hashtag case is relaxed.
+ const tagged='Hook line.\n\nComment NOD.\n\n#n8n #aiagents #smallbusiness';
+ assert.equal(matchesTikTokPost('Hook line. Comment NOD. #n8n #aiagents #SmallBusiness. Video. 0 views.',tagged),true);
+ assert.equal(matchesTikTokPost('Hook line. Comment nod. #n8n #aiagents #SmallBusiness. Video. 0 views.',tagged),false);
+ assert.equal(matchesTikTokPost('Hook line. Comment NOD. #n8n #aiagents #SmallBiz. Video. 0 views.',tagged),false);
 });
 
 test('an uncertain TikTok Post response cannot trigger a second tap',async()=>{

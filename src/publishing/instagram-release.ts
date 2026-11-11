@@ -261,10 +261,12 @@ export class InstagramRelease extends WdaApp implements ReleaseDriver {
         // Oct 10 21:55: a Reel started from Create trial reel went out as a regular Reel (top of the main Reels grid,
         // is_shared_to_feed true). Never treat the entry point as Trial evidence; Trial needs the visible switch.
         // Oct 11 (Antonio): Trial is unavailable, post regular Reels. With Trial off, a missing switch already means regular.
+        // Nov 3: on @antoniomonteiroai the Trial row sits below the fold of the share screen; scroll to it.
+        // Nov 11: Instagram added an Audience heading and a trial banner, so on @antoniorevenue too the switch is
+        // below the AI label row. Scroll for every account before deciding, so a hidden switch is never read as absent.
+        for (let n = 0; n < 2 && !(await this.visible('accessibility id', 'trial-switch')); n++) { await this.swipeUp(); await this.sleep(1000); }
         if (!input.instagramTrial && !await this.visible('accessibility id', 'trial-switch')) { /* regular Reel */ }
         else {
-            // Nov 3: on @antoniomonteiroai the Trial row sits below the fold of the share screen; scroll to it.
-            for (let n = 0; n < 2 && isSecondaryAccount(input) && !(await this.visible('accessibility id', 'trial-switch')); n++) { await this.swipeUp(); await this.sleep(1000); }
             await this.ensureSwitch('Trial', input.instagramTrial, () => this.tapElement('accessibility id', 'trial-switch', 'Trial switch'));
             if (input.instagramTrial) { automaticPromotion = await this.ensureAutomaticPromotion(); trialEntry = 'share_switch'; }
         }

@@ -12,7 +12,9 @@ import type {CommentResult} from './post-comments.js';
 import {WdaApp} from './wda-app.js';
 
 export function matchesTikTokPost(label: string, caption: string): boolean {
-    const norm=(v:string)=>v.replace(/\s+/g,' ').trim();
+    // Nov 10 and 11: TikTok shows #smallbusiness as #SmallBusiness in the grid label, so two live posts failed
+    // their receipt. Hashtags compare without case; every other character must still match exactly.
+    const norm=(v:string)=>v.replace(/\s+/g,' ').trim().replace(/#[\p{L}\p{N}_]+/gu,t=>t.toLowerCase());
     return norm(label).startsWith(norm(caption)+'. Video.');
 }
 
