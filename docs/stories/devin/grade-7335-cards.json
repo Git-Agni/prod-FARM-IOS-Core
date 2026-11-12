@@ -1,0 +1,109 @@
+{
+ "slug": "grade-7335-cards",
+ "keyword": "GRADE",
+ "version": 1,
+ "model": "Teach (Nov 12), Devin card models family: rebuild of the held Nov 4 teaching build grade-7335-calls so it looks clearly different from the Nov 11 teaching-family post. Facts from YouTube DWREa1sv_Ho title, description and length (read Nov 11 2026 PT): 7,335 calls graded in 10.5 minutes for $4.86; next call booked with a day and a time 87% paid, 'let's talk later' 4%; money main concern on 93%, time on 2%; 10 to 20 fixed-answer questions, let code count. Keyword GRADE = dm_keyword_assets 433 (19 grading questions + this video).",
+ "frames": [
+  {
+   "type": "cardcover",
+   "backdrop": "asset:../gallery/antonio-17-headset-calls.jpg",
+   "dim": 0.5,
+   "titleTop": 180,
+   "titleSize": 100,
+   "title": "AI graded\n[[7,335]] sales calls",
+   "card": {
+    "kind": "yt",
+    "image": "assets/yt-DWREa1sv_Ho.jpg",
+    "title": "How I Use Jev AI Inside Businesses Doing $7M a Month",
+    "time": "3:50 / 15:56",
+    "w": 860,
+    "y": 690,
+    "rot": -4
+   },
+   "stickers": [
+    {
+     "text": "10.5 MIN",
+     "bg": "#F8930D",
+     "color": "#fff",
+     "x": 90,
+     "y": 590,
+     "rot": -7,
+     "size": 64
+    },
+    {
+     "text": "$4.86",
+     "bg": "#2780FF",
+     "color": "#fff",
+     "x": 90,
+     "y": 1330,
+     "rot": 8,
+     "size": 72
+    }
+   ],
+   "sub": "Here's what seperated the\ncalls that **sold** 👉",
+   "subTop": 1540
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "dim": 0.9,
+   "orbit": [
+    {"cx": 942, "cy": 1049, "rx": 270, "ry": 310, "rot": -10, "arrows": [205, 285], "front": [100, 160]},
+    {"cx": 967, "cy": 1039, "rx": 360, "ry": 150, "rot": 42, "front": [150, 205], "arrows": [180]}
+   ],
+   "shift": [360, 616],
+   "cutout": "../gallery/masks/antonio-03-rooftop-dusk-mask.png",
+   "title": "Most owners ask AI\nfrom a **blank page**",
+   "body": "The real answers are\nin your **sales calls**",
+   "bubbles": [
+    {"img": "assets/logos/bubble-claude.png", "ring": "#D97757", "on": [1, 232]},
+    {"img": "assets/logos/bubble-github.png", "ring": "#FFFFFF", "on": [0, 148]}
+   ],
+   "pull": "So we graded them all 👉",
+   "pullRight": 540
+  },
+  {
+   "type": "stats",
+   "backdrop": "asset:../gallery/antonio-11-sales-floor.jpg",
+   "title": "What the ((calls)) showed",
+   "gridTop": 560,
+   "tiles": [
+    {"n": "87%", "label": "paid: next call booked\nwith a day + time", "color": "#3DE99B"},
+    {"n": "4%", "label": "paid: \"lets\ntalk later\"", "color": "#FF5A5F"},
+    {"n": "93%", "label": "main concern\nwas money", "color": "#F8930D"},
+    {"n": "2%", "label": "main concern\nwas time", "color": "#4DA3FF"}
+   ],
+   "lesson": "Never end a call without\na **day and a time**",
+   "lessonTop": 1200,
+   "pull": "Try it yourself 👉",
+   "pullRight": 160,
+   "pullBottom": 300
+  },
+  {
+   "type": "steps",
+   "backdrop": "asset:../gallery/antonio-16-kitchen-morning.jpg",
+   "thumb": "assets/yt-DWREa1sv_Ho.jpg",
+   "title": "Do it this week\nin **4 steps**",
+   "railTop": 680,
+   "gap": 200,
+   "steps": [
+    {"t": "01", "text": "Pick **one** problem"},
+    {"t": "02", "text": "Pull the **calls** behind it"},
+    {"t": "03", "text": "Write **10 to 20** fixed questions"},
+    {"t": "04", "text": "Let **code** count the answers"}
+   ],
+   "lesson": "Same calls. Now you\nsee **why** 👉",
+   "lessonTop": 1480
+  },
+  {
+   "type": "cta",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "title": "Watch how we graded\nall 7,335 calls 👇",
+   "thumb": "assets/yt-DWREa1sv_Ho.jpg",
+   "videoTitle": "How I Use Jev AI Inside Businesses Doing $7M a Month",
+   "time": "3:50 / 15:56",
+   "send": "and I'll send you the 19 questions we use"
+  }
+ ],
+ "generated_photos": "gallery 17, 03, 11, 16, 01"
+}
