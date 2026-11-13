@@ -26,6 +26,7 @@ import {MirroringMediaStore} from './mirroring-media-store.js';
 import {NativeStoryStore,NativeStoryDriver,loadNativeStoryFlow} from './mirroring-stories.js';
 import path from 'node:path';
 import { ReleaseWorkerStatusStore } from './worker-health.js';
+import { createFullPoolReaper } from '../database/orphan-sessions.js';
 import { mirroringStatus } from '../devices/mirroring/controller.js';
 import { phoneAudioStatus, verifiedPhoneMute } from '../devices/mirroring/audio.js';
 import { instagramWriteHold } from './instagram-write-hold.js';
@@ -62,8 +63,13 @@ export async function startReleaseLoop(pool: Pool): Promise<{ close(): Promise<v
     // failed in 40 s with "timeout exceeded when trying to connect", and nothing restarted the worker for 9 hours.
     // Probe the pool every minute; three failed probes in a row while it is full means it is wedged: exit for launchd.
     let poolFailures = 0;
+    // Nov 13: the session pooler filled with orphaned phone_farm clients that this Mac no longer held. This pool was
+    // not full, so the probe never restarted anything, and a restart would not free the pooler anyway. When the
+    // pooler reports it is full, end sessions idle for minutes with no advisory lock (see orphan-sessions.ts).
+    const reapFullPool = createFullPoolReaper();
     const poolProbe = setInterval(() => {
         pool.query('SELECT 1').then(() => { poolFailures = 0; }).catch((error: Error) => {
+            void reapFullPool(error);
             const full = pool.totalCount >= ((pool as any).options?.max ?? 10) && pool.idleCount === 0;
             poolFailures = full ? poolFailures + 1 : 0;
             console.error(new Date().toISOString(), `database pool probe failed (${poolFailures}/3, total ${pool.totalCount}, idle ${pool.idleCount}, waiting ${pool.waitingCount}):`, error.message);

@@ -15,6 +15,19 @@ export function databaseUrl(): string {
     return value;
 }
 
+/**
+ * Supabase's shared pooler serves session mode on port 5432 and transaction mode on 6543 (same host, user and
+ * password). Session mode caps the phone_farm user at pool_size 15 clients and keeps a client's slot until the pooler
+ * sees the socket close. Transaction mode holds a server connection only for one transaction. Returns undefined for
+ * any other host, so a local database keeps its own URL.
+ */
+export function transactionPoolerUrl(connectionString: string): string | undefined {
+    const url = new URL(connectionString);
+    if (!url.hostname.endsWith('.pooler.supabase.com')) return undefined;
+    url.port = '6543';
+    return url.toString();
+}
+
 export function createDatabaseConnection(connectionString = databaseUrl()): DatabaseConnection {
     // Oct 19 09:37 PT: after three pooler drops, all 4 clients were checked out and dead, and pool.connect() waited
     // forever with no socket open. Posting stopped for five hours. Never wait forever for a client or a query.
