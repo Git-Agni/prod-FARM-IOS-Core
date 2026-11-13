@@ -1,6 +1,9 @@
 /** Antonio (Oct 11): post only one version of each video. Hook variants (original, A-curiosity, B-label,
  * C-contrarian, v4, v7...) of the same base video must not all go out. Per base video, keep the variant already
  * published most (else the first armed), and cancel unposted items of every other variant.
+ * Nov 13 (Antonio: "3 hooks per all platforms but we'll spread out the video as we arm them"): the kit reels' hook versions
+ * <slug>-h1, -h2, -h3 are meant to post, days apart (C2C hub tools/reel-clone/publish/arm_due_hooks.py). baseOf keeps -hN,
+ * so each hook is its own base and is never cancelled here. Do not add -hN to the variant pattern.
  * Usage: one-variant-per-video.ts [--apply]. Database only; no phone input. */
 import {createDatabaseConnection} from '../src/database/client.js';
 const apply=process.argv.includes('--apply');
