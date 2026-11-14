@@ -1,4 +1,5 @@
 import { coordinatesForProfile } from './coordinates.js';
+import { requireWdaControl } from './control-mode.js';
 
 const DEFAULT_TIMEOUT_MS = 10_000;
 
@@ -126,6 +127,7 @@ export class WdaRemoteControl {
     }
 
     async request(pathname: string, options: RequestInit = {}): Promise<Response> {
+        requireWdaControl();
         let response: Response;
         try {
             response = await this.fetch(`${this.wdaUrl}${pathname}`, {
@@ -194,6 +196,7 @@ export class WdaRemoteControl {
         if (!this.passcode) {
             throw new RemoteDeviceError('IOS_PASSCODE is not configured; cannot unlock the device');
         }
+        if ([...this.passcodeKeypadLayout.columnX, ...this.passcodeKeypadLayout.rowY].some((v) => v < 0)) throw new RemoteDeviceError('Unlock keypad is not calibrated; unlock this phone manually');
         // WDA's /wda/unlock presses Home twice, which wakes the screen and
         // surfaces the passcode keypad, but it then waits for the screen to
         // report unlocked and errors out because a passcode is still required.
@@ -232,8 +235,11 @@ export class WdaRemoteControl {
             await this.unlock(udid);
             return;
         }
-        if (action.type === 'lock' || action.type === 'wake') {
-            await this.request(action.type === 'lock' ? '/wda/lock' : '/wda/unlock', { method: 'POST' });
+        if (action.type === 'lock') {
+            throw new RemoteDeviceError('Screen locking is disabled at the owner\'s request');
+        }
+        if (action.type === 'wake') {
+            await this.request('/wda/unlock', { method: 'POST' });
             return;
         }
         if (action.type === 'volumeUp' || action.type === 'volumeDown') {

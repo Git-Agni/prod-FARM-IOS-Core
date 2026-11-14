@@ -1,0 +1,725 @@
+{
+  "slug": "wb-outbound-500k",
+  "way": "Case study (branded 3D teaching family, Nov 5 pre-build): WarriorBabe outbound channel, one lead diagram that goes from broken to working, the August cash number, a lesson, YouTube payoff. Facts read 2026-11-04 PT from the YouTube o0kJVSPdWBo description. Keyword OUTBOUND (dm_keyword_assets id 14, active, DM sends this video plus the AI Outbound System blueprint). Logo: official WarriorBabe wordmark (verified copy in .agents/skills/antonio-youtube-editor/assets/clients/logos/).",
+  "keyword": "OUTBOUND",
+  "frames": [
+    {
+      "type": "scene",
+      "hook": true,
+      "photo": "d7725c69",
+      "dim": 0.35,
+      "blur": 5,
+      "title": "WarriorBabe's outbound closed\n[[$500K+ in 90 days]]",
+      "titleTop": 170,
+      "bottom": "But first, the follow-up was broken 👉",
+      "bottomAt": 170,
+      "scene": {
+        "camera": {
+          "pos": [
+            0,
+            1.7,
+            14
+          ],
+          "look": [
+            0,
+            1.75,
+            0
+          ],
+          "fov": 34
+        },
+        "floorY": -0.7,
+        "accent": "#D22391",
+        "objects": [
+          {
+            "kind": "tile",
+            "id": "wb",
+            "size": [
+              3.4,
+              1.3,
+              0.26
+            ],
+            "radius": 0.22,
+            "color": "#141418",
+            "img": "assets/logo-warriorbabe-light.png",
+            "fill": 0.86,
+            "pos": [
+              0,
+              1.95,
+              0.4
+            ],
+            "rot": [
+              6,
+              -10,
+              -3
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "call",
+            "img": "assets/icon-call.svg",
+            "size": [
+              0.95,
+              0.95,
+              0.22
+            ],
+            "fill": 1.0,
+            "pos": [
+              -1.35,
+              0.35,
+              1.0
+            ],
+            "rot": [
+              6,
+              24,
+              -6
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "sms",
+            "img": "assets/icon-message-circle.svg",
+            "size": [
+              0.95,
+              0.95,
+              0.22
+            ],
+            "fill": 0.6,
+            "color": "#2780FF",
+            "pos": [
+              1.35,
+              0.2,
+              1.0
+            ],
+            "rot": [
+              4,
+              -24,
+              6
+            ]
+          },
+          {
+            "kind": "light",
+            "pos": [
+              0,
+              1.6,
+              3
+            ],
+            "color": "#D22391",
+            "power": 18
+          },
+          {
+            "kind": "link",
+            "from": "call",
+            "to": "wb",
+            "state": "done",
+            "bend": -0.25
+          },
+          {
+            "kind": "link",
+            "from": "sms",
+            "to": "wb",
+            "state": "done",
+            "bend": 0.25
+          }
+        ]
+      }
+    },
+    {
+      "type": "scene",
+      "photo": "37287de1",
+      "dim": 0.3,
+      "blur": 6,
+      "title": "Setters had to pick\n**which list to call**\nand **which script to use**",
+      "titleTop": 200,
+      "pull": "And older leads got missed 👉",
+      "scene": {
+        "camera": {
+          "pos": [
+            0,
+            1.6,
+            13.5
+          ],
+          "look": [
+            0,
+            1.55,
+            0
+          ],
+          "fov": 34
+        },
+        "floorY": -0.9,
+        "objects": [
+          {
+            "kind": "tile",
+            "id": "setter",
+            "img": "assets/icon-users.svg",
+            "size": [
+              1.2,
+              1.2,
+              0.26
+            ],
+            "fill": 0.58,
+            "color": "#2780FF",
+            "pos": [
+              0,
+              0.75,
+              0.8
+            ],
+            "rot": [
+              6,
+              0,
+              0
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "SETTER",
+            "px": 90,
+            "h": 0.26,
+            "bg": "#111114",
+            "color": "#ffffff",
+            "pos": [
+              0,
+              -0.15,
+              1.1
+            ]
+          },
+          {
+            "kind": "text",
+            "id": "l1",
+            "text": "FRESH LEADS",
+            "px": 90,
+            "h": 0.3,
+            "bg": "#1c1c22",
+            "color": "#ffffff",
+            "pos": [
+              -1.45,
+              2.85,
+              0.2
+            ],
+            "rot": [
+              0,
+              16,
+              -4
+            ]
+          },
+          {
+            "kind": "text",
+            "id": "l2",
+            "text": "DROP-OFFS",
+            "px": 90,
+            "h": 0.3,
+            "bg": "#1c1c22",
+            "color": "#ffffff",
+            "pos": [
+              1.45,
+              2.6,
+              0.2
+            ],
+            "rot": [
+              0,
+              -16,
+              4
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "l3",
+            "img": "assets/icon-database.svg",
+            "size": [
+              0.9,
+              0.9,
+              0.22
+            ],
+            "fill": 0.58,
+            "color": "#3a3a44",
+            "pos": [
+              0,
+              3.3,
+              -0.2
+            ],
+            "rot": [
+              8,
+              0,
+              0
+            ]
+          },
+          {
+            "kind": "text",
+            "text": "OLD LEADS",
+            "px": 80,
+            "h": 0.24,
+            "bg": "#111114",
+            "color": "#999999",
+            "pos": [
+              0,
+              2.62,
+              0.1
+            ]
+          },
+          {
+            "kind": "link",
+            "from": "l1",
+            "to": "setter",
+            "state": "broken",
+            "bend": 0.2
+          },
+          {
+            "kind": "link",
+            "from": "l2",
+            "to": "setter",
+            "state": "broken",
+            "bend": -0.2
+          },
+          {
+            "kind": "link",
+            "from": "l3",
+            "to": "setter",
+            "state": "broken",
+            "bend": 0.1
+          },
+          {
+            "kind": "light",
+            "pos": [
+              0,
+              1.2,
+              3
+            ],
+            "color": "#E8231F",
+            "power": 14
+          }
+        ]
+      }
+    },
+    {
+      "type": "scene",
+      "photo": "990ce94d",
+      "dim": 0.3,
+      "blur": 6,
+      "title": "So every drop-off went into\n[[one campaign]]",
+      "titleTop": 200,
+      "pull": "Then August happend 👉",
+      "scene": {
+        "camera": {
+          "pos": [
+            0,
+            1.6,
+            13.5
+          ],
+          "look": [
+            0,
+            1.55,
+            0
+          ],
+          "fov": 34
+        },
+        "floorY": -0.9,
+        "objects": [
+          {
+            "kind": "text",
+            "id": "l1",
+            "text": "FRESH LEADS",
+            "px": 90,
+            "h": 0.3,
+            "bg": "#1c1c22",
+            "color": "#ffffff",
+            "pos": [
+              -1.5,
+              3.25,
+              0.2
+            ],
+            "rot": [
+              0,
+              16,
+              -4
+            ]
+          },
+          {
+            "kind": "text",
+            "id": "l2",
+            "text": "DROP-OFFS",
+            "px": 90,
+            "h": 0.3,
+            "bg": "#1c1c22",
+            "color": "#ffffff",
+            "pos": [
+              0,
+              3.45,
+              0.0
+            ]
+          },
+          {
+            "kind": "text",
+            "id": "l3",
+            "text": "OLD LEADS",
+            "px": 90,
+            "h": 0.3,
+            "bg": "#1c1c22",
+            "color": "#ffffff",
+            "pos": [
+              1.5,
+              3.25,
+              0.2
+            ],
+            "rot": [
+              0,
+              -16,
+              4
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "camp",
+            "size": [
+              2.6,
+              0.9,
+              0.26
+            ],
+            "radius": 0.2,
+            "color": "#1F6FE5",
+            "pos": [
+              0,
+              1.85,
+              0.6
+            ],
+            "rot": [
+              6,
+              0,
+              0
+            ],
+            "face": [
+              {
+                "text": "ONE CAMPAIGN",
+                "px": 110,
+                "w": 2.2,
+                "at": [
+                  0,
+                  0.08
+                ],
+                "color": "#ffffff"
+              },
+              {
+                "text": "fresh intent first",
+                "px": 70,
+                "w": 1.6,
+                "at": [
+                  0,
+                  -0.25
+                ],
+                "color": "#d6e6ff"
+              }
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "setter",
+            "img": "assets/icon-users.svg",
+            "size": [
+              1.0,
+              1.0,
+              0.24
+            ],
+            "fill": 0.58,
+            "color": "#2780FF",
+            "pos": [
+              -0.95,
+              0.1,
+              1.0
+            ],
+            "rot": [
+              6,
+              16,
+              -3
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "script",
+            "size": [
+              1.5,
+              1.0,
+              0.24
+            ],
+            "radius": 0.18,
+            "color": "#ffffff",
+            "pos": [
+              1.05,
+              0.15,
+              1.0
+            ],
+            "rot": [
+              4,
+              -16,
+              3
+            ],
+            "face": [
+              {
+                "text": "RIGHT",
+                "px": 90,
+                "w": 1.0,
+                "at": [
+                  0,
+                  0.15
+                ],
+                "color": "#111"
+              },
+              {
+                "text": "script",
+                "px": 80,
+                "w": 0.8,
+                "at": [
+                  0,
+                  -0.2
+                ],
+                "color": "#666"
+              }
+            ]
+          },
+          {
+            "kind": "link",
+            "from": "l1",
+            "to": "camp",
+            "state": "done",
+            "bend": 0.2
+          },
+          {
+            "kind": "link",
+            "from": "l2",
+            "to": "camp",
+            "state": "done",
+            "bend": 0.0
+          },
+          {
+            "kind": "link",
+            "from": "l3",
+            "to": "camp",
+            "state": "done",
+            "bend": -0.2
+          },
+          {
+            "kind": "link",
+            "from": "camp",
+            "to": "setter",
+            "state": "done",
+            "bend": 0.25
+          },
+          {
+            "kind": "link",
+            "from": "camp",
+            "to": "script",
+            "state": "done",
+            "bend": -0.25
+          },
+          {
+            "kind": "light",
+            "pos": [
+              0,
+              1.5,
+              3
+            ],
+            "color": "#2780FF",
+            "power": 18
+          }
+        ]
+      }
+    },
+    {
+      "type": "scene",
+      "photo": "aaae6275",
+      "dim": 0.3,
+      "blur": 6,
+      "title": "August, from the dialer\nand AI SMS",
+      "titleTop": 220,
+      "pull": "So what can you copy? 👉",
+      "scene": {
+        "camera": {
+          "pos": [
+            0,
+            1.6,
+            13.5
+          ],
+          "look": [
+            0,
+            1.55,
+            0
+          ],
+          "fov": 34
+        },
+        "objects": [
+          {
+            "kind": "tile",
+            "id": "a",
+            "size": [
+              1.75,
+              1.15,
+              0.28
+            ],
+            "radius": 0.2,
+            "color": "#1F6FE5",
+            "pos": [
+              -0.9,
+              2.8,
+              0.3
+            ],
+            "rot": [
+              6,
+              18,
+              -3
+            ],
+            "face": [
+              {
+                "text": "$414K",
+                "px": 200,
+                "w": 1.45,
+                "at": [
+                  0,
+                  0.15
+                ],
+                "color": "#ffffff"
+              },
+              {
+                "text": "cash after refunds",
+                "px": 80,
+                "w": 1.5,
+                "at": [
+                  0,
+                  -0.33
+                ],
+                "color": "#d6e6ff"
+              }
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "b",
+            "size": [
+              1.6,
+              1.1,
+              0.26
+            ],
+            "radius": 0.2,
+            "color": "#ffffff",
+            "pos": [
+              1.0,
+              1.45,
+              0.5
+            ],
+            "rot": [
+              4,
+              -18,
+              3
+            ],
+            "face": [
+              {
+                "text": "1,000",
+                "px": 200,
+                "w": 1.3,
+                "at": [
+                  0,
+                  0.15
+                ],
+                "color": "#111"
+              },
+              {
+                "text": "dials in one setter day",
+                "px": 80,
+                "w": 1.45,
+                "at": [
+                  0,
+                  -0.33
+                ],
+                "color": "#666"
+              }
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "c",
+            "size": [
+              1.6,
+              1.1,
+              0.26
+            ],
+            "radius": 0.2,
+            "color": "#ffffff",
+            "pos": [
+              -0.9,
+              0.1,
+              0.7
+            ],
+            "rot": [
+              6,
+              16,
+              -3
+            ],
+            "face": [
+              {
+                "text": "$500K+",
+                "px": 200,
+                "w": 1.35,
+                "at": [
+                  0,
+                  0.15
+                ],
+                "color": "#111"
+              },
+              {
+                "text": "closed in 90 days",
+                "px": 80,
+                "w": 1.4,
+                "at": [
+                  0,
+                  -0.33
+                ],
+                "color": "#666"
+              }
+            ]
+          },
+          {
+            "kind": "link",
+            "from": "a",
+            "to": "b",
+            "state": "done",
+            "bend": 0.25
+          },
+          {
+            "kind": "link",
+            "from": "b",
+            "to": "c",
+            "state": "done",
+            "bend": -0.25
+          },
+          {
+            "kind": "light",
+            "pos": [
+              0,
+              1.4,
+              3
+            ],
+            "color": "#2780FF",
+            "power": 16
+          }
+        ]
+      }
+    },
+    {
+      "type": "list",
+      "photo": "5d070570",
+      "title": "Copy this on **your team**",
+      "items": [
+        "Put every drop-off in **one campaign**",
+        "Call **fresh intent** first",
+        "Show the script for **that drop-off**"
+      ],
+      "pull": "Heres the full build on YouTube 👉"
+    },
+    {
+      "type": "cta",
+      "title": "This video shows how we built\nWarriorBabe's outbound 👇",
+      "card": {
+        "kind": "yt",
+        "thumb": "https://i.ytimg.com/vi/o0kJVSPdWBo/maxresdefault.jpg",
+        "title": "How We Built WarriorBabe's $500K+ Outbound Channel in 90 Days"
+      },
+      "send": "and I'll send you the video + the blueprint"
+    }
+  ]
+}

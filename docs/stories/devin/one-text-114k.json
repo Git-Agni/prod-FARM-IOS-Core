@@ -1,0 +1,261 @@
+{
+ "slug": "one-text-114k",
+ "keyword": "SMS",
+ "model": "Devin live Story structure; variation 3 (proof-led). $114K/15 days is Antonio's own AI SDR (Results Library #3); show-up/close/refund numbers are client work from his Highlights, not attributed to a named client.",
+ "banned_photos": [
+  "video:ff",
+  "b8ad871c"
+ ],
+ "frames": [
+  {
+   "type": "cover",
+   "plate": "assets/plate-v3-cash.png",
+   "carve": [],
+   "cells": [],
+   "bright": 1.05,
+   "title": "My AI text system\nmade [[$114K]]",
+   "sub": "In 15 days. And that wasn't\neven **the best** {{part}} 👉"
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "dim": 0.9,
+   "title": "Most teams still\ntext new leads\n**By hand**",
+   "body": "Hours later, after\nthe lead already\n**moved on**",
+   "orbit": [
+    {
+     "cx": 942,
+     "cy": 1049,
+     "rx": 270,
+     "ry": 310,
+     "rot": -10,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      100,
+      160
+     ]
+    },
+    {
+     "cx": 967,
+     "cy": 1039,
+     "rx": 360,
+     "ry": 150,
+     "rot": 42,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
+    }
+   ],
+   "bubbles": [
+    {
+     "img": "assets/logos/bubble-facebook.png",
+     "ring": "#0866FF",
+     "on": [
+      0,
+      222
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-instagram.png",
+     "ring": "#E4405F",
+     "on": [
+      1,
+      232
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-google.png",
+     "ring": "#4285F4",
+     "on": [
+      0,
+      148
+     ]
+    }
+   ],
+   "pull": "Mine doesn't 👉",
+   "pullRight": 190,
+   "shift": [
+    360,
+    616
+   ],
+   "cutout": "../gallery/masks/antonio-03-rooftop-dusk-mask.png"
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-02-podcast-studio.jpg",
+   "dim": 0.85,
+   "titleSize": 74,
+   "titleLh": 86,
+   "titleTop": 330,
+   "title": "So I built an\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>AI TEXT SYSTEM</span>",
+   "body": "Setters, AI SMS and AI voice\nwork **every lead together**",
+   "orbit": [
+    {
+     "cx": 956,
+     "cy": 985,
+     "rx": 300,
+     "ry": 290,
+     "rot": -15,
+     "arrows": [
+      200,
+      280
+     ],
+     "front": [
+      120,
+      175
+     ]
+    },
+    {
+     "cx": 986,
+     "cy": 925,
+     "rx": 380,
+     "ry": 140,
+     "rot": 30,
+     "arrows": [
+      190
+     ]
+    }
+   ],
+   "chips": [
+    {
+     "x": 440,
+     "y": 1000,
+     "icon": "💬",
+     "text": "AI SMS"
+    },
+    {
+     "x": 586,
+     "y": 1225,
+     "icon": "📞",
+     "text": "Setter"
+    }
+   ],
+   "pull": "Here's what changed 👉",
+   "pullRight": 120,
+   "shift": [
+    405,
+    635
+   ],
+   "cutout": "../gallery/masks/antonio-02-podcast-studio-mask.png"
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Then we put it to work\nfor our clients",
+   "cards": [
+    {
+     "name": "Show-up rate",
+     "photo": "asset:../gallery/antonio-17-headset-calls.jpg",
+     "icon": "calendar",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Close rate",
+     "photo": "asset:../gallery/antonio-24-team-meeting.jpg",
+     "icon": "ring",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Refunds",
+     "photo": "asset:../gallery/antonio-05-whiteboard-strategy.jpg",
+     "icon": "form",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "tree",
+   "state": 2,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Three numbers ((moved))",
+   "cards": [
+    {
+     "name": "Show-up rate",
+     "photo": "asset:../gallery/antonio-17-headset-calls.jpg",
+     "stat": "65%",
+     "statLabel": "from 41%",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Close rate",
+     "photo": "asset:../gallery/antonio-24-team-meeting.jpg",
+     "stat": "30%",
+     "statLabel": "from 24%",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Refunds",
+     "photo": "asset:../gallery/antonio-05-whiteboard-strategy.jpg",
+     "stat": "<10%",
+     "statLabel": "from 20%",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "showcase",
+   "title": "So if your leads <span style='text-decoration:underline;text-decoration-color:#4BC597;text-decoration-thickness:4px;text-underline-offset:16px'>wait more than minutes</span>",
+   "line1": "Let AI text them first\n<<before they go cold>>",
+   "line2": "And let setters **work the replies**",
+   "rows": [
+    {
+     "image": "assets/screen-sms.png",
+     "sides": [
+      "assets/reel-harvey-cover.jpg",
+      "assets/reel-phone-cover.jpg"
+     ]
+    },
+    {
+     "image": "assets/screen-call.png",
+     "sides": [
+      "assets/reel-hiring-cover.jpg",
+      "assets/reel-harvey-cover.jpg"
+     ]
+    }
+   ]
+  },
+  {
+   "type": "cta",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "title": "This video shows how we built\nthe system behind **$1.8M** 👇",
+   "thumb": "assets/yt-Y8c4xIsxOXw.jpg",
+   "videoTitle": "How VShred Collected $1.8M Through an AI SMS System",
+   "send": "and I'll send it to you"
+  }
+ ],
+ "generated_photos": "gallery picks 03, 02, 13, 14, 15, 16, 17, 24, 05, 01 (docs/stories/gallery)"
+}

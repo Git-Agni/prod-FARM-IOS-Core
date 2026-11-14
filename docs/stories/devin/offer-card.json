@@ -1,0 +1,15 @@
+{
+ "slug": "offer-card",
+ "version": 4,
+ "keyword": "C2C",
+ "handle": "antoniorevenue",
+ "model": "Devin JOIN NEXUS Highlight: one offer frame. Keyword C2C has NO dm_keyword_assets row yet; add one (book-a-call link) before posting.",
+ "frames": [
+  {
+   "type": "offer",
+   "photo": "asset:assets/gen-antonio-offer.png",
+   "title": "Join C2C",
+   "promise": "Done-for-you sales operations: setters, AI SMS\nand AI voice working every lead together"
+  }
+ ]
+}

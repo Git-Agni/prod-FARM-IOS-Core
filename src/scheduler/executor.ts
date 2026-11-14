@@ -1,3 +1,6 @@
+import { coordinatesForProfile } from '../devices/coordinates.js';
+import { acquireDeviceLock, releaseDeviceLock } from './device-lock.js';
+import type { PoolClient } from 'pg';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm } from 'node:fs/promises';
 import os from 'node:os';
@@ -43,6 +46,7 @@ function deviceAutomation(registered: RegisteredDevice, passcode: string | undef
         deviceUdid: udid,
         wdaUrl: `http://127.0.0.1:${registered.wdaLocalPort ?? Number(process.env.WDA_LOCAL_PORT ?? 8100)}`,
         passcode,
+        passcodeKeypadLayout: coordinatesForProfile(registered.coordinateProfile).passcodeKeypad,
     });
     const appRequest = async (pathname: string, bundleId: string): Promise<void> => {
         await remote.request(pathname, {
@@ -127,6 +131,7 @@ export async function executeAutomation(
 ): Promise<TaskExecutionResult> {
     const registered = (await loadRegisteredDevices()).find(({ udid }) => udid === execution.deviceUdid);
     if (!registered) return { exitCode: null, stopped: false, error: 'Device is not registered' };
+    if (registered.coordinateProfile === 'iphone15promax' && execution.pluginId === 'com.git-agni.tiktok') return { exitCode: null, stopped: false, error: 'TikTok posting and engagement calibration is incomplete on this phone' };
     if (Date.now() > execution.deadlineAt.getTime()) {
         return { exitCode: null, stopped: false, error: 'Execution window expired before the worker claimed the task' };
     }
@@ -138,14 +143,23 @@ export async function executeAutomation(
         if (requested) controller.abort(new Error('Stop requested'));
     }).catch(console.error), 1_000);
     let device: Device;
+    let phoneLock: PoolClient | undefined;
     try {
+        phoneLock = await acquireDeviceLock(repository.connection.pool, execution.deviceUdid, controller.signal, execution.deadlineAt);
         device = await waitForDevice(execution, registered, controller.signal);
     } catch (error) {
+        if (phoneLock) await releaseDeviceLock(phoneLock, execution.deviceUdid);
         clearInterval(stopPoll);
         signal.removeEventListener('abort', forwardAbort);
         return { exitCode: null, stopped: controller.signal.aborted, error: error instanceof Error ? error.message : String(error) };
     }
-    const workspaceDirectory = await mkdtemp(`${os.tmpdir()}/phone-farm-${execution.id}-`);
+    let workspaceDirectory = '';
+    try { workspaceDirectory = await mkdtemp(`${os.tmpdir()}/phone-farm-${execution.id}-`); }
+    catch (error) {
+        clearInterval(stopPoll); signal.removeEventListener('abort', forwardAbort);
+        if (phoneLock) await releaseDeviceLock(phoneLock, execution.deviceUdid);
+        throw error;
+    }
     const task = { pluginId: execution.pluginId, taskType: execution.taskType, taskVersion: execution.taskVersion, payload: execution.payload };
     try {
         const definition = plugins.task(task);
@@ -157,6 +171,7 @@ export async function executeAutomation(
             ...(passcode ? { IOS_PASSCODE: passcode } : {}),
         };
         const context: TaskExecutionContext = {
+            deviceLockHeld: true,
             executionId: execution.id,
             attempt,
             workspaceDirectory,
@@ -174,6 +189,7 @@ export async function executeAutomation(
     } finally {
         clearInterval(stopPoll);
         signal.removeEventListener('abort', forwardAbort);
-        await rm(workspaceDirectory, { recursive: true, force: true });
+        try { await rm(workspaceDirectory, { recursive: true, force: true }); }
+        finally { if (phoneLock) await releaseDeviceLock(phoneLock, execution.deviceUdid); }
     }
 }

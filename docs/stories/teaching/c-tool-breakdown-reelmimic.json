@@ -1,0 +1,88 @@
+{
+ "slug": "c-tool-breakdown",
+ "way": "Tool breakdown (kit reel to Story): the reel's own references, one frame per beat, reply for the setup guide",
+ "keyword": "MIMIC",
+ "frames": [
+  {
+   "type": "render",
+   "hook": true,
+   "image": "assets/gen/render1.png",
+   "title": "Copy the style of [[any video]]",
+   "titleTop": 220,
+   "bottom": "Not the footage. **The style** 👉",
+   "bottomAt": 330
+  },
+  {
+   "type": "image",
+   "title": "It's called **ReelMimic**. Free and open source.",
+   "titleTop": 230,
+   "image": "assets/rm-home-headline.png",
+   "top": 560,
+   "width": 900,
+   "body": "<span class=\"chip\" style=\"position:static;display:inline-flex;margin-top:30px\"><div class=\"ico\" style=\"background:#fff;padding:7px\"><img src=\"logo-github.svg\" style=\"width:100%;height:100%\"></div>★ 3,666 stars in three weeks</span>",
+   "bodyBottom": 760
+  },
+  {
+   "type": "render",
+   "image": "assets/gen/render2.png",
+   "title": "It breaks the video down",
+   "titleTop": 230,
+   "labels": [
+    {
+     "text": "Shots",
+     "top": 760,
+     "left": 60
+    },
+    {
+     "text": "Transitions",
+     "top": 985,
+     "right": 40
+    },
+    {
+     "text": "Colors",
+     "top": 1160,
+     "left": 60
+    },
+    {
+     "text": "Camera moves",
+     "top": 1390,
+     "right": 40
+    }
+   ]
+  },
+  {
+   "type": "render",
+   "image": "assets/gen/render3.png",
+   "title": "Then up to **six AI agents** build it.\nAnd a **different agent reviews every shot**",
+   "titleTop": 220,
+   "labels": [
+    {
+     "text": "6 agents build",
+     "top": 780,
+     "left": 60
+    },
+    {
+     "text": "1 agent reviews",
+     "top": 1500,
+     "right": 40
+    }
+   ]
+  },
+  {
+   "type": "photo",
+   "photo": "d7725c69",
+   "title": "The edge isn't the footage anymore.\n**It's the style.**",
+   "body": "You don't brief an editor. **You show a reference.**",
+   "bodyTop": 470
+  },
+  {
+   "type": "cta",
+   "title": "Want to set it up on your own Claude Code? 👇",
+   "card": {
+    "kind": "reel",
+    "image": "assets/reelmimic-cover.png"
+   },
+   "send": "and I'll send you the setup guide"
+  }
+ ]
+}

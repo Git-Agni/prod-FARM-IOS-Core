@@ -91,6 +91,44 @@ export const DEVICE_COORDINATES = {
             swipe: { x: 187, startY: 550, endY: 150, durationMs: 450 },
         },
     },
+    // Only Home and Profile are measured. Uncalibrated actions fail closed.
+    iphone15promax: {
+        displayName: 'iPhone 15 Pro Max (core controls; TikTok posting pending)',
+        productTypes: ['iPhone16,2'],
+        screenSize: { width: 430, height: 932 },
+        passcodeKeypad: {
+            columnX: [-1, -1, -1],
+            rowY: [-1, -1, -1, -1],
+        },
+        tiktok: {
+            profileTab: { x: 387, y: 873 },
+            homeTab: { x: 43, y: 873 },
+            accountSwitcher: { x: -1, y: -1 },
+            create: { x: -1, y: -1 },
+            upload: { x: -1, y: -1 },
+            selectMultiple: { x: -1, y: -1 },
+            useLayout: { x: -1, y: -1 },
+            picker: {
+                circleX: -1,
+                columnStep: -1,
+                firstY: -1,
+                trayY: -1,
+                rowStep: -1,
+                cellX: -1,
+                cellStep: -1,
+                cellY: -1,
+            },
+            pickerNext: { x: -1, y: -1 },
+            editorNext: { x: -1, y: -1 },
+            caption: { x: -1, y: -1 },
+            keyboardBack: { x: -1, y: -1 },
+            draft: { x: -1, y: -1 },
+            finish: { x: -1, y: -1 },
+            like: { x: -1, y: -1 },
+            save: { x: -1, y: -1 },
+            swipe: { x: 215, startY: 710, endY: 300, durationMs: 450 },
+        },
+    },
 } satisfies Record<string, DeviceCoordinates>;
 
 export type CoordinateProfile = keyof typeof DEVICE_COORDINATES;

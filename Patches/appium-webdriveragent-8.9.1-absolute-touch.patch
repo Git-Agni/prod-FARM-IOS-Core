@@ -149,7 +149,7 @@
 @@ -24,0 +168,2 @@
 +    [[FBRoute POST:@"/wda/absolute-actions"].withoutSession respondWithTarget:self action:@selector(handlePerformW3CTouchActions:)],
 +    [[FBRoute POST:@"/wda/import-media"].withoutSession respondWithTarget:self action:@selector(handleImportMedia:)],
-@@ -30,0 +176,11 @@
+@@ -30,0 +176,10 @@
 ++ (id<FBResponsePayload>)handleImportMedia:(FBRouteRequest *)request
 +{
 +  NSError *error;
@@ -157,8 +157,7 @@
 +  if (nil == identifier) {
 +    return FBResponseWithUnknownError(error);
 +  }
-+  NSUInteger assetCount = [PHAsset fetchAssetsWithOptions:nil].count;
-+  return FBResponseWithObject(@{ @"localIdentifier": identifier, @"assetCount": @(assetCount) });
++  return FBResponseWithObject(@{ @"localIdentifier": identifier });
 +}
 +
 @@ -33 +188,0 @@

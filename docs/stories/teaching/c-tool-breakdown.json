@@ -1,0 +1,344 @@
+{
+ "slug": "c-tool-breakdown",
+ "way": "Tool breakdown from our top reel (Harvey, 134K views) with 3D renders and a YouTube payoff",
+ "keyword": "OUTBOUND",
+ "frames": [
+  {
+   "type": "scene",
+   "hook": true,
+   "photo": "d7725c69",
+   "dim": 0.35,
+   "blur": 5,
+   "title": "This free AI agent\n[[finds your customers]]",
+   "titleTop": 170,
+   "bottom": "And it runs on your **Claude subscription** 👉",
+   "bottomAt": 170,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.7,
+      14
+     ],
+     "look": [
+      0,
+      2.15,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -0.7,
+    "accent": "#D97757",
+    "objects": [
+     {
+      "kind": "card",
+      "img": "assets/card-email.png",
+      "size": [
+       2.6,
+       1.85,
+       0.05
+      ],
+      "pos": [
+       0.85,
+       1.9,
+       -1.2
+      ],
+      "rot": [
+       -4,
+       -18,
+       4
+      ],
+      "glow": 0.9
+     },
+     {
+      "kind": "card",
+      "img": "assets/card-email.png",
+      "size": [
+       2.6,
+       1.85,
+       0.05
+      ],
+      "pos": [
+       1.05,
+       0.9,
+       -0.6
+      ],
+      "rot": [
+       -6,
+       -22,
+       -3
+      ],
+      "glow": 0.9
+     },
+     {
+      "kind": "tile",
+      "img": "assets/si-claude.svg",
+      "size": [
+       1.7,
+       1.7,
+       0.34
+      ],
+      "pos": [
+       -0.75,
+       1.5,
+       1.0
+      ],
+      "rot": [
+       6,
+       22,
+       -5
+      ],
+      "fill": 0.66
+     },
+     {
+      "kind": "tile",
+      "img": "assets/si-github.svg",
+      "size": [
+       0.85,
+       0.85,
+       0.22
+      ],
+      "pos": [
+       -1.55,
+       3.25,
+       0.4
+      ],
+      "rot": [
+       10,
+       26,
+       8
+      ],
+      "fill": 0.66
+     },
+     {
+      "kind": "tile",
+      "img": "assets/si-gmail.svg",
+      "size": [
+       0.85,
+       0.85,
+       0.22
+      ],
+      "pos": [
+       1.6,
+       3.0,
+       0.6
+      ],
+      "rot": [
+       8,
+       -24,
+       -8
+      ],
+      "fill": 0.66
+     },
+     {
+      "kind": "light",
+      "pos": [
+       -0.6,
+       1.6,
+       3
+      ],
+      "color": "#D97757",
+      "power": 22
+     }
+    ]
+   }
+  },
+  {
+   "type": "scene",
+   "photo": "37287de1",
+   "dim": 0.3,
+   "blur": 6,
+   "title": "It finds local businesses.\nReads their websites.\nThen writes a cold email about **something real**",
+   "titleTop": 200,
+   "pull": "But here's the safe part 👉",
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.5,
+      13
+     ],
+     "look": [
+      0,
+      1.75,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -0.8,
+    "objects": [
+     {
+      "kind": "card",
+      "img": "assets/harvey-dashboard.png",
+      "size": [
+       2.9,
+       1.78,
+       0.05
+      ],
+      "pos": [
+       -0.45,
+       2.6,
+       -0.4
+      ],
+      "rot": [
+       -4,
+       16,
+       -2
+      ],
+      "glow": 1,
+      "id": "dash"
+     },
+     {
+      "kind": "card",
+      "img": "assets/card-email.png",
+      "size": [
+       2.1,
+       1.5,
+       0.05
+      ],
+      "pos": [
+       0.65,
+       0.5,
+       0.6
+      ],
+      "rot": [
+       -6,
+       -14,
+       3
+      ],
+      "glow": 0.95,
+      "id": "mail"
+     },
+     {
+      "kind": "light",
+      "pos": [
+       0,
+       1,
+       3
+      ],
+      "color": "#2780FF",
+      "power": 16
+     },
+     {
+      "kind": "link",
+      "from": "dash",
+      "to": "mail",
+      "state": "done",
+      "bend": -0.35
+     }
+    ]
+   }
+  },
+  {
+   "type": "scene",
+   "photo": "aaae6275",
+   "dim": 0.3,
+   "blur": 6,
+   "title": "Nothing sends\n[[without your OK]]",
+   "titleTop": 230,
+   "pull": "And you pick who it goes after 👉",
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.5,
+      12.5
+     ],
+     "look": [
+      0,
+      1.45,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -0.5,
+    "objects": [
+     {
+      "kind": "card",
+      "img": "assets/card-email.png",
+      "size": [
+       3.4,
+       2.42,
+       0.06
+      ],
+      "pos": [
+       0,
+       1.75,
+       0
+      ],
+      "rot": [
+       -8,
+       -10,
+       2
+      ],
+      "glow": 0.95
+     },
+     {
+      "kind": "tile",
+      "size": [
+       1.9,
+       0.62,
+       0.3
+      ],
+      "radius": 0.24,
+      "color": "#1E9E45",
+      "pos": [
+       0.1,
+       0.05,
+       0.9
+      ],
+      "rot": [
+       -12,
+       -8,
+       1
+      ],
+      "face": [
+       {
+        "text": "APPROVE",
+        "px": 110,
+        "w": 1.4,
+        "color": "#ffffff"
+       }
+      ]
+     },
+     {
+      "kind": "light",
+      "pos": [
+       0,
+       0,
+       2.5
+      ],
+      "color": "#1E9E45",
+      "power": 16
+     }
+    ]
+   }
+  },
+  {
+   "type": "image",
+   "title": "You pick the signals.\nLike **businesses with no website at all**",
+   "image": "assets/harvey-dashboard.png",
+   "top": 600,
+   "width": 920,
+   "body": "Its called **Harvey**. Free and open source.",
+   "bodyBottom": 460,
+   "pull": "Want outbound like this at scale? 👉",
+   "ring": [
+    0.02,
+    0.3,
+    0.6,
+    0.16
+   ]
+  },
+  {
+   "type": "cta",
+   "title": "This video shows how we built WarriorBabe's\n**$500K+ outbound channel** in 90 days 👇",
+   "card": {
+    "kind": "yt",
+    "thumb": "https://i.ytimg.com/vi/o0kJVSPdWBo/maxresdefault.jpg",
+    "title": "How We Built WarriorBabe's $500K+ Outbound Channel in 90 Days"
+   },
+   "send": "and I'll send you the video + the blueprint"
+  }
+ ]
+}

@@ -2,6 +2,7 @@ import { coordinatesForProfile } from './coordinates.js';
 import { loadRegisteredDevices } from './registry.js';
 import { WdaRemoteControl, type RemoteAction, type RemoteControl, type ScreenInfo } from './wda-remote.js';
 import { passcodeForDevice } from './secrets.js';
+import { requireWdaControl } from './control-mode.js';
 
 export class RegistryWdaRemoteControl implements RemoteControl {
     private readonly controls = new Map<string, WdaRemoteControl>();
@@ -12,6 +13,7 @@ export class RegistryWdaRemoteControl implements RemoteControl {
     }
 
     async control(udid: string): Promise<WdaRemoteControl> {
+        requireWdaControl();
         const cached = this.controls.get(udid);
         if (cached) return cached;
         const device = (await loadRegisteredDevices()).find((candidate) => candidate.udid === udid);

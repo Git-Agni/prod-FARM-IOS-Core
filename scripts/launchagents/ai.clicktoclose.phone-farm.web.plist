@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>APPIUM_HOME</key>
+		<string>/Users/antoniomonteiro/Developer/phone-farm/.appium2</string>
+		<key>DEVELOPER_DIR</key>
+		<string>/Applications/Xcode.app/Contents/Developer</string>
+		<key>PATH</key>
+		<string>/Users/antoniomonteiro/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+		<key>PHONE_FARM_CONTROL_MODE</key>
+		<string>wda</string>
+		<key>PHONE_FARM_DIRECT_RELEASE_IDS</key>
+		<string>armed</string>
+	</dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>Label</key>
+	<string>ai.clicktoclose.phone-farm.web</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/antoniomonteiro/.local/bin/node</string>
+		<string>--env-file-if-exists=.env</string>
+		<string>--import</string>
+		<string>tsx</string>
+		<string>src/api/server.ts</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>/tmp/phone-farm-web-service.log</string>
+	<key>StandardOutPath</key>
+	<string>/tmp/phone-farm-web-service.log</string>
+	<key>WorkingDirectory</key>
+	<string>/Users/antoniomonteiro/Developer/phone-farm</string>
+</dict>
+</plist>

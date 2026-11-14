@@ -1,0 +1,2561 @@
+{
+ "about": "What each Story pool photo shows, by SHA-256. Written by scripts/tag-story-photos.ts; used to match a frame to its photo.",
+ "tags": {
+  "457c6516f17af27f66132d55a1cb10b089212b0974b490879bbbab0af3623108": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man reading a tablet outdoors by pool",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-23T22:01:02.000Z"
+  },
+  "fa8128b362a72a15219752581299ee52a731a869df6b752c09621b57391723a1": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting at counter using laptop",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-23T22:10:06.000Z"
+  },
+  "7b593bf4e006bfb1ad058b9fca8e4a8cf9517e2f49bf787ed020e20f86d96cc4": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using laptop while sitting on couch",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-06T18:52:26.000Z"
+  },
+  "4e071259e31b26eb503e723afbf276a359e6de07158ebe7015e583aeb1bc452f": {
+   "activity": "phone",
+   "setting": "other",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man looking at phone near window",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T14:04:12.000Z"
+  },
+  "f40812881652da692fc1188ebbc322f890f24eba0ca8adc5f8fc943c94dde4e8": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man smiling under palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-01-30T19:42:25.000Z"
+  },
+  "25a552a57a4b7e72d0054776875d0b199d1bbd186e5c816bf3b16fe90e1f14cd": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man relaxing on a lounge chair",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-23T22:00:35.000Z"
+  },
+  "aaae6275ad9bfed50648adcc74ea523147920bf093d1b1089504f055ab964223": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on a laptop at counter",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-23T22:10:12.000Z"
+  },
+  "1cf51f1ea58fac096e03d9c0446be650846c3fd7664d35e48a56c1a41fceb379": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man carrying a surfboard by the ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-08-17T02:25:35.000Z"
+  },
+  "d55d1bccfc4b43d686ad3f632f801f4b4c00478d2d203a7fd6095b833dbac506": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on beach at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:41:07.000Z"
+  },
+  "dcd2c0d2c66c60182f541175f463424615c5847abfdf1712396b2619ed85fcde": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing in field at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-08-13T02:37:20.000Z"
+  },
+  "2b20870f66787ac0f3bc32744d854f480d2b0282a00192ef6cb3bcc3e2a61522": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on beach at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:44:00.000Z"
+  },
+  "1ffb71015afdca122f849702e554d5f66ad5fa900243b4f9a3112e48482a4198": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man in sombrero standing by grill",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-08-28T19:28:29.000Z"
+  },
+  "1d5393f1bbf69cb71620d73e7baa66ed204ca4b1f0cc7f50765aabeb2b873a4d": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on pouf using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T00:31:46.000Z"
+  },
+  "8bc5feef610155fa383b8d957370432656b33bb83611ff136a1aae5930cc1d56": {
+   "activity": "phone",
+   "setting": "other",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man looking down at his phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T00:29:27.000Z"
+  },
+  "3416abbfb0750615bb27be26017d66f4f852637778371c5d72bfd75d5d1220a1": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man in black shirt using phone.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T00:29:38.000Z"
+  },
+  "0cb060dff18d9451e7d752e0d19171ffee3659eb0d4aadf58cc784952a0f1ed2": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man with tattoos relaxing on a boat",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T21:09:48.000Z"
+  },
+  "5d0705702e58b666a465d6a53012a6239580f08071fd847528a6a143c09061e1": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on a pouf using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T00:30:44.000Z"
+  },
+  "d7725c69c74e8500c7acad57304710916b596711240cc7af37e7a39a80df94e3": {
+   "activity": "laptop",
+   "setting": "office",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop at wooden desk",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-19T21:22:58.000Z"
+  },
+  "228365d296a73cf30238cd755909f4becd871be67aad89a857ad7a6a87b8668f": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man shirtless on a boat.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T21:26:57.000Z"
+  },
+  "7272a7037d88651966d26fd9ee63459a17baa0a51a156bcc6a9454dade3e07d5": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing shirtless on a beach",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-08T15:34:07.000Z"
+  },
+  "289d58a5871cef1294866918e1d6c986784c565067e100c2e412960983b1d4ae": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting outdoors under palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-01-30T19:41:43.000Z"
+  },
+  "81fd974b6a36f98d0830f1b92daa75b4cd7085499391039bb09608fb1fbf60ec": {
+   "activity": "relaxing",
+   "setting": "travel",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting on a boat outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T20:55:10.000Z"
+  },
+  "8f71a4c4c3f9cff6dd736e4c93411b3153b4a5d1de073ead81dd6527aef053ff": {
+   "activity": "relaxing",
+   "setting": "travel",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting on a boat outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T20:55:13.000Z"
+  },
+  "a7287ccc8e680b90d6fd7674d7cd872684486e5072f85091997c50a948643847": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing on a wooden deck outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-01-01T04:57:11.000Z"
+  },
+  "4744897d963e0dbd49af0e19cf1d67e897c5f54e32a181167921fa86acfce17f": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on beach at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-07-02T01:31:05.000Z"
+  },
+  "e4338a9a726d0c059890128d424596c769e5169441ab935d511608ed829e96a6": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on a wooden bridge",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-07-24T17:57:14.000Z"
+  },
+  "0371676892ec285d2a63428aad66160c0f7f2e2defaa1930cbe9450495176376": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking past a white SUV",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-06-25T01:59:19.000Z"
+  },
+  "bf25d4f858eed15ed5ab19bd4d977ddf20cee7db33edf16e45213261cd8e5398": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man walking past garden beds.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-07-04T19:05:18.000Z"
+  },
+  "aae5eff8984f0bb1276a85090577408fd83db545b6448d31921cbafad3cf7336": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing sunglasses standing outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-07-30T02:24:12.000Z"
+  },
+  "c8216bf1f7e87ae81dfeb38cef7fe5f5736837216f89562cd5cf72dbd936d898": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in front of Beverly Hills sign",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-06-19T20:50:50.000Z"
+  },
+  "2c06aaeecb8642c2d81035383064ed0eed26eb14d5d79a7b67121aa0d6af61bb": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man holding surfboard standing by tree",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-06-27T19:28:06.000Z"
+  },
+  "d37c342a5cd77e710a7fad5bddcd715b7e59bbd1009000bbdf16888c51856ff6": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing on rocks at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-06-30T01:04:56.000Z"
+  },
+  "cce2908eb749fa74c7060939598bbd03bcf03225fc5b3681832666a58d39e55e": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on a sandy beach.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-06-28T22:24:22.000Z"
+  },
+  "93aac443a1f14fb1deb3f017db49c98be313ffa413851e87726f65b1d75e456e": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a beach chair.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-11-06T23:32:33.000Z"
+  },
+  "47db4b1648cfa9e0319c2c8b06ebe1fffaf03bba34e01f335654bc5a9c8722ba": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing by a balcony railing",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-06-25T21:01:58.000Z"
+  },
+  "d9ccbdac312cd50744297e4642cbfc845d1ac87d3cf2b12e0ab00a729e348f1d": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing with an electric bike outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-05-25T01:35:09.000Z"
+  },
+  "bb98de663cfe12019a3270d5cc8acb7d600629e15cf9080f32aa760df97bd7fd": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on path near palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-11-10T18:37:36.000Z"
+  },
+  "7e271ff43252fec043ba34167ce71c8ed969cb1e829c290aefeb9ae46ae1e6f9": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting on a beach under umbrellas",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-11-26T19:51:36.000Z"
+  },
+  "b8ad871c8e6bd7dd867e54d9009a91d32828c2107d608c1f698bbe9e75c8aec5": {
+   "activity": "phone",
+   "setting": "other",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man looking down at his phone.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2020-11-12T18:53:27.000Z"
+  },
+  "1c37bb38b66de3dbf1da6915812423cf68904d40f5971081dd35de9fe9cd46f1": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting shirtless outdoors wearing sunglasses",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2020-11-15T19:33:36.000Z"
+  },
+  "88bd3336634d1ba7cb519647088fe8fd955ebd38e04de6af233ea8a77fdc8dc1": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting under a thatched roof",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2020-11-15T21:42:46.000Z"
+  },
+  "a1c67632799e4f1e55b208814677e005947df7fe5e74529feaff16c8468d1fd2": {
+   "activity": "other",
+   "setting": "office",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man holding a glass in an office",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-11-11T01:51:34.000Z"
+  },
+  "055f317003409dc0e16921cfb0bf1b291982e037304a90a4cf51b480c2af10df": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using laptop at a dining table",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2020-10-03T22:27:46.000Z"
+  },
+  "3fdd7b10cf0bf8a4b404c93257a789a753fd5ce9b4de7a75e5c2040548ec3c9c": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Luggage cart filled with various bags.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-10-30T00:01:45.000Z"
+  },
+  "79e8f4614a0be5a48d219a91dce581ee2cd2540dd7921f67a40e56769b66ce4a": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on sofa using laptop",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2020-10-04T00:54:50.000Z"
+  },
+  "38c2f94a1ccf3a52a4e390d556eab91741a881558db6aafd2aec8bffa672c01c": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing by water with city skyline",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-10-03T00:24:36.000Z"
+  },
+  "f6dcb47a0aecd71c8bd3bc776bfc7c6296153d668d310e569259a704d3c4cd0e": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on grass near Space Needle",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-10-02T23:31:23.000Z"
+  },
+  "41d861781d9b642845e174e81278ca1c11663e1195ecfbfefd6a2c89a9722f3b": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing by water with city skyline.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-10-03T00:24:01.000Z"
+  },
+  "a19dab02358e1e4f8c93a60582d9b9005a4b4de522f2bdccf7588f372d4c62e6": {
+   "activity": "walking",
+   "setting": "travel",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking through a modern terminal",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-10-31T03:34:29.000Z"
+  },
+  "3b6410fa8e83d011dd5222f61869ca8447dfda9a1320b3f7306040d740268d5f": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing on beach at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:33:59.000Z"
+  },
+  "26b9b05451944468ea27184324c4c76ec8df6fdca3f9e806c3871cb8347be87d": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on a sandy beach",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:31:24.000Z"
+  },
+  "aff2804e97c9b162fa7c1099f88b8ae0a1807c1a88e93da3c279b5edd90c9d93": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing on a beach at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:33:17.000Z"
+  },
+  "acf95608fa70b68605b30e83860ca7a2644461e583368684f6bbad3e6ed8d80a": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing next to a black car",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2022-09-27T22:38:19.000Z"
+  },
+  "b26b6a3ead5038a9887abef8ec03b67c2fb234fd10068da04a3f654e87c18d8e": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man in wetsuit holding bodyboard on beach",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2021-09-27T22:55:48.000Z"
+  },
+  "e0c7424f776817be97e7d660f48ba3e1ddf34dbe6b429a996eee749d696530f0": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing by a lake in snow",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-08T19:00:04.000Z"
+  },
+  "ab05257595ca975a2d190dd356b621164c34856a128bf5da23ee21b8261e502a": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man in black sweatshirt outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-09T00:43:15.000Z"
+  },
+  "8371425bc7a73d8d5c3cb8ed2a2fdc91d66982bdfeec6ad086cc1378e439774e": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on beach at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:30:54.000Z"
+  },
+  "fffef9ec1465ab3e05aed5c383724a7a7cfe6916c6cb64f01bc68fae691e7d2e": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on a wooden path outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-04-05T14:08:45.000Z"
+  },
+  "57971ae1084cd042f3e2ef0159df34fba58c7746502982241cfcf233774418f3": {
+   "activity": "tablet_reading",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man writing on a tablet with headphones.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-02-26T20:16:37.000Z"
+  },
+  "df246eeea2013fe27b5982c292ad8021ba073f9854e7631a3603151d973758f0": {
+   "activity": "phone",
+   "setting": "office",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-02-26T20:16:31.000Z"
+  },
+  "fd05e7b6acd9705eb1d737a94e6fd545b5580c53a1a92a81d78732039bc5ed76": {
+   "activity": "tablet_reading",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man with tattoos reading a tablet.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T19:12:10.000Z"
+  },
+  "11c2d7f446ae7fe5a7d85f8ea7947a638050fa219bec3426bd86dcaac2296436": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing by a lake with arms out",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-08T18:59:35.000Z"
+  },
+  "9dc4f35c4aba746937de3f8cf16262ba3c94b0998f986804dcb7d07522ccf9ee": {
+   "activity": "other",
+   "setting": "other",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man looking at a Cartier display screen",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-11T02:49:41.000Z"
+  },
+  "c74fdf286ce80afdeaf7e561723e519b7da021cd431c51bd78ad8df2ca971509": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man giving thumbs up in mountains",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-09T00:41:38.000Z"
+  },
+  "66493ed77cc1d2396435884f27c27dff756e608dcf8d08ce1ec369d7b788e6fe": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing on a beach at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:43:58.000Z"
+  },
+  "f64f1d145e8ec7b5e54317682a0ff6a68ff2f9d6d64323f983f0cb0e79cc52b9": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man smiling in front of mountains.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-09T00:41:40.000Z"
+  },
+  "ebbdac83c0001f90597ef0123cdfb6552ba37fc01cd43193990facf93e7a255c": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man opening an orange box.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-11T03:10:28.000Z"
+  },
+  "2ad437c4f16602e57eda86f66111b5ae05efd35eda4d847a09259606bfaa2f8d": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on a wooden path outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-04-05T14:08:45.000Z"
+  },
+  "ff1ea66a9dc5a0de6899b89ca210392f41fa3e08786511fb2bf1298c00316425": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man in a hoodie outdoors at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:33:19.000Z"
+  },
+  "6c8ccff396bc7d79c89fceec81369cfaf13bc6e827951a1a7c5d8c3b5e27d3e7": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man looking at sunset on the beach",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:39:30.000Z"
+  },
+  "5b1ca03a3de875d5129ca04d34fd4c8a0d88072689e5d5ad92524a05673b6f2f": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on beach at sunset",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:33:16.000Z"
+  },
+  "1fe93492565949fb83e1b45efc626d00cd047ca5c87d9da109db7f1c2334c94d": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man looking at sunset on the beach",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-09T00:39:31.000Z"
+  },
+  "688170dd9ed64433bdbee6522f19b9641a06f180cd3f4978e1e882077b447e49": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man looking out at the ocean view",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-11T21:38:12.000Z"
+  },
+  "ff8b8e3c9b30bd2a5f409623ef34d7f3d9b24d1244f19791e94d6330c18711ae": {
+   "activity": "phone",
+   "setting": "office",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones looking at phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-02-26T20:16:38.000Z"
+  },
+  "c52dce537bdce7ee77cd9600dfc111d677830db089819e196f8570dc9d0cf9fb": {
+   "activity": "other",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man holding a glass of champagne.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-06-12T23:01:48.000Z"
+  },
+  "37287de19b027ec0fbe94c8090f8079a496e946fda0b584c25478a906fa5cda2": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop by a pool",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-04-05T14:08:46.000Z"
+  },
+  "f6a803edc3664c5c7bf1e88586b63b6112c4c19f9824fb646aba39b9d303b4dd": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a glass observation structure",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-11T21:36:55.000Z"
+  },
+  "990ce94d2d5304834d580525f1ef1e4543fcf24678768c7f876da9cae2c28dbc": {
+   "activity": "talking_to_camera",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man smiling and gesturing towards camera",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-06-30T15:01:01.000Z"
+  },
+  "1e712820e5d9103958dacd914077fd6da2ecab849def496706e1ec6b8b0b9780": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man in ski gear on snowy mountain",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-08T21:09:45.000Z"
+  },
+  "4bef50f6ee490a06b479c797e1f151161a6e2fd2782145049682c55a142f3c9d": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man wearing a straw hat smiling",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-23T19:36:37.000Z"
+  },
+  "e4b7d510b906895ce56d449270866e79d4266417c80c2800760604e6c946b482": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting on a ski lift.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-08T23:28:42.000Z"
+  },
+  "7815a32677f38ec120a9e0fa4c482c57300c979d397236cade491d70c678262b": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man in ski gear holding snowboard",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-08T23:53:57.000Z"
+  },
+  "0195d3abf9d6874b6c02ce25803367244edff9a860c01d83c40dd5e5178e2fd9": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man wearing ski gear on a lift",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-08T20:39:18.000Z"
+  },
+  "2b58ad20fb917d0361c0640f10fd4a139daad4e7a23c319bd753804c74a4bb02": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man in straw hat smiling outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-23T19:36:41.000Z"
+  },
+  "72354506bdd33e69675317e1aad85a47197a82c92bbda1847a11437491429e73": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man holding surfboard on a beach",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-22T01:27:15.000Z"
+  },
+  "4b7a87ea41c9c5994425288e2d42cb106e0272296f5ba0ff43dc1fbee6986de4": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing shirtless by the ocean.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-20T17:04:12.000Z"
+  },
+  "b1c5b6a2f5ff7ac1e6ac7f64b5703b57c0d3bac76cc697c3009ff82813a4df9a": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in front of a fountain",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-06-12T22:42:44.000Z"
+  },
+  "cfba8e89bace43a271399e4f409c502bec46eea1fcef369daaca692f072181aa": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing outdoors holding a drink.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-23T19:40:15.000Z"
+  },
+  "27a66c8f318c9f55efea7f70deec06a91f550cb502616f4e4b4d28d7f0d2c051": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing by the ocean with arms outstretched",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-20T17:04:17.000Z"
+  },
+  "d2ca6ca4bde894314cc5d27e44e68e02afb207b49d496b3b9b010e5f03574b42": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in a desert landscape.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-12T19:36:43.000Z"
+  },
+  "2c51198169f4d6c3600096bc4595337c0951cff8a1d1fedb8559e19f4f4e4c42": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Two men posing with luxury cars",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-06-21T17:06:00.000Z"
+  },
+  "32231db0ee24a58822ba2d23e5fc761b8e89a214b2bd310bc637d74913aefe2d": {
+   "activity": "thinking",
+   "setting": "travel",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man in profile thinking on plane",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-05-28T23:40:01.000Z"
+  },
+  "video:521fb6099a6b88e1b2bd6cb571be32cc4a5ca918dd9c6e05518309a664ba1ce3": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing sunglasses walking outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:49:52.000Z"
+  },
+  "c55bea7e207a388b956dee2c533722c0ffb60878d7305e641f3c9388243cbe59": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Two people standing in front of cars",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-06-21T17:06:04.000Z"
+  },
+  "video:20c9d1d91500721a75068d41c1c8eddee3ff33aae9e81e569630c3d6c6655726": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man performing squats with a barbell.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:50:08.000Z"
+  },
+  "video:cf490bf2ea219e7a2885573d976b3b770baf0e0f062b9eda2b2f7dd5e366dbfa": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing sunglasses and a backpack outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:50:00.000Z"
+  },
+  "video:38561c319ca121a19355e78c83ce77caffe0ac47d50282a61d7fdaa41c5abf9b": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man looking at the ocean view",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:49:39.000Z"
+  },
+  "video:b3dd71511502cb54ab81b36d799d233be11a9f3a41f0222335128940e4a3ec65": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using laptop at a white table",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:14.000Z"
+  },
+  "video:2d4d846b06fb0e29250179ccc12cce5db4d7676cd4cb1599dc1370a7cd223179": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man walking on a wooden boardwalk.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:49:44.000Z"
+  },
+  "video:b56ad177fc99c1d95474e864bd6b98eabac42f99b44fa27d0f809e2bf91f456f": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on white sofa using tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:05.000Z"
+  },
+  "video:31d0a40e934f4248890e7dae72135911608126496bad798360054d8dec7f2e87": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man with tattoos using laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:18.000Z"
+  },
+  "video:7e1d6f080a66369b586365be15644735396bde83cd9cac611ee6d257013826d7": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on outdoor sofa using tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:10.000Z"
+  },
+  "video:e41a112f09db23a81d31cd47971f8d1c8d42e2c1cd8b03477459fb696cc5dd8a": {
+   "activity": "travel_outdoor",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man with backpack looking at ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:40.000Z"
+  },
+  "video:5ef9f6b18306cc9571fd0ebb3d1cb3c48973d949dfdf86a9fcea4a88eb5265a9": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on white sofa using tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:01.000Z"
+  },
+  "video:db4a5c4c7a0a07683252150b3af56f3bb346349028a75d60de16745c7da34bbd": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man with tattoos using gym equipment",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:49.000Z"
+  },
+  "video:81778341d10a0ad28fec0862a67d1c052e9f8676a8011802fa2c977c5acf7952": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking near rocky coastline",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:32.000Z"
+  },
+  "video:63dd050b5378ac2922a72e4bf0d22ddbfa16a6c2f98af1c68c0f939832f2b1ef": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man reading a tablet by a pool",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:53.000Z"
+  },
+  "video:208a53a8637e76b9d0750cd2b18bf2679dbd4b1ea22b32b45ffb958881bc1165": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man looking away towards the ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:37.000Z"
+  },
+  "video:74f96d46b500460efd41906cbd704321d95306e04fec8b15592f3855d59c0bb6": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking through a bright hallway",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:43.000Z"
+  },
+  "video:51b7e6d70dfd94fb7bb7c5a2d7f5c29ad2ab12912987f2a5e1b38e357c176e84": {
+   "activity": "walking",
+   "setting": "travel",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking through an airport terminal.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:35.000Z"
+  },
+  "video:1e5a72febd903f939fd24202bcead3a6a25bd4f8235de8dac4f194f35fb54f66": {
+   "activity": "laptop",
+   "setting": "office",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man with tattoos sitting at a desk",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:47.000Z"
+  },
+  "video:eb530ba0a017447c71da71ddf03ab74b004cfa900c034ab0705655548e4fb008": {
+   "activity": "tablet_reading",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using tablet and phone at desk",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:10.000Z"
+  },
+  "video:657cccc59ce2391fca1491f94fd9d73d96b54665575f5ae3d9107a77675b8703": {
+   "activity": "other",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man with headphones writing in a notebook",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:00.000Z"
+  },
+  "video:8d0cbdb8d4d8581724412790b969d235f243bf31360f78b03f7677c02e5cc5cb": {
+   "activity": "tablet_reading",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using a stylus on a tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:17.000Z"
+  },
+  "video:942b29a9106fccd14e7ddc6c7c0312704601ac7594837392eaf8a10a629c7e15": {
+   "activity": "other",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones and glasses",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:20.000Z"
+  },
+  "video:f8db076381aff7bbb6f1850935cabd90f1af579d62f33180dfbd5b44678e65df": {
+   "activity": "other",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on weight platform.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:50:12.000Z"
+  },
+  "video:04d08ebd322d619f56fb1519d92b2ec2b5067b188207082c4e9f9c58960f88e3": {
+   "activity": "eating",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in chair drinking from glass",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:31.000Z"
+  },
+  "video:35c344d2ffeace93755f0f309561e5a85b1e85925e0d0f934693cf5bb7088a93": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on gym equipment.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:04.000Z"
+  },
+  "video:57d483434e343b7166275ee4ae08381092135834c37e29dd8c6c910cb46149ca": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on sofa using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-12T21:04:54.000Z"
+  },
+  "video:ad9076712b904c067c2da8bcce87d13b6144a4d02724a4dfd2bc808a278aa336": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man in white tank top outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:01:48.000Z"
+  },
+  "video:c75fc9a8d309cf2796efe98b744a325af76d9a2882cc932e2c79c8fb4e4cbf08": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a laptop.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:22.000Z"
+  },
+  "video:1a148451af200ab2c54d3fd90fa3ca2677c1f08d2d3784aebbd41cec501c629b": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop at outdoor table",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:30.000Z"
+  },
+  "video:22b11e1e38f8c1a4a934d931c781109f660c5db25b5d67ae5d2ed5ae58427ccf": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on a wooden walkway outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:50:24.000Z"
+  },
+  "video:de0240cbdb2ff41c1c91da515e98cffe5e4e790025cd8a9619f6f1f3ff6f2ef0": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man using weight machine in gym",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:51:35.000Z"
+  },
+  "video:e595592481b918794be708c211f684b02c6929a78182aab12b7aae16e599fc6e": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:20.000Z"
+  },
+  "video:6cd5b8ef899fde43800a0817126dba51379ff47cc90b8257ac12dec14b60de72": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:48:26.000Z"
+  },
+  "video:d1f6efd2a6153904bb0fd46d28c1de984a36b27aab27f3d6461cea1e5eaf978d": {
+   "activity": "walking",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking down stairs indoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-03-12T20:48:20.000Z"
+  },
+  "video:a967825b30516dee2c9a7ee0167a51760a516519301fb882c8e3e229f7c4983c": {
+   "activity": "eating",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man eating breakfast outdoors near palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:56:07.000Z"
+  },
+  "video:5c36795a1e6f98179bf96004f16082b4c270ef6acf96ceb94f7a0031ce26f849": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in chair drinking from glass",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:26.000Z"
+  },
+  "video:eee860adad287ddae1af44daca5ce87c3e9cc6ec6e3140ed9db110925676b436": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on a path near ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:50:12.000Z"
+  },
+  "video:c416635e6e04ec3b20b3cf963d7015b0f4d29a093f5bc4a0957e3d0cdaa99619": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man holding a cocktail in a lounge.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:20.000Z"
+  },
+  "video:1761c5fb2e3de0cca2ea937f396ae94f7e697559700d57cae3e4ebb5c4ea9513": {
+   "activity": "other",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones and holding a phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T21:47:51.000Z"
+  },
+  "video:7bdecbeebacbf2768a50abd460d29e3afd434427b3373abcfcb5056e8fa1471e": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on beanbag using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T05:20:30.000Z"
+  },
+  "video:79a4b1c1f102a8424abf046682407344a058f03d64405716a2225c7169c88bf5": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on white sofa using tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:37:44.000Z"
+  },
+  "video:c6b81dd1640db5341d583bfacdcbf38197cc2243ba2ab88c52817e0987fc67a2": {
+   "activity": "eating",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man eating breakfast outdoors near palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T00:45:54.000Z"
+  },
+  "video:a17167f83938649ca4be7e8ed08ec8398f56d4a72f42c29c5e333209d71961ab": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting at outdoor counter with laptop",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:38:37.000Z"
+  },
+  "video:536116c3acaada88a6d43d38aca4b202b581f1be79299bbe69698f683208a06b": {
+   "activity": "eating",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man eating breakfast outdoors near palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:28.000Z"
+  },
+  "video:da355d162e672109e09a5df748797965fce1b5a7e5633239b3995dca3c335618": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting at outdoor counter with laptop",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:15.000Z"
+  },
+  "video:28b69590cc31a2fa9d7eab263d1f3d64a4b335b9e0dc956024b93db8e1430d20": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using laptop at a white table",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:17.000Z"
+  },
+  "video:f68193cce517e3281242003826be6f2581a684f23123e257b948bb5cd3bb4e2f": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on gym equipment.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:41:32.000Z"
+  },
+  "video:f2af4e1808eb13e459e52ccb0874dee4d5c26dd79c0963f69b760011888e2dfe": {
+   "activity": "tablet_reading",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using a stylus on a tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:40:59.000Z"
+  },
+  "video:eba600b5b3e739bb0868a146a7fcc3723e296fd51407a06ceaf4a9c5895b83ce": {
+   "activity": "tablet_reading",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using tablet and phone at desk",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:41:13.000Z"
+  },
+  "video:774457fd4e3fa83a79b7d427c75a5af5ab46057997fc38093d012e101fb2c620": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using a rowing machine in gym",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-05-23T16:49:11.000Z"
+  },
+  "video:30bf5c0a42718d806d4d10fe6c41866886d8eb964c0d23a65e7ae13f57abde13": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on white outdoor sofa.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:11.000Z"
+  },
+  "video:a4bd050e47f1a10cd11000456ede45e82bd1ed422b75690a80eeb727e5cc20fc": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man using gym equipment.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:36:01.000Z"
+  },
+  "video:edddd2793e3fb4798be1f0334f13e0052db816e96a9814f41e40f170f95931bd": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man looking down at his phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-22T17:39:22.000Z"
+  },
+  "video:0dd92b71c6ff3940d6fc13596eb96bb8675934ba7112954b15294b0d6d7964db": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man with tattoos sitting at a desk",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-07-27T15:24:58.000Z"
+  },
+  "video:cd278ae7abde5d55d5900c76d9e899ddd5634d65e374306d5bcd8a843f496557": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on a laptop at table",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:39:54.000Z"
+  },
+  "video:3f7bbae17f05fae2c374864896e4547d25913873643273baa3e1b6ef0e988ed9": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting on bench petting a dog",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:36.000Z"
+  },
+  "video:6284ea8883eed858ece5b99e64cd578d53b3697459832dcfa41562ba7cd78e02": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on pouf using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-22T17:39:27.000Z"
+  },
+  "video:f52c1e538fc9ba12b3b0f9bffaaed452ddc3d53f0aaf254ae56461924227be03": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man drinking from a bottle by window",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-05-23T16:48:55.000Z"
+  },
+  "video:739e9a07d669f4e8f55d9584bb82e76a40824eb5fe4501acf77ec6886af74210": {
+   "activity": "eating",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting and drinking from a glass",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-07-27T15:25:13.000Z"
+  },
+  "video:33b196cca5c12d4835836485aa5abde73a566df95de71f3fca0e388887c232bd": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man drinking from a bottle by window",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-05-23T16:49:21.000Z"
+  },
+  "video:c859c4cbdc81105e65646c8821ddaf23d4ce262d0215b661332e2c13efa900bc": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in chair drinking from glass",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-07-27T15:25:18.000Z"
+  },
+  "video:cb43c293aa165106246e4f3ada243b1890384fc4a7d2b2324b98d1f32e170472": {
+   "activity": "eating",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man eating breakfast outdoors near palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-05-23T16:49:42.000Z"
+  },
+  "video:570b04646b3b9ce158aaecd80dd9a9a27f1bc17de84f5c08d8c1050c86ab2626": {
+   "activity": "eating",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man eating breakfast outdoors near palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-05-23T16:49:15.000Z"
+  },
+  "video:7dd120baed9060ddf0b176730e5ce7b427af46c1a7f3c2c6c4ef5feb60106ae8": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a laptop outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:39:58.000Z"
+  },
+  "video:95bf525596592ccafd7750d99e0d406b340fe347f8d557715d7f68544f6bc736": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man with tattoos using gym equipment.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:39:27.000Z"
+  },
+  "video:f2b8acc902bd59a3378f68503e3761ad2313a264410f12d251738702c92fb008": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man holding a cocktail in a lounge",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:43.000Z"
+  },
+  "video:d2702851a20e9b549dc109aee89614e0d927cd4681e621be8ff56f764ade98a6": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man with headphones using a laptop outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:25.000Z"
+  },
+  "video:a6947ccadbcce85211d1e01d4b8d09dc71e83a28e86e935c7b5a48a39b6c9650": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man with tattoos using laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:37:33.000Z"
+  },
+  "video:f342682c8b8e5b79221e26c54320fb81777f5d48820c2e3227a9f10e25fa3362": {
+   "activity": "other",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in a doorway.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:39:16.000Z"
+  },
+  "video:7d5d81adca8066bbce4064962786cf2e23b4981206204b4585cbd37fac65ada9": {
+   "activity": "other",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in a doorway.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:34.000Z"
+  },
+  "video:4bb35b4618069bb35e5e1f9b14d432e4de6f854b99a514be6e605eff51fa25b2": {
+   "activity": "relaxing",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting cross-legged in a wooden sauna.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:24.000Z"
+  },
+  "video:7c24cd88247b976020ba590d4a609240ca4078c93ea1231d754420a71ee8a430": {
+   "activity": "relaxing",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting cross-legged in a wooden sauna.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:31:03.000Z"
+  },
+  "video:b1b8836891ea5ad209df43df4b51fbb32f4297ebc5331bdb5196274bb55fa752": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on outdoor sofa using tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:37:43.000Z"
+  },
+  "video:331d03787b5fbfad7c3b30b788bcea9620d0eb33b36929cde720607d373f248b": {
+   "activity": "relaxing",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting cross-legged in a wooden sauna.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:31:06.000Z"
+  },
+  "video:56f2da7597e42c1d246986591f734e3408eede36b0b531868ac439dd4f528398": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on beanbag using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T05:20:45.000Z"
+  },
+  "video:67c1985a3fee56615f954732265a9d5b6c3ee230c02d1d049209eb585787675d": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man holding a cocktail in a chair",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T00:37:35.000Z"
+  },
+  "video:a99fc3f562512d9e6dab0a259ef2db15f356d29a815a2329514adaa6257fdf24": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on beanbag using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-22T17:39:23.000Z"
+  },
+  "video:cf0216973b9abb90a33741cdf2f12595b85054863f411a5944f91e67e282bdc1": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing in a doorway outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:39:17.000Z"
+  },
+  "video:420fc8f1a77759adf26a50336300f33e5e263053bac9e9fa80a84622f7e3f408": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting on bench petting a dog",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:40:19.000Z"
+  },
+  "video:fea69d636f1e5589a86adeebb2afa1b994033caa4fc7ec92ffaefc171b152f96": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on pouf using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T05:20:17.000Z"
+  },
+  "video:3c044443d922e60a6375c9a6b0fff6221735f65a2962009a8662fd4d02f083d9": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting on bench petting a dog",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T00:39:24.000Z"
+  },
+  "video:4d811010adc7b95fb5823bc6fab9637b34d137c59b818c0d49417fcabc059a3d": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using laptop with headphones outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:40:02.000Z"
+  },
+  "video:2f5b3f914cf1d26d9aeac6954cf178e051c6279bb3d8c40801d42fbd387c5624": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man looking down at his phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T05:21:59.000Z"
+  },
+  "video:12daf8c18bd410d7c6832464364d839330a0516ccff8653b9610e227642380a7": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man holding a cocktail in a chair",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:08:24.000Z"
+  },
+  "video:8d6d63159066571bbedda889db455facbfda966bd0122d287acd4b1f40aa88f4": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on pouf using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T05:21:52.000Z"
+  },
+  "video:6894865c1993a934a2bd96e34198093394f3c6df5a8a665ab92fa8a5d450b824": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on outdoor sofa using tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:37:53.000Z"
+  },
+  "video:1b2eb4315f964df73256f42e08360b09bb8c75ad39d85e15032a5922ab68e443": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on pouf using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-22T17:39:20.000Z"
+  },
+  "video:6fe0fe0701787c604d874bd01a503c5a9abee0bd453fb9a7f6f5387d248b32ca": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking in a brightly lit mall",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:24:22.000Z"
+  },
+  "video:0327b992e76966f97d6e20f06e089395a9aa36355d07d1b404c26330d4e2038a": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using laptop outdoors with headphones.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:27.000Z"
+  },
+  "video:bf2c1bb3555e64e3cb2f640e11a868c944d986b85f214cfbe2dd356ab0ce85b3": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:37:20.000Z"
+  },
+  "video:c587ec3b861a77362378ef92f693574c3f3dce68c995493fc3773e7c6a0b0839": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:37:31.000Z"
+  },
+  "video:c2013ed1130fc19b994a1087f9b204c78bfe3acf957446c1251aff929cd6078e": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on white outdoor sofa",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:39:43.000Z"
+  },
+  "video:da884c73cf377728838c41bec1dfbd2f52139736bd121b8c51469a60c231ab66": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on beanbag using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-22T17:39:24.000Z"
+  },
+  "video:c0f2a1c01ca358e692dd8d95678eb4c246a65bb5f622156fecb66a4f319b4f92": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on white outdoor sofa",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:11.000Z"
+  },
+  "video:8d121d8bd0c8e29477aa10562c78e12f6f95def5cc483bd36e9d79a1dc0beb09": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man walking with a backpack outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:10:49.000Z"
+  },
+  "video:cd938d89ee66caabeba63bdcbf933e7208bdd9042c3ea6b1bf5e94a5e51a8106": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on pouf using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-22T17:39:21.000Z"
+  },
+  "video:229ac43cebfe88857628dedf6cd2bae94853a5f5df11dcb0841890a73ab03a8f": {
+   "activity": "other",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones and glasses.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:40:46.000Z"
+  },
+  "video:b9d4581e06f2325c3e82dd8c6409fbea6149bcbf5126df87820d4544a2f68052": {
+   "activity": "other",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones and holding a phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:42:09.000Z"
+  },
+  "video:57e4fd7aceb2ab2867a78c842619ec87bdadbd9bc41cc5efe29e1baefcf2bbee": {
+   "activity": "phone",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on pouf using phone",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T05:21:06.000Z"
+  },
+  "video:3999e715df64b852178070671a23b7974431758882edb252adefc00e744c7583": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in front of Milka display",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:13:14.000Z"
+  },
+  "video:7fea6ee8ac83e6c45e3a1405a4ca4289ff5adde28ba801fbf9236fd48b751cba": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man reading on a tablet by pool",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:09.000Z"
+  },
+  "video:a606f1ba24ec0ebd594d7ad44dc6b94587401a19425589c634991c6b25e25743": {
+   "activity": "thinking",
+   "setting": "office",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man thinking while sitting at a laptop.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-20T05:22:59.000Z"
+  },
+  "video:398e4b4de0757018b5c6a632bf5bebe6523e5b737443652f187aeba8ae8dede6": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:37:23.000Z"
+  },
+  "video:fbd0d26297f1bd1c914308291e65cf6bd92bf623e332231c2dbc583f59609dea": {
+   "activity": "laptop",
+   "setting": "office",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man thinking while looking at laptop",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-22T17:39:19.000Z"
+  },
+  "video:5e533f80325098bac0743999cd92d2d019dc7f9e933cbab56cd3de3d889dc0a3": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a laptop outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-01-24T20:34:48.000Z"
+  },
+  "video:b573dc7c771beebe34a0767fcdf377140773252231f8459bc874f613298583ae": {
+   "activity": "eating",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man eating breakfast outdoors near palm trees",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:56:11.000Z"
+  },
+  "video:c1a3798f3ca2799943d4f195ec51da048711deff2656a1f8175b41a631bb353e": {
+   "activity": "laptop",
+   "setting": "home",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using laptop at a white table",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:37:41.000Z"
+  },
+  "video:9b87452058143a3cca094ee7d40e7304d073215357a7a96509571e126d81aeed": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on white outdoor sofa",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:14.000Z"
+  },
+  "video:9bb2bedc99d8c25525483e5f7daad3a3cccbc5b6643ae80c59b77d8c803281e0": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man reading on a tablet by pool",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:39:35.000Z"
+  },
+  "video:06b58981c5ffe638ebd928029968aaaceefae81133d04722eb026c2d2e03782e": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing in a doorway outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:37.000Z"
+  },
+  "video:c06d535a50e320f86ca8005cc01499dc69e9cc89d23dc23ff71bf2c5e8716e8f": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on white outdoor sofa",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:39:48.000Z"
+  },
+  "video:eb1f4aacaac16a9c504d64260efc042bb53534ca5f74ff853423469a950e314f": {
+   "activity": "other",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man with headphones writing in a notebook",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:41:40.000Z"
+  },
+  "video:0bd5b1d902aef925c920c8c3f111d2a589d5bc07a8c6cdb5bfd2cf4f1b7c6fa1": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop at outdoor table",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:35:47.000Z"
+  },
+  "video:e4b9cd0ce7f960df2c260599f729932dba3c1ba8c0e7cea8351bb72306953096": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting at table using laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:09:50.000Z"
+  },
+  "video:f0a4cca7d58b34733ae146e41778bbdcc889cf54bb5fd0317ba8345018ccdb5a": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting at table using laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:07:48.000Z"
+  },
+  "video:d54b3960d49c25bf4f3b2ddf2779368d010bce00d33e86411dad3419223b3dc4": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting at table using laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:47:24.000Z"
+  },
+  "video:d4ec46f4e62f5cad6198eb63c860ee49d9cacc4c89ae86318182c8a34f239139": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting at table using laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:47:20.000Z"
+  },
+  "video:09391de1680decd8dc2d0b5aca1faf670a1dec06dc3d1d4750a3b1d9b8923e95": {
+   "activity": "talking_to_camera",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting at table with chess set",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:05.000Z"
+  },
+  "video:296f382c4fa207a621dbc3806cbfd2b8411ce7e5cf33f9a38f1aaa2b504264c1": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a laptop outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:40:06.000Z"
+  },
+  "video:1acd0764c5c74cc33d5eba829d76c155e673bdb46ed8e4559b3921312b94316d": {
+   "activity": "talking_to_camera",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting at table with chess set",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:48:00.000Z"
+  },
+  "video:9f4c3b8b8d44dff521bd6de56ef6925d8cdd03d453bc9cda12c7bae5e352b9bf": {
+   "activity": "talking_to_camera",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting at table with chess set",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:09:21.000Z"
+  },
+  "video:de72d0884548a7b7f82482fba1c0ccbccc06b2f26bb297113760e937165bf1a7": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man using a rowing machine in gym",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-05-23T16:48:50.000Z"
+  },
+  "video:1c472f77d526abeef5a752bbd3963dfb9430ddfe7f7d5ccb650b329a86d7df48": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man wearing headphones using a laptop outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:06:26.000Z"
+  },
+  "video:f160327e0e686d36faf0d52ad67e6d02447dfb1022016c8eed233d7f9fcf55d1": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man walking with a backpack outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:21.000Z"
+  },
+  "video:45c2e7fefdb47115ce51fddfabc6836b2eb1cf9838a25069394651d74090bbbf": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man walking with a backpack outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:14:47.000Z"
+  },
+  "video:21583ce407ce6c9833f104f8a22804c97b9dc7a93c979ae73a1c8a5167508fa0": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man walking with a backpack outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:10:54.000Z"
+  },
+  "video:4994a08c91aea433bdf664b984829ba99d9cf2423b27d6ea8568d4cb42293152": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop outdoors near mountains",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:06:23.000Z"
+  },
+  "video:3368b7386a0ca4ea452714cd463292d6c6e3edbeeeda9b1502a92cfc64f8e984": {
+   "activity": "talking_to_camera",
+   "setting": "home",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting at table with chess set",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:48:05.000Z"
+  },
+  "video:79559ecd3f93fe95ae7bdea28b53bca3fec27c1ccaf223e2a7ac2672f80bf120": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man sitting on outdoor sofa using tablet",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2023-12-26T23:39:45.000Z"
+  },
+  "video:a942becbe81f90ffe53b80e07068d1c6005ed7b62121b8d7d1d7f38392b9443b": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:18.000Z"
+  },
+  "video:48d1bb7f7085b3a3af1a7668f52e04810aa1e2b62ddfe9b23cd8ee673a85c14a": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop outdoors with mountains.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:46:39.000Z"
+  },
+  "video:49354255f44a6012837e9bab21a823589b5ade74f19d141c88785b824b2f9101": {
+   "activity": "laptop",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man working on laptop outdoors near mountains",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:46:35.000Z"
+  },
+  "video:70db0368a746dbd166fb66d0654793095ca6dbf559ef11cc41028a8363fd6262": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking through an airport terminal.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-07-27T15:25:09.000Z"
+  },
+  "video:4dabe050c1a8b5d202958a838644ebec3e57b16ee2d5a02d28c922130c408a4e": {
+   "activity": "tablet_reading",
+   "setting": "outdoor",
+   "screen": true,
+   "lookingAtCamera": false,
+   "note": "Man reading a tablet by a pool",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:38:04.000Z"
+  },
+  "video:30ab558dd02a09439aa77046ed45e70e3c6680f30da0feba9a940da458e3a3b1": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking through a bright hallway.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-07-27T15:25:02.000Z"
+  },
+  "video:e2d0d33fb4a5c36df19e8fb114f66cc4c8fc38b1bb11d4167b61b250d8199c8d": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking through a building interior.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-14T22:27:36.000Z"
+  },
+  "video:ada6333d1ee7145f52210ef88e8efedf9f467253b24cb50234ea48f864dc8380": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking through a building interior.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:24:21.000Z"
+  },
+  "video:a450fa3ef07f743bc2a756a54747b37cad179bf510c34e98002dfb5aa7e9d68b": {
+   "activity": "walking",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking in a brightly lit mall",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-14T22:27:36.000Z"
+  },
+  "video:dacb81e491e79d3b9c377c104b531dd97b35f73a4078ea5f1bcf2dc2d5a302ef": {
+   "activity": "relaxing",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting cross-legged in a wooden sauna.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:14:07.000Z"
+  },
+  "video:e47f669f08ba74e63f90d2073fb3f3e2dbbb8435655916bff5e884d65a602f58": {
+   "activity": "other",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on gym equipment.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:31:47.000Z"
+  },
+  "video:1bea4b0cda8bcc04f81c06c98e403e1d99a44abe888621c38c9936301bb2200a": {
+   "activity": "gym",
+   "setting": "gym",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man performing squats with a barbell.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:32:01.000Z"
+  },
+  "video:4bedaee43346944c4e67ef37e2615ce97685ac0377987943e4e236926de87478": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man posing in front of city lights",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:10:17.000Z"
+  },
+  "video:b5bf6788ee3141eabc308f705720e7ea292ac4c66e49338b90e534346602c0d7": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in front of Milka display",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:08.000Z"
+  },
+  "video:ceb0c67e4189531617627e9e89432172a13a55bbc08f3146572d38c5b2d53bec": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in front of Milka display",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:13:10.000Z"
+  },
+  "video:f6ae41526dbfa9215a700b2ed10ec1d93f45fb9e3885abf49c61d04758b97b41": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in front of Milka display",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:08:29.000Z"
+  },
+  "video:eecf84b9f96e2edb335a3ce86b467183edfd4eb0c38d17bfbd0f182c60f9b25d": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man posing in front of city buildings",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:09:00.000Z"
+  },
+  "video:2fb285e23e9216606a1f79c54912abe77f662398246d6d7d42ab7c310d297b8c": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in front of city buildings",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T00:31:12.000Z"
+  },
+  "video:3395e30294513add5ae5eb121426ffdab9a2984c7cfadd0f7ac5e9661a11a615": {
+   "activity": "relaxing",
+   "setting": "travel",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting on a boat outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-30T14:28:12.000Z"
+  },
+  "video:86030293c773830ed450781611ebf54fcd3017bc1ad2c27b53ee22e9f73a7d47": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man looking at the ocean view",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:34:43.000Z"
+  },
+  "video:28d9b86decf9eedef054d1783b49359ea6f6fa5a0cab30d59ed09053ea42ae27": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking near rocky coastline.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:39:58.000Z"
+  },
+  "video:3b22477a487ade71c9fcd8899e4e12bd3b42c2ce342f39d01dd666269ba82cc8": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a metal gazebo structure",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-12T01:38:33.000Z"
+  },
+  "video:abdbe210c587c828aa17236155a84e31dbc61b36ca12a21a799a0d677fd24ce0": {
+   "activity": "other",
+   "setting": "other",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man posing in front of city lights",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:10:21.000Z"
+  },
+  "video:ff799f7963334acf82c2688243a074e8eebc86c07dacad42f80da22c1cb5268c": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man posing on a balcony at night",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T00:58:54.000Z"
+  },
+  "video:21af81db0f47beb9e347e3fa3c13da87daab38c795ae09c7ca6c2a2e424f1563": {
+   "activity": "relaxing",
+   "setting": "travel",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man sitting on a boat outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-09T15:02:26.000Z"
+  },
+  "video:f5cf09ca4e909a1fca903144ac7e145949e9c9471d75187ba1e023e80bd6145b": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing in front of mountains.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T00:52:29.000Z"
+  },
+  "video:964ae779f21524a241b06a67ee5187e4ff7a10f9324e149f2ada28d907bf9cf0": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing sunglasses in a desert landscape.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:09:14.000Z"
+  },
+  "video:3d1ec3266dc54a0aaf63cb311969c100c3225e6455b4df9e9a6bd918deac9ce5": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing sunglasses in a desert landscape",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:09:09.000Z"
+  },
+  "video:e8ba451d62b4ebedfd6dd17691cc917b68f268fa8d37578d519b82ec5bb4aed0": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing sunglasses in a desert landscape",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:50.000Z"
+  },
+  "video:c62a901a1047337898778387061eae37dbc7bd363ecf4522c3bcb3d6408a901b": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing sunglasses in a desert landscape",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T00:34:46.000Z"
+  },
+  "video:28eda955debb270e5e7221676d0cc3041016ab237a839de5d0cb7841b87c7cb9": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man walking on a path overlooking ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:33:29.000Z"
+  },
+  "video:556b9d4b54cb441bedf65a8adcf13083f2d1039e85fa2389d52a6a1d63fc9a8e": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a metal gazebo structure",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-27T23:55:07.000Z"
+  },
+  "video:0a97220e36bc17b0d499a36a7f7845291af78da75e11e8fb96d22d8295dcdf11": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a chair outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:38:51.000Z"
+  },
+  "video:7dc2e781eef831a5d5312d98f36ae942c7f32e14b97bd54779dc50127a2749e0": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing in water near boats",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-09T15:02:29.000Z"
+  },
+  "video:72ad09001450796511f44aeca2acf7a385770980e8ab171ff67741f5a5a0edb2": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a gazebo outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-12T01:38:29.000Z"
+  },
+  "video:9dae306fcf9df298e9c7c90667d741ce0b9cff82098f6ab8050bb5a09c5613ab": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a gazebo structure.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-27T23:55:07.000Z"
+  },
+  "video:dab8dd07b4a1fab7b2e67d15731045d1cbd86446815f9a6e64501d62f1e7438a": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man wearing sunglasses by the ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:18:41.000Z"
+  },
+  "video:ec16736e5179395e324608444cf337d373001cd780e90edc3c561c90c5c33cc5": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man wearing sunglasses by the ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:31.000Z"
+  },
+  "video:57b7afed90c420a9ef1d09e6f9b1ec607b7413ede56147b1c8eb277628eb897b": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man wearing sunglasses by the ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:18:36.000Z"
+  },
+  "video:a1ae1dcf2400c3c248fd945b440aa75468908990b5d96ceccba1c121a9ff0e3d": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing in front of mountains.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:52:33.000Z"
+  },
+  "video:1453ec414bf80b64742792c43c25c4032a1a4ea4cbf221a65e868533e45f2c50": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man wearing sunglasses by the ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:05:32.000Z"
+  },
+  "video:c3735de5212612a7a9e2969d19e4e9f105f5bf1b827976ed1f39550b8b147816": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on grass near mountains.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:10.000Z"
+  },
+  "video:dab349e9fa5528e02f9cccff13edd8e0caa9a294e155d62ebf0bd1ef657274ac": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in water near lush hills",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-30T14:20:43.000Z"
+  },
+  "video:99d2c126dd58d560bb11649beb83b1356609ca77149a7e6fbb55606b7613e841": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man standing in water outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2026-01-09T15:02:27.000Z"
+  },
+  "video:fbe856cee9303d5518ab74ab53e23745ed58b784fa44dd367cbf68b43de07156": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man with backpack looking at ocean",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:39:47.000Z"
+  },
+  "video:f1a62e19afb2c3adfa819b6285f53c1c4e625041df847a5381f1b452f4958597": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on a wooden walkway outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:33:08.000Z"
+  },
+  "video:00be5a6f5a678d87d7fdf3ada531ce6f93dff51649d340adcad8420cdbc82b61": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing on grass near mountains.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:52:38.000Z"
+  },
+  "video:a90e3259292f210bcef06e346eeb98af91013bc9fe4428b7f0d652eaf210c185": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting on bench petting a dog",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:40:22.000Z"
+  },
+  "video:163960cdcb12a6e8c1f1dc87b1dea9d0407c1f6bf8b253cdb91af1f475dc99db": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man posing on a balcony at night",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:25:11.000Z"
+  },
+  "video:243ccb65576cbc79287eaf910294ee6dcc908cc83af361fe4555692bc54ece76": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man walking on a wooden boardwalk.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:32:31.000Z"
+  },
+  "video:4d0c0462ed4701a0bc59b20dc38466500328e58900f381c3a658f844821b6cd3": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man posing on a balcony at night",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:05.000Z"
+  },
+  "video:9000a8ed5e1c3e23f78f436bf6a21883fcb42d823e0d56c56ecffee62c1bb403": {
+   "activity": "walking",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man wearing sunglasses walking outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:32:24.000Z"
+  },
+  "video:75d8eb6845dd680300cb2c273164160f560336c917bf9a48688639d07095e85d": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man standing in water near boats",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-30T14:20:39.000Z"
+  },
+  "video:68a87c7dcdc2032a1607ea2491255dfa0bab8d2b79055a52fde17ab4509523d2": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man in white tank top outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2024-06-25T03:32:20.000Z"
+  },
+  "video:c93638bf64886a9b2f7d182ccc406045c98d33db45e6503940d47b7247458c6c": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Shirtless man wearing a baseball cap outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:07.000Z"
+  },
+  "video:c468b2b229bcfc9fe8c1cbf6f38d72fed9bf8aac097a8c6317b7406d2d18454e": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Man posing on a balcony at night",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:25:15.000Z"
+  },
+  "video:b04d538fb62667529fc3f99903b939039f9ad3c5863e3150d90b55e848c96e51": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a wooden chair outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T14:08:51.000Z"
+  },
+  "video:7699ac74e5c23cdc4f711c8eb516f88fb410c30b3e52c060b83ee9d49f748a51": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a wooden chair outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T13:38:46.000Z"
+  },
+  "video:b68f37741f928e29288af28953d55b5d0f25c04d4e4c28472005ac8f40d304fb": {
+   "activity": "relaxing",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": false,
+   "note": "Man sitting in a chair outdoors.",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:11:17.000Z"
+  },
+  "video:4d8068bce3ab9673102f3c3c271a3d7c2328b53690c27a71e3364b0df1390b76": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Shirtless man wearing a baseball cap outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-16T01:16:22.000Z"
+  },
+  "video:d80341c0b6459b848aa54938fa99682f7293d8b4206a8a144c097d1704e68400": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Shirtless man wearing a baseball cap outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:16:47.000Z"
+  },
+  "video:92ec9c3e0f2f4782accc43f58be2713b524e96de11ed4ffab8d358d0f86fd81e": {
+   "activity": "other",
+   "setting": "outdoor",
+   "screen": false,
+   "lookingAtCamera": true,
+   "note": "Shirtless man wearing a baseball cap outdoors",
+   "model": "google/gemma-4-26b-a4b-it",
+   "takenAt": "2025-12-12T14:16:51.000Z"
+  }
+ }
+}

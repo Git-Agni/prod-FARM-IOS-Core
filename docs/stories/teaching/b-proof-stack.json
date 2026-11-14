@@ -1,0 +1,182 @@
+{
+ "slug": "b-proof-stack",
+ "way": "Proof stack (Devin RESULTS model) with open loops, a lesson and a YouTube payoff",
+ "keyword": "SMS",
+ "frames": [
+  {
+   "type": "scene",
+   "photo": "5d070570",
+   "dim": 0.35,
+   "blur": 5,
+   "title": "One AI text system brought in\n[[$114K in 15 days]]",
+   "titleTop": 250,
+   "pull": "And that wasn't even the best part 👉",
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.6,
+      13
+     ],
+     "look": [
+      0,
+      1.6,
+      0
+     ],
+     "fov": 34
+    },
+    "floorY": -0.6,
+    "objects": [
+     {
+      "kind": "card",
+      "img": "assets/ai-sms-114k.png",
+      "size": [
+       3.9,
+       0.56,
+       0.06
+      ],
+      "pos": [
+       0,
+       1.75,
+       0.6
+      ],
+      "rot": [
+       -8,
+       -16,
+       3
+      ],
+      "glow": 1
+     },
+     {
+      "kind": "tile",
+      "img": "assets/logo-ghl.png",
+      "size": [
+       1.0,
+       1.0,
+       0.24
+      ],
+      "pos": [
+       -1.45,
+       0.45,
+       0.4
+      ],
+      "rot": [
+       8,
+       26,
+       -6
+      ],
+      "fill": 0.82
+     },
+     {
+      "kind": "tile",
+      "img": "assets/icon-call.svg",
+      "size": [
+       0.85,
+       0.85,
+       0.22
+      ],
+      "pos": [
+       1.5,
+       0.3,
+       0.6
+      ],
+      "rot": [
+       6,
+       -24,
+       8
+      ],
+      "fill": 1.0,
+      "color": "#34C759"
+     },
+     {
+      "kind": "text",
+      "text": "15 DAYS",
+      "px": 120,
+      "bg": "#E8231F",
+      "h": 0.42,
+      "pos": [
+       1.1,
+       2.65,
+       0.9
+      ],
+      "rot": [
+       0,
+       -10,
+       -6
+      ]
+     },
+     {
+      "kind": "light",
+      "pos": [
+       0,
+       1.4,
+       2.6
+      ],
+      "color": "#2780FF",
+      "power": 18
+     }
+    ]
+   }
+  },
+  {
+   "type": "proof",
+   "title": "Show-up rate\n[[41% → 65%]]",
+   "image": "assets/show-rate-41-to-65.png",
+   "photo": "37287de1",
+   "width": 960,
+   "top": 640,
+   "ring": [
+    0.78,
+    0.3,
+    0.2,
+    0.68
+   ],
+   "tag": "DEC → JAN",
+   "pull": "Then this happend 👉"
+  },
+  {
+   "type": "proof",
+   "title": "Close rate\n[[24% → 30%]]",
+   "image": "assets/close-rate-24-to-30.png",
+   "photo": "055f3170",
+   "width": 900,
+   "top": 620,
+   "ring": [
+    0.74,
+    0.62,
+    0.24,
+    0.36
+   ],
+   "pull": "And refunds? 👉"
+  },
+  {
+   "type": "proof",
+   "title": "Refunds went from 20% to\n[[under 10% in 90 days]]",
+   "image": "assets/refunds-chart.png",
+   "photo": "aaae6275",
+   "width": 720,
+   "top": 600,
+   "pull": "So why did it work? 👉"
+  },
+  {
+   "type": "list",
+   "photo": "8bc5feef",
+   "title": "Why it works",
+   "items": [
+    "Every new lead gets an answer in **minutes**",
+    "Setters, AI SMS and AI voice work **every lead together**"
+   ],
+   "pull": "The full build is on YouTube 👉"
+  },
+  {
+   "type": "cta",
+   "title": "This video shows how we built the\nAI SMS system behind **$1.8M** 👇",
+   "card": {
+    "kind": "yt",
+    "thumb": "https://i.ytimg.com/vi/Y8c4xIsxOXw/maxresdefault.jpg",
+    "title": "How VShred Collected $1.8M Through an AI SMS System"
+   },
+   "send": "and I'll send you the video"
+  }
+ ]
+}

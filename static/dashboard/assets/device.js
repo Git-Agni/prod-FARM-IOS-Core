@@ -283,7 +283,7 @@ function directionalSwipe(direction) {
 elements.remoteButtons.forEach((button) => {
     button.addEventListener('click', () => {
         const action = button.dataset.remoteAction;
-        if (action === 'home' || action === 'lock' || action === 'wake'
+        if (action === 'home' || action === 'wake'
             || action === 'unlock' || action === 'volumeUp' || action === 'volumeDown') {
             void sendAction({ type: action });
             return;

@@ -1,0 +1,12 @@
+{
+ "about": "Real result cards cut from Antonio's public @antoniorevenue Highlights (captured Oct 15 2026). Headlines repeat what each Highlight already says publicly. Used as the proof frame in lifestyle Stories.",
+ "cards": [
+  {"file": "docs/stories/proof-cards/cash-2-5m-to-6-7m.png", "headline": "From $2.5M to $6.7M in 30 days", "source": "Highlight START HERE"},
+  {"file": "docs/stories/proof-cards/close-rate-24-to-30.png", "headline": "Close rate from 24% to 30%", "source": "Highlight Close Rate"},
+  {"file": "docs/stories/proof-cards/show-rate-41-to-65.png", "headline": "Show-up rate from 41% to 65%", "source": "Highlight Show Rate"},
+  {"file": "docs/stories/proof-cards/refunds-chart.png", "headline": "Refunds from 20% to under 10% in 90 days", "source": "Highlight Refunds"},
+  {"file": "docs/stories/proof-cards/ai-sms-114k.png", "headline": "$114K cash collected in 15 days with AI SMS", "source": "Highlight AI SMS"},
+  {"file": "docs/stories/proof-cards/clients-table.png", "headline": "Wins grew from 986 to 2,618", "source": "Highlight Clients"},
+  {"file": "docs/stories/proof-cards/lead-quality-table.png", "headline": "Every lead scored before the call", "source": "Highlight Lead Quality"}
+ ]
+}

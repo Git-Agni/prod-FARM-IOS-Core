@@ -1,0 +1,183 @@
+{
+ "slug": "hormozi-ai-youtube",
+ "keyword": "HORMOZI",
+ "version": 6,
+ "model": "YouTube video (Oct 23): the video's promise as the hook with the real player card, the problem, what it was loaded with, the chapters as steps, YouTube CTA. Facts from v_Dxw9b75MI's title and the description of its re-upload EJ3jguKfNB8 (12 Hormozi playbooks, closing scripts, hook and ad frameworks; chapters 00:34, 03:10, 04:15, 07:00).",
+ "frames": [
+  {
+   "type": "cardcover",
+   "backdrop": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+   "dim": 0.5,
+   "titleTop": 180,
+   "titleSize": 100,
+   "title": "Hormozi's AI\ncosts [[$3,000]]",
+   "card": {
+    "kind": "yt",
+    "image": "assets/yt-v_Dxw9b75MI.jpg",
+    "title": "I Built Hormozi's $3,000 AI For Free in Claude Code",
+    "time": "0:24 / 9:29",
+    "w": 860,
+    "y": 690,
+    "rot": -4
+   },
+   "stickers": [
+    {
+     "text": "$3,000",
+     "strike": true,
+     "x": 700,
+     "y": 590,
+     "rot": 8,
+     "size": 58
+    },
+    {
+     "text": "FREE",
+     "bg": "#2780FF",
+     "color": "#fff",
+     "x": 90,
+     "y": 1150,
+     "rot": -8,
+     "size": 72
+    }
+   ],
+   "sub": "I rebuilt it for **free**\nin Claude Code 👉",
+   "subTop": 1540
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-02-podcast-studio.jpg",
+   "dim": 0.85,
+   "orbit": [
+    {
+     "cx": 956,
+     "cy": 985,
+     "rx": 300,
+     "ry": 290,
+     "rot": -15,
+     "arrows": [
+      200,
+      280
+     ],
+     "front": [
+      120,
+      175
+     ]
+    },
+    {
+     "cx": 986,
+     "cy": 925,
+     "rx": 380,
+     "ry": 140,
+     "rot": 30,
+     "arrows": [
+      190
+     ]
+    }
+   ],
+   "shift": [
+    405,
+    635
+   ],
+   "cutout": "../gallery/masks/antonio-02-podcast-studio-mask.png",
+   "title": "Most people ask AI\n**generic** questions",
+   "body": "And get generic\nanswers **back**",
+   "bubbles": [
+    {
+     "img": "assets/logos/bubble-claude.png",
+     "ring": "#D97757",
+     "on": [
+      0,
+      222
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-github.png",
+     "ring": "#FFFFFF",
+     "on": [
+      1,
+      250
+     ]
+    }
+   ],
+   "pull": "So I gave mine a brain 👉",
+   "pullRight": 120
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/logos/bubble-claude.png",
+   "node": "Claude",
+   "title": "I loaded it with Hormozi's ((playbooks))",
+   "cards": [
+    {
+     "name": "12 playbooks",
+     "photo": "asset:../gallery/antonio-05-whiteboard-strategy.jpg",
+     "icon": "form",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Closing scripts",
+     "photo": "asset:../gallery/antonio-17-headset-calls.jpg",
+     "icon": "phone",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Hook frameworks",
+     "photo": "asset:../gallery/antonio-24-team-meeting.jpg",
+     "icon": "chat",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "steps",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "thumb": "assets/yt-v_Dxw9b75MI.jpg",
+   "title": "Then I set it\nup in **4 steps**",
+   "railTop": 680,
+   "gap": 200,
+   "steps": [
+    {
+     "t": "00:34",
+     "text": "Set up **Claude Code** in VS Code"
+    },
+    {
+     "t": "03:10",
+     "text": "Import the **playbook library**"
+    },
+    {
+     "t": "04:15",
+     "text": "Turn repeat work into **skills**"
+    },
+    {
+     "t": "07:00",
+     "text": "Write hooks with his **frameworks**"
+    }
+   ],
+   "lesson": "Same AI. Better inputs.\n**Better answers** 👉",
+   "lessonTop": 1480
+  },
+  {
+   "type": "cta",
+   "backdrop": "asset:../gallery/antonio-23-restaurant-dinner.jpg",
+   "title": "Watch me build it\nstep by step 👇",
+   "thumb": "assets/yt-v_Dxw9b75MI.jpg",
+   "videoTitle": "I Built Hormozi's $3,000 AI For Free in Claude Code",
+   "time": "0:24 / 9:29",
+   "send": "and I'll send it to you"
+  }
+ ],
+ "generated_photos": "gallery 14, 02, 13, 05, 17, 24, 01, 23"
+}

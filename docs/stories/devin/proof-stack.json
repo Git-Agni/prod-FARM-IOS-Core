@@ -1,0 +1,272 @@
+{
+ "slug": "proof-stack",
+ "keyword": "SMS",
+ "version": 2,
+ "model": "Devin RESULTS Highlight (sheet-RESULTS.jpg): one win per frame, proof screenshots, red rings/arrows/tags, CTA every 3-4 frames. Numbers are Antonio's own ($114K AI SMS) or client work from his Highlights; no client named where the source is unknown.",
+ "collage": [
+  "assets/proof/cash-2-5m-to-6-7m.png",
+  "assets/proof/show-rate-41-to-65.png",
+  "assets/proof/close-rate-24-to-30.png",
+  "assets/proof/refunds-chart.png",
+  "assets/proof/ai-sms-114k.png",
+  "assets/proof/clients-table.png"
+ ],
+ "crystals": [
+  [
+   30,
+   440,
+   90,
+   -15
+  ],
+  [
+   920,
+   1560,
+   110,
+   20
+  ]
+ ],
+ "frames": [
+  {
+   "type": "win",
+   "title": "My AI SMS collected\n[[$114K]] in 15 days",
+   "cards": [
+    {
+     "img": "assets/proof/ai-sms-114k.png",
+     "w": 960,
+     "x": 44,
+     "y": 800,
+     "rot": -2,
+     "ring": [
+      0.93,
+      0.73,
+      0.15,
+      0.5
+     ]
+    },
+    {
+     "img": "assets/avatar.jpg",
+     "w": 220,
+     "x": 770,
+     "y": 480,
+     "rot": 6
+    }
+   ],
+   "arrows": [
+    {
+     "from": [
+      860,
+      745
+     ],
+     "ctrl": [
+      1010,
+      800
+     ],
+     "to": [
+      965,
+      870
+     ]
+    }
+   ],
+   "tags": [
+    {
+     "text": "15 DAYS",
+     "x": 110,
+     "y": 1000
+    }
+   ]
+  },
+  {
+   "type": "win",
+   "title": "One client went from\n[[$2.4M to $6.8M]] in a month",
+   "cards": [
+    {
+     "img": "assets/proof/cash-2-5m-to-6-7m.png",
+     "w": 880,
+     "x": 84,
+     "y": 600,
+     "rot": 2,
+     "ring": [
+      0.61,
+      0.2,
+      0.24,
+      0.12
+     ]
+    }
+   ],
+   "arrows": [
+    {
+     "from": [
+      470,
+      820
+     ],
+     "ctrl": [
+      470,
+      700
+     ],
+     "to": [
+      600,
+      735
+     ]
+    }
+   ],
+   "tags": [
+    {
+     "text": "BACK THEN",
+     "x": 150,
+     "y": 1215
+    },
+    {
+     "text": "ONE MONTH LATER",
+     "x": 560,
+     "y": 540,
+     "rot": 4
+    }
+   ],
+   "cta": true,
+   "ctaTop": 1330,
+   "ctaArrowX": 820,
+   "ctaFrom": "#7CC4FF",
+   "ctaTo": "#2780FF"
+  },
+  {
+   "type": "win",
+   "title": "Show-up rate\n[[41% → 65%]] in one month",
+   "cards": [
+    {
+     "img": "assets/proof/show-rate-41-to-65.png",
+     "w": 880,
+     "x": 84,
+     "y": 820,
+     "rot": -2,
+     "ring": [
+      0.93,
+      0.35,
+      0.13,
+      0.32
+     ]
+    }
+   ],
+   "arrows": [
+    {
+     "from": [
+      975,
+      1040
+     ],
+     "ctrl": [
+      1050,
+      960
+     ],
+     "to": [
+      985,
+      880
+     ]
+    }
+   ],
+   "tags": [
+    {
+     "text": "DEC → JAN",
+     "x": 110,
+     "y": 1190
+    }
+   ]
+  },
+  {
+   "type": "win",
+   "title": "Close rate past the\n[[30% ceiling]]",
+   "cards": [
+    {
+     "img": "assets/proof/close-rate-24-to-30.png",
+     "w": 860,
+     "x": 94,
+     "y": 620,
+     "rot": 2,
+     "ring": [
+      0.9,
+      0.58,
+      0.16,
+      0.14
+     ]
+    }
+   ],
+   "tags": [
+    {
+     "text": "NOV → DEC",
+     "x": 110,
+     "y": 1290
+    }
+   ],
+   "cta": true,
+   "ctaTop": 1420,
+   "ctaFrom": "#7CC4FF",
+   "ctaTo": "#2780FF",
+   "ctaArrowX": 820
+  },
+  {
+   "type": "win",
+   "title": "Refunds cut\n[[in half]] in 90 days",
+   "cards": [
+    {
+     "img": "assets/proof/refunds-chart.png",
+     "w": 620,
+     "x": 214,
+     "y": 620,
+     "rot": -2,
+     "ring": [
+      0.86,
+      0.55,
+      0.2,
+      0.1
+     ]
+    }
+   ],
+   "arrows": [
+    {
+     "from": [
+      320,
+      700
+     ],
+     "ctrl": [
+      560,
+      600
+     ],
+     "to": [
+      740,
+      960
+     ]
+    }
+   ],
+   "tags": [
+    {
+     "text": "JUNE → SEPT",
+     "x": 120,
+     "y": 1330
+    }
+   ]
+  },
+  {
+   "type": "titlecard",
+   "title": "Client wins\n{{DUMP}}",
+   "sub": "From our AI + setter systems",
+   "top": 660
+  },
+  {
+   "type": "win",
+   "title": "Every lead [[scored]]\nbefore the call",
+   "cards": [
+    {
+     "img": "assets/proof/lead-quality-table.png",
+     "w": 920,
+     "x": 64,
+     "y": 700,
+     "rot": 2
+    }
+   ],
+   "cta": true,
+   "ctaTop": 1400,
+   "ctaFrom": "#7CC4FF",
+   "ctaTo": "#2780FF",
+   "send": "and I'll send you the video",
+   "ctaArrowX": 860
+  }
+ ]
+}

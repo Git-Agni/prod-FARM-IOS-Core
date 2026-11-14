@@ -3,7 +3,7 @@ import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 
-import { diagnoseWdaLaunchFailure, wdaUnavailableTooLong } from './diagnostics.js';
+import { diagnoseWdaLaunchFailure, wdaUnavailableTooLong, wdaFailureNeedsRepair } from './diagnostics.js';
 import { resolveDeveloperDir } from './xcode-env.js';
 import { resolveTargetUdid } from './target-device.js';
 
@@ -195,6 +195,11 @@ async function startRunner(): Promise<void> {
         releaseForwarding();
         if (!stopping) {
             failures += 1;
+            if (wdaFailureNeedsRepair(launchFailure)) {
+                retryAt = Number.POSITIVE_INFINITY;
+                report('error', `${launchFailure}; automatic retries stopped. Repair the configuration, then reconnect.`);
+                return;
+            }
             const retrySeconds = [2, 5, 10, 30][Math.min(failures - 1, 3)]!;
             retryAt = Date.now() + retrySeconds * 1_000;
             report('error', launchFailure
@@ -234,7 +239,7 @@ while (!stopping) {
     if (!connected) {
         if (child || forwarding) await stopRunner();
         failures = 0;
-        retryAt = 0;
+        if (!wdaFailureNeedsRepair(launchFailure)) retryAt = 0;
         report('disconnected', 'Reconnect the USB cable');
     } else if (child) {
         if (await wdaReady()) {

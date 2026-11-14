@@ -433,6 +433,7 @@ export class DeviceRegistrationService implements DeviceRegistrationManager {
                 switcherTriggerX: coordinates.accountSwitcher.x,
                 switcherTriggerY: coordinates.accountSwitcher.y,
             };
+            if (session.coordinateProfile === 'iphone15promax' && session.tiktokAccounts.length) throw new Error('TikTok account switching is not calibrated yet; leave its accounts empty for core registration');
             if (session.tiktokAccounts.length) {
                 for (const account of session.tiktokAccounts) {
                     await switchTikTokAccount(driver, control, session.device.udid, account, accountCoordinates);

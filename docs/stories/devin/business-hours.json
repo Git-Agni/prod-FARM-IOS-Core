@@ -1,0 +1,311 @@
+{
+ "slug": "business-hours",
+ "keyword": "AUTOPILOT",
+ "model": "Devin Jatho live Story 2026-10-21 ('Social media is dead'), frame for frame",
+ "frames": [
+  {
+   "type": "cover",
+   "plate": "assets/plate-tombstone-logos.png",
+   "title": "Your ad leads\nare [[DEAD]]",
+   "carve": [],
+   "cells": [],
+   "sub": "Leads want a reply in minutes, and\nit's reply fast or **be** {{left behind}} 👉",
+   "zoom": 1.15,
+   "fx": 0.49,
+   "fy": 0.38,
+   "titleTop": 232,
+   "bright": 1.0
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "dim": 0.9,
+   "title": "Sales used to run\non a 9 to 5\n**Business hours**",
+   "body": "A lead came in at night\nand someone called them\nback the **next day**",
+   "orbit": [
+    {
+     "cx": 942,
+     "cy": 1049,
+     "rx": 270,
+     "ry": 310,
+     "rot": -10,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      100,
+      160
+     ]
+    },
+    {
+     "cx": 967,
+     "cy": 1039,
+     "rx": 360,
+     "ry": 150,
+     "rot": 42,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
+    }
+   ],
+   "bubbles": [
+    {
+     "img": "assets/logos/bubble-facebook.png",
+     "ring": "#0866FF",
+     "on": [
+      0,
+      198
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-instagram.png",
+     "ring": "#E4405F",
+     "on": [
+      1,
+      232
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-google.png",
+     "ring": "#4285F4",
+     "on": [
+      0,
+      148
+     ]
+    }
+   ],
+   "pull": "Not anymore 👉",
+   "pullRight": 190,
+   "shift": [
+    360,
+    616
+   ],
+   "cutout": "../gallery/masks/antonio-03-rooftop-dusk-mask.png"
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-02-podcast-studio.jpg",
+   "dim": 0.85,
+   "title": "Now we're in the era of\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>INSTANT REPLIES</span>",
+   "titleSize": 74,
+   "titleLh": 86,
+   "titleTop": 330,
+   "body": "Leads buy from whoever\n**answers them first**",
+   "orbit": [
+    {
+     "cx": 956,
+     "cy": 985,
+     "rx": 300,
+     "ry": 290,
+     "rot": -15,
+     "arrows": [
+      200,
+      280
+     ],
+     "front": [
+      120,
+      175
+     ]
+    },
+    {
+     "cx": 986,
+     "cy": 925,
+     "rx": 380,
+     "ry": 140,
+     "rot": 30,
+     "arrows": [
+      190
+     ]
+    }
+   ],
+   "chips": [
+    {
+     "x": 646,
+     "y": 805,
+     "icon": "💬",
+     "text": "AI text"
+    },
+    {
+     "x": 586,
+     "y": 1225,
+     "icon": "📞",
+     "text": "Call back"
+    }
+   ],
+   "pull": "So how do you keep up 👉",
+   "pullRight": 100,
+   "shift": [
+    405,
+    635
+   ],
+   "cutout": "../gallery/masks/antonio-02-podcast-studio-mask.png"
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Imagine you run ads and get\n3 leads after you clock out",
+   "cards": [
+    {
+     "name": "9 PM Lead",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+     "icon": "form",
+     "color": "#F8930D"
+    },
+    {
+     "name": "11 PM Lead",
+     "photo": "asset:../gallery/antonio-15-bedroom-late-night.jpg",
+     "icon": "chat",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "6 AM Lead",
+     "photo": "asset:../gallery/antonio-16-kitchen-morning.jpg",
+     "icon": "ring",
+     "color": "#1EF5F5"
+    }
+   ],
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   }
+  },
+  {
+   "type": "tree",
+   "state": 2,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Each one wants a ((answer))\nright now",
+   "cards": [
+    {
+     "name": "9 PM Lead",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+     "stat": "12h",
+     "statLabel": "Waiting",
+     "color": "#F8930D"
+    },
+    {
+     "name": "11 PM Lead",
+     "photo": "asset:../gallery/antonio-15-bedroom-late-night.jpg",
+     "stat": "10h",
+     "statLabel": "Waiting",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "6 AM Lead",
+     "photo": "asset:../gallery/antonio-16-kitchen-morning.jpg",
+     "stat": "3h",
+     "statLabel": "Waiting",
+     "color": "#1EF5F5"
+    }
+   ],
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   }
+  },
+  {
+   "type": "tree",
+   "state": 3,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "avatar": "asset:assets/avatar.jpg",
+   "titleTop": 215,
+   "title": "Which means {{2 of 3}} leads will\nbook with someone faster\n<span style='text-decoration:underline;text-decoration-color:#E03842;text-decoration-thickness:4px;text-underline-offset:18px'>before you even wake up</span>",
+   "cards": [
+    {
+     "name": "9 PM Lead",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+     "stat": "12h",
+     "statLabel": "Waiting",
+     "color": "#F8930D",
+     "stamp": "GONE COLD"
+    },
+    {
+     "name": "11 PM Lead",
+     "photo": "asset:../gallery/antonio-15-bedroom-late-night.jpg",
+     "stat": "10h",
+     "statLabel": "Waiting",
+     "color": "#3DE99B",
+     "stamp": "GONE COLD"
+    },
+    {
+     "name": "6 AM Lead",
+     "photo": "asset:../gallery/antonio-16-kitchen-morning.jpg",
+     "stat": "3h",
+     "statLabel": "Waiting",
+     "color": "#1EF5F5"
+    }
+   ],
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   }
+  },
+  {
+   "type": "showcase",
+   "title": "So to win the <span style='text-decoration:underline;text-decoration-color:#4BC597;text-decoration-thickness:4px;text-underline-offset:16px'>leads you pay for</span>",
+   "line1": "Your AI should text back\n<<in minutes, day or night>>",
+   "line2": "And save you setters for **the real calls**",
+   "rows": [
+    {
+     "image": "assets/screen-sms.png",
+     "sides": [
+      "assets/reel-harvey-cover.jpg",
+      "assets/reel-phone-cover.jpg"
+     ]
+    },
+    {
+     "image": "assets/screen-call.png",
+     "sides": [
+      "assets/reel-hiring-cover.jpg",
+      "assets/reel-harvey-cover.jpg"
+     ]
+    }
+   ]
+  },
+  {
+   "type": "cta",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "title": "This video shows you how to\nnever miss a lead again👇",
+   "thumb": "assets/yt-autopilot.jpg",
+   "videoTitle": "Your Business Shouldn't Stop When You Put Your Phone Down",
+   "time": "0:50 / 8:18",
+   "send": "and I'll send it to you"
+  }
+ ],
+ "banned_photos": [
+  "video:ff",
+  "b8ad871c"
+ ],
+ "generated_photos": "gallery picks 03, 02, 13, 14, 15, 16, 17, 24, 05, 01 (docs/stories/gallery)"
+}

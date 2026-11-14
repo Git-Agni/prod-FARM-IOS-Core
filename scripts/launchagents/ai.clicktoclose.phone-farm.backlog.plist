@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>ai.clicktoclose.phone-farm.backlog</string>
+  <key>WorkingDirectory</key><string>/Users/antoniomonteiro/Developer/phone-farm</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string><string>-c</string>
+    <string>date; /Users/antoniomonteiro/.local/bin/node --env-file-if-exists=.env --import tsx scripts/instagram-trial-on.ts --apply | tail -1; /Users/antoniomonteiro/.local/bin/node --env-file-if-exists=.env --import tsx scripts/one-variant-per-video.ts --apply | tail -1; for lane in social youtube; do /Users/antoniomonteiro/.local/bin/node --env-file-if-exists=.env --import tsx scripts/autopilot-backlog.ts --lane=$lane --every-hours=2 --no-shift --apply | tail -1; done; /Users/antoniomonteiro/.local/bin/node --env-file-if-exists=.env --import tsx scripts/lane-slotter.ts --apply | tail -1; nice -n 15 /Users/antoniomonteiro/.local/bin/node --env-file-if-exists=.env --import tsx scripts/upgrade-queued-media.ts --apply | grep -E 'upgraded|NOT upgraded|Another'</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict><key>PATH</key><string>/Users/antoniomonteiro/.local/bin:/opt/homebrew/bin:/usr/bin:/bin</string></dict>
+  <key>StartCalendarInterval</key><dict><key>Minute</key><integer>5</integer></dict>
+  <key>StandardOutPath</key><string>/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/logs/autopilot-backlog.log</string>
+  <key>StandardErrorPath</key><string>/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/logs/autopilot-backlog.log</string>
+</dict>
+</plist>

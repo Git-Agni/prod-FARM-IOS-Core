@@ -1,0 +1,52 @@
+{
+  "reel": {
+    "id": "3eb6d874-0232-4b99-936b-b5146bace93c",
+    "name": "cc-claude-1790607424.mp4",
+    "instagram": "https://www.instagram.com/reel/DebX2U5IOeX/",
+    "facebook": "https://www.facebook.com/reel/1630521305094500/",
+    "postedAt": "2026-10-13T08:26:50.114Z",
+    "sha256": "2e4a3216b9c313282b436cb0298622b9b77edc58de94759a7d05edfb1715a734"
+  },
+  "frames": [
+    {
+      "frame": 1,
+      "stage": "moment",
+      "asset": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons-v2/frame-1.png",
+      "sha256": "3ec0f7a213cf2f204c518936b06f294ec96b7fb98915cbf01d4dafb5b9be93bb",
+      "source": "/Users/antoniomonteiro/Developer/Coding Projects/C2C System Monorepo/artifacts/creative/2026-09-11-ltx-local-test/antonio-real-frame.png",
+      "reviewNote": "Real recording still of Antonio (Sept 11, 2026 source). Not a new photo; the text makes no claim about when it was taken."
+    },
+    {
+      "frame": 2,
+      "stage": "problem",
+      "asset": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons-v2/frame-2.png",
+      "sha256": "b21f235c6df3bd68577e38a71fe3b50639d76b5724e4d1d00231c0ad6f3a4a89",
+      "source": "https://www.instagram.com/reel/DebX2U5IOeX/ at 9 s",
+      "reviewNote": "Reel screen at 9 s: model switching after a usage limit. Presenter circle cropped out."
+    },
+    {
+      "frame": 3,
+      "stage": "proof",
+      "asset": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons-v2/frame-3.png",
+      "sha256": "05f3fba12f7738fc6230a5ef6e491ec6598efe449f4345fd78cfab13b128ac18",
+      "source": "https://www.instagram.com/reel/DebX2U5IOeX/ at 4.6 s",
+      "reviewNote": "Reel screen at 4.6 s listing all five add-ons. Shows what the reel covers, not a business result."
+    },
+    {
+      "frame": 4,
+      "stage": "lesson",
+      "asset": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons-v2/frame-4.png",
+      "sha256": "d97ad639eb146b8fe0093aa5d3cc4c8f72fdd67340a046b01cb68f539160cf54",
+      "source": "https://www.instagram.com/reel/DebX2U5IOeX/ at 30 s",
+      "reviewNote": "Reel screen at 30 s: Headroom wrap-up in Claude Code. Numbers on screen are the reel's own demo."
+    },
+    {
+      "frame": 5,
+      "stage": "reply",
+      "asset": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons-v2/frame-5.png",
+      "sha256": "95a13f6c23a2083b8c289dabce91a1959bee742668d162febf5ed9338537f428",
+      "source": "https://www.instagram.com/reel/DebX2U5IOeX/ at 45.5 s",
+      "reviewNote": "Reel screen at 45.5 s: Playwright testing a form in a browser. Keyword DM route not independently verified."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "phone-farm-status-page",
+  "private": true,
+  "type": "module",
+  "description": "Read-only cloud status page for the Phone Farm queue (Cloudflare Worker behind Cloudflare Access).",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "postgres": "3.4.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20250927.0",
+    "@types/node": "22.18.8",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "wrangler": "4.40.2"
+  }
+}

@@ -1,0 +1,307 @@
+{
+ "slug": "tools-dont-talk",
+ "keyword": "HUMANAI",
+ "model": "Devin live Story structure; variation 2 (tools metaphor)",
+ "banned_photos": [
+  "video:ff",
+  "b8ad871c"
+ ],
+ "frames": [
+  {
+   "type": "cover",
+   "plate": "assets/plate-v2-tools.png",
+   "carve": [],
+   "cells": [],
+   "bright": 1.05,
+   "title": "Your tools\ndon't [[TALK]]",
+   "sub": "Your AI, setter and closer never\nshare notes, and **your lead** {{notices}} 👉"
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-03-rooftop-dusk.jpg",
+   "dim": 0.9,
+   "title": "Sales used to be\n**One person**",
+   "body": "One rep knew the\nwhole story of\n**every lead**",
+   "orbit": [
+    {
+     "cx": 942,
+     "cy": 1049,
+     "rx": 270,
+     "ry": 310,
+     "rot": -10,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      100,
+      160
+     ]
+    },
+    {
+     "cx": 967,
+     "cy": 1039,
+     "rx": 360,
+     "ry": 150,
+     "rot": 42,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
+    }
+   ],
+   "bubbles": [
+    {
+     "img": "assets/logos/bubble-facebook.png",
+     "ring": "#0866FF",
+     "on": [
+      0,
+      222
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-instagram.png",
+     "ring": "#E4405F",
+     "on": [
+      1,
+      232
+     ]
+    },
+    {
+     "img": "assets/logos/bubble-google.png",
+     "ring": "#4285F4",
+     "on": [
+      0,
+      148
+     ]
+    }
+   ],
+   "pull": "Not anymore 👉",
+   "pullRight": 190,
+   "shift": [
+    360,
+    616
+   ],
+   "cutout": "../gallery/masks/antonio-03-rooftop-dusk-mask.png"
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-02-podcast-studio.jpg",
+   "dim": 0.85,
+   "titleSize": 74,
+   "titleLh": 86,
+   "titleTop": 330,
+   "title": "Now we're in the era of\n<span style='font-weight:700;font-size:112px;letter-spacing:-3px;line-height:120px'>AI + HUMANS</span>",
+   "body": "Your AI texts. A setter calls.\n**A closer books.**",
+   "orbit": [
+    {
+     "cx": 956,
+     "cy": 985,
+     "rx": 300,
+     "ry": 290,
+     "rot": -15,
+     "arrows": [
+      200,
+      280
+     ],
+     "front": [
+      120,
+      175
+     ]
+    },
+    {
+     "cx": 986,
+     "cy": 925,
+     "rx": 380,
+     "ry": 140,
+     "rot": 30,
+     "arrows": [
+      190
+     ]
+    }
+   ],
+   "chips": [
+    {
+     "x": 700,
+     "y": 915,
+     "icon": "💬",
+     "text": "AI text"
+    },
+    {
+     "x": 586,
+     "y": 1225,
+     "icon": "📞",
+     "text": "Setter"
+    }
+   ],
+   "pull": "So what breaks? 👉",
+   "pullRight": 120,
+   "shift": [
+    405,
+    635
+   ],
+   "cutout": "../gallery/masks/antonio-02-podcast-studio-mask.png"
+  },
+  {
+   "type": "tree",
+   "state": 1,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Imagine one lead asks:\n**\"Does this fit my schedule?\"**",
+   "cards": [
+    {
+     "name": "AI Text",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+     "icon": "chat",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Setter",
+     "photo": "asset:../gallery/antonio-17-headset-calls.jpg",
+     "icon": "ring",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Closer",
+     "photo": "asset:../gallery/antonio-24-team-meeting.jpg",
+     "icon": "calendar",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "tree",
+   "state": 2,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Each one gives a ((different))\nanswer",
+   "cards": [
+    {
+     "name": "AI Text",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+     "stat": "Yes",
+     "statLabel": "It fits",
+     "color": "#F8930D"
+    },
+    {
+     "name": "Setter",
+     "photo": "asset:../gallery/antonio-17-headset-calls.jpg",
+     "stat": "No",
+     "statLabel": "5 days a week",
+     "color": "#3DE99B"
+    },
+    {
+     "name": "Closer",
+     "photo": "asset:../gallery/antonio-24-team-meeting.jpg",
+     "stat": "Hm?",
+     "statLabel": "Asks again",
+     "color": "#1EF5F5"
+    }
+   ]
+  },
+  {
+   "type": "tree",
+   "state": 3,
+   "backdrop": "asset:../gallery/antonio-13-dark-room-seated-phone.jpg",
+   "backPlace": {
+    "face": [
+     0.5,
+     0.375,
+     0.2
+    ],
+    "at": [
+     540,
+     1630,
+     110
+    ]
+   },
+   "avatar": "asset:assets/avatar.jpg",
+   "title": "Which means your lead hears\n{{3 different stories}}\n<span style='text-decoration:underline;text-decoration-color:#E03842;text-decoration-thickness:4px;text-underline-offset:18px'>and stops trusting all of them</span>",
+   "cards": [
+    {
+     "name": "AI Text",
+     "photo": "asset:../gallery/antonio-14-night-desk-closeup.jpg",
+     "stat": "Yes",
+     "statLabel": "It fits",
+     "color": "#F8930D",
+     "stamp": "NO CONTEXT"
+    },
+    {
+     "name": "Setter",
+     "photo": "asset:../gallery/antonio-17-headset-calls.jpg",
+     "stat": "No",
+     "statLabel": "5 days a week",
+     "color": "#3DE99B",
+     "stamp": "NO CONTEXT"
+    },
+    {
+     "name": "Closer",
+     "photo": "asset:../gallery/antonio-24-team-meeting.jpg",
+     "stat": "Hm?",
+     "statLabel": "Asks again",
+     "color": "#1EF5F5"
+    }
+   ],
+   "titleTop": 215
+  },
+  {
+   "type": "showcase",
+   "title": "So to keep <span style='text-decoration:underline;text-decoration-color:#4BC597;text-decoration-thickness:4px;text-underline-offset:16px'>every lead you pay for</span>",
+   "line1": "Every rep should read\n<<the full conversation first>>",
+   "line2": "And give each lead **one clear owner**",
+   "rows": [
+    {
+     "image": "assets/screen-sms.png",
+     "sides": [
+      "assets/reel-harvey-cover.jpg",
+      "assets/reel-phone-cover.jpg"
+     ]
+    },
+    {
+     "image": "assets/screen-call.png",
+     "sides": [
+      "assets/reel-hiring-cover.jpg",
+      "assets/reel-harvey-cover.jpg"
+     ]
+    }
+   ]
+  },
+  {
+   "type": "cta",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "title": "This video shows you how to\nset up the handoff 👇",
+   "thumb": "assets/yt-oT6alCHNwKA.jpg",
+   "videoTitle": "How to Build a Sales Team AI Can't Replace",
+   "time": "0:50 / 6:36",
+   "send": "and I'll send it to you"
+  }
+ ],
+ "generated_photos": "gallery picks 03, 02, 13, 14, 15, 16, 17, 24, 05, 01 (docs/stories/gallery)"
+}

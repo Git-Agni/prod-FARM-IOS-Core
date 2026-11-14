@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>Label</key>
+	<string>ai.clicktoclose.phone-farm.audio-mute</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/antoniomonteiro/Developer/phone-farm/.mirroring/Phone Farm Audio Mute.app/Contents/MacOS/PhoneFarmAudioMute</string>
+		<string>serve</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/logs/audio-mute-error.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/logs/audio-mute.log</string>
+	<key>ThrottleInterval</key>
+	<integer>5</integer>
+	<key>WorkingDirectory</key>
+	<string>/Users/antoniomonteiro/Developer/phone-farm</string>
+</dict>
+</plist>

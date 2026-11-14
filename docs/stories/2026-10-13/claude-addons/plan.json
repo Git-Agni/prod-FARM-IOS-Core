@@ -1,0 +1,66 @@
+{
+  "requestId": "story-2026-10-13-claude-addons",
+  "title": "CLAUDE: five free Claude Code add-ons",
+  "deviceUdid": "00008130-000229EE1AA0001C",
+  "account": "antoniorevenue",
+  "facebookAccount": "61584693917444",
+  "runAt": "2026-10-14T00:00:00.000Z",
+  "draft": {
+    "policyVersion": 2,
+    "format": "proof_led",
+    "nativeText": true,
+    "musicStyle": "music_only",
+    "frames": [
+      {
+        "stage": "moment",
+        "text": "New reel: five free add-ons to install in Claude Code before your next session.",
+        "assetKind": "gallery_photo",
+        "assetRef": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons/frame-1.png",
+        "visualReviewed": true,
+        "claimReview": "source_checked",
+        "sourceRef": "/Users/antoniomonteiro/Developer/Coding Projects/C2C System Monorepo/artifacts/creative/2026-09-11-ltx-local-test/antonio-real-frame.png; reel https://www.instagram.com/reel/DebX2U5IOeX/ posted 2026-10-13 with this caption"
+      },
+      {
+        "stage": "problem",
+        "text": "Ever had Claude Code stop halfway through a build because you hit your usage limit?",
+        "assetKind": "workflow",
+        "assetRef": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons/frame-2.png",
+        "visualReviewed": true,
+        "claimReview": "no_factual_claim"
+      },
+      {
+        "stage": "proof",
+        "text": "The five from the reel: Omni-route, Frontend design, Headroom, Mem Palace and Playwright.",
+        "assetKind": "workflow",
+        "assetRef": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons/frame-3.png",
+        "visualReviewed": true,
+        "claimReview": "source_checked",
+        "sourceRef": "https://www.instagram.com/reel/DebX2U5IOeX/ at 4.6 s; the five add-on names as shown in the reel"
+      },
+      {
+        "stage": "lesson",
+        "text": "Start with one. Headroom trims the context you send to Claude.",
+        "assetKind": "workflow",
+        "assetRef": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons/frame-4.png",
+        "visualReviewed": true,
+        "claimReview": "source_checked",
+        "sourceRef": "https://www.instagram.com/reel/DebX2U5IOeX/ at 30 s; reel caption: trim the context you send"
+      },
+      {
+        "stage": "reply",
+        "text": "Which one would you install first? Comment CLAUDE on the reel and I'll send the setup steps.",
+        "assetKind": "workflow",
+        "assetRef": "/Users/antoniomonteiro/Developer/phone-farm/.scheduler-data/story-assets/2026-10-13-claude-addons/frame-5.png",
+        "visualReviewed": true,
+        "claimReview": "source_checked",
+        "sourceRef": "https://www.instagram.com/reel/DebX2U5IOeX/ at 45.5 s; reel caption CTA: comment CLAUDE for the install list and setup steps"
+      }
+    ]
+  },
+  "review": {
+    "valid": true,
+    "errors": [],
+    "policyVersion": 2,
+    "publicationAllowed": false
+  }
+}

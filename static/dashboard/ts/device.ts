@@ -15,7 +15,6 @@ interface DeviceConnectionStatus {
 type RemoteAction =
     | { type: 'tap'; x: number; y: number }
     | { type: 'home' }
-    | { type: 'lock' }
     | { type: 'wake' }
     | { type: 'unlock' }
     | { type: 'volumeUp' }
@@ -353,7 +352,7 @@ function directionalSwipe(direction: SwipeDirection): RemoteAction | undefined {
 elements.remoteButtons.forEach((button) => {
     button.addEventListener('click', () => {
         const action = button.dataset.remoteAction;
-        if (action === 'home' || action === 'lock' || action === 'wake'
+        if (action === 'home' || action === 'wake'
             || action === 'unlock' || action === 'volumeUp' || action === 'volumeDown') {
             void sendAction({ type: action });
             return;

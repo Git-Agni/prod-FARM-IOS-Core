@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { requestWdaService } from './wda-service-client.js';
 import { wdaServiceSocketPath } from './wda-service-protocol.js';
+import { requireWdaControl } from './control-mode.js';
 
 function delay(milliseconds: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -29,6 +30,7 @@ async function serviceState(socketPath: string): Promise<'absent' | 'starting' |
 }
 
 export async function ensureWdaService(): Promise<void> {
+    requireWdaControl();
     const socketPath = wdaServiceSocketPath();
     const initialState = await serviceState(socketPath);
     if (initialState === 'ready') return;

@@ -1,0 +1,308 @@
+{
+ "slug": "a-teach-handoff",
+ "way": "Teach (Devin live model): one idea, one diagram that changes state, reply for the video",
+ "keyword": "HUMANAI",
+ "frames": [
+  {
+   "type": "scene",
+   "hook": true,
+   "photo": "d7725c69",
+   "dim": 0.4,
+   "blur": 4,
+   "title": "Your AI and your setter\n[[don't talk]]",
+   "titleTop": 170,
+   "bottom": "So your lead hears 3 diffrent stories 👉",
+   "bottomAt": 170,
+   "scene": {
+    "camera": {
+     "pos": [
+      0,
+      1.7,
+      14
+     ],
+     "look": [
+      0,
+      1.75,
+      0
+     ],
+     "fov": 34
+    },
+    "accent": "#2780FF",
+    "objects": [
+     {
+      "kind": "phone",
+      "screen": "assets/screen-a-thread.png",
+      "size": [
+       1.95,
+       4.0,
+       0.18
+      ],
+      "pos": [
+       0,
+       1.45,
+       0
+      ],
+      "rot": [
+       -3,
+       -12,
+       2
+      ],
+      "id": "phone",
+      "scale": 0.84
+     },
+     {
+      "kind": "tile",
+      "img": "assets/logo-ghl.png",
+      "size": [
+       0.85,
+       0.85,
+       0.22
+      ],
+      "pos": [
+       -1.72,
+       2.95,
+       1.1
+      ],
+      "rot": [
+       6,
+       24,
+       -8
+      ],
+      "fill": 0.8,
+      "id": "ghl"
+     },
+     {
+      "kind": "tile",
+      "img": "assets/icon-call.svg",
+      "size": [
+       0.85,
+       0.85,
+       0.22
+      ],
+      "pos": [
+       1.72,
+       2.2,
+       1.1
+      ],
+      "rot": [
+       4,
+       -22,
+       7
+      ],
+      "fill": 1.0,
+      "color": "#34C759",
+      "id": "call"
+     },
+     {
+      "kind": "tile",
+      "img": "assets/logo-calendly.png",
+      "size": [
+       0.85,
+       0.85,
+       0.22
+      ],
+      "pos": [
+       -1.68,
+       0.35,
+       1.2
+      ],
+      "rot": [
+       -6,
+       24,
+       5
+      ],
+      "fill": 0.8,
+      "id": "cal"
+     },
+     {
+      "kind": "light",
+      "pos": [
+       0,
+       1.5,
+       3
+      ],
+      "color": "#2780FF",
+      "power": 20
+     },
+     {
+      "kind": "link",
+      "from": "ghl",
+      "to": "phone",
+      "state": "broken",
+      "bend": -0.15
+     },
+     {
+      "kind": "link",
+      "from": "call",
+      "to": "phone",
+      "state": "broken",
+      "bend": 0.15
+     },
+     {
+      "kind": "link",
+      "from": "cal",
+      "to": "phone",
+      "state": "broken",
+      "bend": 0.15
+     }
+    ]
+   }
+  },
+  {
+   "type": "photo",
+   "photo": "8bc5feef",
+   "title": "Sales used to be **one person**",
+   "body": "One rep knew the **whole story** of every lead",
+   "pull": "Not anymore 👉"
+  },
+  {
+   "type": "orbit",
+   "photo": "d7725c69",
+   "title": "Now AI, setters and closers all work **the same lead**",
+   "body": "And each one starts **from zero**",
+   "pull": "So what goes wrong? 👉",
+   "chips": [
+    {
+     "icon": "logo:assets/logo-ghl.png",
+     "label": "AI text",
+     "right": 470,
+     "top": 620
+    },
+    {
+     "icon": "call",
+     "label": "Setter",
+     "right": 60,
+     "top": 830
+    },
+    {
+     "icon": "logo:assets/logo-calendly.png",
+     "label": "Closer",
+     "right": 320,
+     "top": 1210
+    }
+   ]
+  },
+  {
+   "type": "states",
+   "state": 1,
+   "photo": "37287de1",
+   "title": "A lead asks one thing:\n**\"Does this fit my work schedule?\"**",
+   "ask": "Fit my schedule?",
+   "center": "New lead",
+   "cards": [
+    {
+     "name": "AI text",
+     "ui": "sms",
+     "text": "Fit my schedule?",
+     "act": "Replies by text",
+     "icon": "logo:assets/logo-ghl.png"
+    },
+    {
+     "name": "Setter",
+     "ui": "call",
+     "text": "2 min",
+     "act": "Calls the lead",
+     "icon": "call"
+    },
+    {
+     "name": "Closer",
+     "ui": "calendar",
+     "text": "Thu 4:00 PM",
+     "act": "Gets the booking",
+     "icon": "logo:assets/logo-calendly.png"
+    }
+   ],
+   "centerLogo": "logo:assets/logo-typeform.png",
+   "centerSub": "Form filled",
+   "pull": "Watch what happens 👉"
+  },
+  {
+   "type": "states",
+   "state": 2,
+   "photo": "37287de1",
+   "title": "The AI texts back. The setter calls.\nThe closer books the call.",
+   "center": "New lead",
+   "cards": [
+    {
+     "name": "AI text",
+     "ui": "sms",
+     "text": "Fit my schedule?",
+     "act": "Replies by text",
+     "icon": "logo:assets/logo-ghl.png"
+    },
+    {
+     "name": "Setter",
+     "ui": "call",
+     "text": "2 min",
+     "act": "Calls the lead",
+     "icon": "call"
+    },
+    {
+     "name": "Closer",
+     "ui": "calendar",
+     "text": "Thu 4:00 PM",
+     "act": "Gets the booking",
+     "icon": "logo:assets/logo-calendly.png"
+    }
+   ],
+   "centerLogo": "logo:assets/logo-typeform.png",
+   "centerSub": "Form filled",
+   "pull": "Looks fine right? 👉"
+  },
+  {
+   "type": "states",
+   "state": 3,
+   "photo": "37287de1",
+   "title": "But nobody saw what the others said.\nThe lead hears [[3 different answers]]",
+   "center": "New lead",
+   "stamp": "NO CONTEXT",
+   "cards": [
+    {
+     "name": "AI text",
+     "ui": "sms",
+     "text": "Fit my schedule?",
+     "act": "Replies by text",
+     "icon": "logo:assets/logo-ghl.png"
+    },
+    {
+     "name": "Setter",
+     "ui": "call",
+     "text": "2 min",
+     "act": "Calls the lead",
+     "icon": "call"
+    },
+    {
+     "name": "Closer",
+     "ui": "calendar",
+     "text": "Thu 4:00 PM",
+     "act": "Gets the booking",
+     "icon": "logo:assets/logo-calendly.png"
+    }
+   ],
+   "centerLogo": "logo:assets/logo-typeform.png",
+   "centerSub": "Form filled",
+   "pull": "Heres the fix 👉"
+  },
+  {
+   "type": "list",
+   "photo": "990ce94d",
+   "title": "The fix: a **Human-AI Handoff**",
+   "items": [
+    "Every rep sees the **full chat**",
+    "**One owner** for each lead",
+    "A clear rule for when a **human steps in**"
+   ],
+   "pull": "I show the whole setup in this video 👉"
+  },
+  {
+   "type": "cta",
+   "title": "This video shows you how to set it up 👇",
+   "card": {
+    "kind": "yt",
+    "thumb": "https://i.ytimg.com/vi/oT6alCHNwKA/maxresdefault.jpg",
+    "title": "How to Build a Sales Team AI Can't Replace"
+   },
+   "send": "and I'll send it to you"
+  }
+ ]
+}

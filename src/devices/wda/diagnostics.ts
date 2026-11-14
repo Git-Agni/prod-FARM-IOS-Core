@@ -1,4 +1,7 @@
 export function diagnoseWdaLaunchFailure(output: string): string | undefined {
+    if (/Timed out while enabling automation mode/i.test(output)) {
+        return 'Check the unlocked iPhone for an automation approval prompt, then reconnect WDA';
+    }
     if (/Developer Mode.*disabled|enable Developer Mode|requires Developer Mode/i.test(output)) {
         return 'Enable Developer Mode in Settings > Privacy & Security, restart the device, then confirm Enable after it restarts';
     }
@@ -42,4 +45,9 @@ export function wdaUnavailableTooLong({
     timeoutMs: number;
 }): boolean {
     return now - (lastReadyAt ?? launchedAt) > timeoutMs;
+}
+
+/** Configuration failures cannot heal through repeated device launches. */
+export function wdaFailureNeedsRepair(message: string | undefined): boolean {
+    return !!message && /^(Check the unlocked iPhone|Register this device|Sign in under Xcode|Accept the current Apple|Enable Developer Mode|Trust the WebDriverAgent|Install the matching iOS)/.test(message);
 }

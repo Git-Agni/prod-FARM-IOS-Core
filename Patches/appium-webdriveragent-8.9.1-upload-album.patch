@@ -1,0 +1,73 @@
+--- .appium2/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgentLib/Commands/FBTouchActionCommands.m
++++ .appium2/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgentLib/Commands/FBTouchActionCommands.m
+@@ -18,12 +18,12 @@
+ #import "XCSynthesizedEventRecord.h"
+ @import Photos;
+ 
+-static BOOL FBWaitForPhotoLibraryAuthorization(NSError **error)
+-{
+-  __block PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelAddOnly];
++static BOOL FBWaitForPhotoLibraryAuthorization(PHAccessLevel accessLevel, NSError **error)
++{
++  __block PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatusForAccessLevel:accessLevel];
+   if (PHAuthorizationStatusNotDetermined == status) {
+     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+-    [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelAddOnly handler:^(PHAuthorizationStatus newStatus) {
++    [PHPhotoLibrary requestAuthorizationForAccessLevel:accessLevel handler:^(PHAuthorizationStatus newStatus) {
+       status = newStatus;
+       dispatch_semaphore_signal(semaphore);
+     }];
+@@ -41,7 +41,7 @@
+   return YES;
+ }
+ 
+-static NSString *FBImportMedia(NSString *name, NSString *mimeType, NSString *base64Data, NSError **error)
++static NSString *FBImportMedia(NSString *name, NSString *mimeType, NSString *base64Data, NSString *albumName, NSError **error)
+ {
+   if (0 == name.length || 0 == base64Data.length || 0 == mimeType.length) {
+     *error = [NSError errorWithDomain:@"com.facebook.WebDriverAgent" code:4
+@@ -54,7 +54,7 @@
+                              userInfo:@{NSLocalizedDescriptionKey: @"Media data is not valid base64"}];
+     return nil;
+   }
+-  if (!FBWaitForPhotoLibraryAuthorization(error)) {
++  if (!FBWaitForPhotoLibraryAuthorization(albumName.length ? PHAccessLevelReadWrite : PHAccessLevelAddOnly, error)) {
+     return nil;
+   }
+   NSString *safeName = [name lastPathComponent];
+@@ -72,6 +72,10 @@
+       ? [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:fileURL]
+       : [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
+     identifier = request.placeholderForCreatedAsset.localIdentifier;
++    if (albumName.length > 0 && request.placeholderForCreatedAsset != nil) {
++      PHAssetCollectionChangeRequest *album = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:albumName];
++      [album addAssets:@[request.placeholderForCreatedAsset]];
++    }
+   } completionHandler:^(BOOL success, NSError *operationError) {
+     succeeded = success;
+     changeError = operationError;
+@@ -176,11 +180,11 @@
+ + (id<FBResponsePayload>)handleImportMedia:(FBRouteRequest *)request
+ {
+   NSError *error;
+-  NSString *identifier = FBImportMedia(request.arguments[@"name"], request.arguments[@"mimeType"], request.arguments[@"data"], &error);
++  NSString *identifier = FBImportMedia(request.arguments[@"name"], request.arguments[@"mimeType"], request.arguments[@"data"], request.arguments[@"albumName"], &error);
+   if (nil == identifier) {
+     return FBResponseWithUnknownError(error);
+   }
+-  return FBResponseWithObject(@{ @"localIdentifier": identifier });
++  return FBResponseWithObject(@{ @"localIdentifier": identifier, @"albumName": request.arguments[@"albumName"] ?: @"" });
+ }
+ 
+ + (id<FBResponsePayload>)handlePerformW3CTouchActions:(FBRouteRequest *)request
+--- .appium2/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgentRunner/Info.plist
++++ .appium2/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgentRunner/Info.plist
+@@ -26,6 +26,8 @@
+ 	<string></string>
+ 	<key>NSLocationWhenInUseUsageDescription</key>
+ 	<string></string>
++	<key>NSPhotoLibraryUsageDescription</key>
++	<string>Put the selected upload in its own album so the publishing app selects the right video.</string>
+ 	<key>NSPhotoLibraryAddUsageDescription</key>
+ 	<string>Allow automation uploads to be added to the device photo library.</string>
+ </dict>

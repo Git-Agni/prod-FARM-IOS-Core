@@ -8,3 +8,11 @@ devices.json
 .scheduler-data/
 static/assets/
 *.log
+
+.appium2/
+
+.local-tests/
+
+__pycache__/
+
+.mirroring/

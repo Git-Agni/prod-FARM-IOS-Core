@@ -1,0 +1,192 @@
+{
+  "slug": "vshred-150m-system",
+  "way": "Case study (branded 3D teaching family, Nov 9 pre-build): V Shred $0 to $150M in 36 months (Results Library #2, PUBLIC), the 40% zero-value audit and the build order from Antonio's AI sales system guide (clicktoclose.ai blog, the asset the SCALE DM sends), lesson, guide CTA. Facts read 2026-11-08 PT. Keyword SCALE (dm_keyword_assets id 20, active, headline 'The System Behind a $150M Brand', DM sends clicktoclose.ai/lm/scale). Logo: official V Shred white SVG (docs/stories/devin/assets/logos/vshred-white.svg), rendered from SVG.",
+  "keyword": "SCALE",
+  "frames": [
+    {
+      "type": "scene",
+      "hook": true,
+      "photo": "d7725c69",
+      "dim": 0.35,
+      "blur": 5,
+      "title": "V Shred went from\n$0 to [[$150M]]\nin 36 months",
+      "titleTop": 170,
+      "bottom": "And it wasn't the ads 👉",
+      "bottomAt": 170,
+      "scene": {
+        "camera": {
+          "pos": [
+            0,
+            1.7,
+            14
+          ],
+          "look": [
+            0,
+            1.75,
+            0
+          ],
+          "fov": 34
+        },
+        "floorY": -0.7,
+        "accent": "#E8231F",
+        "objects": [
+          {
+            "kind": "tile",
+            "id": "vs",
+            "size": [
+              3.6,
+              1.2,
+              0.26
+            ],
+            "radius": 0.22,
+            "color": "#141418",
+            "img": "assets/logo-vshred-light.png",
+            "fill": 0.82,
+            "pos": [
+              0,
+              1.95,
+              0.4
+            ],
+            "rot": [
+              6,
+              -10,
+              -3
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "call",
+            "img": "assets/icon-call.svg",
+            "size": [
+              0.95,
+              0.95,
+              0.22
+            ],
+            "fill": 1.0,
+            "pos": [
+              -1.35,
+              0.35,
+              1.0
+            ],
+            "rot": [
+              6,
+              24,
+              -6
+            ]
+          },
+          {
+            "kind": "tile",
+            "id": "sms",
+            "img": "assets/icon-message-circle.svg",
+            "size": [
+              0.95,
+              0.95,
+              0.22
+            ],
+            "fill": 0.6,
+            "color": "#2780FF",
+            "pos": [
+              1.35,
+              0.2,
+              1.0
+            ],
+            "rot": [
+              4,
+              -24,
+              6
+            ]
+          },
+          {
+            "kind": "light",
+            "pos": [
+              0,
+              1.6,
+              3
+            ],
+            "color": "#E8231F",
+            "power": 18
+          },
+          {
+            "kind": "link",
+            "from": "call",
+            "to": "vs",
+            "state": "done",
+            "bend": -0.25
+          },
+          {
+            "kind": "link",
+            "from": "sms",
+            "to": "vs",
+            "state": "done",
+            "bend": 0.25
+          }
+        ]
+      }
+    },
+    {
+      "type": "orbit",
+      "photo": "37287de1",
+      "title": "We built the sales on **a process**",
+      "body": "Not on **one star closer**",
+      "pull": "But first we hunted the waste 👉",
+      "chips": [
+        {
+          "icon": "call",
+          "label": "Setters",
+          "right": 470,
+          "top": 640
+        },
+        {
+          "icon": "sms",
+          "label": "Follow-up",
+          "right": 60,
+          "top": 850
+        },
+        {
+          "icon": "calendar",
+          "label": "Closers",
+          "right": 320,
+          "top": 1230
+        }
+      ]
+    },
+    {
+      "type": "timeline",
+      "photo": "990ce94d",
+      "time": "40%",
+      "label": "added zero value",
+      "title": "We audited every step.\n**40% of the sales activities** did nothing for the customer",
+      "pull": "So we cut them befor we automated anything 👉"
+    },
+    {
+      "type": "list",
+      "photo": "aaae6275",
+      "title": "Then we built it in **this order**",
+      "items": [
+        "Map **every step** of the sale",
+        "Cut the steps that **add nothing**",
+        "Automate the **repeatable** work",
+        "Keep the **closing** human"
+      ],
+      "pull": "Heres why the order matters 👉"
+    },
+    {
+      "type": "timeline",
+      "photo": "5d070570",
+      "time": "$150M",
+      "label": "cash collected in 36 months",
+      "title": "**The lesson:** fix the process first.\nThen let AI run it.",
+      "pull": "Want the whole system? 👉"
+    },
+    {
+      "type": "cta",
+      "title": "This guide shows the system\nbehind V Shred's $150M 👇",
+      "card": {
+        "kind": "image",
+        "image": "assets/card-scale-guide.png",
+        "width": 860
+      },
+      "send": "and I'll send you the full guide"
+    }
+  ]
+}

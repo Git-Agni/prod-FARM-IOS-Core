@@ -61,13 +61,16 @@
     "pg": "^8.23.0",
     "pg-boss": "^12.27.0",
     "sharp": "^0.35.3",
+    "slack-block-builder": "^2.8.0",
     "webdriverio": "9.31.3"
   },
   "devDependencies": {
     "@types/node": "^26.2.0",
     "@types/pg": "^8.23.1",
-    "appium": "^3.7.0",
+    "@types/three": "^0.170.0",
+    "appium": "2.19.0",
     "drizzle-kit": "^0.31.10",
+    "three": "^0.170.0",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
   },

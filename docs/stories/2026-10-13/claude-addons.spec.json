@@ -1,0 +1,77 @@
+{
+  "slug": "claude-addons-v2",
+  "title": "CLAUDE: five free Claude Code add-ons",
+  "runAt": "2026-10-14T00:00:00.000Z",
+  "format": "proof_led",
+  "reelId": "3eb6d874-0232-4b99-936b-b5146bace93c",
+  "frames": [
+    {
+      "stage": "moment",
+      "assetKind": "gallery_photo",
+      "claimReview": "source_checked",
+      "photo": "/Users/antoniomonteiro/Developer/Coding Projects/C2C System Monorepo/artifacts/creative/2026-09-11-ltx-local-test/antonio-real-frame.png",
+      "sourceNote": "reel https://www.instagram.com/reel/DebX2U5IOeX/ posted 2026-10-13 with this caption",
+      "text": "New reel: five free add-ons to install in Claude Code before your next session.",
+      "reviewNote": "Real recording still of Antonio (Sept 11, 2026 source). Not a new photo; the text makes no claim about when it was taken."
+    },
+    {
+      "stage": "problem",
+      "assetKind": "workflow",
+      "claimReview": "no_factual_claim",
+      "reelSecond": 9,
+      "crop": {
+        "x": 0,
+        "y": 480,
+        "width": 1080,
+        "height": 530
+      },
+      "text": "Ever had Claude Code stop halfway through a build because you hit your usage limit?",
+      "reviewNote": "Reel screen at 9 s: model switching after a usage limit. Presenter circle cropped out."
+    },
+    {
+      "stage": "proof",
+      "assetKind": "workflow",
+      "claimReview": "source_checked",
+      "reelSecond": 4.6,
+      "crop": {
+        "x": 110,
+        "y": 720,
+        "width": 860,
+        "height": 680
+      },
+      "sourceNote": "the five add-on names as shown in the reel",
+      "text": "The five from the reel: Omni-route, Frontend design, Headroom, Mem Palace and Playwright.",
+      "reviewNote": "Reel screen at 4.6 s listing all five add-ons. Shows what the reel covers, not a business result."
+    },
+    {
+      "stage": "lesson",
+      "assetKind": "workflow",
+      "claimReview": "source_checked",
+      "reelSecond": 30,
+      "crop": {
+        "x": 0,
+        "y": 410,
+        "width": 1080,
+        "height": 600
+      },
+      "sourceNote": "reel caption: trim the context you send",
+      "text": "Start with one. Headroom trims the context you send to Claude.",
+      "reviewNote": "Reel screen at 30 s: Headroom wrap-up in Claude Code. Numbers on screen are the reel's own demo."
+    },
+    {
+      "stage": "reply",
+      "assetKind": "workflow",
+      "claimReview": "source_checked",
+      "reelSecond": 45.5,
+      "crop": {
+        "x": 40,
+        "y": 360,
+        "width": 1000,
+        "height": 630
+      },
+      "sourceNote": "reel caption CTA: comment CLAUDE for the install list and setup steps",
+      "text": "Which one would you install first? Comment CLAUDE on the reel and I'll send the setup steps.",
+      "reviewNote": "Reel screen at 45.5 s: Playwright testing a form in a browser. Keyword DM route not independently verified."
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>APPIUM_HOME</key>
+		<string>/Users/antoniomonteiro/Developer/phone-farm/.appium2</string>
+		<key>DEVELOPER_DIR</key>
+		<string>/Applications/Xcode.app/Contents/Developer</string>
+		<key>PATH</key>
+		<string>/Users/antoniomonteiro/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+	</dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>Label</key>
+	<string>ai.clicktoclose.phone-farm.appium</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/antoniomonteiro/.local/bin/node</string>
+		<string>node_modules/appium/index.js</string>
+		<string>--address</string>
+		<string>127.0.0.1</string>
+		<string>--base-path</string>
+		<string>/</string>
+		<string>--port</string>
+		<string>4725</string>
+		<string>--log-level</string>
+		<string>info</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>/tmp/phone-farm-appium-service.log</string>
+	<key>StandardOutPath</key>
+	<string>/tmp/phone-farm-appium-service.log</string>
+	<key>WorkingDirectory</key>
+	<string>/Users/antoniomonteiro/Developer/phone-farm</string>
+</dict>
+</plist>

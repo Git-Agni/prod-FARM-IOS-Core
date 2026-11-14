@@ -1,0 +1,216 @@
+<!doctype html>
+<!--
+  Design reference (Mobbin): Buffer, web, "Publish" list view.
+    Queue list grouped by day, with the time and status pill in a left gutter, a post card with the
+    account header, caption, media thumbnail on the right, a red error banner for failed posts, and a
+    footer with "View Post" actions. List / Calendar toggle and count tabs sit above the list.
+    https://mobbin.com/screens/af871c1d-00d1-4c74-a4a4-87ae2e9455c8 (Queue, not published with errors)
+    https://mobbin.com/screens/f03f6ccc-5c1d-4978-8371-1701a8f1b831 (Sent, View Post)
+  Week toggle follows Buffer's Calendar week view (https://mobbin.com/screens/d064970a-0daa-460d-ab40-2ad1e47cc25a)
+  with the Story row placed above the day columns, as in Later's week calendar.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Publishing calendar · Phone Farm</title>
+    <link rel="stylesheet" href="/publishing/styles.css">
+    <script type="module" src="/publishing/app.js"></script>
+</head>
+<body>
+    <main class="shell">
+        <header class="page-head">
+            <div class="page-title">
+                <span class="title-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="22" height="22"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                </span>
+                <div>
+                    <h1>Publishing calendar</h1>
+                    <p class="page-sub"><span id="account-line">@antoniorevenue</span> · Times in Los Angeles (<span id="tz-abbr">PT</span>)</p>
+                </div>
+            </div>
+            <div class="page-actions">
+                <span id="updated" class="updated" aria-live="polite">Loading…</span>
+                <button id="refresh" class="btn btn-icon" type="button" title="Refresh now" aria-label="Refresh now">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="segmented" role="group" aria-label="View">
+                    <button id="view-list" type="button" class="seg" aria-pressed="true">
+                        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>List
+                    </button>
+                    <button id="view-week" type="button" class="seg" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 10h16M9 3v4M15 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Week
+                    </button>
+                </div>
+                <button id="add-video" class="btn" type="button">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add video
+                </button>
+            </div>
+        </header>
+
+        <section id="autopilot" class="banner banner-neutral" aria-label="Autopilot">Loading autopilot…</section>
+        <section id="cadence" class="banner banner-neutral" aria-live="polite">Loading cadence…</section>
+        <section id="capabilities" class="banner banner-neutral" aria-live="polite">
+            <div class="banner-main"><strong>Checking posting mode…</strong></div>
+        </section>
+
+        <div id="load-error" class="banner banner-danger" role="alert" hidden></div>
+
+        <section id="summary" class="summary" aria-label="Today"></section>
+        <section id="health" class="summary health" aria-label="Health"></section>
+
+        <div class="tabs-row">
+            <div id="tabs" class="tabs" role="tablist" aria-label="Filter by status"></div>
+            <div class="tabs-tools">
+                <label class="switch">
+                    <input id="show-cancelled" type="checkbox">
+                    <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                    <span>Show cancelled <span id="cancelled-count" class="count"></span></span>
+                </label>
+                <span class="tz-chip" title="All times are shown in America/Los_Angeles">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                    Los Angeles
+                </span>
+            </div>
+        </div>
+
+        <div class="range-row">
+            <div class="range-nav">
+                <button id="prev" class="btn btn-icon" type="button" aria-label="Previous week">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button id="next" class="btn btn-icon" type="button" aria-label="Next week">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button id="today" class="btn btn-small" type="button">Today</button>
+                <h2 id="range-label" class="range-label">This week</h2>
+            </div>
+            <div id="range-outside" class="range-outside"></div>
+        </div>
+
+        <section id="stories" class="stories" aria-label="Daily Story"></section>
+
+        <section id="calendar" class="calendar" aria-live="polite">
+            <div class="empty-card"><span class="spinner" aria-hidden="true"></span>Loading the calendar…</div>
+        </section>
+    </main>
+
+    <div id="scrim" class="scrim" hidden></div>
+    <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+        <header class="drawer-head">
+            <div id="drawer-title" class="drawer-title">Post</div>
+            <button id="drawer-close" class="btn btn-icon" type="button" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+        </header>
+        <div id="drawer-scroll" class="drawer-scroll">
+            <div id="drawer-media" class="drawer-media"></div>
+            <div id="drawer-info" class="drawer-info"></div>
+        </div>
+    </aside>
+
+    <template id="add-form-template">
+        <form id="post-form" class="add-form">
+            <p class="form-note">Saving adds the video on hold. It does not post anything. A target time only posts after a timed release is armed.</p>
+            <label for="device">Phone</label>
+            <select id="device" required></select>
+            <label for="video">Video</label>
+            <input id="video" type="file" accept="video/mp4,video/quicktime" required>
+            <div class="hint">MP4 or MOV, up to 350 MiB.</div>
+            <label for="cover">Cover (optional)</label>
+            <input id="cover" type="file" accept="image/png,image/jpeg">
+            <label for="caption">Caption</label>
+            <textarea id="caption" maxlength="2200" rows="6"></textarea>
+            <label for="firstComment">First comment (optional)</label>
+            <textarea id="firstComment" maxlength="300" rows="2" placeholder="12 to 300 characters, no links"></textarea>
+            <div class="form-grid">
+                <div><label for="runAt">Target time</label><input id="runAt" type="datetime-local" required></div>
+                <div><label for="timezone">Timezone</label><input id="timezone" readonly></div>
+            </div>
+            <fieldset class="target">
+                <label class="check-label"><input id="instagram" type="checkbox" checked> Instagram</label>
+                <input id="ig-account" aria-label="Instagram account" value="antoniorevenue">
+                <label class="check-label"><input id="trial" type="checkbox" checked> Trial Reel with automatic promotion</label>
+            </fieldset>
+            <fieldset class="target">
+                <label class="check-label"><input id="facebook" type="checkbox" checked> Facebook</label>
+                <input id="fb-account" aria-label="Facebook Page URL" value="https://www.facebook.com/profile.php?id=61584693917444">
+                <label for="facebookMode">Facebook delivery</label>
+                <select id="facebookMode"><option value="linked_from_instagram">Share from the same Instagram post</option><option value="direct">Separate Facebook post</option></select>
+            </fieldset>
+            <fieldset class="target">
+                <label class="check-label"><input id="tiktok" type="checkbox"> TikTok</label>
+                <input id="tt-account" aria-label="TikTok account" value="antoniorevenue" placeholder="Exact handle">
+                <div class="hint">Create a separate item for TikTok. Leave Instagram and Facebook unchecked. TikTok posts the first comment. Its current menu does not offer pinning.</div>
+            </fieldset>
+            <fieldset class="target">
+                <label class="check-label"><input id="youtube" type="checkbox"> YouTube Shorts</label>
+                <div class="hint">Preparation only. Save a Short here while native upload testing is pending. Select YouTube alone.</div>
+                <div id="youtube-details" hidden>
+                    <label for="yt-account">Channel handle</label>
+                    <input id="yt-account" value="antoniorevenue" placeholder="Exact channel handle">
+                    <label for="yt-channel">Channel ID</label>
+                    <input id="yt-channel" value="UCMZWuXp0lsxE2vmuifYMWuA" placeholder="UC followed by 22 characters">
+                    <label for="yt-title">Title</label>
+                    <input id="yt-title" maxlength="100">
+                    <label for="yt-visibility">Visibility</label>
+                    <select id="yt-visibility"><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select>
+                    <label for="yt-audience">Audience</label>
+                    <select id="yt-audience"><option value="">Choose an audience</option><option value="no">Not made for kids</option><option value="yes">Made for kids</option></select>
+                    <label for="yt-related">Related long-form video ID</label>
+                    <input id="yt-related" placeholder="11-character video ID">
+                    <div class="hint">Choose a relevant video from this channel. Leave blank if no good match; the item will need review.</div>
+                    <label for="yt-category">Category</label>
+                    <select id="yt-category"><option>Howto &amp; Style</option><option>Education</option><option>Science &amp; Technology</option></select>
+                    <label for="yt-tags">Tags, separated by commas</label><input id="yt-tags" maxlength="450">
+                    <label for="yt-keyword">Comment keyword</label><input id="yt-keyword" maxlength="40">
+                    <label for="yt-hashtags">Hashtags, separated by spaces</label><input id="yt-hashtags" placeholder="#ClaudeCode #AITools">
+                    <label for="yt-ai-use">AI use disclosure</label>
+                    <select id="yt-ai-use"><option value="review">Review for this video</option><option value="no">No</option><option value="yes">Yes</option></select>
+                    <label for="yt-cover-mode">Cover preparation</label>
+                    <select id="yt-cover-mode"><option value="existing_frame">Keep existing video frames</option><option value="replace_first_frame">Replace the 0:00 frame with the uploaded cover</option></select>
+                    <div class="hint">First-frame mode makes a separate video and keeps the original. It replaces one frame without shifting audio. YouTube may choose another thumbnail. Review the actual result before scheduling.</div>
+                    <div class="hint">Use the caption field for the description, including the exact comment keyword and hashtags. Square or vertical video, up to 3 minutes. No automatic YouTube comment delivery.</div>
+                </div>
+            </fieldset>
+            <button id="save" class="btn btn-primary" type="submit">Save on hold</button>
+            <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+    </template>
+
+<script type="module">
+// Autopilot panel (Oct 15): Post now and lane hours. Talks to /api/publishing/lanes and /api/publishing/post-now.
+const API='/api/publishing',el=document.getElementById('autopilot');
+const LANES=[['instagram','Instagram Trial + Facebook'],['tiktok','TikTok'],['youtube','YouTube Shorts (+22 min)']];
+const fmt=(t)=>new Date(t).toLocaleString('en-US',{timeZone:'America/Los_Angeles',weekday:'short',hour:'numeric',minute:'2-digit'});
+const esc=(s)=>String(s).replace(/[&<>"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function call(url,body){const r=await fetch(url,body?{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}:{cache:'no-store'});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('HTTP '+r.status));return j;}
+let note='';
+async function load(){
+  try{
+    const d=await call(API+'/lanes');
+    const byVideo=new Map();for(const u of d.upcoming){const k=u.name.replace(/^video-/,'');if(!byVideo.has(k))byVideo.set(k,{...u,platforms:[...u.platforms]});else byVideo.get(k).platforms.push(...u.platforms);}
+    const rows=[...byVideo.values()].slice(0,10).map(u=>`<li style="display:flex;gap:.6rem;align-items:center;margin:.2rem 0"><span style="min-width:7.5rem">${fmt(u.run_at)}</span><span style="flex:1">${esc(u.name)}${u.repost?' <em>(repost)</em>':''} · ${esc([...new Set(u.platforms)].join(', '))}</span><button class="btn btn-small" data-post="${u.id}">Post now</button></li>`).join('');
+    el.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between"><strong>Autopilot</strong>
+      <button class="btn" id="ap-next">Post next video now</button></div>
+      <p style="margin:.4rem 0">${esc(note)}</p>
+      <form id="ap-hours" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.6rem;margin:.4rem 0">
+        ${LANES.map(([k,label])=>`<label>${label} hours (PT, 0–23)<br><input name="${k}" value="${d.hours[k].join(', ')}" style="width:100%"></label>`).join('')}
+        <div><button class="btn btn-small" type="submit">Save hours and reschedule</button><br><small>${d.hours.instagram.length} Instagram · ${d.hours.tiktok.length} TikTok · ${d.hours.youtube.length} Shorts a day</small></div>
+      </form>
+      <details><summary>Next ${Math.min(10,byVideo.size)} videos (48 h)</summary><ul style="list-style:none;padding:0">${rows||'<li>Nothing armed. The repost filler adds top older Reels to empty Instagram slots each hour.</li>'}</ul></details>`;
+    el.querySelector('#ap-next').onclick=()=>post();
+    el.querySelectorAll('[data-post]').forEach(b=>b.onclick=()=>post(b.dataset.post));
+    el.querySelector('#ap-hours').onsubmit=async(e)=>{e.preventDefault();const f=new FormData(e.target);
+      try{const hours=Object.fromEntries(LANES.map(([k])=>[k,String(f.get(k)).split(/[ ,]+/).filter(Boolean).map(Number)]));const r=await call(API+'/lanes',{hours});note='Saved. '+r.slotter;}catch(err){note='Not saved: '+err.message;}load();};
+  }catch(err){el.textContent='Autopilot unavailable: '+err.message;}
+}
+async function post(itemId){
+  if(!confirm(itemId?'Post this video now on its armed platforms?':'Post the next armed video now?'))return;
+  try{const r=await call(API+'/post-now',{itemId});note='Posting in about 2 minutes: '+r.moved.map(m=>m.name+' ('+m.platforms.join('+')+')').join(', ');}catch(err){note='Not moved: '+err.message;}
+  load();
+}
+load();setInterval(load,60000);
+</script>
+</body>
+</html>

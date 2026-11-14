@@ -1,0 +1,20 @@
+name = "phone-farm-status"
+main = "src/index.ts"
+compatibility_date = "2025-09-01"
+compatibility_flags = ["nodejs_compat"]
+# Only the Access-protected workers.dev hostname serves the page. Version preview URLs stay off,
+# because they are separate hostnames the Access application does not cover.
+workers_dev = true
+preview_urls = false
+
+[vars]
+ACCESS_TEAM_DOMAIN = "clicktoclose.cloudflareaccess.com"
+CONTROL_URL = "https://phonefarm.clicktoclose.ai/publishing"
+# ACCESS_AUD is a secret: `wrangler secret put ACCESS_AUD`.
+
+# Read-only DB access. Hyperdrive connects to the Supabase session pooler as phone_farm_status_ro with
+# sslmode verify-full against the uploaded Supabase Root 2021 CA (the Workers runtime does not trust that CA
+# on a direct socket). Query caching is off so the page matches the database.
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "ed3b3fc2866e45c5be2b29a4411850c5"

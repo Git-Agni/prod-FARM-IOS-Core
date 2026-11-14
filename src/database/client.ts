@@ -15,8 +15,33 @@ export function databaseUrl(): string {
     return value;
 }
 
+/**
+ * Supabase's shared pooler serves session mode on port 5432 and transaction mode on 6543 (same host, user and
+ * password). Session mode caps the phone_farm user at pool_size 15 clients and keeps a client's slot until the pooler
+ * sees the socket close. Transaction mode holds a server connection only for one transaction. Returns undefined for
+ * any other host, so a local database keeps its own URL.
+ */
+export function transactionPoolerUrl(connectionString: string): string | undefined {
+    const url = new URL(connectionString);
+    if (!url.hostname.endsWith('.pooler.supabase.com')) return undefined;
+    url.port = '6543';
+    return url.toString();
+}
+
 export function createDatabaseConnection(connectionString = databaseUrl()): DatabaseConnection {
-    const pool = new Pool({ connectionString, max: Number(process.env.DATABASE_POOL_SIZE ?? 10) });
+    // Oct 19 09:37 PT: after three pooler drops, all 4 clients were checked out and dead, and pool.connect() waited
+    // forever with no socket open. Posting stopped for five hours. Never wait forever for a client or a query.
+    // query_timeout stays above the 180 s statement_timeout that attended scripts set for a blocking phone lock.
+    const pool = new Pool({
+        connectionString, max: Number(process.env.DATABASE_POOL_SIZE ?? 10),
+        connectionTimeoutMillis: 30_000, query_timeout: 300_000, keepAlive: true, keepAliveInitialDelayMillis: 10_000,
+    });
+    // Oct 13 02:00 and Oct 15 20:11: the Supabase pooler dropped a connection ("Connection terminated unexpectedly").
+    // With no listener, pg re-throws the client's 'error' event and the whole worker crashed mid-post. Log it instead:
+    // the query in flight still rejects and its own handler records the failure; the pool replaces the client.
+    const logDropped = (error: Error) => console.error(new Date().toISOString(), 'database connection dropped:', error.message);
+    pool.on('error', logDropped);
+    pool.on('connect', (client) => client.on('error', logDropped));
     return {
         pool,
         db: drizzle(pool, { schema }),

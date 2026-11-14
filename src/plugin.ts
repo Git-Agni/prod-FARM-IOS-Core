@@ -27,6 +27,8 @@ export interface TaskValidationContext {
 }
 
 export interface TaskExecutionContext {
+    /** The executor owns the shared phone lock for this entire task. */
+    deviceLockHeld?: boolean;
     executionId: string;
     attempt: number;
     workspaceDirectory: string;

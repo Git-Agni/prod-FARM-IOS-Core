@@ -1,5 +1,5 @@
 import { spawn, type SpawnOptions } from 'node:child_process';
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -61,6 +61,20 @@ if (touchCommands.includes('FBImportMedia') && runnerInfoPlist.includes('NSPhoto
     await run('/usr/bin/patch', ['-p0', '-i', patchPath], { cwd: workspaceRoot });
     console.log('Applied WDA absolute-touch patch');
 }
+// Older installed copies count the entire library after an add-only import.
+// Remove that read so adding an upload cannot request full Photos access.
+const patchedTouchCommands = await readFile(touchCommandsPath, 'utf8');
+if (patchedTouchCommands.includes('NSUInteger assetCount = [PHAsset fetchAssetsWithOptions:nil].count;')) {
+    await writeFile(touchCommandsPath, patchedTouchCommands
+        .replace('  NSUInteger assetCount = [PHAsset fetchAssetsWithOptions:nil].count;\n', '')
+        .replace('@{ @"localIdentifier": identifier, @"assetCount": @(assetCount) }', '@{ @"localIdentifier": identifier }'));
+    console.log('Removed full-library read from the media import endpoint');
+}
+// TikTok can select a unique one-video album; ordinary imports retain add-only permission.
+if (!(await readFile(touchCommandsPath, 'utf8')).includes('NSString *albumName')) {
+    await run('/usr/bin/patch', ['-p0', '-i', path.join(packageRoot, 'Patches/appium-webdriveragent-8.9.1-upload-album.patch')], { cwd: workspaceRoot });
+    console.log('Applied optional single-upload album support');
+}
 const customCommands = await readFile(customCommandsPath, 'utf8');
 if (customCommands.includes('POST:@"/wda/pressButton"].withoutSession')) {
     console.log('WDA sessionless device-button patch is already applied');
@@ -89,7 +103,7 @@ for (const udid of targets) {
         '-project', projectPath,
         '-scheme', 'WebDriverAgentRunner',
         '-destination', `id=${udid}`,
-        `IPHONEOS_DEPLOYMENT_TARGET=${process.env.IOS_PLATFORM_VERSION ?? '16.7'}`,
+        `IPHONEOS_DEPLOYMENT_TARGET=${process.env.WDA_DEPLOYMENT_TARGET ?? '16.7'}`,
         `DEVELOPMENT_TEAM=${teamId}`,
         `PRODUCT_BUNDLE_IDENTIFIER=${bundleId}`,
         `CODE_SIGN_IDENTITY=${process.env.XCODE_SIGNING_ID ?? 'Apple Development'}`,

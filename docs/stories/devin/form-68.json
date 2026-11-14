@@ -1,0 +1,167 @@
+{
+ "slug": "form-68",
+ "keyword": "FORM",
+ "version": 1,
+ "model": "Case study (Nov 1): one client test from Results Library #1, the application step removed and replaced by CRM auto-routing. Facts read 2026-11-01 from C2C/Results-Library.md #1 (10.39% to 17.49%, +68.36%, 99.97% significance, 383 vs 1,588 visitors, close rate unchanged). CTA keyword FORM (dm_keyword_assets id 21, active, DM sends the deep-funnel page that lifted conversions 68%).",
+ "frames": [
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-04-cafe-window.jpg",
+   "dim": 0.85,
+   "orbit": [
+    {
+     "cx": 950,
+     "cy": 1000,
+     "rx": 280,
+     "ry": 300,
+     "rot": -12,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      110,
+      165
+     ]
+    },
+    {
+     "cx": 975,
+     "cy": 990,
+     "rx": 370,
+     "ry": 145,
+     "rot": 38,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
+    }
+   ],
+   "shift": [
+    405,
+    635
+   ],
+   "cutout": "../gallery/masks/antonio-04-cafe-window-mask.png",
+   "title": "I deleted the\n**application** step",
+   "body": "And conversions went\nup **68%**",
+   "bubbles": [],
+   "pull": "Here's the test \ud83d\udc49",
+   "pullRight": 150
+  },
+  {
+   "type": "person",
+   "photo": "asset:../gallery/antonio-09-boardwalk-sunset.jpg",
+   "dim": 0.85,
+   "orbit": [
+    {
+     "cx": 950,
+     "cy": 1000,
+     "rx": 280,
+     "ry": 300,
+     "rot": -12,
+     "arrows": [
+      205,
+      285
+     ],
+     "front": [
+      110,
+      165
+     ]
+    },
+    {
+     "cx": 975,
+     "cy": 990,
+     "rx": 370,
+     "ry": 145,
+     "rot": 38,
+     "front": [
+      150,
+      205
+     ],
+     "arrows": [
+      180
+     ]
+    }
+   ],
+   "shift": [
+    405,
+    635
+   ],
+   "cutout": "../gallery/masks/antonio-09-boardwalk-sunset-mask.png",
+   "title": "The form wasn't\n**filtering** anyone",
+   "body": "It was just a\n**tax** on every lead",
+   "chips": [
+    {
+     "x": 600,
+     "y": 760,
+     "icon": "\ud83d\udcdd",
+     "text": "Re-apply"
+    },
+    {
+     "x": 640,
+     "y": 1290,
+     "icon": "\ud83d\udeaa",
+     "text": "Drop-off"
+    }
+   ],
+   "pull": "So we replaced it \ud83d\udc49",
+   "pullRight": 150
+  },
+  {
+   "type": "loop",
+   "backdrop": "asset:../gallery/antonio-05-whiteboard-strategy.jpg",
+   "face": "asset:../gallery/antonio-02-podcast-studio.jpg",
+   "title": "A backend did the\n**work instead**",
+   "nodes": [
+    "Read the lead's\n**CRM record**",
+    "Auto-score them\nfrom **their history**",
+    "Route them\nwith **no re-apply**"
+   ],
+   "pull": "Then we ran the test \ud83d\udc49",
+   "pullRight": 150,
+   "pullBottom": 250
+  },
+  {
+   "type": "stats",
+   "backdrop": "asset:../gallery/antonio-17-headset-calls.jpg",
+   "title": "The A/B ((test))",
+   "cols": 2,
+   "gridTop": 560,
+   "tileH": 250,
+   "tiles": [
+    {
+     "n": "10.39%",
+     "label": "with the form",
+     "color": "#F8930D"
+    },
+    {
+     "n": "17.49%",
+     "label": "with auto-routing",
+     "color": "#3DE99B"
+    },
+    {
+     "n": "+68%",
+     "label": "more conversions",
+     "color": "#4DA3FF"
+    },
+    {
+     "n": "99.97%",
+     "label": "statistical significance",
+     "color": "#1EF5F5"
+    }
+   ],
+   "lesson": "383 visitors beat 1,588. Sales quality\nstayed **flat**. You don't need more traffic \ud83d\udc49",
+   "lessonTop": 1180
+  },
+  {
+   "type": "cta",
+   "backdrop": "asset:../gallery/antonio-01-home-office-night.jpg",
+   "card": "none",
+   "title": "See the exact funnel change\nthat did it \ud83d\udc47",
+   "send": "and I'll send you the teardown"
+  }
+ ],
+ "generated_photos": "gallery 04, 09, 05, 02, 17, 01"
+}

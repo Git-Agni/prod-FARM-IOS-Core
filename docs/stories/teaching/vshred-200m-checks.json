@@ -1,0 +1,112 @@
+{
+ "slug": "vshred-200m-checks",
+ "way": "Case study (branded 3D teaching family, Nov 13 pre-build): V Shred, from the YouTube video 4H7o7XRdtVs 'What I Learned Building VShred's $200M Sales System' (description and chapters read 2026-11-12 PT): more leads don't fix a leaking system; the four checks (find where leads stop, compare reps on the right conversion points, test the steps everyone assumes, verify the automation completed the handoff); lesson 'pick one part of your pipeline, follow it to cash'. Keyword SCALE (dm_keyword_assets id 20, active; DM sends the V Shred sales system guide clicktoclose.ai/lm/scale), so the CTA promises the guide, not the video. Photos: Story pool d7725c69, 37287de1, 990ce94d, aaae6275, 5d070570. Thumbnail: official YouTube maxres thumbnail.",
+ "keyword": "SCALE",
+ "frames": [
+  {
+   "type": "hook",
+   "photo": "d7725c69",
+   "title": "More leads won't fix\na sales system\nthat [[leaks]]",
+   "visual": {
+    "kind": "image",
+    "src": "assets/yt-4H7o7XRdtVs.jpg",
+    "width": 880,
+    "top": 760
+   },
+   "bottom": "Here's how we found the leaks\nat V Shred 👉"
+  },
+  {
+   "type": "states",
+   "state": 1,
+   "photo": "37287de1",
+   "title": "Every lead has to get\nfrom **lead** to **cash**",
+   "ask": "Where do they stop?",
+   "center": "New lead",
+   "centerSub": "V Shred",
+   "cards": [
+    {
+     "name": "Follow-up",
+     "ui": "sms",
+     "text": "Can I book a call?",
+     "act": "Text sent",
+     "icon": "sms",
+     "waiting": "Did they reply?"
+    },
+    {
+     "name": "Call",
+     "ui": "call",
+     "text": "Sales call",
+     "act": "Call logged",
+     "icon": "call",
+     "waiting": "Did they show?"
+    },
+    {
+     "name": "Cash",
+     "ui": "calendar",
+     "text": "Booked call",
+     "act": "On the calendar?",
+     "icon": "logo:assets/icon-dollar.svg",
+     "waiting": "Did they pay?"
+    }
+   ],
+   "pull": "So we ran 4 checks 👉"
+  },
+  {
+   "type": "list",
+   "photo": "990ce94d",
+   "title": "The **4 checks** we ran",
+   "items": [
+    "Find where leads **stop**",
+    "Compare reps **fairly**",
+    "Test the steps everyone **assumes**",
+    "Verify the **handoff** happened"
+   ],
+   "pull": "Heres the one most teams skip 👉"
+  },
+  {
+   "type": "orbit",
+   "photo": "aaae6275",
+   "title": "A sent text isn't\na [[booked call]]",
+   "body": "Check the handoff\n**really happened**",
+   "pull": "So check evry step to cash 👉",
+   "chips": [
+    {
+     "icon": "sms",
+     "label": "Text sent",
+     "right": 470,
+     "top": 640
+    },
+    {
+     "icon": "calendar",
+     "label": "Booked?",
+     "right": 60,
+     "top": 850
+    },
+    {
+     "icon": "call",
+     "label": "Showed up?",
+     "right": 320,
+     "top": 1230
+    }
+   ]
+  },
+  {
+   "type": "timeline",
+   "photo": "5d070570",
+   "time": "$200M+",
+   "label": "cash collected at V Shred",
+   "title": "**The lesson:** pick one part of\nyour pipeline. Follow it\nall the way to cash.",
+   "pull": "Want the full system? 👉"
+  },
+  {
+   "type": "cta",
+   "title": "This guide shows the sales\nsystem behind V Shred 👇",
+   "card": {
+    "kind": "image",
+    "image": "assets/card-scale-guide.png",
+    "width": 860
+   },
+   "send": "and I'll send you the full guide"
+  }
+ ]
+}

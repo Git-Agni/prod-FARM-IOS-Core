@@ -1,3 +1,4 @@
+import { createPublishingPlugin } from '../publishing/plugin.js';
 import type { AddressInfo } from 'node:net';
 
 import type { AuthProvider, PhoneFarmPlugin } from '../plugin.js';
@@ -19,7 +20,7 @@ export interface StartServerOptions {
 }
 
 export async function defaultPlugins(): Promise<PhoneFarmPlugin[]> {
-    return [createTikTokPlugin({ bundleId: process.env.TIKTOK_BUNDLE_ID }),
+    return [createPublishingPlugin(), createTikTokPlugin({ bundleId: process.env.TIKTOK_BUNDLE_ID }),
         ...await loadPlugins(configuredPluginModules())];
 }
 
